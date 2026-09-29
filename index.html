@@ -1,309 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1220">
-  <title>BetCheck</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #07111f;
-      color: #f5f7fa;
-    }
-
-    header {
-      padding: 22px 18px;
-      background: linear-gradient(135deg, #0d1b2f, #102a43);
-      border-bottom: 1px solid #203752;
-    }
-
-    header h1 {
-      margin: 0;
-      color: #38e07b;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 6px 0 0;
-      color: #aebdce;
-    }
-
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 18px;
-    }
-
-    .card {
-      background: #0d1a2b;
-      border: 1px solid #203752;
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .card h2 {
-      margin-top: 0;
-      font-size: 20px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 10px;
-      border: 1px solid #304a67;
-      background: #081321;
-      color: white;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 10px;
-      border: 0;
-      border-radius: 10px;
-      background: #38e07b;
-      color: #06110b;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    button.secondary {
-      background: #1b3049;
-      color: white;
-    }
-
-    .match {
-      padding: 15px;
-      border: 1px solid #29435f;
-      border-radius: 12px;
-      margin-top: 12px;
-      background: #0a1727;
-    }
-
-    .teams {
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    .muted {
-      color: #91a5bb;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .tag {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: #163a2b;
-      color: #55ee91;
-      font-size: 12px;
-    }
-
-    #status {
-      color: #9fb1c5;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>BetCheck</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#fff}
+header{padding:22px 18px;background:linear-gradient(135deg,#0d1b2f,#102a43)}
+h1{margin:0;color:#38e07b;font-size:28px}
+header p{color:#aebdce;margin:6px 0 0}
+main{max-width:900px;margin:auto;padding:18px}
+.card{background:#0d1a2b;border:1px solid #203752;border-radius:16px;padding:18px;margin-bottom:16px}
+input,select{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #304a67;background:#081321;color:white;font-size:15px}
+button{width:100%;padding:14px;margin-top:10px;border:0;border-radius:10px;background:#38e07b;color:#06110b;font-weight:bold;font-size:16px}
+.secondary{background:#1b3049;color:white}
+.match{padding:15px;border:1px solid #29435f;border-radius:12px;margin-top:12px;background:#0a1727}
+.teams{font-size:17px;font-weight:bold}
+.muted{color:#91a5bb;font-size:13px;margin-top:5px}
+.tag{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:20px;background:#163a2b;color:#55ee91;font-size:12px}
+</style>
 </head>
 
 <body>
-
 <header>
-  <h1>⚽ BetCheck</h1>
-  <p>Análisis estadístico de partidos</p>
+<h1>⚽ BetCheck</h1>
+<p>Análisis estadístico de partidos</p>
 </header>
 
 <main>
+<section class="card">
+<h2>Buscar partidos</h2>
+<input id="search" placeholder="Equipo, liga o país">
+<button onclick="buscar()">🔎 Buscar partidos de hoy</button>
+<div id="status" class="muted"></div>
+</section>
 
-  <section class="card">
-    <h2>Buscar partidos</h2>
+<section class="card">
+<h2>⚽ Partidos</h2>
+<div id="matches"><p class="muted">Cargando partidos...</p></div>
+</section>
 
-    <input
-      id="search"
-      type="text"
-      placeholder="Ej: Real Madrid, Barcelona..."
-    >
-
-    <select id="league">
-      <option value="">Todas las ligas</option>
-      <option value="Premier League">Premier League</option>
-      <option value="La Liga">La Liga</option>
-      <option value="Serie A">Serie A</option>
-      <option value="Bundesliga">Bundesliga</option>
-      <option value="Ligue 1">Ligue 1</option>
-    </select>
-
-    <button onclick="buscar()">Buscar partidos</button>
-
-    <div id="status"></div>
-  </section>
-
-  <section class="card">
-    <h2>Partidos</h2>
-    <div id="matches">
-      <p class="muted">
-        Todavía no hay partidos cargados.
-      </p>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>🎟️ Mi combinada</h2>
-
-    <div id="combo">
-      <p class="muted">
-        No agregaste partidos todavía.
-      </p>
-    </div>
-
-    <button class="secondary" onclick="limpiarCombinada()">
-      Vaciar combinada
-    </button>
-  </section>
-
+<section class="card">
+<h2>🎟️ Mi combinada</h2>
+<div id="combo"><p class="muted">No agregaste partidos todavía.</p></div>
+<button class="secondary" onclick="vaciar()">Vaciar combinada</button>
+</section>
 </main>
 
 <script>
-  const partidos = [
-    {
-      id: 1,
-      liga: "Premier League",
-      local: "Manchester City",
-      visitante: "Arsenal"
-    },
-    {
-      id: 2,
-      liga: "La Liga",
-      local: "Real Madrid",
-      visitante: "Barcelona"
-    },
-    {
-      id: 3,
-      liga: "Serie A",
-      local: "Inter",
-      visitante: "Milan"
-    },
-    {
-      id: 4,
-      liga: "Bundesliga",
-      local: "Bayern Munich",
-      visitante: "Borussia Dortmund"
-    },
-    {
-      id: 5,
-      liga: "Ligue 1",
-      local: "PSG",
-      visitante: "Marseille"
-    }
-  ];
+let partidos=[];
+let combinada=[];
 
-  let combinada = [];
-
-  function mostrarPartidos(lista) {
-    const contenedor = document.getElementById("matches");
-
-    if (!lista.length) {
-      contenedor.innerHTML =
-        '<p class="muted">No se encontraron partidos.</p>';
-      return;
-    }
-
-    contenedor.innerHTML = lista.map(p => `
-      <div class="match">
-        <div class="teams">
-          ${p.local} vs ${p.visitante}
-        </div>
-
-        <div class="muted">
-          ${p.liga}
-        </div>
-
-        <span class="tag">
-          Análisis disponible
-        </span>
-
-        <button onclick="agregar(${p.id})">
-          + Agregar a combinada
-        </button>
-      </div>
-    `).join("");
-  }
-
-  function buscar() {
-    const texto =
-      document.getElementById("search").value.toLowerCase();
-
-    const liga =
-      document.getElementById("league").value;
-
-    const resultados = partidos.filter(p => {
-      const coincideTexto =
-        !texto ||
-        p.local.toLowerCase().includes(texto) ||
-        p.visitante.toLowerCase().includes(texto);
-
-      const coincideLiga =
-        !liga || p.liga === liga;
-
-      return coincideTexto && coincideLiga;
-    });
-
-    document.getElementById("status").textContent =
-      resultados.length +
-      " partido(s) encontrado(s).";
-
-    mostrarPartidos(resultados);
-  }
-
-  function agregar(id) {
-    const partido = partidos.find(p => p.id === id);
-
-    if (!combinada.some(p => p.id === id)) {
-      combinada.push(partido);
-    }
-
-    mostrarCombinada();
-  }
-
-  function mostrarCombinada() {
-    const contenedor =
-      document.getElementById("combo");
-
-    if (!combinada.length) {
-      contenedor.innerHTML =
-        '<p class="muted">No agregaste partidos todavía.</p>';
-      return;
-    }
-
-    contenedor.innerHTML = combinada.map(p => `
-      <div class="match">
-        <div class="teams">
-          ${p.local} vs ${p.visitante}
-        </div>
-        <div class="muted">${p.liga}</div>
-      </div>
-    `).join("");
-  }
-
-  function limpiarCombinada() {
-    combinada = [];
-    mostrarCombinada();
-  }
-
-  mostrarPartidos(partidos);
-</script>
-
-</body>
-  </html>
+async function cargar(){
+  const box=document.getElementById("matches");
+  try{
+    const r=await fetch("/api/fixtures");
+    if(!r.ok) throw new Error("Error");
+    partidos=await r.json();
+    mostrar(part
