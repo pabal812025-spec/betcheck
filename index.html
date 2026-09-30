@@ -23,7 +23,7 @@
           "Partidos encontrados: " + partidos.length;
 
         document.getElementById("lista").innerHTML =
-          partidos.slice(0, 10).map(partido => `
+          partidos.map(partido => `
             <p>
               <strong>${partido.home}</strong>
               vs
