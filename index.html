@@ -3,43 +3,524 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
   <title>BetCheck</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+    }
+
+    header {
+      background: #111827;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #263244;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #22c55e;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 7px 0 0;
+      color: #9ca3af;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .barra {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    input {
+      flex: 1;
+      padding: 13px;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .verde {
+      background: #22c55e;
+      color: #052e16;
+    }
+
+    .azul {
+      background: #2563eb;
+      color: white;
+    }
+
+    .gris {
+      background: #374151;
+      color: white;
+    }
+
+    .estado {
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .partido {
+      background: #111827;
+      border: 1px solid #263244;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .liga {
+      color: #60a5fa;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .pais {
+      color: #9ca3af;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .equipos {
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    .detalle {
+      background: #111827;
+      border: 1px solid #263244;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .detalle h2 {
+      color: #22c55e;
+    }
+
+    .dato {
+      padding: 10px 0;
+      border-bottom: 1px solid #263244;
+      color: #d1d5db;
+    }
+
+    .dato strong {
+      color: white;
+    }
+
+    .marcador {
+      text-align: center;
+      font-size: 34px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .barra {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
+<header>
   <h1>⚽ BetCheck</h1>
+  <p>Análisis estadístico de partidos</p>
+</header>
 
-  <p id="estado">Probando conexión...</p>
+<div class="container">
 
-  <div id="lista"></div>
+  <div id="listaVista">
 
-  <script>
-    fetch("/api/fixtures")
-      .then(respuesta => respuesta.json())
-      .then(partidos => {
+    <div class="barra">
 
-        document.getElementById("estado").textContent =
-          "Partidos encontrados: " + partidos.length;
+      <input
+        id="buscador"
+        type="text"
+        placeholder="Buscar equipo, liga o país..."
+        oninput="filtrar()"
+      >
 
-        document.getElementById("lista").innerHTML =
-          partidos.map(partido => `
-            <p>
-              <strong>${partido.home}</strong>
-              vs
-              <strong>${partido.away}</strong>
-              — ${partido.league}
-            </p>
-          `).join("");
+      <button class="azul" onclick="cargar()">
+        🔄 Actualizar
+      </button>
 
-      })
-      .catch(error => {
+    </div>
 
-        document.getElementById("estado").textContent =
-          "ERROR: " + error.message;
+    <div id="estado" class="estado">
+      Cargando partidos...
+    </div>
 
-      });
-  </script>
+    <div id="lista"></div>
+
+  </div>
+
+  <div id="detalleVista" class="oculto"></div>
+
+</div>
+
+<script>
+
+  let partidos = [];
+
+  function escapeHTML(texto) {
+
+    if (texto === null || texto === undefined) {
+      return "";
+    }
+
+    return String(texto)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  async function cargar() {
+
+    const estado = document.getElementById("estado");
+
+    estado.textContent = "Cargando partidos...";
+
+    try {
+
+      const respuesta = await fetch(
+        "/api/fixtures?nocache=" + Date.now()
+      );
+
+      if (!respuesta.ok) {
+        throw new Error("Error " + respuesta.status);
+      }
+
+      partidos = await respuesta.json();
+
+      estado.textContent =
+        "Se encontraron " + partidos.length + " partidos.";
+
+      mostrar(partidos);
+
+    } catch (error) {
+
+      console.error(error);
+
+      estado.textContent =
+        "No se pudieron cargar los partidos.";
+
+    }
+
+  }
+
+
+  function mostrar(listaPartidos) {
+
+    const lista = document.getElementById("lista");
+
+    if (!listaPartidos.length) {
+
+      lista.innerHTML =
+        "<p>No se encontraron partidos.</p>";
+
+      return;
+
+    }
+
+    lista.innerHTML = listaPartidos.map(partido => `
+
+      <div class="partido">
+
+        <div class="liga">
+          🏆 ${escapeHTML(partido.league)}
+        </div>
+
+        <div class="pais">
+          🌎 ${escapeHTML(partido.country)}
+        </div>
+
+        <div class="equipos">
+          ${escapeHTML(partido.home)}
+          <br>
+          <span style="color:#9ca3af;">VS</span>
+          <br>
+          ${escapeHTML(partido.away)}
+        </div>
+
+        <div class="acciones">
+
+          <button
+            class="azul"
+            onclick="abrirPartido(${Number(partido.id)})"
+          >
+            📊 Ver partido
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  function filtrar() {
+
+    const texto =
+      document
+        .getElementById("buscador")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if (!texto) {
+
+      mostrar(partidos);
+
+      return;
+
+    }
+
+    const filtrados = partidos.filter(partido => {
+
+      const contenido = [
+
+        partido.home,
+        partido.away,
+        partido.league,
+        partido.country
+
+      ].join(" ").toLowerCase();
+
+      return contenido.includes(texto);
+
+    });
+
+    mostrar(filtrados);
+
+  }
+
+
+  async function abrirPartido(id) {
+
+    document
+      .getElementById("listaVista")
+      .classList.add("oculto");
+
+    const detalle =
+      document.getElementById("detalleVista");
+
+    detalle.classList.remove("oculto");
+
+    detalle.innerHTML = `
+      <div class="detalle">
+        <p>⏳ Cargando partido...</p>
+      </div>
+    `;
+
+    try {
+
+      const respuesta = await fetch(
+        "/api/match?id=" + encodeURIComponent(id)
+      );
+
+      if (!respuesta.ok) {
+        throw new Error("No se pudo cargar");
+      }
+
+      const partido = await respuesta.json();
+
+      mostrarDetalle(partido);
+
+    } catch (error) {
+
+      console.error(error);
+
+      detalle.innerHTML = `
+        <div class="detalle">
+
+          <p>No se pudo cargar el partido.</p>
+
+          <button
+            class="gris"
+            onclick="volver()"
+          >
+            ← Volver
+          </button>
+
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  function mostrarDetalle(partido) {
+
+    const detalle =
+      document.getElementById("detalleVista");
+
+    let estado = partido.estado || "No disponible";
+
+    if (estado === "FT") {
+      estado = "Finalizado";
+    }
+
+    if (estado === "NS") {
+      estado = "No iniciado";
+    }
+
+    if (estado === "HT") {
+      estado = "Entretiempo";
+    }
+
+    if (estado === "1H") {
+      estado =
+        "🔴 EN VIVO · " +
+        (partido.minuto ?? "?") +
+        "'";
+    }
+
+    if (estado === "2H") {
+      estado =
+        "🔴 EN VIVO · " +
+        (partido.minuto ?? "?") +
+        "'";
+    }
+
+    const fecha = partido.fecha
+      ? new Date(partido.fecha).toLocaleString("es-AR")
+      : "No disponible";
+
+
+    detalle.innerHTML = `
+
+      <div class="detalle">
+
+        <button
+          class="gris"
+          onclick="volver()"
+        >
+          ← Volver a partidos
+        </button>
+
+        <h2>
+          ${escapeHTML(partido.local?.nombre)}
+          vs
+          ${escapeHTML(partido.visitante?.nombre)}
+        </h2>
+
+        <div class="marcador">
+
+          ${partido.marcador?.local ?? 0}
+          -
+          ${partido.marcador?.visitante ?? 0}
+
+        </div>
+
+        <div class="dato">
+          🏆 Liga:
+          <strong>
+            ${escapeHTML(partido.liga?.nombre || "No disponible")}
+          </strong>
+        </div>
+
+        <div class="dato">
+          🌎 País:
+          <strong>
+            ${escapeHTML(partido.liga?.pais || "No disponible")}
+          </strong>
+        </div>
+
+        <div class="dato">
+          📅 Fecha:
+          <strong>${escapeHTML(fecha)}</strong>
+        </div>
+
+        <div class="dato">
+          📌 Estado:
+          <strong>${escapeHTML(estado)}</strong>
+        </div>
+
+        <div class="dato">
+          🏟️ Estadio:
+          <strong>
+            ${escapeHTML(partido.estadio || "No informado")}
+          </strong>
+        </div>
+
+        <div class="dato">
+          🧑‍⚖️ Árbitro:
+          <strong>
+            ${escapeHTML(partido.arbitro || "No informado")}
+          </strong>
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  function volver() {
+
+    document
+      .getElementById("detalleVista")
+      .classList.add("oculto");
+
+    document
+      .getElementById("listaVista")
+      .classList.remove("oculto");
+
+    window.scrollTo(0, 0);
+
+  }
+
+
+  cargar();
+
+</script>
 
 </body>
 </html>
