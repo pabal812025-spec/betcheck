@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b1220">
-  <title>BetCheck</title>
-
-  <style>
+  <title>BetCheck</title>  <style>
     * {
       box-sizing: border-box;
     }
@@ -151,53 +148,78 @@
       margin: 20px 0;
     }
 
+    .tituloStats {
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: #22c55e;
+      font-size: 20px;
+    }
+
+    .estadisticas {
+      background: #0b1220;
+      border: 1px solid #263244;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .stat {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 1fr;
+      align-items: center;
+      padding: 11px 10px;
+      border-bottom: 1px solid #263244;
+      text-align: center;
+    }
+
+    .stat:last-child {
+      border-bottom: 0;
+    }
+
+    .stat .valor {
+      font-weight: bold;
+      color: white;
+    }
+
+    .stat .nombre {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
     @media (max-width: 600px) {
       .barra {
         flex-direction: column;
       }
+
+      .stat {
+        grid-template-columns: 1fr 1.2fr 1fr;
+        font-size: 14px;
+      }
     }
-  </style>
-</head>
-
-<body>
-
-<header>
+  </style></head><body><header>
   <h1>⚽ BetCheck</h1>
   <p>Análisis estadístico de partidos</p>
-</header>
+</header><div class="container">  <div id="listaVista"><div class="barra">
 
-<div class="container">
+  <input
+    id="buscador"
+    type="text"
+    placeholder="Buscar equipo, liga o país..."
+    oninput="filtrar()"
+  >
 
-  <div id="listaVista">
-
-    <div class="barra">
-
-      <input
-        id="buscador"
-        type="text"
-        placeholder="Buscar equipo, liga o país..."
-        oninput="filtrar()"
-      >
-
-      <button class="azul" onclick="cargar()">
-        🔄 Actualizar
-      </button>
-
-    </div>
-
-    <div id="estado" class="estado">
-      Cargando partidos...
-    </div>
-
-    <div id="lista"></div>
-
-  </div>
-
-  <div id="detalleVista" class="oculto"></div>
+  <button class="azul" onclick="cargar()">
+    🔄 Actualizar
+  </button>
 
 </div>
 
-<script>
+<div id="estado" class="estado">
+  Cargando partidos...
+</div>
+
+<div id="lista"></div>
+
+  </div>  <div id="detalleVista" class="oculto"></div></div><script>
 
   let partidos = [];
 
@@ -360,7 +382,8 @@
     try {
 
       const respuesta = await fetch(
-        "/api/match?id=" + encodeURIComponent(id)
+        "/api/match?id=" + encodeURIComponent(id) +
+        "&nocache=" + Date.now()
       );
 
       if (!respuesta.ok) {
@@ -368,6 +391,8 @@
       }
 
       const partido = await respuesta.json();
+
+      console.log("Datos recibidos del partido:", partido);
 
       mostrarDetalle(partido);
 
@@ -395,6 +420,22 @@
   }
 
 
+  function valorStat(valor) {
+
+    if (
+      valor === null ||
+      valor === undefined ||
+      valor === "" ||
+      valor === "-"
+    ) {
+      return "—";
+    }
+
+    return escapeHTML(valor);
+
+  }
+
+
   function mostrarDetalle(partido) {
 
     const detalle =
@@ -414,14 +455,7 @@
       estado = "Entretiempo";
     }
 
-    if (estado === "1H") {
-      estado =
-        "🔴 EN VIVO · " +
-        (partido.minuto ?? "?") +
-        "'";
-    }
-
-    if (estado === "2H") {
+    if (estado === "1H" || estado === "2H") {
       estado =
         "🔴 EN VIVO · " +
         (partido.minuto ?? "?") +
@@ -431,6 +465,46 @@
     const fecha = partido.fecha
       ? new Date(partido.fecha).toLocaleString("es-AR")
       : "No disponible";
+
+
+    /*
+      Aceptamos varios nombres posibles para las estadísticas.
+      Así el frontend no se rompe si el endpoint devuelve
+      estadísticas con nombres ligeramente diferentes.
+    */
+
+    const stats = partido.estadisticas || partido.statistics || {};
+
+    const tiros =
+      stats.tiros || stats.shots || {};
+
+    const tirosArco =
+      stats.tirosAlArco || stats.shotsOnTarget || {};
+
+    const corners =
+      stats.corners || stats.cornersKicks || {};
+
+    const posesion =
+      stats.posesion || stats.possession || {};
+
+    const pases =
+      stats.pasesPrecisos || stats.passes || {};
+
+    const faltas =
+      stats.faltas || stats.fouls || {};
+
+    const amarillas =
+      stats.amarillas || stats.yellowCards || {};
+
+    const rojas =
+      stats.rojas || stats.redCards || {};
+
+
+    const localNombre =
+      partido.local?.nombre || "Local";
+
+    const visitanteNombre =
+      partido.visitante?.nombre || "Visitante";
 
 
     detalle.innerHTML = `
@@ -445,9 +519,9 @@
         </button>
 
         <h2>
-          ${escapeHTML(partido.local?.nombre)}
+          ${escapeHTML(localNombre)}
           vs
-          ${escapeHTML(partido.visitante?.nombre)}
+          ${escapeHTML(visitanteNombre)}
         </h2>
 
         <div class="marcador">
@@ -496,6 +570,134 @@
           </strong>
         </div>
 
+
+        <div class="tituloStats">
+          📊 Estadísticas
+        </div>
+
+        <div class="estadisticas">
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(tiros.local)}
+            </div>
+
+            <div class="nombre">
+              🎯 Tiros totales
+            </div>
+
+            <div class="valor">
+              ${valorStat(tiros.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(tirosArco.local)}
+            </div>
+
+            <div class="nombre">
+              🥅 Tiros al arco
+            </div>
+
+            <div class="valor">
+              ${valorStat(tirosArco.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(corners.local)}
+            </div>
+
+            <div class="nombre">
+              🚩 Córners
+            </div>
+
+            <div class="valor">
+              ${valorStat(corners.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(posesion.local)}
+            </div>
+
+            <div class="nombre">
+              🟢 Posesión
+            </div>
+
+            <div class="valor">
+              ${valorStat(posesion.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(pases.local)}
+            </div>
+
+            <div class="nombre">
+              🔄 Pases precisos
+            </div>
+
+            <div class="valor">
+              ${valorStat(pases.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(faltas.local)}
+            </div>
+
+            <div class="nombre">
+              ⚠️ Faltas
+            </div>
+
+            <div class="valor">
+              ${valorStat(faltas.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(amarillas.local)}
+            </div>
+
+            <div class="nombre">
+              🟨 Amarillas
+            </div>
+
+            <div class="valor">
+              ${valorStat(amarillas.visitante)}
+            </div>
+          </div>
+
+
+          <div class="stat">
+            <div class="valor">
+              ${valorStat(rojas.local)}
+            </div>
+
+            <div class="nombre">
+              🟥 Rojas
+            </div>
+
+            <div class="valor">
+              ${valorStat(rojas.visitante)}
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
     `;
@@ -520,7 +722,5 @@
 
   cargar();
 
-</script>
-
-</body>
+</script></body>
 </html>
