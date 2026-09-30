@@ -63,11 +63,6 @@
       cursor: pointer;
     }
 
-    .verde {
-      background: #22c55e;
-      color: #052e16;
-    }
-
     .azul {
       background: #2563eb;
       color: white;
@@ -153,6 +148,16 @@
       margin-bottom: 10px;
       color: #22c55e;
       font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nombreEquipos {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #d1d5db;
+      font-size: 13px;
     }
 
     .estadisticas {
@@ -183,6 +188,12 @@
     .stat .nombre {
       color: #9ca3af;
       font-size: 13px;
+    }
+
+    .cargando {
+      color: #60a5fa;
+      text-align: center;
+      padding: 15px;
     }
 
     @media (max-width: 600px) {
@@ -223,6 +234,7 @@
 
   let partidos = [];
 
+
   function escapeHTML(texto) {
 
     if (texto === null || texto === undefined) {
@@ -235,6 +247,21 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
+  }
+
+
+  function valor(valor) {
+
+    if (
+      valor === null ||
+      valor === undefined ||
+      valor === ""
+    ) {
+      return "—";
+    }
+
+    return escapeHTML(valor);
 
   }
 
@@ -381,20 +408,57 @@
 
     try {
 
-      const respuesta = await fetch(
-        "/api/match?id=" + encodeURIComponent(id) +
-        "&nocache=" + Date.now()
+      // Primero obtenemos los datos principales
+      const respuestaPartido = await fetch(
+        "/api/match?id=" +
+        encodeURIComponent(id) +
+        "&nocache=" +
+        Date.now()
       );
 
-      if (!respuesta.ok) {
-        throw new Error("No se pudo cargar");
+      if (!respuestaPartido.ok) {
+        throw new Error("No se pudo cargar el partido");
       }
 
-      const partido = await respuesta.json();
+      const partido = await respuestaPartido.json();
 
-      console.log("Datos recibidos del partido:", partido);
 
-      mostrarDetalle(partido);
+      // Después obtenemos las estadísticas directamente
+      const respuestaStats = await fetch(
+        "/api/api/stats?id=" +
+        encodeURIComponent(id) +
+        "&nocache=" +
+        Date.now()
+      );
+
+
+      let estadisticas = [];
+
+      if (respuestaStats.ok) {
+
+        const datosStats =
+          await respuestaStats.json();
+
+        estadisticas = Array.isArray(datosStats)
+          ? datosStats
+          : [];
+
+      }
+
+
+      console.log("Partido:", partido);
+
+      console.log(
+        "Estadísticas:",
+        estadisticas
+      );
+
+
+      mostrarDetalle(
+        partido,
+        estadisticas
+      );
+
 
     } catch (error) {
 
@@ -420,28 +484,40 @@
   }
 
 
-  function valorStat(valor) {
+  function buscarStat(equipo, nombre) {
 
     if (
-      valor === null ||
-      valor === undefined ||
-      valor === "" ||
-      valor === "-"
+      !equipo ||
+      !Array.isArray(equipo.estadisticas)
     ) {
       return "—";
     }
 
-    return escapeHTML(valor);
+    const stat =
+      equipo.estadisticas.find(
+        item => item.tipo === nombre
+      );
+
+    if (!stat) {
+      return "—";
+    }
+
+    return valor(stat.valor);
 
   }
 
 
-  function mostrarDetalle(partido) {
+  function mostrarDetalle(
+    partido,
+    estadisticas
+  ) {
 
     const detalle =
       document.getElementById("detalleVista");
 
-    let estado = partido.estado || "No disponible";
+    let estado =
+      partido.estado || "No disponible";
+
 
     if (estado === "FT") {
       estado = "Finalizado";
@@ -455,56 +531,49 @@
       estado = "Entretiempo";
     }
 
-    if (estado === "1H" || estado === "2H") {
+    if (
+      estado === "1H" ||
+      estado === "2H"
+    ) {
+
       estado =
         "🔴 EN VIVO · " +
         (partido.minuto ?? "?") +
         "'";
+
     }
 
+
     const fecha = partido.fecha
-      ? new Date(partido.fecha).toLocaleString("es-AR")
+      ? new Date(partido.fecha)
+          .toLocaleString("es-AR")
       : "No disponible";
 
 
-    /*
-      Aceptamos varios nombres posibles para las estadísticas.
-      Así el frontend no se rompe si el endpoint devuelve
-      estadísticas con nombres ligeramente diferentes.
-    */
+    const local =
+      estadisticas.find(
+        equipo =>
+          equipo.equipo?.id ===
+          partido.local?.id
+      );
 
-    const stats = partido.estadisticas || partido.statistics || {};
 
-    const tiros =
-      stats.tiros || stats.shots || {};
-
-    const tirosArco =
-      stats.tirosAlArco || stats.shotsOnTarget || {};
-
-    const corners =
-      stats.corners || stats.cornersKicks || {};
-
-    const posesion =
-      stats.posesion || stats.possession || {};
-
-    const pases =
-      stats.pasesPrecisos || stats.passes || {};
-
-    const faltas =
-      stats.faltas || stats.fouls || {};
-
-    const amarillas =
-      stats.amarillas || stats.yellowCards || {};
-
-    const rojas =
-      stats.rojas || stats.redCards || {};
+    const visitante =
+      estadisticas.find(
+        equipo =>
+          equipo.equipo?.id ===
+          partido.visitante?.id
+      );
 
 
     const localNombre =
-      partido.local?.nombre || "Local";
+      partido.local?.nombre ||
+      "Local";
+
 
     const visitanteNombre =
-      partido.visitante?.nombre || "Visitante";
+      partido.visitante?.nombre ||
+      "Visitante";
 
 
     detalle.innerHTML = `
@@ -518,68 +587,155 @@
           ← Volver a partidos
         </button>
 
+
         <h2>
+
           ${escapeHTML(localNombre)}
+
           vs
+
           ${escapeHTML(visitanteNombre)}
+
         </h2>
+
 
         <div class="marcador">
 
           ${partido.marcador?.local ?? 0}
+
           -
+
           ${partido.marcador?.visitante ?? 0}
 
         </div>
 
+
         <div class="dato">
+
           🏆 Liga:
+
           <strong>
-            ${escapeHTML(partido.liga?.nombre || "No disponible")}
+
+            ${escapeHTML(
+              partido.liga?.nombre ||
+              "No disponible"
+            )}
+
           </strong>
+
         </div>
 
+
         <div class="dato">
+
           🌎 País:
+
           <strong>
-            ${escapeHTML(partido.liga?.pais || "No disponible")}
+
+            ${escapeHTML(
+              partido.liga?.pais ||
+              "No disponible"
+            )}
+
           </strong>
+
         </div>
 
+
         <div class="dato">
+
           📅 Fecha:
-          <strong>${escapeHTML(fecha)}</strong>
+
+          <strong>
+
+            ${escapeHTML(fecha)}
+
+          </strong>
+
         </div>
 
+
         <div class="dato">
+
           📌 Estado:
-          <strong>${escapeHTML(estado)}</strong>
+
+          <strong>
+
+            ${escapeHTML(estado)}
+
+          </strong>
+
         </div>
 
+
         <div class="dato">
+
           🏟️ Estadio:
+
           <strong>
-            ${escapeHTML(partido.estadio || "No informado")}
+
+            ${escapeHTML(
+              partido.estadio ||
+              "No informado"
+            )}
+
           </strong>
+
         </div>
 
+
         <div class="dato">
+
           🧑‍⚖️ Árbitro:
+
           <strong>
-            ${escapeHTML(partido.arbitro || "No informado")}
+
+            ${escapeHTML(
+              partido.arbitro ||
+              "No informado"
+            )}
+
           </strong>
+
         </div>
 
 
         <div class="tituloStats">
+
           📊 Estadísticas
+
         </div>
+
+
+        <div class="nombreEquipos">
+
+          <strong>
+            ${escapeHTML(localNombre)}
+          </strong>
+
+          <span>
+            ESTADÍSTICA
+          </span>
+
+          <strong>
+            ${escapeHTML(visitanteNombre)}
+          </strong>
+
+        </div>
+
 
         <div class="estadisticas">
 
+
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(tiros.local)}
+
+              ${buscarStat(
+                local,
+                "Total Shots"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -587,14 +743,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(tiros.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Total Shots"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(tirosArco.local)}
+
+              ${buscarStat(
+                local,
+                "Shots on Goal"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -602,14 +770,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(tirosArco.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Shots on Goal"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(corners.local)}
+
+              ${buscarStat(
+                local,
+                "Corner Kicks"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -617,14 +797,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(corners.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Corner Kicks"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(posesion.local)}
+
+              ${buscarStat(
+                local,
+                "Ball Possession"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -632,14 +824,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(posesion.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Ball Possession"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(pases.local)}
+
+              ${buscarStat(
+                local,
+                "Passes accurate"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -647,14 +851,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(pases.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Passes accurate"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(faltas.local)}
+
+              ${buscarStat(
+                local,
+                "Fouls"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -662,14 +878,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(faltas.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Fouls"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(amarillas.local)}
+
+              ${buscarStat(
+                local,
+                "Yellow Cards"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -677,14 +905,26 @@
             </div>
 
             <div class="valor">
-              ${valorStat(amarillas.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Yellow Cards"
+              )}
+
             </div>
+
           </div>
 
 
           <div class="stat">
+
             <div class="valor">
-              ${valorStat(rojas.local)}
+
+              ${buscarStat(
+                local,
+                "Red Cards"
+              )}
+
             </div>
 
             <div class="nombre">
@@ -692,9 +932,16 @@
             </div>
 
             <div class="valor">
-              ${valorStat(rojas.visitante)}
+
+              ${buscarStat(
+                visitante,
+                "Red Cards"
+              )}
+
             </div>
+
           </div>
+
 
         </div>
 
