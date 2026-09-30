@@ -26,29 +26,23 @@ export default async function handler(req, res) {
       }
     );
 
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: "API-Football devolvió un error"
-      });
-    }
-
     const data = await response.json();
 
-    const partidos = (data.response || []).map(item => ({
-      id: item.fixture.id,
-      home: item.teams.home.name,
-      away: item.teams.away.name,
-      league: item.league.name,
-      country: item.league.country
-    }));
-
-    return res.status(200).json(partidos);
+    return res.status(200).json({
+      fechaConsultada: fecha,
+      estadoHTTP: response.status,
+      resultados: data.results ?? null,
+      erroresAPI: data.errors ?? null,
+      cantidadRespuesta: Array.isArray(data.response)
+        ? data.response.length
+        : null
+    });
 
   } catch (error) {
     console.error("Error en fixtures:", error);
 
     return res.status(500).json({
-      error: "No se pudieron cargar los partidos"
+      error: "No se pudo consultar API-Football"
     });
   }
 }
