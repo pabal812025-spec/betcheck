@@ -7,9 +7,7 @@
 <title>BetCheck</title>
 
 <style>
-*{
-  box-sizing:border-box
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -92,13 +90,11 @@ button{
 }
 
 .match.clickable{
-  cursor:pointer;
-  transition:.2s
+  cursor:pointer
 }
 
 .match.clickable:hover{
-  border-color:#38e07b;
-  transform:translateY(-1px)
+  border-color:#38e07b
 }
 
 .teams{
@@ -148,12 +144,69 @@ button{
   margin-bottom:5px
 }
 
+.value{
+  font-size:20px;
+  font-weight:bold
+}
+
+.logos{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:25px;
+  margin:20px 0
+}
+
+.team{
+  text-align:center;
+  width:40%
+}
+
+.team img{
+  width:65px;
+  height:65px;
+  object-fit:contain;
+  margin-bottom:8px
+}
+
+.vs{
+  color:#91a5bb;
+  font-weight:bold
+}
+
+.score{
+  text-align:center;
+  font-size:34px;
+  font-weight:bold;
+  color:#38e07b;
+  margin:8px 0 20px
+}
+
+.info{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:15px
+}
+
+.loading{
+  text-align:center;
+  padding:20px;
+  color:#91a5bb
+}
+
 .hidden{
   display:none
 }
 
 .small{
   font-size:12px
+}
+
+@media(max-width:600px){
+  .analysis,.info{
+    grid-template-columns:1fr
+  }
 }
 </style>
 </head>
@@ -167,8 +220,6 @@ button{
 
 <main>
 
-<!-- LISTA DE PARTIDOS -->
-
 <div id="homeView">
 
 <section class="card">
@@ -176,9 +227,9 @@ button{
 <h2>Buscar partidos</h2>
 
 <input
-  id="search"
-  placeholder="Equipo, liga o país"
-  oninput="buscar()"
+ id="search"
+ placeholder="Equipo, liga o país"
+ oninput="buscar()"
 >
 
 <button onclick="cargar()">
@@ -206,12 +257,14 @@ Conectando con datos deportivos...
 <h2>🎟️ Mi combinada</h2>
 
 <div id="combo">
-<p class="muted">No agregaste partidos todavía.</p>
+<p class="muted">
+No agregaste partidos todavía.
+</p>
 </div>
 
 <button
-  class="secondary"
-  onclick="vaciar()"
+ class="secondary"
+ onclick="vaciar()"
 >
 Vaciar combinada
 </button>
@@ -221,15 +274,13 @@ Vaciar combinada
 </div>
 
 
-<!-- DETALLE DEL PARTIDO -->
-
 <div id="detailView" class="hidden">
 
 <section class="card">
 
 <button
-  class="back"
-  onclick="volver()"
+ class="back"
+ onclick="volver()"
 >
 ← Volver a partidos
 </button>
@@ -241,7 +292,6 @@ Vaciar combinada
 </div>
 
 </main>
-
 
 <script>
 
@@ -255,55 +305,53 @@ let combinada=[];
 
 async function cargar(){
 
-  const box=document.getElementById("matches");
-  const status=document.getElementById("status");
+ const box=document.getElementById("matches");
+ const status=document.getElementById("status");
 
-  box.innerHTML=
-    '<p class="muted">Cargando partidos...</p>';
+ box.innerHTML=
+ '<p class="muted">Cargando partidos...</p>';
 
-  status.textContent=
-    "Conectando con API-Football...";
+ status.textContent=
+ "Conectando con API-Football...";
 
-  try{
+ try{
 
-    const r=await fetch(
-      "/api/fixtures?nocache="+Date.now(),
-      {
-        cache:"no-store"
-      }
-    );
+   const r=await fetch(
+     "/api/fixtures?nocache="+Date.now(),
+     {cache:"no-store"}
+   );
 
-    if(!r.ok){
-      throw new Error("HTTP "+r.status);
-    }
+   if(!r.ok){
+     throw new Error("HTTP "+r.status);
+   }
 
-    const data=await r.json();
+   const data=await r.json();
 
-    if(!Array.isArray(data)){
-      throw new Error("Respuesta inválida");
-    }
+   if(!Array.isArray(data)){
+     throw new Error("Respuesta inválida");
+   }
 
-    partidos=data;
+   partidos=data;
 
-    mostrar(partidos);
+   mostrar(partidos);
 
-    status.textContent=
-      partidos.length+
-      " partido(s) encontrado(s).";
+   status.textContent=
+     partidos.length+
+     " partido(s) encontrado(s).";
 
-  }catch(error){
+ }catch(error){
 
-    console.error(error);
+   console.error(error);
 
-    box.innerHTML=
-      '<p class="muted">'+
-      'No se pudieron cargar los partidos.'+
-      '</p>';
+   box.innerHTML=
+   '<p class="muted">'+
+   'No se pudieron cargar los partidos.'+
+   '</p>';
 
-    status.textContent=
-      "Error de conexión con los datos.";
+   status.textContent=
+   "Error de conexión con los datos.";
 
-  }
+ }
 
 }
 
@@ -314,51 +362,50 @@ async function cargar(){
 
 function mostrar(lista){
 
-  const box=
-    document.getElementById("matches");
+ const box=document.getElementById("matches");
 
-  if(!lista.length){
+ if(!lista.length){
 
-    box.innerHTML=
-      '<p class="muted">'+
-      'No se encontraron partidos.'+
-      '</p>';
+   box.innerHTML=
+   '<p class="muted">'+
+   'No se encontraron partidos.'+
+   '</p>';
 
-    return;
-  }
+   return;
+ }
 
-  box.innerHTML=lista.map(p=>`
+ box.innerHTML=lista.map(p=>`
 
-    <div
-      class="match clickable"
-      onclick="abrirPartido(${p.id})"
-    >
+ <div
+   class="match clickable"
+   onclick="abrirPartido(${p.id})"
+ >
 
-      <div class="teams">
-        ${p.home} vs ${p.away}
-      </div>
+   <div class="teams">
+     ${p.home} vs ${p.away}
+   </div>
 
-      <div class="muted">
-        ${p.league || ""}
-      </div>
+   <div class="muted">
+     ${p.league || ""}
+   </div>
 
-      <div class="muted">
-        ${p.country || ""}
-      </div>
+   <div class="muted">
+     ${p.country || ""}
+   </div>
 
-      <span class="tag">
-        👆 Ver análisis
-      </span>
+   <span class="tag">
+     👆 Ver análisis
+   </span>
 
-      <button
-        onclick="event.stopPropagation(); agregar(${p.id})"
-      >
-        + Agregar a combinada
-      </button>
+   <button
+     onclick="event.stopPropagation(); agregar(${p.id})"
+   >
+     + Agregar a combinada
+   </button>
 
-    </div>
+ </div>
 
-  `).join("");
+ `).join("");
 
 }
 
@@ -369,40 +416,55 @@ function mostrar(lista){
 
 function buscar(){
 
-  const q=
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
+ const q=
+ document.getElementById("search")
+ .value
+ .toLowerCase()
+ .trim();
 
-  const lista=partidos.filter(p=>
+ const lista=partidos.filter(p=>
 
-    !q ||
+   !q ||
 
-    (p.home||"")
-      .toLowerCase()
-      .includes(q) ||
+   (p.home||"")
+   .toLowerCase()
+   .includes(q) ||
 
-    (p.away||"")
-      .toLowerCase()
-      .includes(q) ||
+   (p.away||"")
+   .toLowerCase()
+   .includes(q) ||
 
-    (p.league||"")
-      .toLowerCase()
-      .includes(q) ||
+   (p.league||"")
+   .toLowerCase()
+   .includes(q) ||
 
-    (p.country||"")
-      .toLowerCase()
-      .includes(q)
+   (p.country||"")
+   .toLowerCase()
+   .includes(q)
 
-  );
+ );
 
-  document.getElementById("status").textContent=
-    lista.length+
-    " partido(s) encontrado(s).";
+ document.getElementById("status").textContent=
+ lista.length+
+ " partido(s) encontrado(s).";
 
-  mostrar(lista);
+ mostrar(lista);
+
+}
+
+
+/* =========================
+   OBTENER ESTADÍSTICA
+========================= */
+
+function obtenerEstadistica(lista,tipo){
+
+ const encontrada=
+ lista.find(x=>x.tipo===tipo);
+
+ return encontrada
+   ? encontrada.valor
+   : "No disponible";
 
 }
 
@@ -411,195 +473,24 @@ function buscar(){
    ABRIR PARTIDO
 ========================= */
 
-function abrirPartido(id){
+async function abrirPartido(id){
 
-  const p=
-    partidos.find(x=>x.id===id);
+ document.getElementById("homeView")
+ .classList.add("hidden");
 
-  if(!p){
-    return;
-  }
+ document.getElementById("detailView")
+ .classList.remove("hidden");
 
-  document.getElementById("homeView")
-    .classList.add("hidden");
+ const detail=
+ document.getElementById("detail");
 
-  document.getElementById("detailView")
-    .classList.remove("hidden");
+ detail.innerHTML=
+ '<div class="loading">'+
+ '⏳ Cargando información y estadísticas...'+
+ '</div>';
 
-  const detail=
-    document.getElementById("detail");
+ try{
 
-  detail.innerHTML=`
+   /* DATOS DEL PARTIDO */
 
-    <div class="detail-title">
-      ⚽ ${p.home} vs ${p.away}
-    </div>
-
-    <div class="muted">
-      🏆 ${p.league || "Competición no disponible"}
-    </div>
-
-    <div class="muted">
-      🌎 ${p.country || "País no disponible"}
-    </div>
-
-    <div class="analysis">
-
-      <div class="stat">
-        <strong>⚽ Goles</strong>
-        Próximamente
-      </div>
-
-      <div class="stat">
-        <strong>🚩 Córners</strong>
-        Próximamente
-      </div>
-
-      <div class="stat">
-        <strong>📈 Forma reciente</strong>
-        Próximamente
-      </div>
-
-      <div class="stat">
-        <strong>🏠 Local / visitante</strong>
-        Próximamente
-      </div>
-
-      <div class="stat">
-        <strong>🏆 Posición</strong>
-        Próximamente
-      </div>
-
-      <div class="stat">
-        <strong>🩹 Lesiones</strong>
-        Próximamente
-      </div>
-
-    </div>
-
-    <div class="card">
-
-      <h3>📊 Análisis BetCheck</h3>
-
-      <p class="muted">
-        El análisis estadístico completo se
-        incorporará con los datos históricos
-        y estadísticos de API-Football.
-      </p>
-
-      <p class="muted small">
-        BetCheck muestra información estadística
-        y no garantiza resultados.
-      </p>
-
-    </div>
-
-    <button onclick="agregar(${p.id})">
-      🎟️ Agregar a combinada
-    </button>
-
-  `;
-
-}
-
-
-/* =========================
-   VOLVER
-========================= */
-
-function volver(){
-
-  document.getElementById("detailView")
-    .classList.add("hidden");
-
-  document.getElementById("homeView")
-    .classList.remove("hidden");
-
-}
-
-
-/* =========================
-   COMBINADA
-========================= */
-
-function agregar(id){
-
-  const p=
-    partidos.find(x=>x.id===id);
-
-  if(
-    p &&
-    !combinada.some(x=>x.id===id)
-  ){
-
-    combinada.push(p);
-
-  }
-
-  mostrarCombo();
-
-}
-
-
-/* =========================
-   MOSTRAR COMBINADA
-========================= */
-
-function mostrarCombo(){
-
-  const box=
-    document.getElementById("combo");
-
-  if(!combinada.length){
-
-    box.innerHTML=
-      '<p class="muted">'+
-      'No agregaste partidos todavía.'+
-      '</p>';
-
-    return;
-  }
-
-  box.innerHTML=
-    combinada.map(p=>`
-
-      <div class="match">
-
-        <div class="teams">
-          ${p.home} vs ${p.away}
-        </div>
-
-        <div class="muted">
-          ${p.league || ""}
-        </div>
-
-      </div>
-
-    `).join("");
-
-}
-
-
-/* =========================
-   VACIAR COMBINADA
-========================= */
-
-function vaciar(){
-
-  combinada=[];
-
-  mostrarCombo();
-
-}
-
-
-/* =========================
-   INICIO
-========================= */
-
-cargar();
-
-</script>
-
-</body>
-</html>
+  
