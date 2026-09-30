@@ -3,85 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1220">
   <title>BetCheck</title>
+</head>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<body>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: #ffffff;
-    }
+  <h1>⚽ BetCheck</h1>
 
-    header {
-      background: #111827;
-      padding: 18px;
-      text-align: center;
-      border-bottom: 1px solid #263244;
-    }
+  <p id="estado">Probando conexión...</p>
 
-    header h1 {
-      margin: 0;
-      color: #22c55e;
-      font-size: 28px;
-    }
+  <div id="lista"></div>
 
-    header p {
-      margin: 6px 0 0;
-      color: #9ca3af;
-      font-size: 14px;
-    }
+  <script>
+    fetch("/api/fixtures")
+      .then(respuesta => respuesta.json())
+      .then(partidos => {
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
-      padding: 15px;
-    }
+        document.getElementById("estado").textContent =
+          "Partidos encontrados: " + partidos.length;
 
-    .barra {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
+        document.getElementById("lista").innerHTML =
+          partidos.slice(0, 10).map(partido => `
+            <p>
+              <strong>${partido.home}</strong>
+              vs
+              <strong>${partido.away}</strong>
+              — ${partido.league}
+            </p>
+          `).join("");
 
-    input {
-      flex: 1;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-    }
+      })
+      .catch(error => {
 
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        document.getElementById("estado").textContent =
+          "ERROR: " + error.message;
 
-    .btn-verde {
-      background: #22c55e;
-      color: #052e16;
-    }
+      });
+  </script>
 
-    .btn-azul {
-      background: #2563eb;
-      color: white;
-    }
-
-    .btn-gris {
-      background: #374151;
-      color: white;
-    }
-
-    .estado {
-      color: #9ca
+</body>
+</html>
