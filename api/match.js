@@ -16,30 +16,123 @@ if (!id) {
   });
 }
 
-const response = await fetch(
+const headers = {
+  "x-apisports-key": apiKey
+};
+
+// Obtener datos principales del partido
+const partidoResponse = await fetch(
   `https://v3.football.api-sports.io/fixtures?id=${id}`,
   {
-    headers: {
-      "x-apisports-key": apiKey
-    }
+    headers
   }
 );
 
-if (!response.ok) {
-  return res.status(response.status).json({
+if (!partidoResponse.ok) {
+  return res.status(partidoResponse.status).json({
     error: "API-Football devolvió un error"
   });
 }
 
-const data = await response.json();
+const partidoData = await partidoResponse.json();
 
-if (!data.response || !data.response.length) {
+if (!partidoData.response || !partidoData.response.length) {
   return res.status(404).json({
     error: "Partido no encontrado"
   });
 }
 
-const partido = data.response[0];
+const partido = partidoData.response[0];
+
+// Obtener estadísticas del partido
+let estadisticas = {};
+
+try {
+  const statsResponse = await fetch(
+    `https://v3.football.api-sports.io/fixtures/statistics?fixture=${id}`,
+    {
+      headers
+    }
+  );
+
+  if (statsResponse.ok) {
+    const statsData = await statsResponse.json();
+
+    const equipos = statsData.response || [];
+
+    const localId = partido.teams.home.id;
+    const visitanteId = partido.teams.away.id;
+
+    const localStats =
+      equipos.find(equipo => equipo.team?.id === localId);
+
+    const visitanteStats =
+      equipos.find(equipo => equipo.team?.id === visitanteId);
+
+    function obtenerValor(equipo, nombres) {
+      if (!equipo || !equipo.statistics) {
+        return null;
+      }
+
+      for (const nombre of nombres) {
+        const encontrado = equipo.statistics.find(
+          stat => stat.type === nombre
+        );
+
+        if (encontrado) {
+          return encontrado.value;
+        }
+      }
+
+      return null;
+    }
+
+    estadisticas = {
+      tiros: {
+        local: obtenerValor(localStats, ["Total Shots"]),
+        visitante: obtenerValor(visitanteStats, ["Total Shots"])
+      },
+
+      tirosAlArco: {
+        local: obtenerValor(localStats, ["Shots on Goal"]),
+        visitante: obtenerValor(visitanteStats, ["Shots on Goal"])
+      },
+
+      corners: {
+        local: obtenerValor(localStats, ["Corner Kicks"]),
+        visitante: obtenerValor(visitanteStats, ["Corner Kicks"])
+      },
+
+      posesion: {
+        local: obtenerValor(localStats, ["Ball Possession"]),
+        visitante: obtenerValor(visitanteStats, ["Ball Possession"])
+      },
+
+      pasesPrecisos: {
+        local: obtenerValor(localStats, ["Passes accurate"]),
+        visitante: obtenerValor(visitanteStats, ["Passes accurate"])
+      },
+
+      faltas: {
+        local: obtenerValor(localStats, ["Fouls"]),
+        visitante: obtenerValor(visitanteStats, ["Fouls"])
+      },
+
+      amarillas: {
+        local: obtenerValor(localStats, ["Yellow Cards"]),
+        visitante: obtenerValor(visitanteStats, ["Yellow Cards"])
+      },
+
+      rojas: {
+        local: obtenerValor(localStats, ["Red Cards"]),
+        visitante: obtenerValor(visitanteStats, ["Red Cards"])
+      }
+    };
+  }
+
+} catch (error) {
+  console.error("Error obteniendo estadísticas:", error);
+}
 
 return res.status(200).json({
   id: partido.fixture.id,
@@ -78,7 +171,10 @@ return res.status(200).json({
   marcador: {
     local: partido.goals.home,
     visitante: partido.goals.away
-  }
+  },
+
+  estadisticas
+
 });
 
 } catch (error) {
