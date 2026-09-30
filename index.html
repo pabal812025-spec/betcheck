@@ -1,9 +1,12 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>BetCheck</title><style>
+<title>BetCheck</title>
+
+<style>
 *{
   box-sizing:border-box;
 }
@@ -125,6 +128,11 @@ button.back{
   color:#ff7070;
 }
 
+.live{
+  color:#ff5252;
+  font-weight:bold;
+}
+
 .tag{
   display:inline-block;
   margin-top:10px;
@@ -173,10 +181,36 @@ button.back{
 
 .score{
   text-align:center;
-  font-size:34px;
+  font-size:38px;
   font-weight:bold;
   color:#38e07b;
+  margin:8px 0;
+}
+
+.liveBox{
+  text-align:center;
   margin:10px 0 22px;
+  padding:12px;
+  border-radius:12px;
+  background:#241016;
+  border:1px solid #7a2934;
+}
+
+.liveMinute{
+  color:#ff5252;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.finishedBox{
+  text-align:center;
+  margin:10px 0 22px;
+  padding:10px;
+  border-radius:12px;
+  background:#102719;
+  border:1px solid #275c3a;
+  color:#55ee91;
+  font-weight:bold;
 }
 
 .grid{
@@ -214,6 +248,13 @@ button.back{
   font-size:12px;
 }
 
+.refreshing{
+  text-align:center;
+  color:#91a5bb;
+  font-size:12px;
+  margin-top:10px;
+}
+
 @media(max-width:600px){
   .grid{
     grid-template-columns:1fr;
@@ -223,82 +264,92 @@ button.back{
     font-size:16px;
   }
 }
-</style></head><body><header>
+</style>
+</head>
+
+<body>
+
+<header>
   <h1>⚽ BetCheck</h1>
   <p>Análisis estadístico de partidos</p>
-</header><main>  <!-- INICIO -->  <div id="homeView"><section class="card">
+</header>
 
-  <h2>🔎 Buscar partidos</h2>
+<main>
 
-  <input
-    id="search"
-    type="text"
-    placeholder="Equipo, liga o país"
-  >
+  <div id="homeView">
 
-  <button id="refreshButton">
-    🔄 Actualizar partidos
-  </button>
+    <section class="card">
 
-  <div id="status" class="status">
-    Cargando partidos...
+      <h2>🔎 Buscar partidos</h2>
+
+      <input
+        id="search"
+        type="text"
+        placeholder="Equipo, liga o país"
+      >
+
+      <button id="refreshButton">
+        🔄 Actualizar partidos
+      </button>
+
+      <div id="status" class="status">
+        Cargando partidos...
+      </div>
+
+    </section>
+
+    <section class="card">
+
+      <h2>⚽ Partidos de hoy</h2>
+
+      <div id="matches">
+        <div class="loading">
+          Cargando...
+        </div>
+      </div>
+
+    </section>
+
+    <section class="card">
+
+      <h2>🎟️ Mi combinada</h2>
+
+      <div id="combo">
+        <p class="muted">
+          No agregaste partidos todavía.
+        </p>
+      </div>
+
+      <button id="clearCombo" class="secondary">
+        Vaciar combinada
+      </button>
+
+    </section>
+
   </div>
 
-</section>
+  <div id="detailView" class="hidden">
 
-<section class="card">
+    <section class="card">
 
-  <h2>⚽ Partidos de hoy</h2>
+      <button id="backButton" class="back">
+        ← Volver a partidos
+      </button>
 
-  <div id="matches">
-    <div class="loading">
-      Cargando...
-    </div>
+      <div id="detail"></div>
+
+    </section>
+
   </div>
 
-</section>
+</main>
 
-<section class="card">
-
-  <h2>🎟️ Mi combinada</h2>
-
-  <div id="combo">
-    <p class="muted">
-      No agregaste partidos todavía.
-    </p>
-  </div>
-
-  <button
-    id="clearCombo"
-    class="secondary"
-  >
-    Vaciar combinada
-  </button>
-
-</section>
-
-  </div>  <!-- DETALLE -->  <div id="detailView" class="hidden"><section class="card">
-
-  <button
-    id="backButton"
-    class="back"
-  >
-    ← Volver a partidos
-  </button>
-
-  <div id="detail"></div>
-
-</section>
-
-  </div></main><script>
+<script>
 
 let partidos = [];
 let combinada = [];
-
-
-/* =========================
-   ELEMENTOS
-========================= */
+let liveTimer = null;
+let partidoActual = null;
 
 const matchesBox =
   document.getElementById("matches");
@@ -322,9 +373,17 @@ const detailBox =
   document.getElementById("detail");
 
 
-/* =========================
-   CARGAR PARTIDOS
-========================= */
+function escapeHTML(valor){
+
+  return String(valor ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
 
 async function cargar(){
 
@@ -338,14 +397,13 @@ async function cargar(){
 
   try{
 
-    const url =
-      "/api/fixtures?nocache=" +
-      Date.now();
-
     const response =
-      await fetch(url,{
-        cache:"no-store"
-      });
+      await fetch(
+        "/api/fixtures?nocache=" + Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
 
     if(!response.ok){
 
@@ -361,7 +419,7 @@ async function cargar(){
     if(!Array.isArray(data)){
 
       throw new Error(
-        "La respuesta de la API no es una lista"
+        "La respuesta no es una lista"
       );
 
     }
@@ -380,10 +438,7 @@ async function cargar(){
 
   }catch(error){
 
-    console.error(
-      "Error cargando partidos:",
-      error
-    );
+    console.error(error);
 
     statusBox.className =
       "status error";
@@ -403,10 +458,6 @@ async function cargar(){
 
 }
 
-
-/* =========================
-   MOSTRAR PARTIDOS
-========================= */
 
 function mostrarPartidos(lista){
 
@@ -439,11 +490,17 @@ function mostrarPartidos(lista){
       </div>
 
       <div class="muted">
-        🏆 ${escapeHTML(partido.league || "Liga no disponible")}
+        🏆 ${escapeHTML(
+          partido.league ||
+          "Liga no disponible"
+        )}
       </div>
 
       <div class="muted">
-        🌎 ${escapeHTML(partido.country || "País no disponible")}
+        🌎 ${escapeHTML(
+          partido.country ||
+          "País no disponible"
+        )}
       </div>
 
       <span class="tag">
@@ -484,10 +541,6 @@ function mostrarPartidos(lista){
 
 }
 
-
-/* =========================
-   BUSCAR
-========================= */
 
 searchBox.addEventListener(
   "input",
@@ -551,26 +604,6 @@ searchBox.addEventListener(
 );
 
 
-/* =========================
-   ESCAPAR HTML
-========================= */
-
-function escapeHTML(valor){
-
-  return String(valor ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================
-   OBTENER ESTADÍSTICA
-========================= */
-
 function obtenerEstadistica(
   lista,
   nombre
@@ -594,50 +627,168 @@ function obtenerEstadistica(
 }
 
 
-/* =========================
-   ABRIR PARTIDO
-========================= */
+function esEnVivo(estado){
 
-async function abrirPartido(id){
+  return [
+    "1H",
+    "2H",
+    "ET",
+    "P"
+  ].includes(estado);
 
-  homeView.classList.add("hidden");
+}
 
-  detailView.classList.remove("hidden");
 
-  detailBox.innerHTML = `
-    <div class="loading">
-      ⏳ Cargando análisis...
+function textoEstado(partido){
+
+  const estado =
+    partido.estado;
+
+  if(estado === "1H"){
+
+    return {
+      tipo:"live",
+      texto:
+        "🔴 EN VIVO · " +
+        (partido.minuto != null
+          ? partido.minuto + "'"
+          : "en juego")
+    };
+
+  }
+
+  if(estado === "2H"){
+
+    return {
+      tipo:"live",
+      texto:
+        "🔴 EN VIVO · " +
+        (partido.minuto != null
+          ? partido.minuto + "'"
+          : "en juego")
+    };
+
+  }
+
+  if(estado === "HT"){
+
+    return {
+      tipo:"live",
+      texto:"⏸️ ENTRETIEMPO"
+    };
+
+  }
+
+  if(estado === "FT"){
+
+    return {
+      tipo:"finished",
+      texto:"✅ FINALIZADO"
+    };
+
+  }
+
+  if(estado === "NS"){
+
+    return {
+      tipo:"normal",
+      texto:"🕐 NO INICIADO"
+    };
+
+  }
+
+  if(estado === "AET"){
+
+    return {
+      tipo:"finished",
+      texto:"✅ FINALIZADO · TIEMPO EXTRA"
+    };
+
+  }
+
+  if(estado === "PEN"){
+
+    return {
+      tipo:"finished",
+      texto:"🏁 FINALIZADO · PENALES"
+    };
+
+  }
+
+  return {
+    tipo:"normal",
+    texto:
+      partido.estadoLargo ||
+      estado ||
+      "Estado no disponible"
+  };
+
+}
+
+
+function pintarEstado(partido){
+
+  const estado =
+    textoEstado(partido);
+
+  if(estado.tipo === "live"){
+
+    return `
+      <div class="liveBox">
+        <div class="liveMinute">
+          ${escapeHTML(estado.texto)}
+        </div>
+      </div>
+    `;
+
+  }
+
+  if(estado.tipo === "finished"){
+
+    return `
+      <div class="finishedBox">
+        ${escapeHTML(estado.texto)}
+      </div>
+    `;
+
+  }
+
+  return `
+    <div class="status">
+      ${escapeHTML(estado.texto)}
     </div>
   `;
 
+}
+
+
+async function obtenerDatosPartido(id){
+
+  const partidoResponse =
+    await fetch(
+      "/api/match?id=" +
+      encodeURIComponent(id) +
+      "&nocache=" +
+      Date.now(),
+      {
+        cache:"no-store"
+      }
+    );
+
+  if(!partidoResponse.ok){
+
+    throw new Error(
+      "No se pudo cargar el partido"
+    );
+
+  }
+
+  const partido =
+    await partidoResponse.json();
+
+  let stats = [];
+
   try{
-
-    /* PARTIDO */
-
-    const partidoResponse =
-      await fetch(
-        "/api/match?id=" +
-        encodeURIComponent(id) +
-        "&nocache=" +
-        Date.now(),
-        {
-          cache:"no-store"
-        }
-      );
-
-    if(!partidoResponse.ok){
-
-      throw new Error(
-        "No se pudo cargar el partido"
-      );
-
-    }
-
-    const partido =
-      await partidoResponse.json();
-
-
-    /* ESTADÍSTICAS */
 
     const statsResponse =
       await fetch(
@@ -649,9 +800,6 @@ async function abrirPartido(id){
           cache:"no-store"
         }
       );
-
-
-    let stats = [];
 
     if(statsResponse.ok){
 
@@ -666,477 +814,42 @@ async function abrirPartido(id){
 
     }
 
+  }catch(error){
 
-    const localStats =
-      stats.find(function(equipo){
+    console.log(
+      "Estadísticas todavía no disponibles",
+      error
+    );
 
-        return equipo.equipo &&
-          equipo.equipo.id ===
-          partido.local.id;
+  }
 
-      });
+  return {
+    partido,
+    stats
+  };
 
+}
 
-    const visitanteStats =
-      stats.find(function(equipo){
 
-        return equipo.equipo &&
-          equipo.equipo.id ===
-          partido.visitante.id;
+async function abrirPartido(id){
 
-      });
+  clearInterval(liveTimer);
+  liveTimer = null;
 
+  partidoActual = id;
 
-    const local =
-      localStats?.estadisticas || [];
+  homeView.classList.add("hidden");
+  detailView.classList.remove("hidden");
 
-    const visitante =
-      visitanteStats?.estadisticas || [];
+  detailBox.innerHTML = `
+    <div class="loading">
+      ⏳ Cargando análisis...
+    </div>
+  `;
 
+  try{
 
-    /* ESTADÍSTICAS REALES */
-
-    const cornersLocal =
-      obtenerEstadistica(
-        local,
-        "Corner Kicks"
-      );
-
-    const cornersVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Corner Kicks"
-      );
-
-
-    const tirosLocal =
-      obtenerEstadistica(
-        local,
-        "Total Shots"
-      );
-
-    const tirosVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Total Shots"
-      );
-
-
-    const arcoLocal =
-      obtenerEstadistica(
-        local,
-        "Shots on Goal"
-      );
-
-    const arcoVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Shots on Goal"
-      );
-
-
-    const posesionLocal =
-      obtenerEstadistica(
-        local,
-        "Ball Possession"
-      );
-
-    const posesionVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Ball Possession"
-      );
-
-
-    const pasesLocal =
-      obtenerEstadistica(
-        local,
-        "Passes accurate"
-      );
-
-    const pasesVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Passes accurate"
-      );
-
-
-    const faltasLocal =
-      obtenerEstadistica(
-        local,
-        "Fouls"
-      );
-
-    const faltasVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Fouls"
-      );
-
-
-    const amarillasLocal =
-      obtenerEstadistica(
-        local,
-        "Yellow Cards"
-      );
-
-    const amarillasVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Yellow Cards"
-      );
-
-
-    const rojasLocal =
-      obtenerEstadistica(
-        local,
-        "Red Cards"
-      );
-
-    const rojasVisitante =
-      obtenerEstadistica(
-        visitante,
-        "Red Cards"
-      );
-
-
-    /* FECHA */
-
-    let fecha = "No disponible";
-
-    if(partido.fecha){
-
-      fecha =
-        new Date(partido.fecha)
-          .toLocaleString(
-            "es-AR",
-            {
-              dateStyle:"medium",
-              timeStyle:"short"
-            }
-          );
-
-    }
-
-
-    /* ESTADO */
-
-    let estado =
-      partido.estado || "No disponible";
-
-    if(estado === "FT"){
-      estado = "Finalizado";
-    }
-
-    if(estado === "NS"){
-      estado = "No iniciado";
-    }
-
-
-    /* HTML DEL DETALLE */
-
-    detailBox.innerHTML = `
-
-      <div class="detail-title">
-        ⚽
-        ${escapeHTML(partido.local.nombre)}
-        vs
-        ${escapeHTML(partido.visitante.nombre)}
-      </div>
-
-      <div class="muted">
-        🏆
-        ${escapeHTML(
-          partido.liga?.nombre ||
-          "Competición no disponible"
-        )}
-      </div>
-
-      <div class="muted">
-        🌎
-        ${escapeHTML(
-          partido.liga?.pais ||
-          "País no disponible"
-        )}
-      </div>
-
-
-      <div class="logos">
-
-        <div class="team">
-
-          <img
-            src="${partido.local.logo || ""}"
-            alt=""
-          >
-
-          <strong>
-            ${escapeHTML(
-              partido.local.nombre
-            )}
-          </strong>
-
-        </div>
-
-
-        <div class="vs">
-          VS
-        </div>
-
-
-        <div class="team">
-
-          <img
-            src="${partido.visitante.logo || ""}"
-            alt=""
-          >
-
-          <strong>
-            ${escapeHTML(
-              partido.visitante.nombre
-            )}
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <div class="score">
-
-        ${partido.marcador.local ?? "-"}
-        -
-        ${partido.marcador.visitante ?? "-"}
-
-      </div>
-
-
-      <div class="grid">
-
-        <div class="stat">
-          <strong>📅 Fecha</strong>
-          ${escapeHTML(fecha)}
-        </div>
-
-        <div class="stat">
-          <strong>📌 Estado</strong>
-          ${escapeHTML(estado)}
-        </div>
-
-        <div class="stat">
-          <strong>🏟️ Estadio</strong>
-          ${escapeHTML(
-            partido.estadio ||
-            "No informado"
-          )}
-        </div>
-
-        <div class="stat">
-          <strong>🧑‍⚖️ Árbitro</strong>
-          ${escapeHTML(
-            partido.arbitro ||
-            "No informado"
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          📊 Estadísticas
-        </h3>
-
-        <div class="grid">
-
-          <div class="stat">
-
-            <strong>
-              🚩 Córners
-            </strong>
-
-            <div class="value">
-              ${cornersLocal}
-              -
-              ${cornersVisitante}
-            </div>
-
-            <div class="muted">
-              ${escapeHTML(
-                partido.local.nombre
-              )}
-              -
-              ${escapeHTML(
-                partido.visitante.nombre
-              )}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🎯 Tiros totales
-            </strong>
-
-            <div class="value">
-              ${tirosLocal}
-              -
-              ${tirosVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🥅 Tiros al arco
-            </strong>
-
-            <div class="value">
-              ${arcoLocal}
-              -
-              ${arcoVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              ⚽ Goles
-            </strong>
-
-            <div class="value">
-              ${partido.marcador.local ?? "-"}
-              -
-              ${partido.marcador.visitante ?? "-"}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🟢 Posesión
-            </strong>
-
-            <div class="value">
-              ${posesionLocal}
-              -
-              ${posesionVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🔄 Pases precisos
-            </strong>
-
-            <div class="value">
-              ${pasesLocal}
-              -
-              ${pasesVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              ⚠️ Faltas
-            </strong>
-
-            <div class="value">
-              ${faltasLocal}
-              -
-              ${faltasVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🟨 Amarillas
-            </strong>
-
-            <div class="value">
-              ${amarillasLocal}
-              -
-              ${amarillasVisitante}
-            </div>
-
-          </div>
-
-
-          <div class="stat">
-
-            <strong>
-              🟥 Rojas
-            </strong>
-
-            <div class="value">
-              ${rojasLocal}
-              -
-              ${rojasVisitante}
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>
-          📈 Análisis BetCheck
-        </h3>
-
-        <p class="muted">
-          Las estadísticas mostradas
-          provienen de los datos deportivos
-          disponibles para este partido.
-        </p>
-
-        <p class="muted small">
-          Los datos estadísticos no garantizan
-          resultados futuros.
-        </p>
-
-      </div>
-
-
-      <button id="addDetailButton">
-        🎟️ Agregar a combinada
-      </button>
-
-    `;
-
-
-    document
-      .getElementById("addDetailButton")
-      .addEventListener(
-        "click",
-        function(){
-
-          agregar(partido.id);
-
-        }
-      );
-
+    await cargarDetalle(id, true);
 
   }catch(error){
 
@@ -1146,14 +859,10 @@ async function abrirPartido(id){
     );
 
     detailBox.innerHTML = `
-
       <div class="status error">
-
         ❌ No se pudo cargar
         el análisis del partido.
-
       </div>
-
     `;
 
   }
@@ -1161,151 +870,468 @@ async function abrirPartido(id){
 }
 
 
-/* =========================
-   VOLVER
-========================= */
+async function cargarDetalle(
+  id,
+  mostrarCarga
+){
 
-document
-  .getElementById("backButton")
-  .addEventListener(
-    "click",
-    function(){
+  if(mostrarCarga){
 
-      detailView.classList.add("hidden");
+    detailBox.innerHTML = `
+      <div class="loading">
+        ⏳ Cargando datos...
+      </div>
+    `;
 
-      homeView.classList.remove("hidden");
+  }
 
-    }
-  );
-
-
-/* =========================
-   AGREGAR A COMBINADA
-========================= */
-
-function agregar(id){
+  const datos =
+    await obtenerDatosPartido(id);
 
   const partido =
-    partidos.find(function(p){
+    datos.partido;
 
-      return p.id === id;
+  const stats =
+    datos.stats;
 
-    });
+  partidoActual = id;
 
+  const localStats =
+    stats.find(function(equipo){
 
-  if(!partido){
-
-    return;
-
-  }
-
-
-  const existe =
-    combinada.some(function(p){
-
-      return p.id === id;
+      return equipo.equipo &&
+        Number(equipo.equipo.id) ===
+        Number(partido.local.id);
 
     });
 
+  const visitanteStats =
+    stats.find(function(equipo){
 
-  if(!existe){
+      return equipo.equipo &&
+        Number(equipo.equipo.id) ===
+        Number(partido.visitante.id);
 
-    combinada.push(partido);
+    });
+
+  const local =
+    localStats?.estadisticas || [];
+
+  const visitante =
+    visitanteStats?.estadisticas || [];
+
+  const cornersLocal =
+    obtenerEstadistica(
+      local,
+      "Corner Kicks"
+    );
+
+  const cornersVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Corner Kicks"
+    );
+
+  const tirosLocal =
+    obtenerEstadistica(
+      local,
+      "Total Shots"
+    );
+
+  const tirosVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Total Shots"
+    );
+
+  const arcoLocal =
+    obtenerEstadistica(
+      local,
+      "Shots on Goal"
+    );
+
+  const arcoVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Shots on Goal"
+    );
+
+  const posesionLocal =
+    obtenerEstadistica(
+      local,
+      "Ball Possession"
+    );
+
+  const posesionVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Ball Possession"
+    );
+
+  const pasesLocal =
+    obtenerEstadistica(
+      local,
+      "Passes accurate"
+    );
+
+  const pasesVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Passes accurate"
+    );
+
+  const faltasLocal =
+    obtenerEstadistica(
+      local,
+      "Fouls"
+    );
+
+  const faltasVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Fouls"
+    );
+
+  const amarillasLocal =
+    obtenerEstadistica(
+      local,
+      "Yellow Cards"
+    );
+
+  const amarillasVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Yellow Cards"
+    );
+
+  const rojasLocal =
+    obtenerEstadistica(
+      local,
+      "Red Cards"
+    );
+
+  const rojasVisitante =
+    obtenerEstadistica(
+      visitante,
+      "Red Cards"
+    );
+
+  let fecha =
+    "No disponible";
+
+  if(partido.fecha){
+
+    fecha =
+      new Date(partido.fecha)
+        .toLocaleString(
+          "es-AR",
+          {
+            dateStyle:"medium",
+            timeStyle:"short"
+          }
+        );
 
   }
 
+  const estadisticasDisponibles =
+    stats.length > 0 &&
+    (
+      local.length > 0 ||
+      visitante.length > 0
+    );
 
-  mostrarCombinada();
+  const avisoStats =
+    estadisticasDisponibles
+      ? `
+        <div class="status success">
+          ✅ Estadísticas disponibles
+        </div>
+      `
+      : `
+        <div class="status">
+          ⏳ Las estadísticas todavía
+          no están disponibles para este partido.
+          <br><br>
+          BetCheck las volverá a consultar
+          automáticamente si el partido está en vivo.
+        </div>
+      `;
 
-}
+  detailBox.innerHTML = `
 
+    <div class="detail-title">
+      ⚽
+      ${escapeHTML(partido.local.nombre)}
+      vs
+      ${escapeHTML(partido.visitante.nombre)}
+    </div>
 
-/* =========================
-   MOSTRAR COMBINADA
-========================= */
+    <div class="muted">
+      🏆
+      ${escapeHTML(
+        partido.liga?.nombre ||
+        "Competición no disponible"
+      )}
+    </div>
 
-function mostrarCombinada(){
+    <div class="muted">
+      🌎
+      ${escapeHTML(
+        partido.liga?.pais ||
+        "País no disponible"
+      )}
+    </div>
 
-  if(!combinada.length){
+    <div class="logos">
 
-    comboBox.innerHTML = `
+      <div class="team">
+
+        <img
+          src="${partido.local.logo || ""}"
+          alt=""
+        >
+
+        <strong>
+          ${escapeHTML(
+            partido.local.nombre
+          )}
+        </strong>
+
+      </div>
+
+      <div class="vs">
+        VS
+      </div>
+
+      <div class="team">
+
+        <img
+          src="${partido.visitante.logo || ""}"
+          alt=""
+        >
+
+        <strong>
+          ${escapeHTML(
+            partido.visitante.nombre
+          )}
+        </strong>
+
+      </div>
+
+    </div>
+
+    <div class="score">
+
+      ${partido.marcador.local ?? "-"}
+      -
+      ${partido.marcador.visitante ?? "-"}
+
+    </div>
+
+    ${pintarEstado(partido)}
+
+    <div class="grid">
+
+      <div class="stat">
+        <strong>📅 Fecha</strong>
+        ${escapeHTML(fecha)}
+      </div>
+
+      <div class="stat">
+        <strong>📌 Estado</strong>
+        ${escapeHTML(
+          partido.estadoLargo ||
+          partido.estado ||
+          "No disponible"
+        )}
+      </div>
+
+      <div class="stat">
+        <strong>🏟️ Estadio</strong>
+        ${escapeHTML(
+          partido.estadio ||
+          "No informado"
+        )}
+      </div>
+
+      <div class="stat">
+        <strong>🧑‍⚖️ Árbitro</strong>
+        ${escapeHTML(
+          partido.arbitro ||
+          "No informado"
+        )}
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <h3>
+        📊 Estadísticas del partido
+      </h3>
+
+      ${avisoStats}
+
+      <div class="grid">
+
+        <div class="stat">
+
+          <strong>
+            🚩 Córners
+          </strong>
+
+          <div class="value">
+            ${cornersLocal}
+            -
+            ${cornersVisitante}
+          </div>
+
+          <div class="muted">
+            ${escapeHTML(
+              partido.local.nombre
+            )}
+            -
+            ${escapeHTML(
+              partido.visitante.nombre
+            )}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🎯 Tiros totales
+          </strong>
+
+          <div class="value">
+            ${tirosLocal}
+            -
+            ${tirosVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🥅 Tiros al arco
+          </strong>
+
+          <div class="value">
+            ${arcoLocal}
+            -
+            ${arcoVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            ⚽ Goles
+          </strong>
+
+          <div class="value">
+            ${partido.marcador.local ?? "-"}
+            -
+            ${partido.marcador.visitante ?? "-"}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🟢 Posesión
+          </strong>
+
+          <div class="value">
+            ${posesionLocal}
+            -
+            ${posesionVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🔄 Pases precisos
+          </strong>
+
+          <div class="value">
+            ${pasesLocal}
+            -
+            ${pasesVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            ⚠️ Faltas
+          </strong>
+
+          <div class="value">
+            ${faltasLocal}
+            -
+            ${faltasVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🟨 Amarillas
+          </strong>
+
+          <div class="value">
+            ${amarillasLocal}
+            -
+            ${amarillasVisitante}
+          </div>
+
+        </div>
+
+        <div class="stat">
+
+          <strong>
+            🟥 Rojas
+          </strong>
+
+          <div class="value">
+            ${rojasLocal}
+            -
+            ${rojasVisitante}
+          </div>
+
+        </div>
+
+      </div>
+
+      ${
+        esEnVivo(partido.estado)
+        ? `
+          <div class="refreshing">
+            🔄 Actualización automática cada 30 segundos
+          </div>
+        `
+        : ""
+      }
+
+    </div>
+
+    <div class="card">
+
+      <h3>
+        📈 Análisis BetCheck
+      </h3>
+
       <p class="muted">
-        No agregaste partidos todavía.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  comboBox.innerHTML = "";
-
-  combinada.forEach(function(p){
-
-    const div =
-      document.createElement("div");
-
-    div.className = "match";
-
-    div.innerHTML = `
-
-      <div class="teams">
-        ${escapeHTML(p.home)}
-        vs
-        ${escapeHTML(p.away)}
-      </div>
-
-      <div class="muted">
-        ${escapeHTML(p.league || "")}
-      </div>
-
-    `;
-
-    comboBox.appendChild(div);
-
-  });
-
-}
-
-
-/* =========================
-   VACIAR COMBINADA
-========================= */
-
-document
-  .getElementById("clearCombo")
-  .addEventListener(
-    "click",
-    function(){
-
-      combinada = [];
-
-      mostrarCombinada();
-
-    }
-  );
-
-
-/* =========================
-   BOTÓN ACTUALIZAR
-========================= */
-
-document
-  .getElementById("refreshButton")
-  .addEventListener(
-    "click",
-    cargar
-  );
-
-
-/* =========================
-   INICIAR
-========================= */
-
-mostrarCombinada();
-
-cargar();
-
-</script></body>
-</html>
+        Las estadísticas mostradas provienen
+        de los datos deportivos disponibles
+        para este partido.
+  
