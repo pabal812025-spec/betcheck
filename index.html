@@ -13,7 +13,7 @@
 body{
   margin:0;
   background:#07111f;
-  color:white;
+  color:#fff;
   font-family:Arial,sans-serif;
 }
 
@@ -91,6 +91,7 @@ button{
   color:white;
   font-weight:bold;
   font-size:14px;
+  cursor:pointer;
 }
 
 button:active{
@@ -196,227 +197,188 @@ button:active{
 
 <div class="app">
 
-  <h1>⚽ MatchIA</h1>
+<h1>⚽ MatchIA</h1>
 
-  <div class="subtitle">
-    Análisis estadístico en vivo
-  </div>
-
-
-  <div class="card">
-
-    <div class="league">
-      🇦🇷 Argentina · Superclásico
-    </div>
+<div class="subtitle">
+Análisis estadístico en vivo
+</div>
 
 
-    <div class="teams">
+<div class="card">
 
-      <div class="team">
-        River Plate
-      </div>
-
-      <div class="center">
-
-        <div class="score">
-          <span id="homeScore">0</span>
-          -
-          <span id="awayScore">0</span>
-        </div>
-
-        <div class="minute">
-          <span id="minute">0</span>'
-        </div>
-
-      </div>
-
-      <div class="team">
-        Boca Juniors
-      </div>
-
-    </div>
+<div class="league">
+🇦🇷 Argentina · Superclásico
+</div>
 
 
-    <div class="buttons">
+<div class="teams">
 
-      <button
-        class="start"
-        id="startButton">
-        ▶ Iniciar
-      </button>
+<div class="team">
+River Plate
+</div>
 
-      <button
-        id="minuteButton">
-        +1 minuto
-      </button>
+<div class="center">
 
-      <button
-        class="goal"
-        id="homeGoalButton">
-        ⚽ Gol River
-      </button>
+<div class="score">
+<span id="homeScore">0</span>
+-
+<span id="awayScore">0</span>
+</div>
 
-      <button
-        class="goal"
-        id="awayGoalButton">
-        ⚽ Gol Boca
-      </button>
+<div class="minute">
+<span id="minute">0</span>'
+</div>
 
-      <button
-        class="red"
-        id="homeRedButton">
-        🟥 Roja River
-      </button>
+</div>
 
-      <button
-        class="red"
-        id="awayRedButton">
-        🟥 Roja Boca
-      </button>
+<div class="team">
+Boca Juniors
+</div>
 
-      <button
-        id="shotsButton">
-        📊 Simular tiros
-      </button>
-
-      <button
-        class="reset"
-        id="resetButton">
-        ↻ Reiniciar
-      </button>
-
-    </div>
+</div>
 
 
-    <div class="probs">
+<div class="buttons">
 
-      <div class="prob home">
-        <div
-          class="number"
-          id="homeProb">
-          33%
-        </div>
+<button class="start" id="startButton">
+▶ Iniciar
+</button>
 
-        <small>River</small>
-      </div>
+<button id="minuteButton">
++1 minuto
+</button>
 
+<button class="goal" id="homeGoalButton">
+⚽ Gol River
+</button>
 
-      <div class="prob draw">
-        <div
-          class="number"
-          id="drawProb">
-          34%
-        </div>
+<button class="goal" id="awayGoalButton">
+⚽ Gol Boca
+</button>
 
-        <small>Empate</small>
-      </div>
+<button class="red" id="homeRedButton">
+🟥 Roja River
+</button>
 
+<button class="red" id="awayRedButton">
+🟥 Roja Boca
+</button>
 
-      <div class="prob away">
-        <div
-          class="number"
-          id="awayProb">
-          33%
-        </div>
+<button id="shotsButton">
+📊 Simular tiros
+</button>
 
-        <small>Boca</small>
-      </div>
+<button class="reset" id="resetButton">
+↻ Reiniciar
+</button>
 
-    </div>
-
-  </div>
+</div>
 
 
-  <div class="card">
+<div class="probs">
 
-    <h3>🧠 ¿Por qué?</h3>
+<div class="prob home">
+<div class="number" id="homeProb">33%</div>
+<small>River</small>
+</div>
 
-    <div
-      class="explanation"
-      id="explanation">
-      Partido recién iniciado. Las probabilidades todavía son equilibradas.
-    </div>
+<div class="prob draw">
+<div class="number" id="drawProb">34%</div>
+<small>Empate</small>
+</div>
 
-  </div>
+<div class="prob away">
+<div class="number" id="awayProb">33%</div>
+<small>Boca</small>
+</div>
 
+</div>
 
-  <div class="card">
-
-    <h3>📊 Estadísticas</h3>
-
-    <div class="stats">
-
-      <div class="stat">
-        <div class="label">Posesión</div>
-        <div class="value">
-          <span id="posHome">50</span>%
-          -
-          <span id="posAway">50</span>%
-        </div>
-      </div>
+</div>
 
 
-      <div class="stat">
-        <div class="label">Tiros</div>
-        <div class="value">
-          <span id="shotsHome">0</span>
-          -
-          <span id="shotsAway">0</span>
-        </div>
-      </div>
+<div class="card">
+
+<h3>🧠 ¿Por qué?</h3>
+
+<div class="explanation" id="explanation">
+Partido recién iniciado. Las probabilidades todavía son equilibradas.
+</div>
+
+</div>
 
 
-      <div class="stat">
-        <div class="label">Tiros al arco</div>
-        <div class="value">
-          <span id="targetHome">0</span>
-          -
-          <span id="targetAway">0</span>
-        </div>
-      </div>
+<div class="card">
+
+<h3>📊 Estadísticas</h3>
+
+<div class="stats">
+
+<div class="stat">
+<div class="label">Posesión</div>
+<div class="value">
+<span id="posHome">50</span>%
+-
+<span id="posAway">50</span>%
+</div>
+</div>
 
 
-      <div class="stat">
-        <div class="label">Córners</div>
-        <div class="value">
-          <span id="cornersHome">0</span>
-          -
-          <span id="cornersAway">0</span>
-        </div>
-      </div>
+<div class="stat">
+<div class="label">Tiros</div>
+<div class="value">
+<span id="shotsHome">0</span>
+-
+<span id="shotsAway">0</span>
+</div>
+</div>
 
 
-      <div class="stat">
-        <div class="label">Rojas</div>
-        <div class="value">
-          <span id="redHome">0</span>
-          -
-          <span id="redAway">0</span>
-        </div>
-      </div>
+<div class="stat">
+<div class="label">Tiros al arco</div>
+<div class="value">
+<span id="targetHome">0</span>
+-
+<span id="targetAway">0</span>
+</div>
+</div>
 
 
-      <div class="stat">
-        <div class="label">Restante</div>
-        <div
-          class="value"
-          id="remaining">
-          90 min
-        </div>
-      </div>
+<div class="stat">
+<div class="label">Córners</div>
+<div class="value">
+<span id="cornersHome">0</span>
+-
+<span id="cornersAway">0</span>
+</div>
+</div>
 
-    </div>
 
-  </div>
+<div class="stat">
+<div class="label">Rojas</div>
+<div class="value">
+<span id="redHome">0</span>
+-
+<span id="redAway">0</span>
+</div>
+</div>
+
+
+<div class="stat">
+<div class="label">Restante</div>
+<div class="value" id="remaining">
+90 min
+</div>
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 
 <script>
-
-/* =========================
-   VARIABLES
-========================= */
 
 let minute = 0;
 
@@ -446,163 +408,182 @@ let timer = null;
 ========================= */
 
 const minuteElement =
-  document.getElementById("minute");
+document.getElementById("minute");
 
 const homeScoreElement =
-  document.getElementById("homeScore");
+document.getElementById("homeScore");
 
 const awayScoreElement =
-  document.getElementById("awayScore");
+document.getElementById("awayScore");
 
 const homeProbElement =
-  document.getElementById("homeProb");
+document.getElementById("homeProb");
 
 const drawProbElement =
-  document.getElementById("drawProb");
+document.getElementById("drawProb");
 
 const awayProbElement =
-  document.getElementById("awayProb");
+document.getElementById("awayProb");
 
 const explanationElement =
-  document.getElementById("explanation");
+document.getElementById("explanation");
 
 
 /* =========================
-   ACTUALIZAR PANTALLA
+   UTILIDADES
+========================= */
+
+function clamp(value,min,max){
+
+return Math.max(
+min,
+Math.min(max,value)
+);
+
+}
+
+
+/* =========================
+   PANTALLA
 ========================= */
 
 function updateScreen(){
 
-  minuteElement.textContent = minute;
+minuteElement.textContent =
+minute;
 
-  homeScoreElement.textContent =
-    homeScore;
+homeScoreElement.textContent =
+homeScore;
 
-  awayScoreElement.textContent =
-    awayScore;
+awayScoreElement.textContent =
+awayScore;
 
-  document.getElementById("shotsHome")
-    .textContent = shotsHome;
+document.getElementById("shotsHome")
+.textContent =
+shotsHome;
 
-  document.getElementById("shotsAway")
-    .textContent = shotsAway;
+document.getElementById("shotsAway")
+.textContent =
+shotsAway;
 
-  document.getElementById("targetHome")
-    .textContent = targetHome;
+document.getElementById("targetHome")
+.textContent =
+targetHome;
 
-  document.getElementById("targetAway")
-    .textContent = targetAway;
+document.getElementById("targetAway")
+.textContent =
+targetAway;
 
-  document.getElementById("cornersHome")
-    .textContent = cornersHome;
+document.getElementById("cornersHome")
+.textContent =
+cornersHome;
 
-  document.getElementById("cornersAway")
-    .textContent = cornersAway;
+document.getElementById("cornersAway")
+.textContent =
+cornersAway;
 
-  document.getElementById("redHome")
-    .textContent = redHome;
+document.getElementById("redHome")
+.textContent =
+redHome;
 
-  document.getElementById("redAway")
-    .textContent = redAway;
+document.getElementById("redAway")
+.textContent =
+redAway;
 
-  document.getElementById("posHome")
-    .textContent =
-    Math.round(possessionHome);
+document.getElementById("posHome")
+.textContent =
+Math.round(possessionHome);
 
-  document.getElementById("posAway")
-    .textContent =
-    Math.round(possessionAway);
+document.getElementById("posAway")
+.textContent =
+Math.round(possessionAway);
 
-  document.getElementById("remaining")
-    .textContent =
-    Math.max(0,90-minute) + " min";
+document.getElementById("remaining")
+.textContent =
+Math.max(0,90-minute)+" min";
+
 }
 
 
 /* =========================
-   AÑADIR MINUTO
+   MINUTO
 ========================= */
 
 function addMinute(){
 
-  if(minute >= 90){
-    return;
-  }
+if(minute>=90){
+return;
+}
 
-  minute++;
+minute++;
 
-  /*
-    Generamos algunos datos de prueba.
-    Más adelante esto vendrá de la API.
-  */
+simulateLiveStats();
 
-  simulateLiveStats();
+calculateProbabilities();
 
-  calculateProbabilities();
+updateScreen();
 
-  updateScreen();
 }
 
 
 /* =========================
-   SIMULACIÓN
+   DATOS DE PRUEBA
 ========================= */
 
 function simulateLiveStats(){
 
-  const random =
-    Math.random();
+const r =
+Math.random();
 
-  if(random < 0.35){
-    shotsHome++;
-  }
+if(r<0.35){
+shotsHome++;
+}
 
-  if(random > 0.65){
-    shotsAway++;
-  }
+if(r>0.65){
+shotsAway++;
+}
 
+if(
+shotsHome>targetHome &&
+Math.random()<0.25
+){
 
-  if(
-    shotsHome > targetHome &&
-    Math.random() < 0.25
-  ){
-    targetHome++;
-  }
+targetHome++;
 
+}
 
-  if(
-    shotsAway > targetAway &&
-    Math.random() < 0.25
-  ){
-    targetAway++;
-  }
+if(
+shotsAway>targetAway &&
+Math.random()<0.25
+){
 
+targetAway++;
 
-  if(Math.random() < 0.07){
-    cornersHome++;
-  }
+}
 
+if(Math.random()<0.07){
+cornersHome++;
+}
 
-  if(Math.random() > 0.93){
-    cornersAway++;
-  }
-
-
-  const change =
-    (Math.random()-0.5)*2;
+if(Math.random()>0.93){
+cornersAway++;
+}
 
 
-  possessionHome =
-    Math.max(
-      35,
-      Math.min(
-        65,
-        possessionHome+change
-      )
-    );
+const change =
+(Math.random()-0.5)*2;
 
-  possessionAway =
-    100-possessionHome;
+
+possessionHome =
+clamp(
+possessionHome+change,
+35,
+65
+);
+
+possessionAway =
+100-possessionHome;
+
 }
 
 
@@ -612,28 +593,30 @@ function simulateLiveStats(){
 
 function startMatch(){
 
-  if(timer !== null){
-    return;
-  }
+if(timer!==null){
+return;
+}
 
-  timer =
-    setInterval(
-      function(){
+timer =
+setInterval(
+function(){
 
-        if(minute >= 90){
+if(minute>=90){
 
-          clearInterval(timer);
+clearInterval(timer);
 
-          timer = null;
+timer=null;
 
-          return;
-        }
+return;
 
-        addMinute();
+}
 
-      },
-      1000
-    );
+addMinute();
+
+},
+1000
+);
+
 }
 
 
@@ -643,25 +626,27 @@ function startMatch(){
 
 function homeGoal(){
 
-  homeScore++;
+homeScore++;
 
-  shotsHome++;
-  targetHome++;
+shotsHome++;
+targetHome++;
 
-  calculateProbabilities();
-  updateScreen();
+calculateProbabilities();
+updateScreen();
+
 }
 
 
 function awayGoal(){
 
-  awayScore++;
+awayScore++;
 
-  shotsAway++;
-  targetAway++;
+shotsAway++;
+targetAway++;
 
-  calculateProbabilities();
-  updateScreen();
+calculateProbabilities();
+updateScreen();
+
 }
 
 
@@ -671,305 +656,763 @@ function awayGoal(){
 
 function homeRedCard(){
 
-  if(redHome === 0){
+if(redHome===0){
 
-    redHome = 1;
+redHome=1;
 
-    calculateProbabilities();
-    updateScreen();
-  }
+calculateProbabilities();
+updateScreen();
+
+}
+
 }
 
 
 function awayRedCard(){
 
-  if(redAway === 0){
+if(redAway===0){
 
-    redAway = 1;
+redAway=1;
 
-    calculateProbabilities();
-    updateScreen();
-  }
+calculateProbabilities();
+updateScreen();
+
+}
+
 }
 
 
 /* =========================
-   SIMULAR MUCHOS TIROS
+   SIMULAR TIROS
 ========================= */
 
 function simulateShots(){
 
-  shotsHome += 2;
-  shotsAway += 10;
+shotsHome+=2;
+shotsAway+=10;
 
-  targetHome += 1;
-  targetAway += 5;
+targetHome+=1;
+targetAway+=5;
 
-  cornersAway += 2;
+cornersAway+=2;
 
-  possessionHome = 43;
-  possessionAway = 57;
+possessionHome=43;
+possessionAway=57;
 
-  calculateProbabilities();
-  updateScreen();
+calculateProbabilities();
+updateScreen();
+
 }
 
 
 /* =========================
-   PROBABILIDADES
+   MOTOR DE PROBABILIDADES
 ========================= */
 
 function calculateProbabilities(){
 
-  let home = 33;
-  let draw = 34;
-  let away = 33;
+let H;
+let D;
+let A;
 
 
-  /*
-    MARCADOR
-  */
+/*
+================================
+CASO 1: PARTIDO EMPATADO
+================================
+*/
 
-  if(homeScore > awayScore){
+if(homeScore===awayScore){
 
-    home += 15;
-    draw -= 7;
-    away -= 8;
-  }
+/*
+El empate gana peso progresivamente
+a medida que quedan menos minutos.
+*/
 
+const timeFactor =
+minute/90;
 
-  if(awayScore > homeScore){
 
-    away += 15;
-    draw -= 7;
-    home -= 8;
-  }
+/*
+Base de empate.
 
+Al principio NO permitimos que
+el empate sea exageradamente alto.
 
-  /*
-    TIROS
-  */
+Al final aumenta bastante.
+*/
 
-  const shotDifference =
-    shotsHome-shotsAway;
+D =
+30 +
+timeFactor*32;
 
-  home +=
-    shotDifference*1.1;
 
-  away -=
-    shotDifference*1.1;
+/*
+Presión ofensiva.
 
+Se calcula de forma moderada.
+*/
 
-  /*
-    TIROS AL ARCO
-    Pesan más que los tiros normales.
-  */
+const shotDiff =
+shotsHome-shotsAway;
 
-  const targetDifference =
-    targetHome-targetAway;
+const targetDiff =
+targetHome-targetAway;
 
-  home +=
-    targetDifference*3.2;
+const cornerDiff =
+cornersHome-cornersAway;
 
-  away -=
-    targetDifference*3.2;
+const possessionDiff =
+possessionHome-50;
 
 
-  /*
-    CÓRNERS
-  */
+const pressure =
+shotDiff*0.55 +
+targetDiff*1.35 +
+cornerDiff*0.35 +
+possessionDiff*0.10;
 
-  const cornerDifference =
-    cornersHome-cornersAway;
 
-  home +=
-    cornerDifference*0.8;
+/*
+Cuanto más temprano,
+menos pesa la presión.
 
-  away -=
-    cornerDifference*0.8;
+Cuanto más tarde,
+más pesa.
+*/
 
+const pressureWeight =
+0.35 +
+timeFactor*0.95;
 
-  /*
-    POSESIÓN
-  */
 
-  const possessionDifference =
-    possessionHome-50;
+let advantage =
+pressure*pressureWeight;
 
-  home +=
-    possessionDifference*0.15;
 
-  away -=
-    possessionDifference*0.15;
+/*
+Una pequeña ventaja de local.
+*/
 
+advantage +=
+2.5;
 
-  /*
-    ROJA
-  */
 
-  if(redHome > redAway){
+/*
+Roja.
+*/
 
-    home -= 15;
-    away += 8;
-    draw += 7;
-  }
+if(redHome>redAway){
 
+advantage-=10;
+}
 
-  if(redAway > redHome){
+if(redAway>redHome){
 
-    away -= 15;
-    home += 8;
-    draw += 7;
-  }
+advantage+=10;
+}
 
 
-  /*
-    PASO DEL TIEMPO
-  */
+/*
+Distribuimos el porcentaje
+restante entre ambos equipos.
+*/
 
-  if(minute >= 70){
+const remaining =
+100-D;
 
-    if(homeScore > awayScore){
 
-      home += 7;
-      draw -= 3;
-      away -= 4;
-    }
+/*
+Limitamos la ventaja.
 
-    if(awayScore > homeScore){
+Así evitamos casos como:
 
-      away += 7;
-      draw -= 3;
-      home -= 4;
-    }
-  }
+19' 0-0
+River 1%
+Boca 65%
+*/
 
+advantage =
+clamp(
+advantage,
+-remaining*0.38,
+remaining*0.38
+);
 
-  /*
-    LIMITES
-  */
 
-  home =
-    Math.max(1,home);
+H =
+remaining/2 +
+advantage;
 
-  draw =
-    Math.max(1,draw);
+A =
+remaining/2 -
+advantage;
 
-  away =
-    Math.max(1,away);
 
+/*
+Si el equipo visitante tiene
+mucha más presión, no significa
+que River tenga 1%.
 
-  /*
-    NORMALIZAR A 100
-  */
+Siempre conserva una posibilidad
+razonable mientras queda mucho
+partido.
+*/
 
-  const total =
-    home+draw+away;
+if(minute<30){
 
+H =
+Math.max(H,22);
 
-  home =
-    Math.round(
-      home/total*100
-    );
+A =
+Math.max(A,22);
 
-  draw =
-    Math.round(
-      draw/total*100
-    );
+}
 
-  away =
-    100-home-draw;
 
+}
 
-  /*
-    ACTUALIZAR
-  */
 
-  homeProbElement.textContent =
-    home+"%";
+/*
+================================
+CASO 2: RIVER VA GANANDO
+================================
+*/
 
-  drawProbElement.textContent =
-    draw+"%";
+else if(homeScore>awayScore){
 
-  awayProbElement.textContent =
-    away+"%";
+const difference =
+homeScore-awayScore;
 
+const timeFactor =
+minute/90;
 
-  /*
-    EXPLICACIÓN
-  */
 
-  let explanation = "";
+/*
+Ventaja inicial por marcador.
+*/
 
+let leadStrength =
+18 +
+difference*10 +
+timeFactor*18;
 
-  if(homeScore > awayScore){
 
-    explanation +=
-      "River está ganando y eso aumenta su porcentaje. ";
-  }
+/*
+Presión del rival.
 
-  else if(awayScore > homeScore){
+Si Boca está atacando mucho,
+la ventaja se reduce.
+*/
 
-    explanation +=
-      "Boca está ganando y eso aumenta su porcentaje. ";
-  }
+const pressureAgainst =
+(
+shotsAway-shotsHome
+)*0.7
++
+(
+targetAway-targetHome
+)*1.5
++
+(
+cornersAway-cornersHome
+)*0.35;
 
-  else{
 
-    explanation +=
-      "El partido está empatado. ";
-  }
+/*
+Si queda poco tiempo,
+cada gol de ventaja pesa más.
+*/
 
+leadStrength +=
+timeFactor*(
+difference*15
+);
 
-  if(shotsHome > shotsAway){
 
-    explanation +=
-      "River tiene más tiros ("+
-      shotsHome+
-      " contra "+
-      shotsAway+
-      "), por lo que está generando más volumen ofensivo. ";
-  }
+/*
+Roja del líder.
+*/
 
+if(redHome>redAway){
 
-  if(shotsAway > shotsHome){
+leadStrength-=18;
 
-    explanation +=
-      "Boca tiene más tiros ("+
-      shotsAway+
-      " contra "+
-      shotsHome+
-      "), por lo que está generando más volumen ofensivo. ";
-  }
+}
 
 
-  if(targetHome > targetAway){
+/*
+Roja del rival.
+*/
 
-    explanation +=
-      "River también tiene más tiros al arco, que tienen mayor peso estadístico.";
-  }
+if(redAway>redHome){
 
+leadStrength+=10;
 
-  if(targetAway > targetHome){
+}
 
-    explanation +=
-      "Boca también tiene más tiros al arco, que tienen mayor peso estadístico.";
-  }
 
+leadStrength =
+clamp(
+leadStrength,
+10,
+88
+);
 
-  if(
-    shotsHome === shotsAway &&
-    targetHome === targetAway &&
-    homeScore === awayScore
-  ){
 
-    explanation +=
-      "Todavía no hay una diferencia estadística importante.";
-  }
+/*
+Asignamos primero la probabilidad
+del empate.
 
+Una ventaja de un gol siempre
+mantiene una posibilidad real
+de empate.
+*/
 
-  explanationElement.textContent =
-    explanation;
+D =
+clamp(
+27 -
+timeFactor*14
++
+Math.max(
+0,
+pressureAgainst*0.8
+),
+8,
+38
+);
+
+
+/*
+Si queda poco tiempo,
+el empate baja.
+
+Pero nunca desaparece
+automáticamente.
+*/
+
+if(minute>=80){
+
+D =
+clamp(D,6,28);
+
+}
+
+
+/*
+Victoria local.
+*/
+
+H =
+leadStrength;
+
+
+/*
+Lo restante para visitante.
+*/
+
+A =
+100-H-D;
+
+
+/*
+Nunca dejamos al rival
+en valores absurdamente bajos
+mientras queda bastante tiempo.
+*/
+
+if(minute<65){
+
+A =
+Math.max(A,8);
+
+const total =
+H+D+A;
+
+H =
+H/total*100;
+
+D =
+D/total*100;
+
+A =
+A/total*100;
+
+}
+
+}
+
+
+/*
+================================
+CASO 3: BOCA VA GANANDO
+================================
+*/
+
+else{
+
+const difference =
+awayScore-homeScore;
+
+const timeFactor =
+minute/90;
+
+
+let leadStrength =
+18 +
+difference*10 +
+timeFactor*18;
+
+
+const pressureAgainst =
+(
+shotsHome-shotsAway
+)*0.7
++
+(
+targetHome-targetAway
+)*1.5
++
+(
+cornersHome-cornersAway
+)*0.35;
+
+
+leadStrength +=
+timeFactor*(
+difference*15
+);
+
+
+if(redAway>redHome){
+
+leadStrength-=18;
+
+}
+
+
+if(redHome>redAway){
+
+leadStrength+=10;
+
+}
+
+
+leadStrength =
+clamp(
+leadStrength,
+10,
+88
+);
+
+
+D =
+clamp(
+27 -
+timeFactor*14
++
+Math.max(
+0,
+pressureAgainst*0.8
+),
+8,
+38
+);
+
+
+if(minute>=80){
+
+D =
+clamp(D,6,28);
+
+}
+
+
+A =
+leadStrength;
+
+H =
+100-A-D;
+
+
+if(minute<65){
+
+H =
+Math.max(H,8);
+
+const total =
+H+D+A;
+
+H =
+H/total*100;
+
+D =
+D/total*100;
+
+A =
+A/total*100;
+
+}
+
+}
+
+
+/*
+================================
+AJUSTES POR ROJAS
+================================
+*/
+
+if(
+homeScore===awayScore &&
+redHome>redAway
+){
+
+A+=7;
+H-=7;
+
+}
+
+
+if(
+homeScore===awayScore &&
+redAway>redHome
+){
+
+H+=7;
+A-=7;
+
+}
+
+
+/*
+================================
+NORMALIZAR
+================================
+*/
+
+H =
+Math.max(0,H);
+
+D =
+Math.max(0,D);
+
+A =
+Math.max(0,A);
+
+
+const total =
+H+D+A;
+
+
+H =
+Math.round(
+H/total*100
+);
+
+D =
+Math.round(
+D/total*100
+);
+
+A =
+100-H-D;
+
+
+/*
+================================
+FINAL DEL PARTIDO
+================================
+*/
+
+if(minute>=90){
+
+if(homeScore>awayScore){
+
+H=100;
+D=0;
+A=0;
+
+}
+
+else if(awayScore>homeScore){
+
+H=0;
+D=0;
+A=100;
+
+}
+
+else{
+
+H=0;
+D=100;
+A=0;
+
+}
+
+}
+
+
+homeProbElement.textContent =
+H+"%";
+
+drawProbElement.textContent =
+D+"%";
+
+awayProbElement.textContent =
+A+"%";
+
+
+updateExplanation(
+H,
+D,
+A
+);
+
+}
+
+
+/* =========================
+   EXPLICACIÓN
+========================= */
+
+function updateExplanation(H,D,A){
+
+let text="";
+
+
+if(homeScore===awayScore){
+
+text +=
+"El marcador está 0-0. ";
+
+if(
+shotsHome>shotsAway &&
+targetHome>=targetAway
+){
+
+text +=
+"River está generando más llegadas, pero todavía queda tiempo para que Boca responda. ";
+
+}
+
+else if(
+shotsAway>shotsHome &&
+targetAway>=targetHome
+){
+
+text +=
+"Boca está generando más llegadas, pero River todavía conserva una posibilidad importante porque el partido sigue empatado. ";
+
+}
+
+else{
+
+text +=
+"Las llegadas están relativamente equilibradas. ";
+
+}
+
+
+if(minute<30){
+
+text +=
+"Como todavía queda mucho partido, la diferencia estadística no puede llevar automáticamente a uno de los equipos a porcentajes mínimos.";
+
+}
+
+else if(minute>=75){
+
+text +=
+"Al quedar pocos minutos, el empate gana más peso.";
+
+}
+
+}
+
+
+else if(homeScore>awayScore){
+
+text +=
+"River tiene ventaja en el marcador. ";
+
+if(
+minute>=80
+){
+
+text +=
+"Quedan pocos minutos, por lo que mantener la ventaja tiene mucho peso.";
+
+}
+
+else{
+
+text +=
+"Todavía queda tiempo para que Boca pueda reaccionar.";
+
+}
+
+}
+
+
+else{
+
+text +=
+"Boca tiene ventaja en el marcador. ";
+
+if(
+minute>=80
+){
+
+text +=
+"Quedan pocos minutos, por lo que mantener la ventaja tiene mucho peso.";
+
+}
+
+else{
+
+text +=
+"Todavía queda tiempo para que River pueda reaccionar.";
+
+}
+
+}
+
+
+if(targetHome>targetAway){
+
+text +=
+" River tiene más tiros al arco.";
+
+}
+
+else if(targetAway>targetHome){
+
+text +=
+" Boca tiene más tiros al arco.";
+
+}
+
+
+if(redHome>redAway){
+
+text +=
+" La roja de River reduce sus posibilidades.";
+
+}
+
+if(redAway>redHome){
+
+text +=
+" La roja de Boca reduce sus posibilidades.";
+
+}
+
+
+explanationElement.textContent =
+text;
+
 }
 
 
@@ -979,107 +1422,109 @@ function calculateProbabilities(){
 
 function resetMatch(){
 
-  if(timer !== null){
+if(timer!==null){
 
-    clearInterval(timer);
+clearInterval(timer);
 
-    timer = null;
-  }
+timer=null;
 
-
-  minute = 0;
-
-  homeScore = 0;
-  awayScore = 0;
-
-  shotsHome = 0;
-  shotsAway = 0;
-
-  targetHome = 0;
-  targetAway = 0;
-
-  cornersHome = 0;
-  cornersAway = 0;
-
-  possessionHome = 50;
-  possessionAway = 50;
-
-  redHome = 0;
-  redAway = 0;
+}
 
 
-  calculateProbabilities();
+minute=0;
 
-  updateScreen();
+homeScore=0;
+awayScore=0;
+
+shotsHome=0;
+shotsAway=0;
+
+targetHome=0;
+targetAway=0;
+
+cornersHome=0;
+cornersAway=0;
+
+possessionHome=50;
+possessionAway=50;
+
+redHome=0;
+redAway=0;
+
+
+calculateProbabilities();
+
+updateScreen();
+
 }
 
 
 /* =========================
-   CONECTAR BOTONES
+   BOTONES
 ========================= */
 
 document
-  .getElementById("startButton")
-  .addEventListener(
-    "click",
-    startMatch
-  );
+.getElementById("startButton")
+.addEventListener(
+"click",
+startMatch
+);
 
 
 document
-  .getElementById("minuteButton")
-  .addEventListener(
-    "click",
-    addMinute
-  );
+.getElementById("minuteButton")
+.addEventListener(
+"click",
+addMinute
+);
 
 
 document
-  .getElementById("homeGoalButton")
-  .addEventListener(
-    "click",
-    homeGoal
-  );
+.getElementById("homeGoalButton")
+.addEventListener(
+"click",
+homeGoal
+);
 
 
 document
-  .getElementById("awayGoalButton")
-  .addEventListener(
-    "click",
-    awayGoal
-  );
+.getElementById("awayGoalButton")
+.addEventListener(
+"click",
+awayGoal
+);
 
 
 document
-  .getElementById("homeRedButton")
-  .addEventListener(
-    "click",
-    homeRedCard
-  );
+.getElementById("homeRedButton")
+.addEventListener(
+"click",
+homeRedCard
+);
 
 
 document
-  .getElementById("awayRedButton")
-  .addEventListener(
-    "click",
-    awayRedCard
-  );
+.getElementById("awayRedButton")
+.addEventListener(
+"click",
+awayRedCard
+);
 
 
 document
-  .getElementById("shotsButton")
-  .addEventListener(
-    "click",
-    simulateShots
-  );
+.getElementById("shotsButton")
+.addEventListener(
+"click",
+simulateShots
+);
 
 
 document
-  .getElementById("resetButton")
-  .addEventListener(
-    "click",
-    resetMatch
-  );
+.getElementById("resetButton")
+.addEventListener(
+"click",
+resetMatch
+);
 
 
 /* =========================
