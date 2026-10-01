@@ -7,20 +7,31 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#07111f;
   color:#fff;
 }
+
 header{
   background:#0d1b2f;
   padding:18px 16px;
   text-align:center;
   border-bottom:1px solid #203452;
 }
-header h1{margin:0;font-size:26px}
-header p{margin:6px 0 0;color:#8fa6c5;font-size:13px}
+
+header h1{
+  margin:0;
+  font-size:26px;
+}
+
+header p{
+  margin:6px 0 0;
+  color:#8fa6c5;
+  font-size:13px;
+}
 
 main{
   max-width:700px;
@@ -94,7 +105,9 @@ button{
   font-size:15px;
 }
 
-.hidden{display:none}
+.hidden{
+  display:none;
+}
 
 .back{
   background:#243c5b;
@@ -136,13 +149,6 @@ button{
   margin-bottom:10px;
 }
 
-.stat{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-bottom:1px solid #1d314b;
-}
-
 .market{
   margin:9px 0;
   padding:12px;
@@ -150,23 +156,42 @@ button{
   border-radius:10px;
 }
 
+.percent{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:bold;
+}
+
+.change{
+  font-size:13px;
+  margin-top:5px;
+}
+
+.up{
+  color:#36d98b;
+}
+
+.down{
+  color:#ff6b6b;
+}
+
+.same{
+  color:#8fa6c5;
+}
+
 .bar{
   height:9px;
   background:#203a59;
   border-radius:10px;
   overflow:hidden;
-  margin-top:6px;
+  margin-top:7px;
 }
 
 .fill{
   height:100%;
   background:#16a765;
-}
-
-.percent{
-  display:flex;
-  justify-content:space-between;
-  font-weight:bold;
+  transition:width .3s ease;
 }
 
 .explanation{
@@ -194,6 +219,26 @@ button{
   padding:40px 10px;
   color:#8fa6c5;
 }
+
+.history{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.history div{
+  background:#122641;
+  border-radius:10px;
+  padding:12px 5px;
+  text-align:center;
+}
+
+.number{
+  font-size:22px;
+  font-weight:bold;
+  display:block;
+  margin-top:4px;
+}
 </style>
 </head>
 
@@ -206,23 +251,25 @@ button{
 
 <main>
 
-  <section id="lista">
-    <input
-      id="buscador"
-      class="search"
-      type="text"
-      placeholder="Buscar equipo o liga..."
-      oninput="filtrar()"
-    >
+<section id="lista">
 
-    <button class="refresh" onclick="cargarPartidos()">
-      🔄 Actualizar partidos
-    </button>
+  <input
+    id="buscador"
+    class="search"
+    type="text"
+    placeholder="Buscar equipo o liga..."
+    oninput="filtrar()"
+  >
 
-    <div id="partidos"></div>
-  </section>
+  <button class="refresh" onclick="cargarPartidos()">
+    🔄 Actualizar partidos
+  </button>
 
-  <section id="detalle" class="hidden"></section>
+  <div id="partidos"></div>
+
+</section>
+
+<section id="detalle" class="hidden"></section>
 
 </main>
 
@@ -253,17 +300,28 @@ const partidosDemo = [
 ];
 
 let partidos = [...partidosDemo];
+
 let partidoActual = null;
+
 let minuto = 20;
 let golesLocal = 0;
 let golesVisitante = 0;
+
 let intervalo = null;
+
 let combinada = [];
+
+/*
+  Guardamos la medición anterior.
+  Esto permite mostrar:
+  ↑ +8%
+  ↓ -5%
+  = 0%
+*/
+let porcentajesAnteriores = null;
 
 function cargarPartidos(){
 
-  // Siempre mostramos los partidos de prueba.
-  // La API se conectará más adelante.
   partidos = [...partidosDemo];
 
   mostrarPartidos();
@@ -272,7 +330,9 @@ function cargarPartidos(){
 function mostrarPartidos(){
 
   const contenedor = document.getElementById("partidos");
-  const texto = document.getElementById("buscador").value.toLowerCase();
+
+  const texto =
+    document.getElementById("buscador").value.toLowerCase();
 
   const filtrados = partidos.filter(p =>
     p.local.toLowerCase().includes(texto) ||
@@ -282,15 +342,18 @@ function mostrarPartidos(){
   );
 
   if(!filtrados.length){
+
     contenedor.innerHTML = `
       <div class="empty">
         No se encontraron partidos.
       </div>
     `;
+
     return;
   }
 
   contenedor.innerHTML = filtrados.map(p => `
+
     <div class="card">
 
       <div class="league">
@@ -298,9 +361,19 @@ function mostrarPartidos(){
       </div>
 
       <div class="teams">
-        <div class="team">${p.local}</div>
-        <div class="vs">VS</div>
-        <div class="team">${p.visitante}</div>
+
+        <div class="team">
+          ${p.local}
+        </div>
+
+        <div class="vs">
+          VS
+        </div>
+
+        <div class="team">
+          ${p.visitante}
+        </div>
+
       </div>
 
       <button
@@ -311,6 +384,7 @@ function mostrarPartidos(){
       </button>
 
     </div>
+
   `).join("");
 }
 
@@ -330,13 +404,20 @@ function abrirPartido(id){
   golesLocal = 0;
   golesVisitante = 0;
 
+  porcentajesAnteriores = null;
+
   if(intervalo){
+
     clearInterval(intervalo);
+
     intervalo = null;
   }
 
-  document.getElementById("lista").classList.add("hidden");
-  document.getElementById("detalle").classList.remove("hidden");
+  document.getElementById("lista")
+    .classList.add("hidden");
+
+  document.getElementById("detalle")
+    .classList.remove("hidden");
 
   renderDetalle();
 }
@@ -344,12 +425,17 @@ function abrirPartido(id){
 function volver(){
 
   if(intervalo){
+
     clearInterval(intervalo);
+
     intervalo = null;
   }
 
-  document.getElementById("detalle").classList.add("hidden");
-  document.getElementById("lista").classList.remove("hidden");
+  document.getElementById("detalle")
+    .classList.add("hidden");
+
+  document.getElementById("lista")
+    .classList.remove("hidden");
 }
 
 function probabilidades(){
@@ -358,51 +444,142 @@ function probabilidades(){
   let empate = 31;
   let visitante = 27;
 
+  /*
+    A medida que avanza el partido,
+    la distribución cambia.
+  */
+
   const factorTiempo = (minuto - 20) * 0.08;
 
   local -= factorTiempo;
+
   visitante += factorTiempo;
+
   empate += factorTiempo * 0.5;
 
+  /*
+    Si hay gol local.
+  */
+
   if(golesLocal > golesVisitante){
+
     local += 25;
+
     empate -= 12;
+
     visitante -= 13;
   }
 
+  /*
+    Si hay gol visitante.
+  */
+
   if(golesVisitante > golesLocal){
+
     visitante += 25;
+
     empate -= 12;
+
     local -= 13;
   }
 
-  if(golesLocal === golesVisitante && minuto > 60){
+  /*
+    Si siguen empatados después
+    de los 60 minutos.
+  */
+
+  if(
+    golesLocal === golesVisitante &&
+    minuto > 60
+  ){
+
     empate += 8;
+
     local -= 4;
+
     visitante -= 4;
   }
 
-  local = Math.max(1, local);
-  empate = Math.max(1, empate);
-  visitante = Math.max(1, visitante);
+  local = Math.max(1,local);
 
-  const total = local + empate + visitante;
+  empate = Math.max(1,empate);
+
+  visitante = Math.max(1,visitante);
+
+  const total =
+    local + empate + visitante;
 
   return {
-    local:Math.round(local / total * 100),
-    empate:Math.round(empate / total * 100),
-    visitante:Math.round(visitante / total * 100)
+
+    local:Math.round(
+      local / total * 100
+    ),
+
+    empate:Math.round(
+      empate / total * 100
+    ),
+
+    visitante:Math.round(
+      visitante / total * 100
+    )
+
   };
+}
+
+function mostrarCambio(actual, anterior){
+
+  if(anterior === null){
+
+    return `
+      <div class="change same">
+        ● Inicio del análisis
+      </div>
+    `;
+  }
+
+  const diferencia =
+    actual - anterior;
+
+  if(diferencia > 0){
+
+    return `
+      <div class="change up">
+        ↑ +${diferencia}%
+      </div>
+    `;
+  }
+
+  if(diferencia < 0){
+
+    return `
+      <div class="change down">
+        ↓ ${diferencia}%
+      </div>
+    `;
+  }
+
+  return `
+    <div class="change same">
+      = 0%
+    </div>
+  `;
 }
 
 function renderDetalle(){
 
   const p = partidoActual;
+
   const probs = probabilidades();
+
+  const anteriores =
+    porcentajesAnteriores;
 
   document.getElementById("detalle").innerHTML = `
 
-    <button class="back" onclick="volver()">
+    <button
+      class="back"
+      onclick="volver()"
+    >
       ← Volver a partidos
     </button>
 
@@ -413,9 +590,19 @@ function renderDetalle(){
       </div>
 
       <div class="teams">
-        <div class="team">${p.local}</div>
-        <div class="vs">VS</div>
-        <div class="team">${p.visitante}</div>
+
+        <div class="team">
+          ${p.local}
+        </div>
+
+        <div class="vs">
+          VS
+        </div>
+
+        <div class="team">
+          ${p.visitante}
+        </div>
+
       </div>
 
       <div class="score">
@@ -457,61 +644,159 @@ function renderDetalle(){
     </div>
 
     <div class="section">
-      <h2>📊 Probabilidades MatchIA</h2>
+
+      <h2>
+        📊 Probabilidades MatchIA
+      </h2>
 
       <div class="market">
+
         <div class="percent">
-          <span>${p.local}</span>
-          <span>${probs.local}%</span>
+
+          <span>
+            ${p.local}
+          </span>
+
+          <span>
+            ${probs.local}%
+          </span>
+
         </div>
+
+        ${
+          mostrarCambio(
+            probs.local,
+            anteriores?.local ?? null
+          )
+        }
+
         <div class="bar">
-          <div class="fill" style="width:${probs.local}%"></div>
+
+          <div
+            class="fill"
+            style="width:${probs.local}%"
+          ></div>
+
         </div>
+
       </div>
 
       <div class="market">
+
         <div class="percent">
-          <span>Empate</span>
-          <span>${probs.empate}%</span>
+
+          <span>
+            Empate
+          </span>
+
+          <span>
+            ${probs.empate}%
+          </span>
+
         </div>
+
+        ${
+          mostrarCambio(
+            probs.empate,
+            anteriores?.empate ?? null
+          )
+        }
+
         <div class="bar">
-          <div class="fill" style="width:${probs.empate}%"></div>
+
+          <div
+            class="fill"
+            style="width:${probs.empate}%"
+          ></div>
+
         </div>
+
       </div>
 
       <div class="market">
+
         <div class="percent">
-          <span>${p.visitante}</span>
-          <span>${probs.visitante}%</span>
+
+          <span>
+            ${p.visitante}
+          </span>
+
+          <span>
+            ${probs.visitante}%
+          </span>
+
         </div>
+
+        ${
+          mostrarCambio(
+            probs.visitante,
+            anteriores?.visitante ?? null
+          )
+        }
+
         <div class="bar">
-          <div class="fill" style="width:${probs.visitante}%"></div>
+
+          <div
+            class="fill"
+            style="width:${probs.visitante}%"
+          ></div>
+
         </div>
+
       </div>
 
     </div>
 
     <div class="section">
-      <h2>🧠 ¿Por qué?</h2>
+
+      <h2>
+        🧠 ¿Por qué?
+      </h2>
 
       <div class="explanation">
-        Las estimaciones cambian según el minuto y el marcador.
+
+        Las estimaciones se actualizan
+        cuando cambia el minuto o el marcador.
+
         <br><br>
+
         ${
           golesLocal > golesVisitante
-          ? `El gol de ${p.local} aumenta su probabilidad estimada y reduce las alternativas.`
+
+          ? `El gol de ${p.local}
+             aumenta su probabilidad
+             estimada y reduce las
+             alternativas.`
+
           : golesVisitante > golesLocal
-          ? `El gol de ${p.visitante} aumenta su probabilidad estimada y modifica el equilibrio del partido.`
+
+          ? `El gol de ${p.visitante}
+             aumenta su probabilidad
+             estimada y modifica
+             el equilibrio del partido.`
+
           : minuto > 60
-          ? `Con el partido avanzado y empatado, aumenta el peso estadístico del empate.`
-          : `El partido está equilibrado. A medida que avancen los minutos, las estimaciones se actualizarán.`
+
+          ? `Con el partido avanzado
+             y empatado, aumenta
+             el peso estadístico
+             del empate.`
+
+          : `El partido está equilibrado.
+             A medida que avancen
+             los minutos, las
+             estimaciones cambiarán.`
         }
+
       </div>
 
     </div>
 
     <div class="section">
-      <h2>📈 Estadísticas demo</h2>
+
+      <h2>
+        📈 Estadísticas demo
+      </h2>
 
       <div class="card">
 
@@ -541,10 +826,14 @@ function renderDetalle(){
         </div>
 
       </div>
+
     </div>
 
     <div class="section">
-      <h2>🎯 Mercados</h2>
+
+      <h2>
+        🎯 Mercados
+      </h2>
 
       <div class="market">
         Victoria ${p.local}
@@ -573,31 +862,60 @@ function renderDetalle(){
     </div>
 
     <div class="section">
-      <h2>🛡️ Predicción conservadora</h2>
+
+      <h2>
+        🛡️ Predicción conservadora
+      </h2>
 
       <div class="explanation">
+
         ${
           golesLocal !== golesVisitante
+
           ? "El marcador actual modifica significativamente la estimación."
-          : "El escenario todavía es equilibrado. Se recomienda interpretar las probabilidades como estimaciones estadísticas y no como garantías."
+
+          : "El escenario todavía es equilibrado. Las probabilidades son estimaciones estadísticas y no garantías."
         }
+
       </div>
 
     </div>
 
     <div class="section">
-      <h2>🤝 Mi combinada</h2>
 
-      <div id="combinada" class="combo">
+      <h2>
+        🤝 Mi combinada
+      </h2>
+
+      <div class="combo">
+
         ${
           combinada.length
-          ? combinada.map(x => `<div>• ${x}</div>`).join("")
+
+          ? combinada
+              .map(x => `<div>• ${x}</div>`)
+              .join("")
+
           : "Todavía no agregaste selecciones."
         }
+
       </div>
+
     </div>
 
   `;
+
+  /*
+    Después de dibujar la pantalla,
+    guardamos estos porcentajes como
+    referencia para el próximo cambio.
+  */
+
+  porcentajesAnteriores = {
+    local:probs.local,
+    empate:probs.empate,
+    visitante:probs.visitante
+  };
 }
 
 function iniciar(){
@@ -607,8 +925,11 @@ function iniciar(){
   intervalo = setInterval(() => {
 
     if(minuto >= 90){
+
       clearInterval(intervalo);
+
       intervalo = null;
+
       return;
     }
 
@@ -622,7 +943,9 @@ function iniciar(){
 function avanzar(){
 
   if(minuto < 90){
+
     minuto++;
+
     renderDetalle();
   }
 }
@@ -630,23 +953,31 @@ function avanzar(){
 function golLocal(){
 
   golesLocal++;
+
   renderDetalle();
 }
 
 function golVisitante(){
 
   golesVisitante++;
+
   renderDetalle();
 }
 
 function reiniciar(){
 
   minuto = 20;
+
   golesLocal = 0;
+
   golesVisitante = 0;
 
+  porcentajesAnteriores = null;
+
   if(intervalo){
+
     clearInterval(intervalo);
+
     intervalo = null;
   }
 
@@ -655,9 +986,11 @@ function reiniciar(){
 
 function agregarCombinada(){
 
-  const seleccion = `${partidoActual.local} vs ${partidoActual.visitante}`;
+  const seleccion =
+    `${partidoActual.local} vs ${partidoActual.visitante}`;
 
   if(!combinada.includes(seleccion)){
+
     combinada.push(seleccion);
   }
 
