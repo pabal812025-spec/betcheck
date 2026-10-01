@@ -1,936 +1,670 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1220">
-  <title>BetCheck</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchIA</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#07111f;
+  color:#fff;
+}
+header{
+  background:#0d1b2f;
+  padding:18px 16px;
+  text-align:center;
+  border-bottom:1px solid #203452;
+}
+header h1{margin:0;font-size:26px}
+header p{margin:6px 0 0;color:#8fa6c5;font-size:13px}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: white;
-    }
+main{
+  max-width:700px;
+  margin:auto;
+  padding:16px;
+}
 
-    header {
-      background: #111827;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid #263244;
-    }
+.search{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #29415f;
+  background:#0d1b2f;
+  color:white;
+  font-size:16px;
+  margin-bottom:14px;
+}
 
-    header h1 {
-      margin: 0;
-      color: #22c55e;
-      font-size: 30px;
-    }
+button{
+  border:0;
+  border-radius:10px;
+  padding:11px 14px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    header p {
-      margin: 7px 0 0;
-      color: #9ca3af;
-    }
+.refresh{
+  width:100%;
+  background:#173456;
+  color:white;
+  margin-bottom:15px;
+}
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 15px;
-    }
+.card{
+  background:#0d1b2f;
+  border:1px solid #223b5d;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
 
-    .barra {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
+.league{
+  color:#7fa8d8;
+  font-size:12px;
+  margin-bottom:12px;
+}
 
-    input {
-      flex: 1;
-      padding: 13px;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      background: #111827;
-      color: white;
-      font-size: 16px;
-    }
+.teams{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
 
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.team{
+  width:42%;
+  text-align:center;
+  font-weight:bold;
+}
 
-    .azul {
-      background: #2563eb;
-      color: white;
-    }
+.vs{
+  color:#7f93ad;
+  font-size:13px;
+}
 
-    .verde {
-      background: #16a34a;
-      color: white;
-    }
+.analyze{
+  width:100%;
+  margin-top:15px;
+  background:#16a765;
+  color:white;
+  font-size:15px;
+}
 
-    .gris {
-      background: #374151;
-      color: white;
-    }
+.hidden{display:none}
 
-    .estado {
-      color: #9ca3af;
-      margin-bottom: 12px;
-    }
+.back{
+  background:#243c5b;
+  color:white;
+  margin-bottom:15px;
+}
 
-    .partido,
-    .detalle {
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
+.score{
+  text-align:center;
+  font-size:42px;
+  font-weight:bold;
+  margin:12px 0;
+}
 
-    .liga {
-      color: #60a5fa;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+.live{
+  text-align:center;
+  color:#ffcc55;
+  font-weight:bold;
+}
 
-    .pais {
-      color: #9ca3af;
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
+.control-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
 
-    .equipos {
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
+.control-grid button{
+  background:#1b3351;
+  color:white;
+}
 
-    .acciones {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+.section{
+  margin-top:16px;
+}
 
-    .oculto {
-      display: none;
-    }
+.section h2{
+  font-size:18px;
+  margin-bottom:10px;
+}
 
-    .detalle h2 {
-      color: #22c55e;
-    }
+.stat{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #1d314b;
+}
 
-    .dato {
-      padding: 10px 0;
-      border-bottom: 1px solid #263244;
-      color: #d1d5db;
-    }
+.market{
+  margin:9px 0;
+  padding:12px;
+  background:#122641;
+  border-radius:10px;
+}
 
-    .dato strong {
-      color: white;
-    }
+.bar{
+  height:9px;
+  background:#203a59;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:6px;
+}
 
-    .marcador {
-      text-align: center;
-      font-size: 34px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
+.fill{
+  height:100%;
+  background:#16a765;
+}
 
-    .tituloStats {
-      margin-top: 25px;
-      margin-bottom: 10px;
-      color: #22c55e;
-      font-size: 20px;
-      font-weight: bold;
-    }
+.percent{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+}
 
-    .nombreEquipos {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      text-align: center;
-      margin-bottom: 8px;
-      color: #d1d5db;
-      font-size: 13px;
-    }
+.explanation{
+  background:#102a42;
+  padding:14px;
+  border-radius:12px;
+  color:#d7e6f7;
+  line-height:1.5;
+}
 
-    .estadisticas {
-      background: #0b1220;
-      border: 1px solid #263244;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+.combo{
+  background:#102b20;
+  border:1px solid #246a46;
+  padding:14px;
+  border-radius:12px;
+}
 
-    .stat {
-      display: grid;
-      grid-template-columns: 1fr 1.5fr 1fr;
-      align-items: center;
-      padding: 11px 10px;
-      border-bottom: 1px solid #263244;
-      text-align: center;
-    }
+.small{
+  color:#8fa6c5;
+  font-size:13px;
+}
 
-    .stat:last-child {
-      border-bottom: 0;
-    }
-
-    .stat .valor {
-      font-weight: bold;
-      color: white;
-    }
-
-    .stat .nombre {
-      color: #9ca3af;
-      font-size: 13px;
-    }
-
-    .sinStats {
-      background: #1f2937;
-      border: 1px solid #374151;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 10px;
-      color: #d1d5db;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .cargando {
-      color: #60a5fa;
-      text-align: center;
-      padding: 15px;
-    }
-
-    @media (max-width: 600px) {
-      .barra {
-        flex-direction: column;
-      }
-
-      .stat {
-        grid-template-columns: 1fr 1.2fr 1fr;
-        font-size: 14px;
-      }
-    }
-  </style>
+.empty{
+  text-align:center;
+  padding:40px 10px;
+  color:#8fa6c5;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>⚽ BetCheck</h1>
+  <h1>⚽ MatchIA</h1>
   <p>Análisis estadístico de partidos</p>
 </header>
 
-<div class="container">
+<main>
 
-  <div id="listaVista">
+  <section id="lista">
+    <input
+      id="buscador"
+      class="search"
+      type="text"
+      placeholder="Buscar equipo o liga..."
+      oninput="filtrar()"
+    >
 
-    <div class="barra">
+    <button class="refresh" onclick="cargarPartidos()">
+      🔄 Actualizar partidos
+    </button>
 
-      <input
-        id="buscador"
-        type="text"
-        placeholder="Buscar equipo, liga o país..."
-        oninput="filtrar()"
-      >
+    <div id="partidos"></div>
+  </section>
 
-      <button class="azul" onclick="cargar()">
-        🔄 Actualizar
-      </button>
+  <section id="detalle" class="hidden"></section>
 
-    </div>
-
-    <div id="estado" class="estado">
-      Cargando partidos...
-    </div>
-
-    <div id="lista"></div>
-
-  </div>
-
-  <div id="detalleVista" class="oculto"></div>
-
-</div>
+</main>
 
 <script>
 
-let partidos = [];
-
-
-function escapeHTML(texto) {
-
-  if (texto === null || texto === undefined) {
-    return "";
+const partidosDemo = [
+  {
+    id:"demo-river-boca",
+    local:"River Plate",
+    visitante:"Boca Juniors",
+    liga:"Liga Profesional Argentina",
+    pais:"Argentina"
+  },
+  {
+    id:"demo-real-barca",
+    local:"Real Madrid",
+    visitante:"Barcelona",
+    liga:"La Liga",
+    pais:"España"
+  },
+  {
+    id:"demo-city-liverpool",
+    local:"Manchester City",
+    visitante:"Liverpool",
+    liga:"Premier League",
+    pais:"Inglaterra"
   }
+];
 
-  return String(texto)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+let partidos = [...partidosDemo];
+let partidoActual = null;
+let minuto = 20;
+let golesLocal = 0;
+let golesVisitante = 0;
+let intervalo = null;
+let combinada = [];
 
+function cargarPartidos(){
+
+  // Siempre mostramos los partidos de prueba.
+  // La API se conectará más adelante.
+  partidos = [...partidosDemo];
+
+  mostrarPartidos();
 }
 
-
-function valor(valorActual) {
-
-  if (
-    valorActual === null ||
-    valorActual === undefined ||
-    valorActual === ""
-  ) {
-    return "—";
-  }
-
-  return escapeHTML(valorActual);
-
-}
-
-
-async function cargar() {
-
-  const estado = document.getElementById("estado");
-
-  estado.textContent = "Cargando partidos...";
-
-  try {
-
-    const respuesta = await fetch(
-      "/api/fixtures?nocache=" + Date.now()
-    );
-
-    if (!respuesta.ok) {
-      throw new Error("Error " + respuesta.status);
-    }
-
-    partidos = await respuesta.json();
-
-    estado.textContent =
-      "Se encontraron " + partidos.length + " partidos.";
-
-    mostrar(partidos);
-
-  } catch (error) {
-
-    console.error(error);
-
-    estado.textContent =
-      "No se pudieron cargar los partidos.";
-
-  }
-
-}
-
-
-function mostrar(listaPartidos) {
-
-  const lista = document.getElementById("lista");
-
-  if (!listaPartidos.length) {
-
-    lista.innerHTML =
-      "<p>No se encontraron partidos.</p>";
-
-    return;
-
-  }
-
-  lista.innerHTML = listaPartidos.map(partido => `
-
-    <div class="partido">
-
-      <div class="liga">
-        🏆 ${escapeHTML(partido.league)}
-      </div>
-
-      <div class="pais">
-        🌎 ${escapeHTML(partido.country)}
-      </div>
-
-      <div class="equipos">
-        ${escapeHTML(partido.home)}
-        <br>
-        <span style="color:#9ca3af;">VS</span>
-        <br>
-        ${escapeHTML(partido.away)}
-      </div>
-
-      <div class="acciones">
-
-        <button
-          class="azul"
-          onclick="abrirPartido(${Number(partido.id)})"
-        >
-          📊 Ver partido
-        </button>
-
-      </div>
-
-    </div>
-
-  `).join("");
-
-}
-
-
-function filtrar() {
-
-  const texto =
-    document
-      .getElementById("buscador")
-      .value
-      .toLowerCase()
-      .trim();
-
-  if (!texto) {
-
-    mostrar(partidos);
-
-    return;
-
-  }
-
-  const filtrados = partidos.filter(partido => {
-
-    const contenido = [
-      partido.home,
-      partido.away,
-      partido.league,
-      partido.country
-    ].join(" ").toLowerCase();
-
-    return contenido.includes(texto);
-
-  });
-
-  mostrar(filtrados);
-
-}
-
-
-async function abrirPartido(id) {
-
-  document
-    .getElementById("listaVista")
-    .classList.add("oculto");
-
-  const detalle =
-    document.getElementById("detalleVista");
-
-  detalle.classList.remove("oculto");
-
-  detalle.innerHTML = `
-    <div class="detalle">
-      <p class="cargando">⏳ Cargando partido...</p>
-    </div>
-  `;
-
-  try {
-
-    const respuestaPartido = await fetch(
-      "/api/match?id=" +
-      encodeURIComponent(id) +
-      "&nocache=" +
-      Date.now()
-    );
-
-    if (!respuestaPartido.ok) {
-      throw new Error("No se pudo cargar el partido");
-    }
-
-    const partido = await respuestaPartido.json();
-
-
-    const respuestaStats = await fetch(
-      "/api/api/stats?id=" +
-      encodeURIComponent(id) +
-      "&nocache=" +
-      Date.now()
-    );
-
-
-    let estadisticas = [];
-
-
-    if (respuestaStats.ok) {
-
-      const datosStats =
-        await respuestaStats.json();
-
-      estadisticas =
-        Array.isArray(datosStats)
-          ? datosStats
-          : [];
-
-    }
-
-
-    console.log("Partido:", partido);
-
-    console.log(
-      "Estadísticas:",
-      estadisticas
-    );
-
-
-    mostrarDetalle(
-      partido,
-      estadisticas
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    detalle.innerHTML = `
-      <div class="detalle">
-
-        <p>No se pudo cargar el partido.</p>
-
-        <button
-          class="gris"
-          onclick="volver()"
-        >
-          ← Volver
-        </button>
-
+function mostrarPartidos(){
+
+  const contenedor = document.getElementById("partidos");
+  const texto = document.getElementById("buscador").value.toLowerCase();
+
+  const filtrados = partidos.filter(p =>
+    p.local.toLowerCase().includes(texto) ||
+    p.visitante.toLowerCase().includes(texto) ||
+    p.liga.toLowerCase().includes(texto) ||
+    p.pais.toLowerCase().includes(texto)
+  );
+
+  if(!filtrados.length){
+    contenedor.innerHTML = `
+      <div class="empty">
+        No se encontraron partidos.
       </div>
     `;
-
+    return;
   }
 
-}
+  contenedor.innerHTML = filtrados.map(p => `
+    <div class="card">
 
+      <div class="league">
+        ${p.liga} · ${p.pais}
+      </div>
 
-function buscarStat(equipo, nombre) {
-
-  if (
-    !equipo ||
-    !Array.isArray(equipo.estadisticas)
-  ) {
-    return "—";
-  }
-
-  const stat =
-    equipo.estadisticas.find(
-      item => item.tipo === nombre
-    );
-
-  if (!stat) {
-    return "—";
-  }
-
-  return valor(stat.valor);
-
-}
-
-
-function mostrarDetalle(
-  partido,
-  estadisticas
-) {
-
-  const detalle =
-    document.getElementById("detalleVista");
-
-
-  let estado =
-    partido.estado || "No disponible";
-
-
-  if (estado === "FT") {
-    estado = "Finalizado";
-  }
-
-  if (estado === "NS") {
-    estado = "No iniciado";
-  }
-
-  if (estado === "HT") {
-    estado = "Entretiempo";
-  }
-
-
-  if (
-    estado === "1H" ||
-    estado === "2H"
-  ) {
-
-    estado =
-      "🔴 EN VIVO · " +
-      (partido.minuto ?? "?") +
-      "'";
-
-  }
-
-
-  const fecha = partido.fecha
-    ? new Date(partido.fecha)
-        .toLocaleString("es-AR")
-    : "No disponible";
-
-
-  const local =
-    estadisticas.find(
-      equipo =>
-        Number(equipo.equipo?.id) ===
-        Number(partido.local?.id)
-    );
-
-
-  const visitante =
-    estadisticas.find(
-      equipo =>
-        Number(equipo.equipo?.id) ===
-        Number(partido.visitante?.id)
-    );
-
-
-  const localNombre =
-    partido.local?.nombre ||
-    "Local";
-
-
-  const visitanteNombre =
-    partido.visitante?.nombre ||
-    "Visitante";
-
-
-  const hayEstadisticas =
-    estadisticas.length > 0 &&
-    (local || visitante);
-
-
-  detalle.innerHTML = `
-
-    <div class="detalle">
+      <div class="teams">
+        <div class="team">${p.local}</div>
+        <div class="vs">VS</div>
+        <div class="team">${p.visitante}</div>
+      </div>
 
       <button
-        class="gris"
-        onclick="volver()"
+        class="analyze"
+        onclick="abrirPartido('${p.id}')"
       >
-        ← Volver a partidos
+        🧠 Analizar con MatchIA
       </button>
 
+    </div>
+  `).join("");
+}
 
-      <h2>
+function filtrar(){
+  mostrarPartidos();
+}
 
-        ${escapeHTML(localNombre)}
+function abrirPartido(id){
 
-        vs
+  const partido = partidos.find(p => p.id === id);
 
-        ${escapeHTML(visitanteNombre)}
+  if(!partido) return;
 
-      </h2>
+  partidoActual = partido;
 
+  minuto = 20;
+  golesLocal = 0;
+  golesVisitante = 0;
 
-      <div class="marcador">
+  if(intervalo){
+    clearInterval(intervalo);
+    intervalo = null;
+  }
 
-        ${partido.marcador?.local ?? 0}
+  document.getElementById("lista").classList.add("hidden");
+  document.getElementById("detalle").classList.remove("hidden");
 
-        -
+  renderDetalle();
+}
 
-        ${partido.marcador?.visitante ?? 0}
+function volver(){
 
+  if(intervalo){
+    clearInterval(intervalo);
+    intervalo = null;
+  }
+
+  document.getElementById("detalle").classList.add("hidden");
+  document.getElementById("lista").classList.remove("hidden");
+}
+
+function probabilidades(){
+
+  let local = 42;
+  let empate = 31;
+  let visitante = 27;
+
+  const factorTiempo = (minuto - 20) * 0.08;
+
+  local -= factorTiempo;
+  visitante += factorTiempo;
+  empate += factorTiempo * 0.5;
+
+  if(golesLocal > golesVisitante){
+    local += 25;
+    empate -= 12;
+    visitante -= 13;
+  }
+
+  if(golesVisitante > golesLocal){
+    visitante += 25;
+    empate -= 12;
+    local -= 13;
+  }
+
+  if(golesLocal === golesVisitante && minuto > 60){
+    empate += 8;
+    local -= 4;
+    visitante -= 4;
+  }
+
+  local = Math.max(1, local);
+  empate = Math.max(1, empate);
+  visitante = Math.max(1, visitante);
+
+  const total = local + empate + visitante;
+
+  return {
+    local:Math.round(local / total * 100),
+    empate:Math.round(empate / total * 100),
+    visitante:Math.round(visitante / total * 100)
+  };
+}
+
+function renderDetalle(){
+
+  const p = partidoActual;
+  const probs = probabilidades();
+
+  document.getElementById("detalle").innerHTML = `
+
+    <button class="back" onclick="volver()">
+      ← Volver a partidos
+    </button>
+
+    <div class="card">
+
+      <div class="league">
+        ${p.liga} · ${p.pais}
       </div>
 
-
-      <div class="dato">
-
-        🏆 Liga:
-
-        <strong>
-          ${escapeHTML(
-            partido.liga?.nombre ||
-            "No disponible"
-          )}
-        </strong>
-
+      <div class="teams">
+        <div class="team">${p.local}</div>
+        <div class="vs">VS</div>
+        <div class="team">${p.visitante}</div>
       </div>
 
-
-      <div class="dato">
-
-        🌎 País:
-
-        <strong>
-          ${escapeHTML(
-            partido.liga?.pais ||
-            "No disponible"
-          )}
-        </strong>
-
+      <div class="score">
+        ${golesLocal} - ${golesVisitante}
       </div>
 
-
-      <div class="dato">
-
-        📅 Fecha:
-
-        <strong>
-          ${escapeHTML(fecha)}
-        </strong>
-
+      <div class="live">
+        🔴 MINUTO ${minuto}'
       </div>
 
+      <div class="control-grid">
 
-      <div class="dato">
+        <button onclick="iniciar()">
+          ▶️ Iniciar
+        </button>
 
-        📌 Estado:
+        <button onclick="avanzar()">
+          ⏱️ +1 minuto
+        </button>
 
-        <strong>
-          ${escapeHTML(estado)}
-        </strong>
+        <button onclick="golLocal()">
+          ⚽ Gol local
+        </button>
 
-      </div>
+        <button onclick="golVisitante()">
+          ⚽ Gol visitante
+        </button>
 
+        <button onclick="reiniciar()">
+          ↩️ Reiniciar
+        </button>
 
-      <div class="dato">
-
-        🏟️ Estadio:
-
-        <strong>
-          ${escapeHTML(
-            partido.estadio ||
-            "No informado"
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="dato">
-
-        🧑‍⚖️ Árbitro:
-
-        <strong>
-          ${escapeHTML(
-            partido.arbitro ||
-            "No informado"
-          )}
-        </strong>
+        <button onclick="agregarCombinada()">
+          ➕ Combinada
+        </button>
 
       </div>
-
-
-      <div class="tituloStats">
-        📊 Estadísticas
-      </div>
-
-
-      ${
-        !hayEstadisticas
-        ? `
-          <div class="sinStats">
-
-            ℹ️ Las estadísticas de este partido
-            todavía no están disponibles
-            en la fuente de datos.
-
-            <br><br>
-
-            BetCheck mostrará automáticamente
-            las estadísticas cuando la API
-            las proporcione.
-
-          </div>
-        `
-        : `
-
-          <div class="nombreEquipos">
-
-            <strong>
-              ${escapeHTML(localNombre)}
-            </strong>
-
-            <span>
-              ESTADÍSTICA
-            </span>
-
-            <strong>
-              ${escapeHTML(visitanteNombre)}
-            </strong>
-
-          </div>
-
-
-          <div class="estadisticas">
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Total Shots")}
-              </div>
-
-              <div class="nombre">
-                🎯 Tiros totales
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Total Shots")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Shots on Goal")}
-              </div>
-
-              <div class="nombre">
-                🥅 Tiros al arco
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Shots on Goal")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Corner Kicks")}
-              </div>
-
-              <div class="nombre">
-                🚩 Córners
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Corner Kicks")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Ball Possession")}
-              </div>
-
-              <div class="nombre">
-                🟢 Posesión
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Ball Possession")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Passes accurate")}
-              </div>
-
-              <div class="nombre">
-                🔄 Pases precisos
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Passes accurate")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Fouls")}
-              </div>
-
-              <div class="nombre">
-                ⚠️ Faltas
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Fouls")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Yellow Cards")}
-              </div>
-
-              <div class="nombre">
-                🟨 Amarillas
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Yellow Cards")}
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="valor">
-                ${buscarStat(local, "Red Cards")}
-              </div>
-
-              <div class="nombre">
-                🟥 Rojas
-              </div>
-
-              <div class="valor">
-                ${buscarStat(visitante, "Red Cards")}
-              </div>
-
-            </div>
-
-
-          </div>
-
-        `
-      }
 
     </div>
 
+    <div class="section">
+      <h2>📊 Probabilidades MatchIA</h2>
+
+      <div class="market">
+        <div class="percent">
+          <span>${p.local}</span>
+          <span>${probs.local}%</span>
+        </div>
+        <div class="bar">
+          <div class="fill" style="width:${probs.local}%"></div>
+        </div>
+      </div>
+
+      <div class="market">
+        <div class="percent">
+          <span>Empate</span>
+          <span>${probs.empate}%</span>
+        </div>
+        <div class="bar">
+          <div class="fill" style="width:${probs.empate}%"></div>
+        </div>
+      </div>
+
+      <div class="market">
+        <div class="percent">
+          <span>${p.visitante}</span>
+          <span>${probs.visitante}%</span>
+        </div>
+        <div class="bar">
+          <div class="fill" style="width:${probs.visitante}%"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section">
+      <h2>🧠 ¿Por qué?</h2>
+
+      <div class="explanation">
+        Las estimaciones cambian según el minuto y el marcador.
+        <br><br>
+        ${
+          golesLocal > golesVisitante
+          ? `El gol de ${p.local} aumenta su probabilidad estimada y reduce las alternativas.`
+          : golesVisitante > golesLocal
+          ? `El gol de ${p.visitante} aumenta su probabilidad estimada y modifica el equilibrio del partido.`
+          : minuto > 60
+          ? `Con el partido avanzado y empatado, aumenta el peso estadístico del empate.`
+          : `El partido está equilibrado. A medida que avancen los minutos, las estimaciones se actualizarán.`
+        }
+      </div>
+
+    </div>
+
+    <div class="section">
+      <h2>📈 Estadísticas demo</h2>
+
+      <div class="card">
+
+        <div class="stat">
+          <span>Posesión</span>
+          <span>54% - 46%</span>
+        </div>
+
+        <div class="stat">
+          <span>Remates</span>
+          <span>8 - 5</span>
+        </div>
+
+        <div class="stat">
+          <span>Remates al arco</span>
+          <span>4 - 2</span>
+        </div>
+
+        <div class="stat">
+          <span>Corners</span>
+          <span>5 - 3</span>
+        </div>
+
+        <div class="stat">
+          <span>Últimos 5</span>
+          <span>3G 1E 1P</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎯 Mercados</h2>
+
+      <div class="market">
+        Victoria ${p.local}
+      </div>
+
+      <div class="market">
+        Empate
+      </div>
+
+      <div class="market">
+        Victoria ${p.visitante}
+      </div>
+
+      <div class="market">
+        Más de 1.5 goles
+      </div>
+
+      <div class="market">
+        Ambos equipos marcan
+      </div>
+
+      <div class="market">
+        Más de 8.5 corners
+      </div>
+
+    </div>
+
+    <div class="section">
+      <h2>🛡️ Predicción conservadora</h2>
+
+      <div class="explanation">
+        ${
+          golesLocal !== golesVisitante
+          ? "El marcador actual modifica significativamente la estimación."
+          : "El escenario todavía es equilibrado. Se recomienda interpretar las probabilidades como estimaciones estadísticas y no como garantías."
+        }
+      </div>
+
+    </div>
+
+    <div class="section">
+      <h2>🤝 Mi combinada</h2>
+
+      <div id="combinada" class="combo">
+        ${
+          combinada.length
+          ? combinada.map(x => `<div>• ${x}</div>`).join("")
+          : "Todavía no agregaste selecciones."
+        }
+      </div>
+    </div>
+
   `;
-
 }
 
+function iniciar(){
 
-function volver() {
+  if(intervalo) return;
 
-  document
-    .getElementById("detalleVista")
-    .classList.add("oculto");
+  intervalo = setInterval(() => {
 
-  document
-    .getElementById("listaVista")
-    .classList.remove("oculto");
+    if(minuto >= 90){
+      clearInterval(intervalo);
+      intervalo = null;
+      return;
+    }
 
-  window.scrollTo(0, 0);
+    minuto++;
 
+    renderDetalle();
+
+  },3000);
 }
 
+function avanzar(){
 
-cargar();
+  if(minuto < 90){
+    minuto++;
+    renderDetalle();
+  }
+}
+
+function golLocal(){
+
+  golesLocal++;
+  renderDetalle();
+}
+
+function golVisitante(){
+
+  golesVisitante++;
+  renderDetalle();
+}
+
+function reiniciar(){
+
+  minuto = 20;
+  golesLocal = 0;
+  golesVisitante = 0;
+
+  if(intervalo){
+    clearInterval(intervalo);
+    intervalo = null;
+  }
+
+  renderDetalle();
+}
+
+function agregarCombinada(){
+
+  const seleccion = `${partidoActual.local} vs ${partidoActual.visitante}`;
+
+  if(!combinada.includes(seleccion)){
+    combinada.push(seleccion);
+  }
+
+  renderDetalle();
+}
+
+cargarPartidos();
 
 </script>
 
