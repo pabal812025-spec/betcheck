@@ -3,1057 +3,896 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f">
 <title>MatchIA</title>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#fff}
-header{background:#0b192b;padding:16px;text-align:center;border-bottom:1px solid #20354f;position:sticky;top:0;z-index:20}
-header h1{margin:0;color:#27e0a3;font-size:28px}
-header p{margin:5px 0 0;color:#9db0c5;font-size:13px}
-main{max-width:950px;margin:auto;padding:14px}
-button,input,select{font:inherit}
-button{border:0;border-radius:10px;padding:10px 13px;margin:3px;background:#18304a;color:#fff;cursor:pointer}
-button:hover{filter:brightness(1.12)}
-.primary{background:#16a77d}.danger{background:#a83b4d}.back{background:#34465d}
-.card{background:#0e1d30;border:1px solid #233a56;border-radius:16px;padding:15px;margin-bottom:13px}
-.hidden{display:none!important}
-.small{color:#9fb2c8;font-size:12px}
-.center{text-align:center}
-.green{color:#27e0a3}.yellow{color:#ffd166}.red{color:#ff6b7d}
-.badge{display:inline-block;background:#193a53;color:#8eeed2;padding:5px 9px;border-radius:8px;font-size:11px}
-.status{padding:9px;border-radius:9px;background:#142943;margin-bottom:12px;text-align:center;font-size:12px}
-.ok{color:#27e0a3}.demo{color:#ffd166}
-.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
-.nav button{margin:0;font-size:12px}
-input,select{width:100%;padding:12px;border-radius:11px;border:1px solid #30445e;background:#101f33;color:#fff;margin-bottom:9px}
-.datebar{display:flex;gap:6px;overflow-x:auto;padding:3px 0 10px;scrollbar-width:none}
-.datebar::-webkit-scrollbar{display:none}
-.date{min-width:68px;background:#101f33;border:1px solid #30445e;border-radius:12px;padding:8px 5px;text-align:center;cursor:pointer}
-.date.today{background:#16a77d;border-color:#27e0a3;color:#04130f}
-.date b{display:block;font-size:15px}
-.date span{font-size:11px;color:#9fb2c8}
-.date.today span{color:#06291f}
-.section-title{color:#27e0a3;margin:2px 0 12px}
-.competition{background:#101f33;border:1px solid #243b57;border-radius:13px;margin-bottom:9px;overflow:hidden}
-.comp-head{padding:11px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.comp-body{padding:0 8px 8px}
-.match{background:#0e1d30;border:1px solid #233a56;border-radius:13px;padding:12px;margin:7px 0;cursor:pointer}
-.match:hover{border-color:#27e0a3}
-.teams{display:flex;justify-content:space-between;align-items:center;text-align:center;gap:8px}
-.team{width:37%;font-weight:bold;font-size:14px}
-.score{font-size:19px;font-weight:bold}
-.matchmeta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;color:#9fb2c8;font-size:11px}
-.star,.bell{font-size:19px;cursor:pointer;margin-left:5px}
-.star.on{color:#ffd166}.bell.on{color:#27e0a3}.bell.off{color:#66798f}
-.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.prob{background:#142943;border-radius:12px;padding:11px 5px;text-align:center}
-.prob strong{display:block;font-size:23px;margin:4px 0}
-.up{color:#27e0a3}.down{color:#ff6b7d}.same{color:#aebdcc}
-.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #23364d}
-.row:last-child{border-bottom:0}
-.explain{background:#112b32;border-left:4px solid #27e0a3;padding:12px;border-radius:8px;line-height:1.45}
-.market,.combo-item,.injury,.lineup-item{background:#142943;border-radius:10px;padding:11px;margin:6px 0}
-.market button{float:right;background:#27e0a3;color:#06151a;font-weight:bold}
-.table{width:100%;border-collapse:collapse;font-size:12px}
-.table th,.table td{padding:8px 4px;border-bottom:1px solid #23364d;text-align:center}
-.table th{color:#27e0a3}
-.livebar{background:#321722;border:1px solid #71313e;border-radius:10px;padding:9px;text-align:center}
-.live{color:#ff5868;font-weight:bold}
-.formations{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.formation{background:#142943;padding:12px;border-radius:12px;text-align:center}
-.tabrow{display:flex;gap:5px;overflow-x:auto;margin-bottom:10px}
-.tabrow button{white-space:nowrap}
-.empty{color:#9fb2c8;text-align:center;padding:12px}
-@media(max-width:520px){
-.nav{grid-template-columns:repeat(2,1fr)}
-.probs{gap:4px}.prob strong{font-size:20px}
-.team{font-size:12px}
-.formations{grid-template-columns:1fr}
-button{padding:9px 10px}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#07111f;
+  color:#fff;
+}
+button{
+  border:0;
+  border-radius:10px;
+  padding:11px 14px;
+  background:#172942;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+button:hover{background:#213a5c}
+.app{max-width:900px;margin:auto;padding:18px}
+header{margin-bottom:18px}
+h1{margin:0;font-size:28px}
+.sub{color:#91a4bd;margin-top:5px}
+.card{
+  background:#0d1b2e;
+  border:1px solid #1c314d;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+}
+.back{color:#7db7ff;margin-bottom:15px}
+.league{
+  color:#9db1c9;
+  font-size:14px;
+  margin-bottom:15px;
+}
+.teams{
+  display:grid;
+  grid-template-columns:1fr 100px 1fr;
+  align-items:center;
+  text-align:center;
+}
+.team{font-size:21px;font-weight:bold}
+.score{font-size:32px;font-weight:bold}
+.status{color:#ff4d4d;font-weight:bold;margin-top:5px}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+h2{font-size:19px;margin-top:0}
+.prob-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.prob{
+  background:#132640;
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+}
+.prob .name{font-size:13px;color:#9fb1c8}
+.prob .value{font-size:30px;font-weight:bold;margin-top:5px}
+.river .value{color:#55a7ff}
+.draw .value{color:#ffd45c}
+.boca .value{color:#ff6d6d}
+.reason{
+  color:#c8d4e4;
+  line-height:1.5;
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.stat{
+  background:#132640;
+  padding:12px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+}
+.market{
+  display:inline-block;
+  margin:4px;
+  padding:10px 12px;
+  border-radius:9px;
+  background:#172942;
+}
+.warning{
+  color:#9fb1c8;
+  font-size:14px;
+  line-height:1.5;
+}
+.red{
+  color:#ff5555;
+  font-weight:bold;
+}
+@media(max-width:600px){
+  .teams{grid-template-columns:1fr 80px 1fr}
+  .team{font-size:17px}
+  .score{font-size:26px}
+  .prob-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
+<div class="app">
+
 <header>
-<h1>⚽ MatchIA</h1>
-<p>Análisis estadístico de fútbol</p>
+  <h1>MatchIA</h1>
+  <div class="sub">Análisis estadístico de partidos</div>
 </header>
 
-<main>
-
-<div id="home">
-
-<div class="nav">
-<button onclick="seccion('partidos')">⚽ Partidos</button>
-<button onclick="seccion('tabla')">🏆 Tabla</button>
-<button onclick="seccion('favoritos')">⭐ Favoritos</button>
-<button onclick="seccion('combo')">➕ Análisis</button>
-</div>
-
-<div class="status">
-<span class="demo">🟡 Modo demostración</span>
-</div>
-
-<div id="partidos">
-
-<div class="datebar" id="fechas"></div>
-
-<input id="buscar" placeholder="🔎 Buscar equipo, liga o competición..." oninput="filtrar()">
-
-<select id="pais" onchange="filtrar()">
-<option value="">Todos los países</option>
-<option>Argentina</option>
-<option>España</option>
-<option>Inglaterra</option>
-<option>Italia</option>
-<option>Alemania</option>
-<option>Francia</option>
-</select>
-
 <div class="card">
-<h3 class="section-title">⭐ Partidos destacados</h3>
-<div id="destacados"></div>
+
+  <div class="back">← Volver a partidos</div>
+
+  <div class="league">Liga Profesional Argentina · Argentina</div>
+
+  <div class="teams">
+    <div class="team">River Plate</div>
+
+    <div>
+      <div class="score">
+        <span id="homeScore">0</span> -
+        <span id="awayScore">0</span>
+      </div>
+      <div class="status" id="status">🔴 MINUTO 20'</div>
+    </div>
+
+    <div class="team">Boca Juniors</div>
+  </div>
+
+  <div class="controls">
+    <button onclick="startGame()">▶️ Iniciar</button>
+    <button onclick="nextMinute()">⏱️ +1 minuto</button>
+    <button onclick="homeGoal()">⚽ Gol local</button>
+    <button onclick="awayGoal()">⚽ Gol visitante</button>
+    <button onclick="homeRed()">🟥 Roja River</button>
+    <button onclick="awayRed()">🟥 Roja Boca</button>
+    <button onclick="resetGame()">↩️ Reiniciar</button>
+  </div>
+
 </div>
 
 <div class="card">
-<h3 class="section-title">🌎 Otras ligas importantes</h3>
-<div id="otras"></div>
-</div>
+
+  <h2>📊 Probabilidades MatchIA</h2>
+
+  <div class="prob-grid">
+
+    <div class="prob river">
+      <div class="name">River Plate</div>
+      <div class="value" id="homeProb">33%</div>
+    </div>
+
+    <div class="prob draw">
+      <div class="name">Empate</div>
+      <div class="value" id="drawProb">34%</div>
+    </div>
+
+    <div class="prob boca">
+      <div class="name">Boca Juniors</div>
+      <div class="value" id="awayProb">33%</div>
+    </div>
+
+  </div>
 
 </div>
-
-
-<div id="tabla" class="hidden">
-<div class="card">
-<h3 class="section-title">🏆 Tabla de posiciones</h3>
-<div class="tabrow">
-<button class="primary" onclick="tablaDemo('Argentina')">🇦🇷 Argentina</button>
-<button onclick="tablaDemo('España')">🇪🇸 España</button>
-<button onclick="tablaDemo('Inglaterra')">🏴 Inglaterra</button>
-</div>
-<div id="tablaContenido"></div>
-</div>
-</div>
-
-
-<div id="favoritos" class="hidden">
-<div class="card">
-<h3 class="section-title">⭐ Mis equipos</h3>
-<p class="small">⭐ marca favorito · 🔔 activa o silencia sus notificaciones.</p>
-<div id="favoritosContenido"></div>
-</div>
-</div>
-
-
-<div id="combo" class="hidden">
-<div class="card">
-<h3 class="section-title">➕ Mi análisis combinado</h3>
-<div id="comboPrincipal"></div>
-</div>
-</div>
-
-</div>
-
-
-<div id="detalle" class="hidden">
-
-<button class="back" onclick="volver()">← Volver</button>
 
 <div class="card">
 
-<div style="display:flex;justify-content:space-between;align-items:center">
-<span id="estado" class="badge">PRÓXIMO</span>
-<span>
-<span id="favoritoDetalle" class="star" onclick="toggleFavoritoActual()">☆</span>
-<span id="campanaDetalle" class="bell" onclick="toggleCampanaActual()">🔔</span>
-</span>
-</div>
+  <h2>🧠 ¿Por qué?</h2>
 
-<div class="teams" style="margin-top:15px">
-<div class="team" id="local"></div>
-
-<div>
-<div class="score">
-<span id="gl">0</span> - <span id="gv">0</span>
-</div>
-<div class="small"><span id="minuto">0</span>'</div>
-</div>
-
-<div class="team" id="visitante"></div>
-</div>
-
-<div class="center" style="margin-top:10px">
-<span class="badge" id="ligaDetalle"></span>
-</div>
-
-<div class="center" style="margin-top:10px">
-<button onclick="minutoMas()">⏱️ +1'</button>
-<button onclick="gol(1)">⚽ Gol local</button>
-<button onclick="gol(2)">⚽ Gol visitante</button>
-<button onclick="tarjeta('Amarilla')">🟨 Amarilla</button>
-<button onclick="tarjeta('Roja')">🟥 Roja</button>
-</div>
-
-<button class="primary" style="width:100%" onclick="modoLive()">
-🔴 Activar / detener LIVE
-</button>
-
-<div id="livebar" class="livebar hidden">
-<span class="live">🔴 LIVE ACTIVO</span><br>
-<span class="small">Actualización automática de demostración</span>
-</div>
+  <div class="reason" id="reason">
+    El cálculo considera marcador, minuto, expulsiones y estadísticas del partido.
+  </div>
 
 </div>
-
 
 <div class="card">
-<h3 class="section-title">📊 Pronósticos MatchIA</h3>
-<div class="probs">
-<div class="prob">
-<span id="nl"></span>
-<strong id="pl">42%</strong>
-<span id="dl"></span>
-</div>
-<div class="prob">
-<span>Empate</span>
-<strong id="pe">31%</strong>
-<span id="de"></span>
-</div>
-<div class="prob">
-<span id="nv"></span>
-<strong id="pv">27%</strong>
-<span id="dv"></span>
-</div>
-</div>
-</div>
 
+  <h2>📈 Estadísticas del partido</h2>
+
+  <div class="stats">
+
+    <div class="stat">
+      <span>Posesión</span>
+      <b><span id="posHome">54</span>% -
+      <span id="posAway">46</span>%</b>
+    </div>
+
+    <div class="stat">
+      <span>Remates</span>
+      <b><span id="shotsHome">8</span> -
+      <span id="shotsAway">5</span></b>
+    </div>
+
+    <div class="stat">
+      <span>Remates al arco</span>
+      <b><span id="targetHome">4</span> -
+      <span id="targetAway">2</span></b>
+    </div>
+
+    <div class="stat">
+      <span>Corners</span>
+      <b><span id="cornersHome">5</span> -
+      <span id="cornersAway">3</span></b>
+    </div>
+
+    <div class="stat">
+      <span>Expulsiones</span>
+      <b>
+        <span id="redHome">0</span> -
+        <span id="redAway">0</span>
+      </b>
+    </div>
+
+    <div class="stat">
+      <span>Tiempo restante</span>
+      <b id="remaining">70'</b>
+    </div>
+
+  </div>
+
+</div>
 
 <div class="card">
-<h3 class="section-title">🧠 ¿Por qué cambió?</h3>
-<div class="explain" id="porque"></div>
-</div>
 
+  <h2>🎯 Mercados</h2>
+
+  <span class="market">Victoria River Plate</span>
+  <span class="market">Empate</span>
+  <span class="market">Victoria Boca Juniors</span>
+  <span class="market">Más de 1.5 goles</span>
+  <span class="market">Ambos equipos marcan</span>
+  <span class="market">Más de 8.5 corners</span>
+
+</div>
 
 <div class="card">
-<h3 class="section-title">👥 Alineaciones</h3>
-<div id="alineaciones"></div>
-</div>
 
+  <h2>🛡️ Predicción estadística</h2>
 
-<div class="card">
-<h3 class="section-title">📈 Últimos 5</h3>
-<div id="forma"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">🤝 H2H</h3>
-<div id="h2h"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">📊 Estadísticas</h3>
-<div id="stats"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">🟨🟥 Tarjetas</h3>
-<div id="tarjetas"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">🎯 Análisis estadísticos</h3>
-<div id="mercados"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">🛡️ Pronóstico conservador</h3>
-<div id="conservador"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">🏥 Lesiones y sanciones</h3>
-<div id="bajas"></div>
-</div>
-
-
-<div class="card">
-<h3 class="section-title">➕ Mi análisis combinado</h3>
-<div id="comboDetalle"></div>
-<button class="danger" onclick="limpiar()">Vaciar</button>
-</div>
+  <div class="warning" id="prediction">
+    Las probabilidades son estimaciones estadísticas y no garantías.
+  </div>
 
 </div>
 
-</main>
-
+</div>
 
 <script>
 
-const partidos=[
+let minute = 20;
 
-{
-id:1,
-fecha:0,
-pais:"Argentina",
-liga:"Liga Profesional",
-competicion:"Liga Profesional",
-local:"River Plate",
-visitante:"Boca Juniors",
-hora:"19:00",
-destacado:true,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","E","V","D"],
-formaV:["V","D","V","E","D"],
-stats:["58% - 42%","13 - 9","6 - 4","6 - 3","72 - 61","39 - 31"],
-h2h:[
-"River Plate 1 - 1 Boca Juniors",
-"Boca Juniors 0 - 2 River Plate",
-"River Plate 2 - 0 Boca Juniors",
-"Boca Juniors 1 - 0 River Plate",
-"River Plate 1 - 0 Boca Juniors"
-],
-bajas:["River Plate — sin bajas importantes","Boca Juniors — 1 jugador suspendido"]
-},
+let homeScore = 0;
+let awayScore = 0;
 
-{
-id:2,
-fecha:0,
-pais:"España",
-liga:"LaLiga",
-competicion:"LaLiga",
-local:"Barcelona",
-visitante:"Real Madrid",
-hora:"16:00",
-destacado:true,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","V","E","V"],
-formaV:["V","V","D","V","E"],
-stats:["54% - 46%","15 - 12","7 - 5","5 - 5","68 - 65","41 - 38"],
-h2h:[
-"Barcelona 2 - 1 Real Madrid",
-"Real Madrid 3 - 2 Barcelona",
-"Barcelona 1 - 1 Real Madrid",
-"Real Madrid 0 - 4 Barcelona",
-"Barcelona 2 - 2 Real Madrid"
-],
-bajas:["Barcelona — 1 jugador en duda","Real Madrid — sin bajas importantes"]
-},
+let homeRedCards = 0;
+let awayRedCards = 0;
 
-{
-id:3,
-fecha:0,
-pais:"Inglaterra",
-liga:"Premier League",
-competicion:"Premier League",
-local:"Manchester City",
-visitante:"Liverpool",
-hora:"13:30",
-destacado:true,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","E","V","V"],
-formaV:["V","E","V","D","V"],
-stats:["61% - 39%","17 - 10","8 - 4","7 - 4","76 - 58","44 - 29"],
-h2h:[
-"Manchester City 2 - 2 Liverpool",
-"Liverpool 1 - 3 Manchester City",
-"Manchester City 1 - 1 Liverpool",
-"Liverpool 2 - 0 Manchester City",
-"Manchester City 4 - 1 Liverpool"
-],
-bajas:["Manchester City — sin bajas importantes","Liverpool — 1 jugador suspendido"]
-},
+let homeShots = 8;
+let awayShots = 5;
 
-{
-id:4,
-fecha:0,
-pais:"Argentina",
-liga:"Primera Nacional",
-competicion:"Primera Nacional",
-local:"San Martín",
-visitante:"Nueva Chicago",
-hora:"15:00",
-destacado:false,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","E","V","D","V"],
-formaV:["E","V","D","V","D"],
-stats:["51% - 49%","10 - 8","4 - 3","5 - 4","63 - 59","31 - 28"],
-h2h:["San Martín 1 - 0 Nueva Chicago","Nueva Chicago 1 - 1 San Martín"],
-bajas:["Sin información adicional"]
-},
+let homeTarget = 4;
+let awayTarget = 2;
 
-{
-id:5,
-fecha:0,
-pais:"Italia",
-liga:"Serie A",
-competicion:"Serie A",
-local:"Inter",
-visitante:"Milan",
-hora:"15:45",
-destacado:false,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","V","E","V"],
-formaV:["D","V","E","V","D"],
-stats:["56% - 44%","14 - 9","6 - 3","7 - 2","70 - 55","40 - 25"],
-h2h:["Inter 2 - 1 Milan","Milan 0 - 2 Inter"],
-bajas:["Sin información adicional"]
-},
+let homeCorners = 5;
+let awayCorners = 3;
 
-{
-id:6,
-fecha:0,
-pais:"Alemania",
-liga:"Bundesliga",
-competicion:"Bundesliga",
-local:"Bayern Munich",
-visitante:"Dortmund",
-hora:"14:30",
-destacado:false,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","V","V","E"],
-formaV:["V","D","V","E","V"],
-stats:["60% - 40%","18 - 11","9 - 5","8 - 4","75 - 57","45 - 30"],
-h2h:["Bayern 3 - 1 Dortmund","Dortmund 2 - 2 Bayern"],
-bajas:["Sin información adicional"]
-},
+let homePossession = 54;
+let awayPossession = 46;
 
-{
-id:7,
-fecha:0,
-pais:"Francia",
-liga:"Ligue 1",
-competicion:"Ligue 1",
-local:"PSG",
-visitante:"Lyon",
-hora:"17:00",
-destacado:false,
-estado:"NS",
-gl:0,gv:0,
-formaL:["V","V","V","E","V"],
-formaV:["D","E","V","D","V"],
-stats:["63% - 37%","16 - 8","8 - 3","6 - 2","78 - 49","46 - 23"],
-h2h:["PSG 3 - 0 Lyon","Lyon 1 - 2 PSG"],
-bajas:["Sin información adicional"]
-}
+let timer = null;
 
-];
 
-const equipos=[
-"River Plate","Boca Juniors","Racing","Independiente",
-"San Lorenzo","Barcelona","Real Madrid","Manchester City",
-"Liverpool","Inter","Milan","Bayern Munich","Dortmund",
-"PSG","Lyon","San Martín","Nueva Chicago"
-];
+/*
+  MOTOR DE PROBABILIDADES MATCHIA
 
-let favoritos=JSON.parse(localStorage.getItem("matchia_favoritos")||"[]");
-let campanas=JSON.parse(localStorage.getItem("matchia_campanas")||"[]");
-let combinada=[];
-let partido=null;
-let minuto=0;
-let gl=0;
-let gv=0;
-let live=false;
-let timer=null;
-let anterior={l:42,e:31,v:27};
+  No usa un porcentaje fijo.
 
-function guardar(){
-localStorage.setItem("matchia_favoritos",JSON.stringify(favoritos));
-localStorage.setItem("matchia_campanas",JSON.stringify(campanas));
-}
+  Considera:
+  - marcador
+  - minuto
+  - diferencia de goles
+  - expulsiones
+  - remates
+  - remates al arco
+  - corners
+  - posesión
+  - localía
+  - tiempo restante
+*/
 
-function hoyBase(){
-const d=new Date();
-d.setHours(0,0,0,0);
-return d;
-}
+function calculateProbabilities(){
 
-function fechaTexto(offset){
-const d=hoyBase();
-d.setDate(d.getDate()+offset);
-return d;
-}
+  let homeStrength = 0;
+  let awayStrength = 0;
 
-function fechas(){
-const box=document.getElementById("fechas");
-box.innerHTML="";
+  /*
+    1. LOCALÍA
+  */
+  homeStrength += 0.18;
 
-for(let i=-5;i<=5;i++){
 
-const d=fechaTexto(i);
-const nombres=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"];
-const el=document.createElement("div");
+  /*
+    2. MARCADOR
 
-el.className="date"+(i===0?" today":"");
+    Cuanto mayor sea la diferencia,
+    mayor es el peso.
+  */
+  const goalDiff = homeScore - awayScore;
 
-el.innerHTML=`
-<b>${d.getDate()}</b>
-<span>${nombres[d.getDay()]}</span>
-`;
+  homeStrength += goalDiff * 0.95;
+  awayStrength -= goalDiff * 0.95;
 
-el.onclick=()=>seleccionarFecha(i);
 
-box.appendChild(el);
+  /*
+    3. REMATES
+  */
+  homeStrength += (homeShots - awayShots) * 0.035;
+  awayStrength += (awayShots - homeShots) * 0.035;
 
-}
-}
 
-function seleccionarFecha(offset){
+  /*
+    4. REMATES AL ARCO
 
-document.querySelectorAll(".date").forEach(x=>x.classList.remove("today"));
-const index=offset+5;
-const els=document.querySelectorAll(".date");
-if(els[index])els[index].classList.add("today");
+    Tienen más peso que los remates totales.
+  */
+  homeStrength += (homeTarget - awayTarget) * 0.11;
+  awayStrength += (awayTarget - homeTarget) * 0.11;
 
-renderPartidos(partidos);
-}
 
-function seccion(nombre){
+  /*
+    5. CORNERS
+  */
+  homeStrength += (homeCorners - awayCorners) * 0.025;
+  awayStrength += (awayCorners - homeCorners) * 0.025;
 
-["partidos","tabla","favoritos","combo"].forEach(x=>
-document.getElementById(x).classList.add("hidden")
-);
 
-document.getElementById(nombre).classList.remove("hidden");
+  /*
+    6. POSESIÓN
+  */
+  homeStrength += (homePossession - awayPossession) * 0.008;
+  awayStrength += (awayPossession - homePossession) * 0.008;
 
-if(nombre==="tabla")tablaDemo("Argentina");
-if(nombre==="favoritos")renderFavoritos();
-if(nombre==="combo")renderCombo();
-}
 
-function filtrar(){
-renderPartidos();
-}
+  /*
+    7. EXPULSIONES
 
-function renderPartidos(){
+    Una roja tiene un peso importante.
+  */
+  homeStrength -= homeRedCards * 1.25;
+  awayStrength -= awayRedCards * 1.25;
 
-const q=(document.getElementById("buscar").value||"").toLowerCase();
-const pais=document.getElementById("pais").value;
 
-const lista=partidos.filter(p=>
-(p.local+" "+p.visitante+" "+p.liga+" "+p.competicion+" "+p.pais)
-.toLowerCase().includes(q)&&
-(!pais||p.pais===pais)
-);
+  /*
+    8. TIEMPO
 
-const destacados=lista.filter(p=>p.destacado);
-const otras=lista.filter(p=>!p.destacado);
+    Cuando quedan pocos minutos,
+    el marcador tiene mucho más peso.
 
-renderGrupo("destacados",destacados,true);
-renderGrupo("otras",otras,false);
+    Esto evita cosas absurdas como:
+    83' 5-0 -> 60%.
+  */
+  const timeFactor = 1 + (minute / 90) * 2.5;
+
+  homeStrength += goalDiff * timeFactor;
+  awayStrength -= goalDiff * timeFactor;
+
+
+  /*
+    9. CONVERTIR FUERZA EN PROBABILIDADES
+  */
+
+  let homeBase = Math.exp(homeStrength);
+  let awayBase = Math.exp(awayStrength);
+
+  /*
+    El empate disminuye cuando existe
+    una diferencia grande de goles.
+
+    Pero cuando el partido está igualado,
+    el empate recibe más peso.
+  */
+
+  let drawBase;
+
+  if(goalDiff === 0){
+
+    drawBase = 1.25 + (minute / 90) * 1.5;
+
+  }else{
+
+    drawBase =
+      0.65 /
+      (1 + Math.abs(goalDiff) * (0.7 + minute / 120));
+
+  }
+
+
+  /*
+    Si faltan muy pocos minutos,
+    una diferencia grande de goles
+    hace que la probabilidad del líder
+    se acerque mucho al 100%.
+  */
+
+  if(minute >= 80 && Math.abs(goalDiff) >= 3){
+
+    if(goalDiff > 0){
+
+      homeBase *= 15;
+
+    }else{
+
+      awayBase *= 15;
+
+    }
+
+  }
+
+
+  /*
+    Roja con ventaja también aumenta
+    mucho la seguridad del resultado.
+  */
+
+  if(minute >= 75){
+
+    if(goalDiff > 0 && awayRedCards > homeRedCards){
+      homeBase *= 4;
+    }
+
+    if(goalDiff < 0 && homeRedCards > awayRedCards){
+      awayBase *= 4;
+    }
+
+  }
+
+
+  const total = homeBase + awayBase + drawBase;
+
+  let homeProb = homeBase / total * 100;
+  let awayProb = awayBase / total * 100;
+  let drawProb = drawBase / total * 100;
+
+
+  /*
+    Con ventajas enormes y poco tiempo,
+    llevamos la estimación a una zona
+    cercana al 100%, sin afirmar certeza absoluta.
+  */
+
+  if(minute >= 80 && Math.abs(goalDiff) >= 4){
+
+    if(goalDiff > 0){
+
+      homeProb = Math.max(homeProb, 98);
+      awayProb = Math.min(awayProb, 1);
+      drawProb = Math.min(drawProb, 1);
+
+    }else{
+
+      awayProb = Math.max(awayProb, 98);
+      homeProb = Math.min(homeProb, 1);
+      drawProb = Math.min(drawProb, 1);
+
+    }
+
+  }
+
+
+  /*
+    Normalizar para que siempre sume 100.
+  */
+
+  const sum = homeProb + drawProb + awayProb;
+
+  homeProb = homeProb / sum * 100;
+  drawProb = drawProb / sum * 100;
+  awayProb = awayProb / sum * 100;
+
+
+  /*
+    Redondeo manteniendo 100%.
+  */
+
+  let h = Math.round(homeProb);
+  let d = Math.round(drawProb);
+  let a = 100 - h - d;
+
+  if(a < 0){
+    a = 0;
+  }
+
+
+  updateScreen(h,d,a);
+
+  updateReason(h,d,a);
 
 }
 
-function renderGrupo(id,lista,principal){
 
-const box=document.getElementById(id);
+/*
+  ACTUALIZAR PANTALLA
+*/
 
-if(!lista.length){
-box.innerHTML="<div class='empty'>No hay partidos para mostrar.</div>";
-return;
-}
+function updateScreen(home,draw,away){
 
-const grupos={};
+  document.getElementById("homeProb").textContent = home + "%";
+  document.getElementById("drawProb").textContent = draw + "%";
+  document.getElementById("awayProb").textContent = away + "%";
 
-lista.forEach(p=>{
-if(!grupos[p.competicion])grupos[p.competicion]=[];
-grupos[p.competicion].push(p);
-});
+  document.getElementById("homeScore").textContent = homeScore;
+  document.getElementById("awayScore").textContent = awayScore;
 
-box.innerHTML="";
+  document.getElementById("status").textContent =
+    "🔴 MINUTO " + minute + "'";
 
-Object.keys(grupos).forEach(comp=>{
+  document.getElementById("remaining").textContent =
+    Math.max(0,90-minute) + "'";
 
-const div=document.createElement("div");
-div.className="competition";
+  document.getElementById("redHome").textContent =
+    homeRedCards;
 
-div.innerHTML=`
-<div class="comp-head">
-<b>🏆 ${comp}</b>
-<span class="small">${grupos[comp].length} partido(s)</span>
-</div>
-<div class="comp-body"></div>
-`;
-
-const body=div.querySelector(".comp-body");
-
-grupos[comp].forEach(p=>{
-body.appendChild(crearPartido(p));
-});
-
-box.appendChild(div);
-
-});
+  document.getElementById("redAway").textContent =
+    awayRedCards;
 
 }
 
-function crearPartido(p){
 
-const div=document.createElement("div");
-div.className="match";
+/*
+  EXPLICACIÓN AUTOMÁTICA
+*/
 
-const favL=favoritos.includes(p.local);
-const favV=favoritos.includes(p.visitante);
+function updateReason(home,draw,away){
 
-div.innerHTML=`
-<div class="teams">
-<div class="team">${p.local}</div>
-<div>
-<div class="score">${p.gl} - ${p.gv}</div>
-<span class="small">${p.hora}</span>
-</div>
-<div class="team">${p.visitante}</div>
-</div>
+  let text = "";
 
-<div class="matchmeta">
-<span>${p.pais} • ${p.liga}</span>
-<span>
-<span class="star ${favL?'on':''}" title="Favorito"
-onclick="event.stopPropagation();toggleFavorito('${p.local}')">${favL?"★":"☆"}</span>
-<span class="star ${favV?'on':''}" title="Favorito"
-onclick="event.stopPropagation();toggleFavorito('${p.visitante}')">${favV?"★":"☆"}</span>
-</span>
-</div>
-`;
+  const diff = homeScore - awayScore;
 
-div.onclick=()=>abrir(p.id);
+  if(minute >= 85 && Math.abs(diff) >= 4){
 
-return div;
-}
+    text =
+      "El marcador es muy amplio y queda muy poco tiempo. " +
+      "La estimación favorece fuertemente al equipo que está ganando.";
 
-function abrir(id){
+  }else if(homeRedCards > awayRedCards){
 
-partido=partidos.find(p=>p.id===id);
-if(!partido)return;
+    text =
+      "River tiene una expulsión más que Boca. " +
+      "La inferioridad numérica reduce su estimación de resultado.";
 
-minuto=partido.estado==="NS"?0:20;
-gl=partido.gl;
-gv=partido.gv;
-anterior={l:42,e:31,v:27};
+  }else if(awayRedCards > homeRedCards){
 
-document.getElementById("home").classList.add("hidden");
-document.getElementById("detalle").classList.remove("hidden");
+    text =
+      "Boca tiene una expulsión más que River. " +
+      "La inferioridad numérica reduce su estimación de resultado.";
 
-document.getElementById("local").textContent=partido.local;
-document.getElementById("visitante").textContent=partido.visitante;
-document.getElementById("nl").textContent=partido.local;
-document.getElementById("nv").textContent=partido.visitante;
-document.getElementById("ligaDetalle").textContent=
-partido.pais+" • "+partido.competicion;
+  }else if(diff > 0){
 
-actualizarIconos();
-render(false);
+    text =
+      "River está ganando " +
+      homeScore + "-" + awayScore +
+      ". El marcador y el tiempo restante favorecen a River.";
 
-}
+  }else if(diff < 0){
 
-function volver(){
+    text =
+      "Boca está ganando " +
+      awayScore + "-" + homeScore +
+      ". El marcador y el tiempo restante favorecen a Boca.";
 
-detener();
+  }else if(minute >= 75){
 
-document.getElementById("detalle").classList.add("hidden");
-document.getElementById("home").classList.remove("hidden");
+    text =
+      "El partido está empatado y queda poco tiempo. " +
+      "El empate gana peso a medida que se acerca el final.";
 
-}
+  }else{
 
-function toggleFavorito(equipo){
+    text =
+      "El partido está equilibrado. " +
+      "La estimación combina marcador, minuto y rendimiento estadístico.";
 
-if(favoritos.includes(equipo))
-favoritos=favoritos.filter(x=>x!==equipo);
-else
-favoritos.push(equipo);
+  }
 
-if(!favoritos.includes(equipo))
-campanas=campanas.filter(x=>x!==equipo);
+  text +=
+    " Remates al arco: River " +
+    homeTarget +
+    " - " +
+    awayTarget +
+    " Boca.";
 
-guardar();
-renderPartidos();
-renderFavoritos();
+  document.getElementById("reason").textContent = text;
 
-if(partido)actualizarIconos();
 
-}
+  /*
+    Predicción estadística
+  */
 
-function toggleCampana(equipo){
+  let prediction = "";
 
-if(!favoritos.includes(equipo)){
-favoritos.push(equipo);
-}
+  if(home >= 85){
 
-if(campanas.includes(equipo))
-campanas=campanas.filter(x=>x!==equipo);
-else
-campanas.push(equipo);
+    prediction =
+      "River presenta una probabilidad estadística muy alta de terminar ganando. " +
+      "La estimación está impulsada principalmente por el marcador y el tiempo restante.";
 
-guardar();
-renderFavoritos();
-renderPartidos();
+  }else if(away >= 85){
 
-if(partido)actualizarIconos();
+    prediction =
+      "Boca presenta una probabilidad estadística muy alta de terminar ganando. " +
+      "La estimación está impulsada principalmente por el marcador y el tiempo restante.";
 
-}
+  }else if(draw >= 50){
 
-function actualizarIconos(){
+    prediction =
+      "El empate es actualmente el resultado con mayor estimación estadística.";
 
-if(!partido)return;
+  }else{
 
-const f=favoritos.includes(partido.local)||favoritos.includes(partido.visitante);
-const c=campanas.includes(partido.local)||campanas.includes(partido.visitante);
+    prediction =
+      "El escenario todavía tiene incertidumbre. " +
+      "La estimación se actualiza con cada minuto y cada evento del partido.";
 
-document.getElementById("favoritoDetalle").textContent=f?"★":"☆";
-document.getElementById("favoritoDetalle").className="star "+(f?"on":"");
+  }
 
-document.getElementById("campanaDetalle").textContent=c?"🔔":"🔕";
-document.getElementById("campanaDetalle").className="bell "+(c?"on":"off");
+  prediction +=
+    " Son estimaciones estadísticas, no garantías.";
+
+  document.getElementById("prediction").textContent = prediction;
 
 }
 
-function toggleFavoritoActual(){
 
-if(!partido)return;
+/*
+  AVANZAR MINUTO
+*/
 
-toggleFavorito(partido.local);
+function nextMinute(){
 
-}
+  if(minute >= 90){
 
-function toggleCampanaActual(){
+    minute = 90;
+    updateAll();
+    return;
 
-if(!partido)return;
+  }
 
-toggleCampana(partido.local);
+  minute++;
 
-}
+  /*
+    Estadísticas evolucionan lentamente
+    mientras pasa el tiempo.
+  */
 
-function renderFavoritos(){
+  if(Math.random() > 0.45){
 
-const box=document.getElementById("favoritosContenido");
+    homeShots++;
 
-if(!favoritos.length){
-box.innerHTML="<div class='empty'>Todavía no marcaste equipos favoritos.</div>";
-return;
-}
+  }
 
-box.innerHTML="";
+  if(Math.random() > 0.5){
 
-favoritos.forEach(equipo=>{
+    awayShots++;
 
-const activa=campanas.includes(equipo);
+  }
 
-const div=document.createElement("div");
-div.className="row";
+  if(Math.random() > 0.55){
 
-div.innerHTML=`
-<strong>⭐ ${equipo}</strong>
-<span>
-<span class="bell ${activa?"on":"off"}"
-onclick="toggleCampana('${equipo}')">${activa?"🔔":"🔕"}</span>
-<button class="danger" onclick="toggleFavorito('${equipo}')">Quitar</button>
-</span>
-`;
+    homeTarget++;
 
-box.appendChild(div);
+  }
 
-});
+  if(Math.random() > 0.6){
 
-}
+    awayTarget++;
 
-function minutoMas(){
+  }
 
-if(minuto>=90)return;
+  if(Math.random() > 0.72){
 
-minuto++;
+    homeCorners++;
 
-render(true);
+  }
 
-}
+  if(Math.random() > 0.74){
 
-function gol(equipo){
+    awayCorners++;
 
-if(minuto<90)minuto++;
+  }
 
-if(equipo===1)gl++;
-else gv++;
+  /*
+    Pequeña variación de posesión.
+  */
 
-render(true);
+  const change = Math.random() > 0.5 ? 1 : -1;
 
-}
+  homePossession += change;
 
-function tarjeta(tipo){
+  if(homePossession < 35) homePossession = 35;
+  if(homePossession > 65) homePossession = 65;
 
-const box=document.getElementById("tarjetas");
+  awayPossession = 100 - homePossession;
 
-const nombre=tipo==="Roja"?"🟥 Tarjeta roja":"🟨 Tarjeta amarilla";
-
-box.innerHTML+=`
-<div class="row">
-<span>${nombre}</span>
-<span>Minuto ${minuto}'</span>
-</div>
-`;
+  updateAll();
 
 }
 
-function modoLive(){
 
-if(live){
-detener();
-return;
-}
+/*
+  GOL LOCAL
+*/
 
-live=true;
-document.getElementById("livebar").classList.remove("hidden");
+function homeGoal(){
 
-timer=setInterval(()=>{
-if(minuto<90){
-minuto++;
-render(true);
-}else{
-detener();
-}
-},30000);
+  homeScore++;
+
+  homeShots += 1;
+  homeTarget += 1;
+
+  updateAll();
 
 }
 
-function detener(){
 
-live=false;
+/*
+  GOL VISITANTE
+*/
 
-if(timer){
-clearInterval(timer);
-timer=null;
-}
+function awayGoal(){
 
-document.getElementById("livebar").classList.add("hidden");
+  awayScore++;
 
-}
+  awayShots += 1;
+  awayTarget += 1;
 
-function probabilidades(){
-
-let l=42;
-let e=31;
-let v=27;
-
-const tiempo=Math.max(0,minuto-20);
-
-l-=tiempo*.25;
-e+=tiempo*.20;
-v+=tiempo*.05;
-
-if(gl>gv){
-const d=gl-gv;
-l+=d*17;
-e-=d*6;
-v-=d*11;
-}
-
-if(gv>gl){
-const d=gv-gl;
-l-=d*11;
-e-=d*6;
-v+=d*17;
-}
-
-if(gl===gv&&minuto>=60){
-l-=4;
-e+=9;
-v-=5;
-}
-
-l=Math.max(1,l);
-e=Math.max(1,e);
-v=Math.max(1,v);
-
-const total=l+e+v;
-
-return{
-l:Math.round(l/total*100),
-e:Math.round(e/total*100),
-v:Math.round(v/total*100)
-};
+  updateAll();
 
 }
 
-function delta(a,b){
 
-const d=a-b;
+/*
+  ROJA RIVER
+*/
 
-if(d>0)return`<span class="up">↑ +${d}%</span>`;
-if(d<0)return`<span class="down">↓ ${d}%</span>`;
+function homeRed(){
 
-return`<span class="same">= 0%</span>`;
+  homeRedCards++;
 
-}
-
-function render(cambio){
-
-document.getElementById("gl").textContent=gl;
-document.getElementById("gv").textContent=gv;
-document.getElementById("minuto").textContent=minuto;
-
-document.getElementById("estado").textContent=
-minuto>=90?"FINALIZADO":
-minuto>0?"🔴 EN VIVO":"PRÓXIMO";
-
-const p=probabilidades();
-
-document.getElementById("pl").textContent=p.l+"%";
-document.getElementById("pe").textContent=p.e+"%";
-document.getElementById("pv").textContent=p.v+"%";
-
-document.getElementById("dl").innerHTML=cambio?delta(p.l,anterior.l):"";
-document.getElementById("de").innerHTML=cambio?delta(p.e,anterior.e):"";
-document.getElementById("dv").innerHTML=cambio?delta(p.v,anterior.v):"";
-
-anterior={...p};
-
-explicacion();
-forma();
-h2h();
-stats();
-alineaciones();
-bajas();
-mercados(p);
-conservador(p);
-actualizarIconos();
+  updateAll();
 
 }
 
-function explicacion(){
 
-let texto;
+/*
+  ROJA BOCA
+*/
 
-if(gl>gv){
+function awayRed(){
 
-texto=`
-<b>${partido.local} está ganando ${gl}-${gv}.</b><br><br>
-La ventaja del marcador aumenta su estimación y reduce
-el tiempo disponible para una remontada.
-`;
+  awayRedCards++;
 
-}else if(gv>gl){
-
-texto=`
-<b>${partido.visitante} está ganando ${gv}-${gl}.</b><br><br>
-La ventaja visitante aumenta su estimación y reduce
-el tiempo disponible para una remontada.
-`;
-
-}else if(minuto>=60){
-
-texto=`
-El partido continúa empatado ${gl}-${gv}.<br><br>
-Al quedar menos minutos, el empate adquiere mayor peso
-en esta estimación.
-`;
-
-}else{
-
-texto=`
-El partido está ${gl}-${gv} en el minuto ${minuto}.<br><br>
-La estimación cambia según el minuto y el marcador.
-`;
+  updateAll();
 
 }
 
-document.getElementById("porque").innerHTML=texto;
+
+/*
+  ACTUALIZAR ESTADÍSTICAS VISUALES
+*/
+
+function updateStats(){
+
+  document.getElementById("shotsHome").textContent =
+    homeShots;
+
+  document.getElementById("shotsAway").textContent =
+    awayShots;
+
+  document.getElementById("targetHome").textContent =
+    homeTarget;
+
+  document.getElementById("targetAway").textContent =
+    awayTarget;
+
+  document.getElementById("cornersHome").textContent =
+    homeCorners;
+
+  document.getElementById("cornersAway").textContent =
+    awayCorners;
+
+  document.getElementById("posHome").textContent =
+    homePossession;
+
+  document.getElementById("posAway").textContent =
+    awayPossession;
 
 }
 
-function forma(){
 
-const pintar=a=>a.map(x=>{
+/*
+  ACTUALIZACIÓN GENERAL
+*/
 
-const c=x==="V"?"#27e0a3":x==="E"?"#ffd166":x==="D"?"#ff6b7d":"#9fb2c8";
+function updateAll(){
 
-return `<span style="color:${c};font-weight:bold;margin-right:7px">${x}</span>`;
+  updateStats();
 
-}).join("");
-
-document.getElementById("forma").innerHTML=`
-<div class="row">
-<span>${partido.local}</span>
-<span>${pintar(partido.formaL)}</span>
-</div>
-<div class="row">
-<span>${partido.visitante}</span>
-<span>${pintar(partido.formaV)}</span>
-</div>
-<p class="small">V victoria · E empate · D derrota</p>
-`;
+  calculateProbabilities();
 
 }
 
-function h2h(){
 
-document.getElementById("h2h").innerHTML=
-partido.h2h.map((x,i)=>`
-<div class="row">
-<span>${i+1}</span>
-<strong>${x}</strong>
-</div>
-`).join("");
+/*
+  REINICIAR
+*/
+
+function resetGame(){
+
+  minute = 20;
+
+  homeScore = 0;
+  awayScore = 0;
+
+  homeRedCards = 0;
+  awayRedCards = 0;
+
+  homeShots = 8;
+  awayShots = 5;
+
+  homeTarget = 4;
+  awayTarget = 2;
+
+  homeCorners = 5;
+  awayCorners = 3;
+
+  homePossession = 54;
+  awayPossession = 46;
+
+  clearInterval(timer);
+
+  updateAll();
 
 }
 
-function stats(){
 
-const nombres=[
-"Posesión","Tiros","Tiros a puerta",
-"Córners","Ataques","Ataques peligrosos"
-];
+/*
+  INICIAR AUTOMÁTICO
 
-document.getElementById("stats").innerHTML=
-partido.stats.map((x,i)=>`
-<div class="row">
-<span>${nombres[i]}</span>
-<strong>${x}</strong>
-</div>
-`).join("");
+  Avanza un minuto cada 3 segundos
+  para poder probar rápidamente.
+*/
+
+function startGame(){
+
+  clearInterval(timer);
+
+  timer = setInterval(function(){
+
+    if(minute >= 90){
+
+      clearInterval(timer);
+      return;
+
+    }
+
+    nextMinute();
+
+  },3000);
 
 }
 
-function alineaciones(){
 
-const titularesL=[
-"Arquero local","Defensor local 1","Defensor local 2",
-"Volante local","Delantero local"
-];
+/*
+  ARRANQUE
+*/
 
-const titularesV=[
-"Arquero visitante","Defensor visitante 1","Defensor visitante 2",
-"Volante visitante","Delantero visitante"
-];
+updateAll();
 
-document.getElementById("alineaciones").innerHTML=`
-<div class="formations">
-<div class="formation">
-<b>${partido.local}</b>
-<br><span class="small">Formación 4-3-3</span>
-<div class="lineup-item">
-<strong>XI inicial</strong><br>
-${titularesL.join("<br>")}
-</div>
-<div class="lineup-item">
-<strong>Suplentes</strong><br>
-Suplente 1<br>Suplente 2<br>Suplente 3
-</div>
-</div>
+</script>
 
-<div class="formation">
-<b>${partido.visitante}</b>
-<br><span class="small">Formación 4-3-3</span>
-<div class="lineup-item">
+</body>
+</html>
