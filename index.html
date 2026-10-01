@@ -2,219 +2,44 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MatchIA</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#07111f;
-  color:#fff;
-}
-
-header{
-  background:#0d1b2f;
-  padding:18px 16px;
-  text-align:center;
-  border-bottom:1px solid #203452;
-}
-
-header h1{
-  margin:0;
-  font-size:26px;
-}
-
-header p{
-  margin:6px 0 0;
-  color:#8fa6c5;
-  font-size:13px;
-}
-
-main{
-  max-width:700px;
-  margin:auto;
-  padding:16px;
-}
-
-.search{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid #29415f;
-  background:#0d1b2f;
-  color:white;
-  font-size:16px;
-  margin-bottom:14px;
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:11px 14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.refresh{
-  width:100%;
-  background:#173456;
-  color:white;
-  margin-bottom:15px;
-}
-
-.card{
-  background:#0d1b2f;
-  border:1px solid #223b5d;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-}
-
-.league{
-  color:#7fa8d8;
-  font-size:12px;
-  margin-bottom:12px;
-}
-
-.teams{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.team{
-  width:42%;
-  text-align:center;
-  font-weight:bold;
-}
-
-.vs{
-  color:#7f93ad;
-  font-size:13px;
-}
-
-.analyze{
-  width:100%;
-  margin-top:15px;
-  background:#16a765;
-  color:white;
-  font-size:15px;
-}
-
-.hidden{
-  display:none;
-}
-
-.back{
-  background:#243c5b;
-  color:white;
-  margin-bottom:15px;
-}
-
-.score{
-  text-align:center;
-  font-size:42px;
-  font-weight:bold;
-  margin:12px 0;
-}
-
-.live{
-  text-align:center;
-  color:#ffcc55;
-  font-weight:bold;
-}
-
-.control-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:15px;
-}
-
-.control-grid button{
-  background:#1b3351;
-  color:white;
-}
-
-.section{
-  margin-top:16px;
-}
-
-.section h2{
-  font-size:18px;
-  margin-bottom:10px;
-}
-
-.market{
-  margin:9px 0;
-  padding:12px;
-  background:#122641;
-  border-radius:10px;
-}
-
-.percent{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-weight:bold;
-}
-
-.change{
-  margin-top:5px;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.up{
-  color:#36d98b;
-}
-
-.down{
-  color:#ff6b6b;
-}
-
-.same{
-  color:#8fa6c5;
-}
-
-.bar{
-  height:9px;
-  background:#203a59;
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:7px;
-}
-
-.fill{
-  height:100%;
-  background:#16a765;
-  transition:width .35s ease;
-}
-
-.explanation{
-  background:#102a42;
-  padding:14px;
-  border-radius:12px;
-  color:#d7e6f7;
-  line-height:1.5;
-}
-
-.combo{
-  background:#102b20;
-  border:1px solid #246a46;
-  padding:14px;
-  border-radius:12px;
-}
-
-.empty{
-  text-align:center;
-  padding:40px 10px;
-  color:#8fa6c5;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#fff}
+header{background:#0d1b2e;padding:18px;text-align:center;border-bottom:1px solid #20334d}
+header h1{margin:0;color:#27e0a3;font-size:28px}
+header p{margin:6px 0 0;color:#9fb2c8}
+main{max-width:850px;margin:auto;padding:15px}
+input{width:100%;padding:13px;border-radius:10px;border:1px solid #30445e;background:#101f33;color:white;margin-bottom:15px}
+.card{background:#0e1d30;border:1px solid #233a56;border-radius:16px;padding:16px;margin-bottom:15px}
+.match{cursor:pointer}
+.match:hover{border-color:#27e0a3}
+.teams{display:flex;justify-content:space-between;align-items:center;text-align:center;gap:10px}
+.team{width:40%;font-weight:bold}
+.score{font-size:28px;font-weight:bold}
+.small{color:#9fb2c8;font-size:13px}
+button{border:0;border-radius:10px;padding:11px 13px;margin:4px;background:#18304a;color:#fff;cursor:pointer}
+button:hover{background:#24506b}
+.primary{background:#16a77d}
+.danger{background:#a83b4d}
+.back{background:#34465d}
+.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.prob{background:#142943;border-radius:12px;padding:12px;text-align:center}
+.prob strong{font-size:24px;display:block}
+.up{color:#27e0a3}
+.down{color:#ff6b7d}
+.same{color:#aebdcc}
+.section-title{color:#27e0a3;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #23364d}
+.row:last-child{border-bottom:0}
+.market{background:#142943;border-radius:12px;padding:12px;margin:7px 0}
+.market button{float:right;background:#27e0a3;color:#06151a;font-weight:bold}
+.badge{display:inline-block;background:#193a53;color:#8eeed2;padding:5px 8px;border-radius:8px;font-size:12px}
+.explain{background:#112b32;border-left:4px solid #27e0a3;padding:13px;border-radius:8px;line-height:1.5}
+.combo-item{background:#142943;border-radius:10px;padding:10px;margin:7px 0}
+.hidden{display:none}
+.center{text-align:center}
 </style>
 </head>
 
@@ -227,968 +52,495 @@ button{
 
 <main>
 
-<section id="lista">
+<div id="home">
+  <input id="search" placeholder="Buscar equipo, liga o país..." oninput="filtrar()">
 
-<input
-  id="buscador"
-  class="search"
-  type="text"
-  placeholder="Buscar equipo o liga..."
-  oninput="filtrar()"
->
+  <div class="card">
+    <h3>📅 Partidos de hoy</h3>
+    <div id="lista"></div>
+  </div>
+</div>
 
-<button
-  class="refresh"
-  onclick="cargarPartidos()"
->
-  🔄 Actualizar partidos
-</button>
+<div id="detalle" class="hidden">
 
-<div id="partidos"></div>
+  <button class="back" onclick="volver()">← Volver</button>
 
-</section>
+  <div class="card">
+    <div class="teams">
+      <div class="team" id="local"></div>
+      <div>
+        <div class="score"><span id="gLocal">0</span> - <span id="gVisitante">0</span></div>
+        <div class="small"><span id="minuto">20</span>'</div>
+      </div>
+      <div class="team" id="visitante"></div>
+    </div>
 
-<section
-  id="detalle"
-  class="hidden"
-></section>
+    <div class="center" style="margin-top:10px">
+      <span class="badge" id="liga"></span>
+    </div>
+
+    <div class="center" style="margin-top:12px">
+      <button onclick="iniciar()">▶️ Iniciar</button>
+      <button onclick="sumarMinuto()">⏱️ +1 minuto</button>
+      <button onclick="golLocal()">⚽ Gol local</button>
+      <button onclick="golVisitante()">⚽ Gol visitante</button>
+      <button class="danger" onclick="reiniciar()">↩️ Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">📊 Probabilidades en vivo</h3>
+    <div class="probs">
+      <div class="prob">
+        <span id="nombreProbLocal"></span>
+        <strong id="probLocal">42%</strong>
+        <span id="deltaLocal"></span>
+      </div>
+      <div class="prob">
+        <span>Empate</span>
+        <strong id="probEmpate">31%</strong>
+        <span id="deltaEmpate"></span>
+      </div>
+      <div class="prob">
+        <span id="nombreProbVisitante"></span>
+        <strong id="probVisitante">27%</strong>
+        <span id="deltaVisitante"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🧠 ¿Por qué?</h3>
+    <div class="explain" id="explicacion"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">📈 Forma — últimos 5</h3>
+    <div id="ultimos5"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🤝 Historial H2H</h3>
+    <div id="h2h"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">📊 Estadísticas</h3>
+    <div id="estadisticas"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🎯 Mercados</h3>
+    <div id="mercados"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">🛡️ Predicción conservadora</h3>
+    <div id="conservadora"></div>
+  </div>
+
+  <div class="card">
+    <h3 class="section-title">➕ Mi combinada</h3>
+    <div id="combinada"></div>
+    <button class="danger" onclick="limpiarCombo()">Vaciar combinada</button>
+  </div>
+
+</div>
 
 </main>
 
 <script>
-
-const partidosDemo = [
-
-  {
-    id:"demo-river-boca",
-    local:"River Plate",
-    visitante:"Boca Juniors",
-    liga:"Liga Profesional Argentina",
-    pais:"Argentina"
+const partidos=[
+ {
+  id:1,
+  local:"River Plate",
+  visitante:"Boca Juniors",
+  liga:"Argentina • Liga Profesional",
+  stats:{
+   posesion:"58% - 42%",
+   tiros:"13 - 9",
+   tirosPuerta:"6 - 4",
+   corners:"6 - 3",
+   ataques:"72 - 61",
+   peligrosos:"39 - 31"
   },
-
-  {
-    id:"demo-real-barca",
-    local:"Real Madrid",
-    visitante:"Barcelona",
-    liga:"La Liga",
-    pais:"España"
+  formaLocal:["V","V","E","V","D"],
+  formaVisitante:["V","D","V","E","D"],
+  h2h:[
+   "River Plate 1 - 1 Boca Juniors",
+   "Boca Juniors 0 - 2 River Plate",
+   "River Plate 2 - 0 Boca Juniors",
+   "Boca Juniors 1 - 0 River Plate",
+   "River Plate 1 - 0 Boca Juniors"
+  ]
+ },
+ {
+  id:2,
+  local:"Barcelona",
+  visitante:"Real Madrid",
+  liga:"España • LaLiga",
+  stats:{
+   posesion:"54% - 46%",
+   tiros:"15 - 12",
+   tirosPuerta:"7 - 5",
+   corners:"5 - 5",
+   ataques:"68 - 65",
+   peligrosos:"41 - 38"
   },
-
-  {
-    id:"demo-city-liverpool",
-    local:"Manchester City",
-    visitante:"Liverpool",
-    liga:"Premier League",
-    pais:"Inglaterra"
-  }
-
+  formaLocal:["V","V","V","E","V"],
+  formaVisitante:["V","V","D","V","E"],
+  h2h:[
+   "Barcelona 2 - 1 Real Madrid",
+   "Real Madrid 3 - 2 Barcelona",
+   "Barcelona 1 - 1 Real Madrid",
+   "Real Madrid 0 - 4 Barcelona",
+   "Barcelona 2 - 2 Real Madrid"
+  ]
+ },
+ {
+  id:3,
+  local:"Manchester City",
+  visitante:"Liverpool",
+  liga:"Inglaterra • Premier League",
+  stats:{
+   posesion:"61% - 39%",
+   tiros:"17 - 10",
+   tirosPuerta:"8 - 4",
+   corners:"7 - 4",
+   ataques:"76 - 58",
+   peligrosos:"44 - 29"
+  },
+  formaLocal:["V","V","E","V","V"],
+  formaVisitante:["V","E","V","D","V"],
+  h2h:[
+   "Manchester City 2 - 2 Liverpool",
+   "Liverpool 1 - 3 Manchester City",
+   "Manchester City 1 - 1 Liverpool",
+   "Liverpool 2 - 0 Manchester City",
+   "Manchester City 4 - 1 Liverpool"
+  ]
+ }
 ];
 
-let partidos = [...partidosDemo];
+let partido=null;
+let minuto=20;
+let golesLocal=0;
+let golesVisitante=0;
+let anterior={local:42,empate:31,visitante:27};
+let combo=[];
 
-let partidoActual = null;
-
-let minuto = 20;
-
-let golesLocal = 0;
-
-let golesVisitante = 0;
-
-let intervalo = null;
-
-/*
-  Estos valores son los últimos
-  porcentajes mostrados.
-*/
-let anteriores = null;
-
-
-/* =========================
-   PARTIDOS
-========================= */
-
-function cargarPartidos(){
-
-  partidos = [...partidosDemo];
-
-  mostrarPartidos();
+function renderLista(lista=partidos){
+ const cont=document.getElementById("lista");
+ cont.innerHTML="";
+ if(!lista.length){
+  cont.innerHTML="<p class='small'>No se encontraron partidos.</p>";
+  return;
+ }
+ lista.forEach(p=>{
+  cont.innerHTML+=`
+   <div class="card match" onclick="abrir(${p.id})">
+    <div class="teams">
+     <div class="team">${p.local}</div>
+     <div><b>VS</b><br><span class="small">${p.liga}</span></div>
+     <div class="team">${p.visitante}</div>
+    </div>
+   </div>`;
+ });
 }
-
-
-function mostrarPartidos(){
-
-  const contenedor =
-    document.getElementById("partidos");
-
-  const texto =
-    document
-      .getElementById("buscador")
-      .value
-      .toLowerCase();
-
-  const filtrados =
-    partidos.filter(p =>
-
-      p.local.toLowerCase().includes(texto) ||
-
-      p.visitante.toLowerCase().includes(texto) ||
-
-      p.liga.toLowerCase().includes(texto) ||
-
-      p.pais.toLowerCase().includes(texto)
-
-    );
-
-
-  if(!filtrados.length){
-
-    contenedor.innerHTML = `
-      <div class="empty">
-        No se encontraron partidos.
-      </div>
-    `;
-
-    return;
-  }
-
-
-  contenedor.innerHTML =
-    filtrados.map(p => `
-
-      <div class="card">
-
-        <div class="league">
-          ${p.liga} · ${p.pais}
-        </div>
-
-        <div class="teams">
-
-          <div class="team">
-            ${p.local}
-          </div>
-
-          <div class="vs">
-            VS
-          </div>
-
-          <div class="team">
-            ${p.visitante}
-          </div>
-
-        </div>
-
-        <button
-          class="analyze"
-          onclick="abrirPartido('${p.id}')"
-        >
-          🧠 Analizar con MatchIA
-        </button>
-
-      </div>
-
-    `).join("");
-}
-
 
 function filtrar(){
-
-  mostrarPartidos();
-
+ const q=document.getElementById("search").value.toLowerCase();
+ renderLista(partidos.filter(p=>
+  p.local.toLowerCase().includes(q)||
+  p.visitante.toLowerCase().includes(q)||
+  p.liga.toLowerCase().includes(q)
+ ));
 }
 
+function abrir(id){
+ partido=partidos.find(p=>p.id===id);
+ minuto=20;
+ golesLocal=0;
+ golesVisitante=0;
+ anterior={local:42,empate:31,visitante:27};
 
-/* =========================
-   ABRIR PARTIDO
-========================= */
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("detalle").classList.remove("hidden");
 
-function abrirPartido(id){
+ document.getElementById("local").textContent=partido.local;
+ document.getElementById("visitante").textContent=partido.visitante;
+ document.getElementById("nombreProbLocal").textContent=partido.local;
+ document.getElementById("nombreProbVisitante").textContent=partido.visitante;
+ document.getElementById("liga").textContent=partido.liga;
 
-  const partido =
-    partidos.find(p => p.id === id);
-
-  if(!partido) return;
-
-  partidoActual = partido;
-
-  minuto = 20;
-
-  golesLocal = 0;
-
-  golesVisitante = 0;
-
-  anteriores = null;
-
-  if(intervalo){
-
-    clearInterval(intervalo);
-
-    intervalo = null;
-
-  }
-
-  document
-    .getElementById("lista")
-    .classList
-    .add("hidden");
-
-  document
-    .getElementById("detalle")
-    .classList
-    .remove("hidden");
-
-  renderDetalle();
-
+ renderTodo(false);
 }
-
 
 function volver(){
-
-  if(intervalo){
-
-    clearInterval(intervalo);
-
-    intervalo = null;
-
-  }
-
-  document
-    .getElementById("detalle")
-    .classList
-    .add("hidden");
-
-  document
-    .getElementById("lista")
-    .classList
-    .remove("hidden");
-
+ document.getElementById("detalle").classList.add("hidden");
+ document.getElementById("home").classList.remove("hidden");
 }
-
-
-/* =========================
-   NUEVO MODELO DEMO
-========================= */
-
-function calcularProbabilidades(){
-
-  /*
-    Partimos de una base.
-
-    River 42
-    Empate 31
-    Boca 27
-
-    El tiempo produce cambios
-    visibles en cada minuto.
-  */
-
-  let local = 42;
-
-  let empate = 31;
-
-  let visitante = 27;
-
-
-  /*
-    CAMBIO POR TIEMPO
-
-    Cada minuto mueve las
-    probabilidades ligeramente.
-  */
-
-  const minutosPasados =
-    minuto - 20;
-
-
-  local -= minutosPasados * 0.35;
-
-  empate += minutosPasados * 0.20;
-
-  visitante += minutosPasados * 0.15;
-
-
-  /*
-    CAMBIO POR MARCADOR
-  */
-
-  const diferencia =
-    golesLocal - golesVisitante;
-
-
-  if(diferencia > 0){
-
-    local += 20;
-
-    empate -= 8;
-
-    visitante -= 12;
-
-  }
-
-
-  if(diferencia < 0){
-
-    local -= 12;
-
-    empate -= 8;
-
-    visitante += 20;
-
-  }
-
-
-  /*
-    SI HAY EMPATE DESPUÉS
-    DE LOS 60 MINUTOS
-  */
-
-  if(
-    golesLocal === golesVisitante &&
-    minuto >= 60
-  ){
-
-    local -= 5;
-
-    empate += 10;
-
-    visitante -= 5;
-
-  }
-
-
-  /*
-    Nunca dejamos valores
-    negativos.
-  */
-
-  local =
-    Math.max(1,local);
-
-  empate =
-    Math.max(1,empate);
-
-  visitante =
-    Math.max(1,visitante);
-
-
-  /*
-    Normalizamos para que
-    siempre sumen 100%.
-  */
-
-  const total =
-    local +
-    empate +
-    visitante;
-
-
-  return {
-
-    local:Math.round(
-      local / total * 100
-    ),
-
-    empate:Math.round(
-      empate / total * 100
-    ),
-
-    visitante:Math.round(
-      visitante / total * 100
-    )
-
-  };
-
-}
-
-
-/* =========================
-   CAMBIO
-========================= */
-
-function mostrarCambio(actual, anterior){
-
-  if(anterior === null){
-
-    return `
-      <div class="change same">
-        ● Inicio
-      </div>
-    `;
-
-  }
-
-
-  const diferencia =
-    actual - anterior;
-
-
-  if(diferencia > 0){
-
-    return `
-      <div class="change up">
-        ↑ +${diferencia}%
-      </div>
-    `;
-
-  }
-
-
-  if(diferencia < 0){
-
-    return `
-      <div class="change down">
-        ↓ ${diferencia}%
-      </div>
-    `;
-
-  }
-
-
-  return `
-    <div class="change same">
-      = 0%
-    </div>
-  `;
-
-}
-
-
-/* =========================
-   PANTALLA DEL PARTIDO
-========================= */
-
-function renderDetalle(){
-
-  const p =
-    partidoActual;
-
-  const probs =
-    calcularProbabilidades();
-
-
-  const anteriorLocal =
-    anteriores
-      ? anteriores.local
-      : null;
-
-  const anteriorEmpate =
-    anteriores
-      ? anteriores.empate
-      : null;
-
-  const anteriorVisitante =
-    anteriores
-      ? anteriores.visitante
-      : null;
-
-
-  document
-    .getElementById("detalle")
-    .innerHTML = `
-
-    <button
-      class="back"
-      onclick="volver()"
-    >
-      ← Volver a partidos
-    </button>
-
-
-    <div class="card">
-
-      <div class="league">
-        ${p.liga} · ${p.pais}
-      </div>
-
-
-      <div class="teams">
-
-        <div class="team">
-          ${p.local}
-        </div>
-
-        <div class="vs">
-          VS
-        </div>
-
-        <div class="team">
-          ${p.visitante}
-        </div>
-
-      </div>
-
-
-      <div class="score">
-        ${golesLocal} - ${golesVisitante}
-      </div>
-
-
-      <div class="live">
-        🔴 MINUTO ${minuto}'
-      </div>
-
-
-      <div class="control-grid">
-
-        <button onclick="iniciar()">
-          ▶️ Iniciar
-        </button>
-
-        <button onclick="avanzar()">
-          ⏱️ +1 minuto
-        </button>
-
-        <button onclick="golLocal()">
-          ⚽ Gol local
-        </button>
-
-        <button onclick="golVisitante()">
-          ⚽ Gol visitante
-        </button>
-
-        <button onclick="reiniciar()">
-          ↩️ Reiniciar
-        </button>
-
-        <button onclick="agregarCombinada()">
-          ➕ Combinada
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        📊 Probabilidades MatchIA
-      </h2>
-
-
-      <div class="market">
-
-        <div class="percent">
-
-          <span>
-            ${p.local}
-          </span>
-
-          <span>
-            ${probs.local}%
-          </span>
-
-        </div>
-
-
-        ${mostrarCambio(
-          probs.local,
-          anteriorLocal
-        )}
-
-
-        <div class="bar">
-
-          <div
-            class="fill"
-            style="width:${probs.local}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-
-      <div class="market">
-
-        <div class="percent">
-
-          <span>
-            Empate
-          </span>
-
-          <span>
-            ${probs.empate}%
-          </span>
-
-        </div>
-
-
-        ${mostrarCambio(
-          probs.empate,
-          anteriorEmpate
-        )}
-
-
-        <div class="bar">
-
-          <div
-            class="fill"
-            style="width:${probs.empate}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-
-      <div class="market">
-
-        <div class="percent">
-
-          <span>
-            ${p.visitante}
-          </span>
-
-          <span>
-            ${probs.visitante}%
-          </span>
-
-        </div>
-
-
-        ${mostrarCambio(
-          probs.visitante,
-          anteriorVisitante
-        )}
-
-
-        <div class="bar">
-
-          <div
-            class="fill"
-            style="width:${probs.visitante}%"
-          ></div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        🧠 ¿Por qué?
-      </h2>
-
-
-      <div class="explanation">
-
-        Las estimaciones se actualizan
-        cuando cambia el minuto
-        o el marcador.
-
-        <br><br>
-
-
-        ${
-          golesLocal > golesVisitante
-
-          ? `
-            ${p.local} está ganando.
-            Su probabilidad estimada
-            aumenta por la ventaja
-            en el marcador.
-          `
-
-          : golesVisitante > golesLocal
-
-          ? `
-            ${p.visitante} está ganando.
-            Su probabilidad estimada
-            aumenta por la ventaja
-            en el marcador.
-          `
-
-          : minuto >= 60
-
-          ? `
-            El partido sigue empatado
-            y ya está avanzado.
-            El modelo aumenta
-            ligeramente el peso
-            del empate.
-          `
-
-          : `
-            El partido está equilibrado.
-            El paso del tiempo modifica
-            gradualmente las estimaciones.
-          `
-        }
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        📈 Estadísticas demo
-      </h2>
-
-
-      <div class="card">
-
-        <div class="market">
-          Posesión
-          <strong>54% - 46%</strong>
-        </div>
-
-        <div class="market">
-          Remates
-          <strong>8 - 5</strong>
-        </div>
-
-        <div class="market">
-          Remates al arco
-          <strong>4 - 2</strong>
-        </div>
-
-        <div class="market">
-          Corners
-          <strong>5 - 3</strong>
-        </div>
-
-        <div class="market">
-          Últimos 5
-          <strong>3G 1E 1P</strong>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        🎯 Mercados
-      </h2>
-
-      <div class="market">
-        Victoria ${p.local}
-      </div>
-
-      <div class="market">
-        Empate
-      </div>
-
-      <div class="market">
-        Victoria ${p.visitante}
-      </div>
-
-      <div class="market">
-        Más de 1.5 goles
-      </div>
-
-      <div class="market">
-        Ambos equipos marcan
-      </div>
-
-      <div class="market">
-        Más de 8.5 corners
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        🛡️ Predicción conservadora
-      </h2>
-
-
-      <div class="explanation">
-
-        ${
-          golesLocal !== golesVisitante
-
-          ? `
-            El marcador actual modifica
-            significativamente la estimación.
-          `
-
-          : `
-            El escenario todavía es equilibrado.
-            Estas cifras son estimaciones
-            estadísticas y no garantías.
-          `
-        }
-
-      </div>
-
-    </div>
-
-
-    <div class="section">
-
-      <h2>
-        🤝 Mi combinada
-      </h2>
-
-
-      <div class="combo">
-
-        ${
-          combinada.length
-
-          ? combinada
-              .map(x => `<div>• ${x}</div>`)
-              .join("")
-
-          : "Todavía no agregaste selecciones."
-        }
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /*
-    Guardamos la medición actual
-    para compararla con la próxima.
-  */
-
-  anteriores = {
-
-    local:probs.local,
-
-    empate:probs.empate,
-
-    visitante:probs.visitante
-
-  };
-
-}
-
-
-/* =========================
-   LIVE
-========================= */
 
 function iniciar(){
-
-  if(intervalo) return;
-
-
-  intervalo =
-    setInterval(() => {
-
-      if(minuto >= 90){
-
-        clearInterval(intervalo);
-
-        intervalo = null;
-
-        return;
-
-      }
-
-
-      minuto++;
-
-
-      renderDetalle();
-
-    },3000);
-
+ if(window.temporizador) return;
+ window.temporizador=setInterval(()=>{
+  sumarMinuto();
+ },60000);
 }
 
-
-function avanzar(){
-
-  if(minuto < 90){
-
-    minuto++;
-
-    renderDetalle();
-
-  }
-
+function sumarMinuto(){
+ minuto++;
+ renderTodo(true);
 }
-
 
 function golLocal(){
-
-  golesLocal++;
-
-  renderDetalle();
-
+ golesLocal++;
+ minuto++;
+ renderTodo(true);
 }
-
 
 function golVisitante(){
-
-  golesVisitante++;
-
-  renderDetalle();
-
+ golesVisitante++;
+ minuto++;
+ renderTodo(true);
 }
-
 
 function reiniciar(){
-
-  minuto = 20;
-
-  golesLocal = 0;
-
-  golesVisitante = 0;
-
-  anteriores = null;
-
-
-  if(intervalo){
-
-    clearInterval(intervalo);
-
-    intervalo = null;
-
-  }
-
-
-  renderDetalle();
-
+ minuto=20;
+ golesLocal=0;
+ golesVisitante=0;
+ anterior={local:42,empate:31,visitante:27};
+ renderTodo(false);
 }
 
+function calcularProbabilidades(){
+ let local=42;
+ let empate=31;
+ let visitante=27;
 
-/* =========================
-   COMBINADA
-========================= */
+ const tiempo=minuto-20;
 
-let combinada = [];
+ local-=tiempo*0.32;
+ empate+=tiempo*0.24;
+ visitante+=tiempo*0.08;
 
+ if(golesLocal>golesVisitante){
+  const diferencia=golesLocal-golesVisitante;
+  local+=diferencia*17;
+  empate-=diferencia*6;
+  visitante-=diferencia*11;
+ }
 
-function agregarCombinada(){
+ if(golesVisitante>golesLocal){
+  const diferencia=golesVisitante-golesLocal;
+  local-=diferencia*11;
+  empate-=diferencia*6;
+  visitante+=diferencia*17;
+ }
 
-  const seleccion =
-    `${partidoActual.local} vs ${partidoActual.visitante}`;
+ if(golesLocal===golesVisitante && minuto>=60){
+  local-=4;
+  empate+=9;
+  visitante-=5;
+ }
 
+ local=Math.max(1,local);
+ empate=Math.max(1,empate);
+ visitante=Math.max(1,visitante);
 
-  if(!combinada.includes(seleccion)){
+ const total=local+empate+visitante;
 
-    combinada.push(seleccion);
-
-  }
-
-
-  renderDetalle();
-
+ return {
+  local:Math.round(local/total*100),
+  empate:Math.round(empate/total*100),
+  visitante:Math.round(visitante/total*100)
+ };
 }
 
+function deltaHTML(actual,prev){
+ const d=actual-prev;
+ if(d>0) return `<span class="up">↑ +${d}%</span>`;
+ if(d<0) return `<span class="down">↓ ${d}%</span>`;
+ return `<span class="same">= 0%</span>`;
+}
 
-/* =========================
-   INICIO
-========================= */
+function renderTodo(mostrarCambio){
+ document.getElementById("gLocal").textContent=golesLocal;
+ document.getElementById("gVisitante").textContent=golesVisitante;
+ document.getElementById("minuto").textContent=minuto;
 
-cargarPartidos();
+ const p=calcularProbabilidades();
 
+ document.getElementById("probLocal").textContent=p.local+"%";
+ document.getElementById("probEmpate").textContent=p.empate+"%";
+ document.getElementById("probVisitante").textContent=p.visitante+"%";
+
+ document.getElementById("deltaLocal").innerHTML=mostrarCambio?deltaHTML(p.local,anterior.local):"";
+ document.getElementById("deltaEmpate").innerHTML=mostrarCambio?deltaHTML(p.empate,anterior.empate):"";
+ document.getElementById("deltaVisitante").innerHTML=mostrarCambio?deltaHTML(p.visitante,anterior.visitante):"";
+
+ anterior={...p};
+
+ document.getElementById("explicacion").innerHTML=generarExplicacion(p);
+
+ renderForma();
+ renderH2H();
+ renderStats();
+ renderMercados(p);
+ renderConservadora(p);
+ renderCombo();
+}
+
+function generarExplicacion(p){
+ if(golesLocal>golesVisitante){
+  return `<b>${partido.local} está ganando ${golesLocal}-${golesVisitante}.</b>
+  La ventaja en el marcador aumenta su probabilidad estimada.
+  El tiempo restante también modifica el reparto entre victoria, empate y derrota.`;
+ }
+
+ if(golesVisitante>golesLocal){
+  return `<b>${partido.visitante} está ganando ${golesVisitante}-${golesLocal}.</b>
+  La ventaja del visitante modifica las probabilidades.
+  A medida que avanza el partido queda menos tiempo para revertir el resultado.`;
+ }
+
+ if(minuto>=60){
+  return `El partido sigue empatado y ya pasó el minuto 60.
+  Al quedar menos tiempo, el empate gana peso estadístico mientras disminuyen
+  las posibilidades de remontar mediante un nuevo resultado.`;
+ }
+
+ return `El partido está ${golesLocal}-${golesVisitante}.
+  Las probabilidades se actualizan según el minuto transcurrido y el marcador.
+  Son estimaciones estadísticas de demostración, no garantías de resultado.`;
+}
+
+function renderForma(){
+ const convertir=a=>a.map(x=>{
+  const c=x==="V"?"#27e0a3":x==="E"?"#ffd166":"#ff6b7d";
+  return `<span style="color:${c};font-weight:bold;margin-right:7px">${x}</span>`;
+ }).join("");
+
+ document.getElementById("ultimos5").innerHTML=`
+  <div class="row">
+   <span>${partido.local}</span>
+   <span>${convertir(partido.formaLocal)}</span>
+  </div>
+  <div class="row">
+   <span>${partido.visitante}</span>
+   <span>${convertir(partido.formaVisitante)}</span>
+  </div>
+  <p class="small">V = victoria · E = empate · D = derrota</p>`;
+}
+
+function renderH2H(){
+ document.getElementById("h2h").innerHTML=
+ partido.h2h.map((x,i)=>`
+  <div class="row">
+   <span>Enfrentamiento ${i+1}</span>
+   <strong>${x}</strong>
+  </div>
+ `).join("");
+}
+
+function renderStats(){
+ const s=partido.stats;
+ document.getElementById("estadisticas").innerHTML=`
+  <div class="row"><span>Posesión</span><strong>${s.posesion}</strong></div>
+  <div class="row"><span>Tiros</span><strong>${s.tiros}</strong></div>
+  <div class="row"><span>Tiros a puerta</span><strong>${s.tirosPuerta}</strong></div>
+  <div class="row"><span>Córners</span><strong>${s.corners}</strong></div>
+  <div class="row"><span>Ataques</span><strong>${s.ataques}</strong></div>
+  <div class="row"><span>Ataques peligrosos</span><strong>${s.peligrosos}</strong></div>`;
+}
+
+function renderMercados(p){
+ const mercados=[
+  {nombre:`${partido.local} gana`,valor:p.local},
+  {nombre:"Empate",valor:p.empate},
+  {nombre:`${partido.visitante} gana`,valor:p.visitante},
+  {nombre:"Más de 1.5 goles",valor:68},
+  {nombre:"Más de 2.5 goles",valor:48},
+  {nombre:"Menos de 3.5 goles",valor:74},
+  {nombre:"Ambos equipos marcan",valor:54},
+  {nombre:"Más de 8.5 córners",valor:61}
+ ];
+
+ document.getElementById("mercados").innerHTML=mercados.map((m,i)=>`
+  <div class="market">
+   <b>${m.nombre}</b>
+   <span style="float:right;color:#27e0a3;font-weight:bold">${m.valor}%</span>
+   <div style="clear:both"></div>
+   <button onclick="agregarCombo('${m.nombre}',${m.valor})">➕ Agregar</button>
+  </div>
+ `).join("");
+}
+
+function renderConservadora(p){
+ let texto;
+
+ if(golesLocal!==golesVisitante){
+  texto=`Resultado actual: <b>${golesLocal}-${golesVisitante}</b>.
+  Para un enfoque conservador, conviene considerar mercados con mayor respaldo estadístico
+  en lugar de buscar resultados exactos.`;
+ }else{
+  texto=`El marcador está empatado.
+  Como alternativa conservadora de demostración, los mercados de margen amplio
+  pueden tener menor exigencia que acertar el ganador exacto.`;
+ }
+
+ document.getElementById("conservadora").innerHTML=texto;
+}
+
+function agregarCombo(nombre,valor){
+ const existe=combo.find(x=>x.nombre===nombre);
+ if(existe) return;
+
+ combo.push({nombre,valor});
+ renderCombo();
+}
+
+function eliminarCombo(nombre){
+ combo=combo.filter(x=>x.nombre!==nombre);
+ renderCombo();
+}
+
+function limpiarCombo(){
+ combo=[];
+ renderCombo();
+}
+
+function renderCombo(){
+ const el=document.getElementById("combinada");
+
+ if(!combo.length){
+  el.innerHTML="<p class='small'>Todavía no agregaste mercados.</p>";
+  return;
+ }
+
+ let prob=1;
+
+ el.innerHTML=combo.map(x=>{
+  prob*=x.valor/100;
+  return `
+   <div class="combo-item">
+    <b>${x.nombre}</b>
+    <span style="float:right">${x.valor}%</span>
+    <button class="danger" onclick="eliminarCombo('${x.nombre}')">✕</button>
+   </div>`;
+ }).join("");
+
+ const estimada=Math.max(1,Math.round(prob*100));
+
+ el.innerHTML+=`
+  <div style="margin-top:12px;padding:12px;background:#102638;border-radius:10px">
+   <b>Probabilidad combinada estimada:</b>
+   <strong style="color:#27e0a3">${estimada}%</strong>
+   <p class="small">Estimación matemática de demostración. No representa una garantía.</p>
+  </div>`;
+}
+
+renderLista(partidos);
 </script>
 
 </body>
