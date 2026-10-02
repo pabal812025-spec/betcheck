@@ -222,11 +222,51 @@ button:hover{
 .event,
 .player,
 .change,
-.h2h{
+.h2h,
+.prediction,
+.factor{
   background:#0a1626;
   padding:12px;
   border-radius:10px;
   margin:8px 0;
+}
+
+.predictionGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.prediction{
+  text-align:center;
+}
+
+.prediction strong{
+  display:block;
+  color:#35e0a1;
+  font-size:24px;
+  margin-top:6px;
+}
+
+.factor{
+  border-left:3px solid #35e0a1;
+}
+
+.confidence{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:20px;
+  background:#123d30;
+  color:#35e0a1;
+  font-weight:bold;
+}
+
+.warning{
+  background:#463817;
+  color:#ffd86b;
+  padding:12px;
+  border-radius:10px;
+  margin-top:10px;
 }
 
 .stats{
@@ -272,6 +312,10 @@ button:hover{
     grid-template-columns:1fr;
   }
 
+  .predictionGrid{
+    grid-template-columns:1fr 1fr;
+  }
+
   .probs{
     grid-template-columns:1fr 1fr 1fr;
   }
@@ -284,10 +328,6 @@ button:hover{
 <div class="container">
 
 <h1>⚽ MatchIA</h1>
-
-<!-- ========================= -->
-<!-- INICIO -->
-<!-- ========================= -->
 
 <div id="homeScreen">
 
@@ -311,7 +351,6 @@ Buscar
 
 </div>
 
-
 <div class="card">
 
 <h2 class="sectionTitle">📅 Fechas</h2>
@@ -319,7 +358,6 @@ Buscar
 <div id="days" class="days"></div>
 
 </div>
-
 
 <div class="card">
 
@@ -346,10 +384,6 @@ class="hidden"
 </div>
 
 
-<!-- ========================= -->
-<!-- FICHA DEL PARTIDO -->
-<!-- ========================= -->
-
 <div id="matchScreen" class="hidden">
 
 <button
@@ -358,7 +392,6 @@ onclick="goHome()"
 >
 ← Volver
 </button>
-
 
 <div class="card">
 
@@ -370,7 +403,6 @@ onclick="goHome()"
 
 </div>
 
-
 <div class="scoreHeader">
 
 <div class="bigTeam">
@@ -380,11 +412,9 @@ onclick="goHome()"
 <div>
 
 <div class="bigScore">
-
 <span id="detailHomeScore">0</span>
 -
 <span id="detailAwayScore">0</span>
-
 </div>
 
 <div
@@ -403,58 +433,39 @@ class="status"
 </div>
 
 
-<!-- MENU -->
-
 <div class="card">
 
 <div class="nav">
 
-<button
-class="active"
-onclick="showTab('summary',this)"
->
+<button class="active" onclick="showTab('summary',this)">
 ⚽ Resumen
 </button>
 
-<button
-onclick="showTab('analysis',this)"
->
+<button onclick="showTab('analysis',this)">
 🧠 Análisis
 </button>
 
-<button
-onclick="showTab('stats',this)"
->
+<button onclick="showTab('stats',this)">
 📊 Estadísticas
 </button>
 
-<button
-onclick="showTab('lineups',this)"
->
+<button onclick="showTab('lineups',this)">
 👥 Alineaciones
 </button>
 
-<button
-onclick="showTab('changes',this)"
->
+<button onclick="showTab('changes',this)">
 🔄 Cambios
 </button>
 
-<button
-onclick="showTab('events',this)"
->
+<button onclick="showTab('events',this)">
 📋 Actividades
 </button>
 
-<button
-onclick="showTab('h2h',this)"
->
+<button onclick="showTab('h2h',this)">
 ⚔️ H2H
 </button>
 
-<button
-onclick="showTab('last5',this)"
->
+<button onclick="showTab('last5',this)">
 📈 Últimos 5
 </button>
 
@@ -465,10 +476,7 @@ onclick="showTab('last5',this)"
 
 <!-- RESUMEN -->
 
-<div
-id="summary"
-class="card section active"
->
+<div id="summary" class="card section active">
 
 <h2 class="sectionTitle">
 ⚽ Resumen
@@ -477,45 +485,93 @@ class="card section active"
 <div class="probs">
 
 <div class="prob p1">
-
 Local
-
-<strong id="probHome">
-55%
-</strong>
-
+<strong id="probHome">55%</strong>
 </div>
 
 <div class="prob p2">
-
 Empate
-
-<strong id="probDraw">
-30%
-</strong>
-
+<strong id="probDraw">30%</strong>
 </div>
 
 <div class="prob p3">
-
 Visitante
-
-<strong id="probAway">
-15%
-</strong>
-
+<strong id="probAway">15%</strong>
 </div>
 
 </div>
 
 <div class="reason">
 
-<strong>¿Por qué?</strong>
+<strong>🧠 ¿Por qué?</strong>
 
 <p id="reasonText">
-El análisis se actualizará según el estado del partido.
+El análisis se actualizará según los datos disponibles.
 </p>
 
+</div>
+
+
+<!-- NUEVO PRONOSTICO PREVIO -->
+
+<h2 class="sectionTitle">
+🔮 Pronóstico previo
+</h2>
+
+<div class="predictionGrid">
+
+<div class="prediction">
+⚽ Goles probables
+<strong id="predGoals">2–3</strong>
+</div>
+
+<div class="prediction">
+🎯 Ambos marcan
+<strong id="predBTTS">64%</strong>
+</div>
+
+<div class="prediction">
+🥅 Córners estimados
+<strong id="predCorners">9</strong>
+</div>
+
+<div class="prediction">
+🎯 Tiros estimados
+<strong id="predShots">20</strong>
+</div>
+
+</div>
+
+<div class="analysis">
+
+<strong>📊 Factores utilizados</strong>
+
+<div id="predictionFactors"></div>
+
+</div>
+
+<div class="reason">
+
+<strong>🧠 ¿Por qué MatchIA estima estos valores?</strong>
+
+<p id="predictionReason">
+El motor analiza los datos recientes de ambos equipos.
+</p>
+
+</div>
+
+<div>
+
+<span class="confidence" id="predictionConfidence">
+🟢 Confianza: media
+</span>
+
+</div>
+
+<div id="predictionWarning"></div>
+
+<div class="demo">
+Demo actualmente. Al conectar API-Football, estos valores se calcularán automáticamente con los datos reales disponibles.
 </div>
 
 </div>
@@ -523,10 +579,7 @@ El análisis se actualizará según el estado del partido.
 
 <!-- ANALISIS -->
 
-<div
-id="analysis"
-class="card section"
->
+<div id="analysis" class="card section">
 
 <h2 class="sectionTitle">
 🧠 Análisis del partido
@@ -577,10 +630,7 @@ Cargando información...
 
 <!-- ESTADISTICAS -->
 
-<div
-id="stats"
-class="card section"
->
+<div id="stats" class="card section">
 
 <h2 class="sectionTitle">
 📊 Estadísticas
@@ -610,7 +660,7 @@ class="card section"
 
 <div class="stat">
 <strong>Córners</strong>
-<span>0 - 0</span>
+<span id="statCorners">0 - 0</span>
 </div>
 
 <div class="stat">
@@ -625,10 +675,7 @@ class="card section"
 
 <!-- ALINEACIONES -->
 
-<div
-id="lineups"
-class="card section"
->
+<div id="lineups" class="card section">
 
 <h2 class="sectionTitle">
 👥 Alineaciones
@@ -655,7 +702,6 @@ class="card section"
 <div class="player">11 — Delantero</div>
 
 </div>
-
 
 <div class="teamBox">
 
@@ -688,10 +734,7 @@ Demo. Las alineaciones reales se cargarán desde API-Football.
 
 <!-- CAMBIOS -->
 
-<div
-id="changes"
-class="card section"
->
+<div id="changes" class="card section">
 
 <h2 class="sectionTitle">
 🔄 Cambios
@@ -714,10 +757,7 @@ class="card section"
 
 <!-- ACTIVIDADES -->
 
-<div
-id="events"
-class="card section"
->
+<div id="events" class="card section">
 
 <h2 class="sectionTitle">
 📋 Actividades del partido
@@ -730,10 +770,7 @@ class="card section"
 
 <!-- H2H -->
 
-<div
-id="h2h"
-class="card section"
->
+<div id="h2h" class="card section">
 
 <h2 class="sectionTitle">
 ⚔️ Enfrentamientos directos
@@ -764,10 +801,7 @@ River 2 - 0 Boca
 
 <!-- ULTIMOS 5 -->
 
-<div
-id="last5"
-class="card section"
->
+<div id="last5" class="card section">
 
 <h2 class="sectionTitle">
 📈 Últimos 5
@@ -795,17 +829,12 @@ Quinto partido — victoria
 
 </div>
 
-
 </div>
 
 </div>
 
 
 <script>
-
-/* ================================================= */
-/* DATOS */
-/* ================================================= */
 
 const daysData=[
 
@@ -814,7 +843,6 @@ date:"30",
 month:"SEP",
 dow:"MIÉ",
 full:"30 de septiembre",
-
 matches:[
 
 {
@@ -858,7 +886,6 @@ status:"Finalizado"
 }
 
 ]
-
 },
 
 {
@@ -866,7 +893,6 @@ date:"01",
 month:"OCT",
 dow:"JUE",
 full:"1 de octubre",
-
 matches:[
 
 {
@@ -910,7 +936,6 @@ status:"Finalizado"
 }
 
 ]
-
 },
 
 {
@@ -918,7 +943,6 @@ date:"02",
 month:"OCT",
 dow:"VIE",
 full:"2 de octubre",
-
 matches:[
 
 {
@@ -972,7 +996,6 @@ status:"Próximo"
 }
 
 ]
-
 },
 
 {
@@ -980,7 +1003,6 @@ date:"03",
 month:"OCT",
 dow:"SÁB",
 full:"3 de octubre",
-
 matches:[
 
 {
@@ -1024,7 +1046,6 @@ status:"Próximo"
 }
 
 ]
-
 },
 
 {
@@ -1032,7 +1053,6 @@ date:"04",
 month:"OCT",
 dow:"DOM",
 full:"4 de octubre",
-
 matches:[
 
 {
@@ -1076,7 +1096,6 @@ status:"Próximo"
 }
 
 ]
-
 },
 
 {
@@ -1084,7 +1103,6 @@ date:"05",
 month:"OCT",
 dow:"LUN",
 full:"5 de octubre",
-
 matches:[
 
 {
@@ -1118,18 +1136,16 @@ status:"Próximo"
 }
 
 ]
-
 }
 
 ];
 
-
 let selectedDay=2;
 
 
-/* ================================================= */
-/* DIAS */
-/* ================================================= */
+/* =========================
+DIAS
+========================= */
 
 function renderDays(){
 
@@ -1141,9 +1157,7 @@ daysData.forEach((day,index)=>{
 
 const d=document.createElement("div");
 
-d.className=
-"day"+
-(index===selectedDay?" active":"");
+d.className="day"+(index===selectedDay?" active":"");
 
 d.innerHTML=`
 <div>${day.dow}</div>
@@ -1167,9 +1181,9 @@ box.appendChild(d);
 }
 
 
-/* ================================================= */
-/* TARJETA DE PARTIDO */
-/* ================================================= */
+/* =========================
+TARJETA
+========================= */
 
 function createMatchCard(match){
 
@@ -1183,12 +1197,9 @@ div.innerHTML=`
 
 <span>${match.league}</span>
 
-<span>
-${match.time}
-</span>
+<span>${match.time}</span>
 
 </div>
-
 
 <div class="teams">
 
@@ -1206,82 +1217,56 @@ ${match.away}
 
 </div>
 
-
-<button
-class="openButton"
-type="button"
->
+<button class="openButton" type="button">
 ⚽ Ver partido
 </button>
-
 `;
 
+const button=div.querySelector(".openButton");
 
-/*
-IMPORTANTE:
-EL BOTON TIENE SU PROPIO EVENTO.
-*/
-
-const button=
-div.querySelector(".openButton");
-
-button.addEventListener(
-"click",
-function(e){
+button.addEventListener("click",function(e){
 
 e.stopPropagation();
 
 openMatch(match);
 
-}
-);
+});
 
-
-div.addEventListener(
-"click",
-function(){
+div.addEventListener("click",function(){
 
 openMatch(match);
 
-}
-);
+});
 
 return div;
 
 }
 
 
-/* ================================================= */
-/* PARTIDOS DEL DIA */
-/* ================================================= */
+/* =========================
+PARTIDOS
+========================= */
 
 function renderMatches(){
 
 const day=daysData[selectedDay];
 
-const box=
-document.getElementById("importantMatches");
+const box=document.getElementById("importantMatches");
 
-const other=
-document.getElementById("otherMatches");
+const other=document.getElementById("otherMatches");
 
 box.innerHTML="";
 other.innerHTML="";
-
 
 day.matches.forEach((match,index)=>{
 
 if(index<2){
 
-box.appendChild(
-createMatchCard(match)
-);
+box.appendChild(createMatchCard(match));
 
 }else{
 
-other.appendChild(
-createMatchCard(match)
-);
+other.appendChild(createMatchCard(match));
 
 }
 
@@ -1292,9 +1277,9 @@ other.classList.add("hidden");
 }
 
 
-/* ================================================= */
-/* OTROS */
-/* ================================================= */
+/* =========================
+OTROS
+========================= */
 
 function toggleOthers(){
 
@@ -1305,33 +1290,25 @@ document
 }
 
 
-/* ================================================= */
-/* BUSQUEDA */
-/* ================================================= */
+/* =========================
+BUSQUEDA
+========================= */
 
 function searchMatches(){
 
-const text=
-document
+const text=document
 .getElementById("searchInput")
 .value
 .trim()
 .toLowerCase();
 
-const results=
-document.getElementById("searchResults");
+const results=document.getElementById("searchResults");
 
 results.innerHTML="";
 
-if(!text){
-
-return;
-
-}
-
+if(!text)return;
 
 let found=[];
-
 
 daysData.forEach(day=>{
 
@@ -1357,27 +1334,19 @@ day:day
 
 });
 
-
 if(found.length===0){
 
-results.innerHTML=`
-<p>
-No encontramos ese partido.
-</p>
-`;
+results.innerHTML="<p>No encontramos ese partido.</p>";
 
 return;
 
 }
 
-
 const title=document.createElement("p");
 
-title.innerHTML=
-"<strong>Partidos encontrados:</strong>";
+title.innerHTML="<strong>Partidos encontrados:</strong>";
 
 results.appendChild(title);
-
 
 found.forEach(item=>{
 
@@ -1389,64 +1358,138 @@ date.textContent=item.day.full;
 
 results.appendChild(date);
 
-
-const card=
-createMatchCard(item.match);
-
-results.appendChild(card);
+results.appendChild(createMatchCard(item.match));
 
 });
 
 }
 
 
-/* ================================================= */
-/* ABRIR PARTIDO */
-/* ================================================= */
+/* =========================
+PRONOSTICO PREVIO
+========================= */
+
+function loadPreMatchAnalysis(match,shotsH,shotsA,chancesH,chancesA){
+
+let goals="2–3";
+let btts=64;
+let corners=9;
+let shots=20;
+let confidence="🟢 Confianza: media";
+
+let factors=[];
+let reason="";
+
+if(match.id==="palmeiras-river"){
+
+goals="2–3";
+btts=64;
+corners=9;
+shots=21;
+
+factors=[
+"⚽ Tendencia de goles de ambos equipos.",
+"🎯 Frecuencia de goles marcados y recibidos.",
+"🏠 Rendimiento de Palmeiras como local.",
+"✈️ Rendimiento de River como visitante.",
+"🤝 Historial de enfrentamientos disponible."
+];
+
+reason=
+"Los datos recientes muestran una tendencia moderada hacia un partido con goles. "+
+"El rendimiento ofensivo y defensivo de ambos equipos, junto con sus registros recientes, "+
+"son los principales factores utilizados por MatchIA.";
+
+confidence="🟢 Confianza: media";
+
+}else if(match.id==="river-boca"){
+
+goals="2–3";
+btts=61;
+corners=9;
+shots=22;
+
+factors=[
+"⚽ Promedio reciente de goles.",
+"🎯 Goles marcados y recibidos en los últimos partidos.",
+"🏠 Rendimiento de River como local.",
+"✈️ Rendimiento de Boca como visitante.",
+"🤝 Historial H2H entre ambos equipos."
+];
+
+reason=
+"El motor combina la producción ofensiva reciente, los goles recibidos, "+
+"el rendimiento local/visitante y los enfrentamientos directos. "+
+"Las señales son favorables pero no suficientemente fuertes para una certeza alta.";
+
+confidence="🟢 Confianza: media";
+
+}else{
+
+goals="2–3";
+btts=58;
+corners=8;
+shots=19;
+
+factors=[
+"⚽ Forma goleadora reciente.",
+"🎯 Goles a favor y en contra.",
+"🏠 Rendimiento del equipo local.",
+"✈️ Rendimiento del equipo visitante.",
+"📊 Tendencias estadísticas disponibles."
+];
+
+reason=
+"MatchIA combina los registros recientes de ambos equipos y sus condiciones "+
+"como local y visitante. La estimación es orientativa hasta disponer de todos "+
+"los datos reales de la API.";
+
+confidence="🟡 Confianza: media";
+
+}
+
+document.getElementById("predGoals").textContent=goals;
+document.getElementById("predBTTS").textContent=btts+"%";
+document.getElementById("predCorners").textContent=String(corners);
+document.getElementById("predShots").textContent=String(shots);
+
+document.getElementById("predictionFactors").innerHTML=
+factors.map(f=>`
+<div class="factor">${f}</div>
+`).join("");
+
+document.getElementById("predictionReason").textContent=reason;
+
+document.getElementById("predictionConfidence").textContent=confidence;
+
+document.getElementById("predictionWarning").innerHTML=`
+<div class="demo">
+Los valores actuales son de demostración. Con API-Football se calcularán con los partidos anteriores y estadísticas reales disponibles.
+</div>
+`;
+
+}
+
+
+/* =========================
+ABRIR PARTIDO
+========================= */
 
 function openMatch(match){
 
-console.log(
-"ABRIENDO PARTIDO:",
-match
-);
+document.getElementById("homeScreen").classList.add("hidden");
 
+document.getElementById("matchScreen").classList.remove("hidden");
 
-/* ocultar inicio */
+document.getElementById("matchHome").textContent=match.home;
 
-document
-.getElementById("homeScreen")
-.classList.add("hidden");
+document.getElementById("matchAway").textContent=match.away;
 
+document.getElementById("matchLeague").textContent=match.league;
 
-/* mostrar partido */
+document.getElementById("matchTime").textContent=match.time;
 
-document
-.getElementById("matchScreen")
-.classList.remove("hidden");
-
-
-/* DATOS PRINCIPALES */
-
-document
-.getElementById("matchHome")
-.textContent=match.home;
-
-document
-.getElementById("matchAway")
-.textContent=match.away;
-
-document
-.getElementById("matchLeague")
-.textContent=match.league;
-
-document
-.getElementById("matchTime")
-.textContent=match.time;
-
-document
-.getElementById("matchStatus")
-.textContent=match.status;
+document.getElementById("matchStatus").textContent=match.status;
 
 
 /* MARCADOR */
@@ -1454,50 +1497,28 @@ document
 let hs=0;
 let as=0;
 
-
 if(match.score!=="-"){
 
-const parts=
-match.score.split("-");
+const parts=match.score.split("-");
 
 hs=parseInt(parts[0])||0;
 as=parseInt(parts[1])||0;
 
 }
 
+document.getElementById("detailHomeScore").textContent=hs;
 
-document
-.getElementById("detailHomeScore")
-.textContent=hs;
-
-document
-.getElementById("detailAwayScore")
-.textContent=as;
+document.getElementById("detailAwayScore").textContent=as;
 
 
-/* NOMBRES */
+/* ALINEACIONES */
 
-document
-.getElementById("lineupHome")
-textContent=match.home;
+document.getElementById("lineupHome").textContent="🔴 "+match.home;
 
-document
-.getElementById("lineupAway")
-textContent=match.away;
+document.getElementById("lineupAway").textContent="🔵 "+match.away;
 
 
-/* CORRECCION */
-
-document
-.getElementById("lineupHome")
-.textContent="🔴 "+match.home;
-
-document
-.getElementById("lineupAway")
-.textContent="🔵 "+match.away;
-
-
-/* ESTADISTICAS DEMO */
+/* ESTADISTICAS */
 
 let shotsH=0;
 let shotsA=0;
@@ -1505,7 +1526,8 @@ let targetH=0;
 let targetA=0;
 let chancesH=0;
 let chancesA=0;
-
+let cornersH=0;
+let cornersA=0;
 
 if(match.status==="Finalizado"){
 
@@ -1518,10 +1540,10 @@ targetA=4;
 chancesH=8;
 chancesA=9;
 
+cornersH=4;
+cornersA=5;
+
 }
-
-
-/* CASO RIVER PALMEIRAS */
 
 if(match.id==="palmeiras-river"){
 
@@ -1534,10 +1556,10 @@ targetA=5;
 chancesH=8;
 chancesA=12;
 
+cornersH=4;
+cornersA=6;
+
 }
-
-
-/* CASO RIVER INDEPENDIENTE */
 
 if(match.id==="river-independiente"){
 
@@ -1550,10 +1572,10 @@ targetA=2;
 chancesH=14;
 chancesA=6;
 
+cornersH=7;
+cornersA=2;
+
 }
-
-
-/* CASO BOCA RACING */
 
 if(match.id==="boca-racing"){
 
@@ -1566,25 +1588,22 @@ targetA=3;
 chancesH=11;
 chancesA=8;
 
+cornersH=5;
+cornersA=4;
+
 }
 
-
-/* mostrar */
-
-document
-.getElementById("statShots")
-.textContent=
+document.getElementById("statShots").textContent=
 shotsH+" - "+shotsA;
 
-document
-.getElementById("statTarget")
-.textContent=
+document.getElementById("statTarget").textContent=
 targetH+" - "+targetA;
 
-document
-.getElementById("statChances")
-.textContent=
+document.getElementById("statChances").textContent=
 chancesH+" - "+chancesA;
+
+document.getElementById("statCorners").textContent=
+cornersH+" - "+cornersA;
 
 
 /* PROBABILIDADES */
@@ -1592,7 +1611,6 @@ chancesH+" - "+chancesA;
 let ph=55;
 let pd=30;
 let pa=15;
-
 
 if(match.status==="Finalizado"){
 
@@ -1618,18 +1636,11 @@ pa=0;
 
 }
 
+document.getElementById("probHome").textContent=ph+"%";
 
-document
-.getElementById("probHome")
-.textContent=ph+"%";
+document.getElementById("probDraw").textContent=pd+"%";
 
-document
-.getElementById("probDraw")
-.textContent=pd+"%";
-
-document
-.getElementById("probAway")
-.textContent=pa+"%";
+document.getElementById("probAway").textContent=pa+"%";
 
 
 /* RAZON */
@@ -1645,33 +1656,27 @@ match.home+" "+hs+" - "+as+" "+match.away+".";
 }else{
 
 reason=
-"El partido todavía no comenzó. Las probabilidades iniciales son una estimación demo y luego se actualizarán con datos reales.";
+"El partido todavía no comenzó. El porcentaje inicial se actualizará "+
+"cuando MatchIA disponga de los datos estadísticos reales.";
 
 }
 
-document
-.getElementById("reasonText")
-.textContent=reason;
+document.getElementById("reasonText").textContent=reason;
 
 
 /* ANALISIS */
 
-document
-.getElementById("analysisSituation")
-.textContent=
+document.getElementById("analysisSituation").textContent=
 match.status==="Finalizado"
 ?
 "Partido finalizado. Resultado: "+
 match.home+" "+hs+" - "+as+" "+match.away+"."
 :
-"Partido programado para las "+
-match.time+".";
+"Partido programado para las "+match.time+".";
 
 
-document
-.getElementById("analysisAttack")
-.textContent=
-"En los datos demo, "+
+document.getElementById("analysisAttack").textContent=
+"En los datos disponibles, "+
 match.home+
 " registró "+
 chancesH+
@@ -1686,17 +1691,13 @@ targetA+
 " tiros al arco.";
 
 
-document
-.getElementById("analysisProb")
-.textContent=
+document.getElementById("analysisProb").textContent=
 ph+"% local, "+
 pd+"% empate y "+
 pa+"% visitante.";
 
 
-document
-.getElementById("analysisFuture")
-.textContent=
+document.getElementById("analysisFuture").textContent=
 match.status==="Finalizado"
 ?
 "No queda tiempo de juego: el resultado ya terminó."
@@ -1704,29 +1705,38 @@ match.status==="Finalizado"
 "El análisis cambiará durante el partido según goles, tiros, llegadas, tarjetas y tiempo restante.";
 
 
+/* PRONOSTICO PREVIO */
+
+loadPreMatchAnalysis(
+match,
+shotsH,
+shotsA,
+chancesH,
+chancesA
+);
+
+
 /* EVENTOS */
 
 loadEvents(match);
 
 
-/* ABRIR RESUMEN */
+/* RESUMEN */
 
 showTabById("summary");
 
 }
 
 
-/* ================================================= */
-/* EVENTOS */
-/* ================================================= */
+/* =========================
+EVENTOS
+========================= */
 
 function loadEvents(match){
 
-const list=
-document.getElementById("eventsList");
+const list=document.getElementById("eventsList");
 
 list.innerHTML="";
-
 
 if(match.status!=="Finalizado"){
 
@@ -1739,9 +1749,6 @@ list.innerHTML=`
 return;
 
 }
-
-
-/* RIVER PALMEIRAS */
 
 if(match.id==="palmeiras-river"){
 
@@ -1773,9 +1780,6 @@ return;
 
 }
 
-
-/* RIVER INDEPENDIENTE */
-
 if(match.id==="river-independiente"){
 
 list.innerHTML=`
@@ -1805,9 +1809,6 @@ list.innerHTML=`
 return;
 
 }
-
-
-/* BOCA RACING */
 
 if(match.id==="boca-racing"){
 
@@ -1839,9 +1840,6 @@ return;
 
 }
 
-
-/* GENERICO */
-
 list.innerHTML=`
 
 <div class="event">
@@ -1861,30 +1859,24 @@ list.innerHTML=`
 }
 
 
-/* ================================================= */
-/* PESTAÑAS */
-/* ================================================= */
+/* =========================
+PESTAÑAS
+========================= */
 
 function showTab(id,button){
 
-document
-.querySelectorAll(".section")
+document.querySelectorAll(".section")
 .forEach(x=>{
 x.classList.remove("active");
 });
 
-
-document
-.getElementById(id)
+document.getElementById(id)
 .classList.add("active");
 
-
-document
-.querySelectorAll(".nav button")
+document.querySelectorAll(".nav button")
 .forEach(x=>{
 x.classList.remove("active");
 });
-
 
 button.classList.add("active");
 
@@ -1893,25 +1885,19 @@ button.classList.add("active");
 
 function showTabById(id){
 
-document
-.querySelectorAll(".section")
+document.querySelectorAll(".section")
 .forEach(x=>{
 x.classList.remove("active");
 });
 
-
-document
-.getElementById(id)
+document.getElementById(id)
 .classList.add("active");
 
-
-const buttons=
-document.querySelectorAll(".nav button");
+const buttons=document.querySelectorAll(".nav button");
 
 buttons.forEach(x=>{
 x.classList.remove("active");
 });
-
 
 if(buttons[0]){
 buttons[0].classList.add("active");
@@ -1920,26 +1906,24 @@ buttons[0].classList.add("active");
 }
 
 
-/* ================================================= */
-/* VOLVER */
-/* ================================================= */
+/* =========================
+VOLVER
+========================= */
 
 function goHome(){
 
-document
-.getElementById("matchScreen")
+document.getElementById("matchScreen")
 .classList.add("hidden");
 
-document
-.getElementById("homeScreen")
+document.getElementById("homeScreen")
 .classList.remove("hidden");
 
 }
 
 
-/* ================================================= */
-/* INICIO */
-/* ================================================= */
+/* =========================
+INICIO
+========================= */
 
 renderDays();
 
