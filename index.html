@@ -7,179 +7,557 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:white}
-.container{max-width:700px;margin:auto;padding:16px}
-h1{text-align:center;margin:5px 0 18px}
-.card{background:#101d2e;border-radius:16px;padding:16px;margin-bottom:14px}
-.score{display:flex;justify-content:space-between;align-items:center;text-align:center}
-.team{width:35%;font-size:18px;font-weight:bold}
-.scoreCenter{width:30%}
-.scoreNumber{font-size:34px;font-weight:bold}
-.minute{color:#35e58b;font-weight:bold}
-.probs{display:flex;gap:8px;text-align:center}
-.prob{flex:1;padding:14px 5px;border-radius:12px;background:#17283d}
-.prob strong{display:block;font-size:24px}
-.river{color:#54a8ff}.draw{color:#ffd34d}.boca{color:#ff6b6b}
-.reason{margin-top:14px;background:#17283d;border-radius:12px;padding:12px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat{background:#17283d;padding:10px;border-radius:10px;text-align:center}
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-button{border:0;border-radius:10px;padding:12px 8px;font-size:14px;font-weight:bold;cursor:pointer;background:#213650;color:white}
-.reset{grid-column:1/-1;background:#8d2632}
-.lineups{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.lineupTeam{background:#17283d;border-radius:12px;padding:12px}
-.lineupTeam h3{text-align:center}
-.formation{text-align:center;color:#35e58b;font-weight:bold;margin-bottom:10px}
-.player,.sub{padding:7px 5px;border-bottom:1px solid #2a3b50;font-size:14px}
-.subs{margin-top:12px}
-.change{background:#0d1725;padding:10px;border-radius:10px;margin-bottom:8px}
-.small{color:#9fb0c3;font-size:13px}
-@media(max-width:500px){.lineups{grid-template-columns:1fr}}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#07111f;
+  color:#fff;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+
+h1{
+  text-align:center;
+  margin:5px 0 20px;
+  color:#35e0a1;
+}
+
+.card{
+  background:#101d30;
+  border:1px solid #223451;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.score{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.team{
+  flex:1;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.scoreCenter{
+  text-align:center;
+  min-width:120px;
+}
+
+.scoreNumber{
+  font-size:42px;
+  font-weight:bold;
+}
+
+.minute{
+  color:#35e0a1;
+  font-weight:bold;
+  margin-top:4px;
+}
+
+.probs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.prob{
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.prob span{
+  display:block;
+  font-size:30px;
+  margin-top:6px;
+}
+
+.river{background:#162d5a}
+.draw{background:#3a2f13}
+.boca{background:#173b2f}
+
+.reason{
+  margin-top:14px;
+  padding:13px;
+  background:#0a1626;
+  border-radius:10px;
+  line-height:1.4;
+  color:#d7e4f5;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.stat{
+  background:#0a1626;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  color:#35e0a1;
+  margin-bottom:5px;
+}
+
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  background:#1d3150;
+  color:white;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#29466f;
+}
+
+.reset{
+  background:#9d2938;
+}
+
+.reset:hover{
+  background:#c33447;
+}
+
+.lineups{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.lineupTeam{
+  background:#0a1626;
+  border-radius:12px;
+  padding:14px;
+}
+
+.lineupTeam h3{
+  margin-top:0;
+  color:#35e0a1;
+}
+
+.formation{
+  color:#9eb0c8;
+  margin-bottom:10px;
+}
+
+.player,
+.sub,
+.change,
+.match{
+  padding:8px;
+  border-bottom:1px solid #20314a;
+}
+
+.player:last-child,
+.sub:last-child,
+.change:last-child,
+.match:last-child{
+  border-bottom:0;
+}
+
+.subs{
+  margin-top:12px;
+}
+
+.small{
+  color:#9eb0c8;
+  font-size:13px;
+}
+
+.sectionTitle{
+  color:#35e0a1;
+  margin-top:0;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:12px;
+}
+
+.summary div{
+  background:#0a1626;
+  border-radius:9px;
+  padding:10px;
+  text-align:center;
+}
+
+.h2h{
+  background:#0a1626;
+  border-radius:12px;
+  padding:12px;
+}
+
+.demo{
+  text-align:center;
+  color:#8192aa;
+  font-size:12px;
+  margin-top:18px;
+}
+
+@media(max-width:600px){
+  .score{
+    flex-direction:column;
+  }
+
+  .scoreCenter{
+    order:2;
+  }
+
+  .team{
+    width:100%;
+  }
+
+  .probs,
+  .stats,
+  .lineups{
+    grid-template-columns:1fr;
+  }
+
+  .buttons{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
 <h1>⚽ MatchIA</h1>
 
 <div class="card">
-<div class="score">
-<div class="team">River</div>
-<div class="scoreCenter">
-<div class="scoreNumber">
-<span id="homeScore">0</span> - <span id="awayScore">0</span>
+
+  <div class="score">
+
+    <div class="team">
+      🔴 River Plate
+    </div>
+
+    <div class="scoreCenter">
+      <div class="scoreNumber">
+        <span id="homeScore">0</span>
+        -
+        <span id="awayScore">0</span>
+      </div>
+
+      <div class="minute">
+        Minuto <span id="minute">0</span>'
+      </div>
+    </div>
+
+    <div class="team">
+      🔵 Boca Juniors
+    </div>
+
+  </div>
+
 </div>
-<div class="minute"><span id="minute">0</span>'</div>
-</div>
-<div class="team">Boca</div>
-</div>
-</div>
+
 
 <div class="card">
-<div class="probs">
-<div class="prob"><strong class="river" id="homeProb">55%</strong>River</div>
-<div class="prob"><strong class="draw" id="drawProb">30%</strong>Empate</div>
-<div class="prob"><strong class="boca" id="awayProb">15%</strong>Boca</div>
+
+  <div class="probs">
+
+    <div class="prob river">
+      River
+      <span id="probHome">55%</span>
+    </div>
+
+    <div class="prob draw">
+      Empate
+      <span id="probDraw">30%</span>
+    </div>
+
+    <div class="prob boca">
+      Boca
+      <span id="probAway">15%</span>
+    </div>
+
+  </div>
+
+  <div class="reason">
+    <strong>¿Por qué?</strong>
+    <div id="reason">
+      River parte con ventaja por fortaleza general, forma y una pequeña ventaja de localía.
+    </div>
+  </div>
+
 </div>
-<div class="reason" id="reason">🧠 Esperando evolución del partido.</div>
-</div>
+
 
 <div class="card">
-<h3>📊 Estadísticas</h3>
-<div class="stats">
-<div class="stat">Tiros<br><b id="shots">0 - 0</b></div>
-<div class="stat">Tiros al arco<br><b id="target">0 - 0</b></div>
-<div class="stat">Llegadas<br><b id="chances">0 - 0</b></div>
-<div class="stat">Posesión<br><b>51% - 49%</b></div>
-<div class="stat">Córners<br><b>0 - 0</b></div>
-<div class="stat">Rojas<br><b id="reds">0 - 0</b></div>
+
+  <h2 class="sectionTitle">📊 Estadísticas</h2>
+
+  <div class="stats">
+
+    <div class="stat">
+      <strong>Tiros</strong>
+      <span id="shots">0 - 0</span>
+    </div>
+
+    <div class="stat">
+      <strong>Tiros al arco</strong>
+      <span id="target">0 - 0</span>
+    </div>
+
+    <div class="stat">
+      <strong>Llegadas</strong>
+      <span id="chances">0 - 0</span>
+    </div>
+
+    <div class="stat">
+      <strong>Posesión</strong>
+      <span>51% - 49%</span>
+    </div>
+
+    <div class="stat">
+      <strong>Córners</strong>
+      <span>0 - 0</span>
+    </div>
+
+    <div class="stat">
+      <strong>Rojas</strong>
+      <span id="reds">0 - 0</span>
+    </div>
+
+    <div class="stat">
+      <strong>Tiempo restante</strong>
+      <span id="remaining">90 min</span>
+    </div>
+
+  </div>
+
 </div>
-<p>Restante: <b id="remaining">90</b> min</p>
-</div>
+
 
 <div class="card">
-<h3>🎮 Control del partido</h3>
-<div class="buttons">
-<button onclick="addMinute()">+1 minuto</button>
-<button onclick="riverChance()">🔥 Llegada River</button>
-<button onclick="bocaChance()">🔥 Llegada Boca</button>
-<button onclick="riverWide()">🥅 Tiro afuera River</button>
-<button onclick="bocaWide()">🥅 Tiro afuera Boca</button>
-<button onclick="riverTarget()">🎯 Al arco River</button>
-<button onclick="bocaTarget()">🎯 Al arco Boca</button>
-<button onclick="riverGoal()">⚽ Gol River</button>
-<button onclick="bocaGoal()">⚽ Gol Boca</button>
-<button onclick="riverRed()">🟥 Roja River</button>
-<button onclick="bocaRed()">🟥 Roja Boca</button>
-<button class="reset" onclick="resetGame()">🔄 Reiniciar</button>
+
+  <h2 class="sectionTitle">🎮 Simulación</h2>
+
+  <div class="buttons">
+
+    <button onclick="addMinute()">+1 minuto</button>
+
+    <button onclick="riverChance()">🔥 Llegada River</button>
+    <button onclick="bocaChance()">🔥 Llegada Boca</button>
+
+    <button onclick="riverWide()">🥅 Tiro afuera River</button>
+    <button onclick="bocaWide()">🥅 Tiro afuera Boca</button>
+
+    <button onclick="riverTarget()">🎯 Al arco River</button>
+    <button onclick="bocaTarget()">🎯 Al arco Boca</button>
+
+    <button onclick="riverGoal()">⚽ Gol River</button>
+    <button onclick="bocaGoal()">⚽ Gol Boca</button>
+
+    <button onclick="riverRed()">🟥 Roja River</button>
+    <button onclick="bocaRed()">🟥 Roja Boca</button>
+
+    <button class="reset" onclick="resetGame()">🔄 Reiniciar</button>
+
+  </div>
+
 </div>
-</div>
+
 
 <div class="card">
-<h2>👥 Alineaciones</h2>
 
-<div class="lineups">
+  <h2 class="sectionTitle">👥 Alineaciones</h2>
 
-<div class="lineupTeam">
-<h3>River</h3>
-<div class="formation">4-3-3</div>
+  <div class="lineups">
 
-<div class="player">🧤 1. Armani — Arquero</div>
-<div class="player">2. Bustos — Defensa</div>
-<div class="player">3. Pezzella — Defensa</div>
-<div class="player">4. Martínez — Defensa</div>
-<div class="player">5. Acuña — Defensa</div>
-<div class="player">6. Enzo Pérez — Mediocampo</div>
-<div class="player">7. Fernández — Mediocampo</div>
-<div class="player">8. Lanzini — Mediocampo</div>
-<div class="player">9. Colidio — Ataque</div>
-<div class="player">10. Borja — Ataque</div>
-<div class="player">11. Solari — Ataque</div>
+    <div class="lineupTeam">
 
-<div class="subs">
-<b>Suplentes</b>
-<div class="sub">12. Centurión — Arquero</div>
-<div class="sub">13. González Pírez — Defensa</div>
-<div class="sub">14. Aliendro — Mediocampo</div>
-<div class="sub">15. Kranevitter — Mediocampo</div>
-<div class="sub">16. Mastantuono — Ataque</div>
-<div class="sub">17. Ruberto — Ataque</div>
+      <h3>🔴 River Plate</h3>
+
+      <div class="formation">Formación: 4-3-3</div>
+
+      <div class="player">1 — Armani — Arquero</div>
+      <div class="player">2 — Bustos</div>
+      <div class="player">3 — Pezzella</div>
+      <div class="player">4 — Martínez</div>
+      <div class="player">5 — Acuña</div>
+      <div class="player">6 — Enzo Pérez</div>
+      <div class="player">7 — Fernández</div>
+      <div class="player">8 — Lanzini</div>
+      <div class="player">9 — Colidio</div>
+      <div class="player">10 — Borja</div>
+      <div class="player">11 — Solari</div>
+
+      <div class="subs">
+        <strong>Suplentes</strong>
+        <div class="sub">12 — Centurión</div>
+        <div class="sub">13 — González Pírez</div>
+        <div class="sub">14 — Aliendro</div>
+        <div class="sub">15 — Kranevitter</div>
+        <div class="sub">16 — Mastantuono</div>
+        <div class="sub">17 — Ruberto</div>
+      </div>
+
+    </div>
+
+
+    <div class="lineupTeam">
+
+      <h3>🔵 Boca Juniors</h3>
+
+      <div class="formation">Formación: 4-3-3</div>
+
+      <div class="player">1 — Romero — Arquero</div>
+      <div class="player">2 — Advíncula</div>
+      <div class="player">3 — Figal</div>
+      <div class="player">4 — Rojo</div>
+      <div class="player">5 — Blanco</div>
+      <div class="player">6 — Medina</div>
+      <div class="player">7 — Equi Fernández</div>
+      <div class="player">8 — Zenón</div>
+      <div class="player">9 — Merentiel</div>
+      <div class="player">10 — Cavani</div>
+      <div class="player">11 — Langoni</div>
+
+      <div class="subs">
+        <strong>Suplentes</strong>
+        <div class="sub">12 — García</div>
+        <div class="sub">13 — Valentini</div>
+        <div class="sub">14 — Saralegui</div>
+        <div class="sub">15 — Campuzano</div>
+        <div class="sub">16 — Janson</div>
+        <div class="sub">17 — Barco</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="demo">
+    Demo actual. Las alineaciones reales se cargarán desde API-Football al conectar la API.
+  </div>
+
 </div>
-</div>
 
-<div class="lineupTeam">
-<h3>Boca</h3>
-<div class="formation">4-3-3</div>
-
-<div class="player">🧤 1. Romero — Arquero</div>
-<div class="player">2. Advíncula — Defensa</div>
-<div class="player">3. Figal — Defensa</div>
-<div class="player">4. Rojo — Defensa</div>
-<div class="player">5. Blanco — Defensa</div>
-<div class="player">6. Medina — Mediocampo</div>
-<div class="player">7. Equi Fernández — Mediocampo</div>
-<div class="player">8. Zenón — Mediocampo</div>
-<div class="player">9. Merentiel — Ataque</div>
-<div class="player">10. Cavani — Ataque</div>
-<div class="player">11. Langoni — Ataque</div>
-
-<div class="subs">
-<b>Suplentes</b>
-<div class="sub">12. García — Arquero</div>
-<div class="sub">13. Valentini — Defensa</div>
-<div class="sub">14. Saralegui — Mediocampo</div>
-<div class="sub">15. Campuzano — Mediocampo</div>
-<div class="sub">16. Janson — Ataque</div>
-<div class="sub">17. Barco — Mediocampo</div>
-</div>
-</div>
-
-</div>
-
-<p class="small">
-Datos de demostración. Al conectar API-Football,
-las alineaciones reales reemplazarán estos datos.
-</p>
-</div>
 
 <div class="card">
-<h2>🔄 Cambios durante el partido</h2>
 
-<div id="changes">
-<div class="change">
-<b>Sin cambios todavía</b>
-<div class="small">
-Los cambios aparecerán aquí cuando se produzcan.
-</div>
-</div>
-</div>
+  <h2 class="sectionTitle">🔄 Cambios durante el partido</h2>
+
+  <div class="change">
+    65' — River: entra Mastantuono, sale Lanzini
+  </div>
+
+  <div class="change">
+    72' — Boca: entra Janson, sale Langoni
+  </div>
+
+  <div class="change">
+    <span class="small">
+      En la versión API, los cambios reales aparecerán automáticamente.
+    </span>
+  </div>
 
 </div>
+
+
+<div class="card">
+
+  <h2 class="sectionTitle">📈 Últimos 5 partidos</h2>
+
+  <h3>🔴 River Plate</h3>
+
+  <div class="match">River 2 - 0 Independiente</div>
+  <div class="match">Racing 1 - 1 River</div>
+  <div class="match">River 0 - 1 San Lorenzo</div>
+  <div class="match">River 3 - 1 Talleres</div>
+  <div class="match">River 2 - 1 Lanús</div>
+
+  <div class="summary">
+    <div>Victorias<br><strong>3</strong></div>
+    <div>Empates<br><strong>1</strong></div>
+    <div>Derrotas<br><strong>1</strong></div>
+  </div>
+
+
+  <h3>🔵 Boca Juniors</h3>
+
+  <div class="match">Boca 2 - 0 Rosario Central</div>
+  <div class="match">Boca 1 - 0 Vélez</div>
+  <div class="match">Boca 1 - 1 Racing</div>
+  <div class="match">Estudiantes 2 - 1 Boca</div>
+  <div class="match">Boca 3 - 0 Tigre</div>
+
+  <div class="summary">
+    <div>Victorias<br><strong>3</strong></div>
+    <div>Empates<br><strong>1</strong></div>
+    <div>Derrotas<br><strong>1</strong></div>
+  </div>
+
+</div>
+
+
+<div class="card">
+
+  <h2 class="sectionTitle">⚔️ H2H — Enfrentamientos directos</h2>
+
+  <div class="h2h">
+
+    <div class="match">River 2 - 1 Boca</div>
+    <div class="match">Boca 0 - 0 River</div>
+    <div class="match">River 1 - 2 Boca</div>
+    <div class="match">Boca 1 - 1 River</div>
+    <div class="match">River 2 - 0 Boca</div>
+
+  </div>
+
+  <div class="demo">
+    Datos de demostración. Más adelante serán reemplazados por los enfrentamientos reales obtenidos desde API-Football.
+  </div>
+
+</div>
+
+
+<div class="demo">
+  MatchIA — versión de desarrollo con datos demo.
+</div>
+
+
+</div>
+
 
 <script>
 
 let minute=0;
+
 let homeScore=0;
 let awayScore=0;
 
@@ -195,22 +573,26 @@ let awayChances=0;
 let homeReds=0;
 let awayReds=0;
 
+
 const base={
   home:55,
   draw:30,
   away:15
 };
 
+
 function normalize(a,b,c){
 
   const total=a+b+c;
 
-  return {
+  return{
     home:Math.round(a/total*100),
     draw:Math.round(b/total*100),
     away:Math.round(c/total*100)
   };
+
 }
+
 
 function livePressure(){
 
@@ -218,29 +600,38 @@ function livePressure(){
          (homeShots-awayShots)*0.20+
          (homeTarget-awayTarget)*2.20+
          (awayReds-homeReds)*14;
+
 }
+
 
 function calculateProbabilities(){
 
   if(minute>=90){
 
     if(homeScore>awayScore)
-      return {home:100,draw:0,away:0};
+      return{home:100,draw:0,away:0};
 
     if(awayScore>homeScore)
-      return {home:0,draw:0,away:100};
+      return{home:0,draw:0,away:100};
 
-    return {home:0,draw:100,away:0};
+    return{home:0,draw:100,away:0};
+
   }
 
+
   const time=minute/90;
+
   const pressure=livePressure();
+
   const effect=pressure*(0.32+time*0.75);
+
 
   if(homeScore===0 && awayScore===0){
 
     let draw=30+time*34-Math.abs(effect)*0.12;
+
     let home=base.home*(1-time*0.42)+effect;
+
     let away=base.away*(1-time*0.42)-effect;
 
     return normalize(
@@ -248,12 +639,16 @@ function calculateProbabilities(){
       Math.max(draw,20),
       Math.max(away,7)
     );
+
   }
+
 
   if(homeScore===awayScore){
 
     let home=base.home*(1-time*0.45)+effect;
+
     let away=base.away*(1-time*0.45)-effect;
+
     let draw=30+time*38-Math.abs(effect)*0.18;
 
     return normalize(
@@ -261,78 +656,101 @@ function calculateProbabilities(){
       Math.max(draw,20),
       Math.max(away,8)
     );
+
   }
+
 
   const difference=homeScore-awayScore;
 
+
   if(Math.abs(difference)===1){
 
-    let home;
-    let draw;
-    let away;
+    let home,draw,away;
+
 
     if(difference>0){
 
       home=50+time*5+effect*0.45;
+
       draw=25-effect*0.10;
+
       away=25-effect*0.35;
 
     }else{
 
       away=50-time*5-effect*0.45;
+
       draw=25+effect*0.10;
+
       home=25+effect*0.35;
+
     }
 
+
     home-=homeReds*8;
+
     home+=awayReds*5;
 
     away-=awayReds*8;
+
     away+=homeReds*5;
+
 
     return normalize(
       Math.max(home,8),
       Math.max(draw,15),
       Math.max(away,8)
     );
+
   }
 
+
   let home=62;
+
   let draw=20;
+
   let away=18;
+
 
   if(difference>0){
 
     home+=time*8+effect*0.25;
+
     away-=effect*0.25;
 
   }else{
 
     away+=time*8-effect*0.25;
+
     home+=effect*0.25;
+
   }
 
+
   home-=homeReds*10;
+
   away-=awayReds*10;
 
   draw+=Math.abs(homeReds-awayReds)*3;
+
 
   return normalize(
     Math.max(home,5),
     Math.max(draw,10),
     Math.max(away,5)
   );
+
 }
+
 
 function update(){
 
-  document.getElementById("homeScore").textContent=homeScore;
-  document.getElementById("awayScore").textContent=awayScore;
-
   document.getElementById("minute").textContent=minute;
 
-  document.getElementById("remaining").textContent=
-    Math.max(0,90-minute);
+  document.getElementById("homeScore").textContent=homeScore;
+
+  document.getElementById("awayScore").textContent=awayScore;
+
 
   document.getElementById("shots").textContent=
     homeShots+" - "+awayShots;
@@ -346,113 +764,215 @@ function update(){
   document.getElementById("reds").textContent=
     homeReds+" - "+awayReds;
 
+
+  document.getElementById("remaining").textContent=
+    Math.max(90-minute,0)+" min";
+
+
   const p=calculateProbabilities();
 
-  document.getElementById("homeProb").textContent=p.home+"%";
-  document.getElementById("drawProb").textContent=p.draw+"%";
-  document.getElementById("awayProb").textContent=p.away+"%";
 
-  let reason="🧠 ";
+  document.getElementById("probHome").textContent=p.home+"%";
+
+  document.getElementById("probDraw").textContent=p.draw+"%";
+
+  document.getElementById("probAway").textContent=p.away+"%";
+
+
+  const reason=document.getElementById("reason");
+
 
   if(minute>=90){
 
-    reason+="El partido llegó al final.";
+    reason.textContent=
+      "El partido llegó al final y el resultado queda definido por el marcador.";
 
   }else if(homeScore!==awayScore){
 
-    reason+="El marcador tiene un peso importante y la presión ofensiva modifica las posibilidades.";
+    if(homeScore>awayScore){
 
-  }else if(homeChances>awayChances || homeTarget>awayTarget){
+      if(awayChances>homeChances || awayTarget>homeTarget){
 
-    reason+="River está generando más peligro ofensivo y eso aumenta su probabilidad.";
+        reason.textContent=
+          "River está arriba en el marcador, pero Boca está generando peligro y mantiene posibilidades de remontar o empatar.";
 
-  }else if(awayChances>homeChances || awayTarget>homeTarget){
+      }else{
 
-    reason+="Boca está generando más peligro ofensivo y eso aumenta su probabilidad.";
+        reason.textContent=
+          "River tiene ventaja en el marcador y el tiempo restante limita las oportunidades de Boca.";
+
+      }
+
+    }else{
+
+      if(homeChances>awayChances || homeTarget>awayTarget){
+
+        reason.textContent=
+          "Boca está arriba, pero River está generando peligro y todavía puede empatar o remontar.";
+
+      }else{
+
+        reason.textContent=
+          "Boca tiene ventaja en el marcador y el tiempo restante limita las oportunidades de River.";
+
+      }
+
+    }
 
   }else{
 
-    reason+="El partido está equilibrado.";
+    if(homeChances>awayChances || homeTarget>awayTarget){
+
+      reason.textContent=
+        "River está generando más peligro ofensivo, aunque el empate sigue teniendo un peso importante mientras no haya goles.";
+
+    }else if(awayChances>homeChances || awayTarget>homeTarget){
+
+      reason.textContent=
+        "Boca está generando más peligro ofensivo, aunque el empate sigue teniendo un peso importante mientras no haya goles.";
+
+    }else{
+
+      reason.textContent=
+        "El partido está equilibrado y el paso del tiempo aumenta progresivamente el peso del empate.";
+
+    }
+
   }
 
-  document.getElementById("reason").textContent=reason;
 }
+
 
 function addMinute(){
 
   if(minute<90){
+
     minute++;
+
     update();
+
   }
+
 }
+
 
 function riverChance(){
+
   homeChances++;
+
   homeShots++;
+
   update();
+
 }
+
 
 function bocaChance(){
+
   awayChances++;
+
   awayShots++;
+
   update();
+
 }
+
 
 function riverWide(){
+
   homeChances++;
+
   homeShots++;
+
   update();
+
 }
+
 
 function bocaWide(){
+
   awayChances++;
+
   awayShots++;
+
   update();
+
 }
+
 
 function riverTarget(){
+
   homeChances++;
+
   homeShots++;
+
   homeTarget++;
+
   update();
+
 }
 
+
 function bocaTarget(){
+
   awayChances++;
+
   awayShots++;
+
   awayTarget++;
+
   update();
+
 }
+
 
 function riverGoal(){
 
   homeScore++;
+
   homeChances++;
+
   homeShots++;
+
   homeTarget++;
 
   update();
+
 }
+
 
 function bocaGoal(){
 
   awayScore++;
+
   awayChances++;
+
   awayShots++;
+
   awayTarget++;
 
   update();
+
 }
+
 
 function riverRed(){
+
   homeReds++;
+
   update();
+
 }
 
+
 function bocaRed(){
+
   awayReds++;
+
   update();
+
 }
+
 
 function resetGame(){
 
@@ -474,12 +994,13 @@ function resetGame(){
   awayReds=0;
 
   update();
+
 }
+
 
 update();
 
 </script>
 
-</div>
 </body>
 </html>
