@@ -14,11 +14,80 @@ body{
   color:white;
 }
 
+.container{
+  max-width:700px;
+  margin:auto;
+}
+
 .card{
   background:#151c32;
   padding:20px;
   border-radius:18px;
   margin-bottom:15px;
+}
+
+h1{
+  text-align:center;
+}
+
+.score{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  text-align:center;
+}
+
+.team{
+  width:35%;
+}
+
+.team-name{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.goals{
+  font-size:42px;
+  font-weight:bold;
+}
+
+.minute{
+  color:#aaa;
+}
+
+.probs{
+  display:flex;
+  justify-content:space-around;
+  text-align:center;
+}
+
+.prob{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.label{
+  color:#aaa;
+}
+
+.explanation{
+  background:#10172a;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.stat{
+  background:#10172a;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
 }
 
 button{
@@ -31,48 +100,131 @@ button{
   color:white;
   font-size:16px;
 }
+
+.reset{
+  background:#8b2635;
+}
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>⚽ MatchIA</h1>
+
 
 <div class="card">
 
-<h2>River <span id="riverScore">0</span> - <span id="bocaScore">0</span> Boca</h2>
+<div class="score">
 
-<p>Minuto: <span id="minute">0</span>'</p>
+<div class="team">
+<div class="team-name">River</div>
+<div class="goals" id="riverScore">0</div>
+</div>
+
+<div>
+<div class="minute">
+<span id="minute">0</span>'
+</div>
+</div>
+
+<div class="team">
+<div class="team-name">Boca</div>
+<div class="goals" id="bocaScore">0</div>
+</div>
 
 </div>
+
+</div>
+
+
+<div class="card">
+
+<div class="probs">
+
+<div>
+<div class="prob" id="riverProb">0%</div>
+<div class="label">River</div>
+</div>
+
+<div>
+<div class="prob" id="drawProb">0%</div>
+<div class="label">Empate</div>
+</div>
+
+<div>
+<div class="prob" id="bocaProb">0%</div>
+<div class="label">Boca</div>
+</div>
+
+</div>
+
+<div class="explanation">
+
+<b>🧠 ¿Por qué?</b>
+
+<div id="explanation" style="margin-top:8px;"></div>
+
+</div>
+
+</div>
+
 
 <div class="card">
 
 <h3>📊 Estadísticas</h3>
 
-<p>
-Tiros:
+<div class="stats">
+
+<div class="stat">
+Tiros<br>
 <span id="riverShots">0</span> -
 <span id="bocaShots">0</span>
-</p>
+</div>
 
-<p>
-Tiros al arco:
+<div class="stat">
+Tiros al arco<br>
 <span id="riverTarget">0</span> -
 <span id="bocaTarget">0</span>
-</p>
+</div>
 
-<p>
-Llegadas:
+<div class="stat">
+Llegadas<br>
 <span id="riverChances">0</span> -
 <span id="bocaChances">0</span>
+</div>
+
+<div class="stat">
+Posesión<br>
+51% - 49%
+</div>
+
+<div class="stat">
+Córners<br>
+0 - 0
+</div>
+
+<div class="stat">
+Rojas<br>
+<span id="riverReds">0</span> -
+<span id="bocaReds">0</span>
+</div>
+
+</div>
+
+<p style="text-align:center">
+Restante <span id="remaining">90</span> min
 </p>
 
 </div>
 
+
 <div class="card">
 
-<button onclick="addMinute()">+1 minuto</button>
+<button onclick="addMinute()">
++1 minuto
+</button>
 
 <button onclick="riverChance()">
 🔥 Llegada River
@@ -106,53 +258,582 @@ Llegadas:
 ⚽ Gol Boca
 </button>
 
-<button onclick="resetMatch()">
+<button onclick="riverRed()">
+🟥 Roja River
+</button>
+
+<button onclick="bocaRed()">
+🟥 Roja Boca
+</button>
+
+<button class="reset" onclick="resetMatch()">
 🔄 Reiniciar
 </button>
 
 </div>
 
+</div>
+
+
 <script>
 
-let minute = 0;
+let minute=0;
 
-let riverScore = 0;
-let bocaScore = 0;
+let riverScore=0;
+let bocaScore=0;
 
-let riverShots = 0;
-let bocaShots = 0;
+let riverShots=0;
+let bocaShots=0;
 
-let riverTargetCount = 0;
-let bocaTargetCount = 0;
+let riverTargetCount=0;
+let bocaTargetCount=0;
 
-let riverChances = 0;
-let bocaChances = 0;
+let riverChances=0;
+let bocaChances=0;
 
+let riverReds=0;
+let bocaReds=0;
+
+
+/* FUERZA PREVIA */
+
+const riverStrength=78;
+const bocaStrength=72;
+
+
+/* NORMALIZAR */
+
+function normalize(a,b,c){
+
+let total=a+b+c;
+
+if(total<=0){
+
+return{
+home:33,
+draw:34,
+away:33
+};
+
+}
+
+let home=Math.round(a/total*100);
+
+let draw=Math.round(b/total*100);
+
+let away=100-home-draw;
+
+return{
+home,
+draw,
+away
+};
+
+}
+
+
+/* PRESIÓN */
+
+function livePressure(){
+
+let chances=
+(riverChances-bocaChances)*1.15;
+
+let shots=
+(riverShots-bocaShots)*0.20;
+
+let target=
+(riverTargetCount-bocaTargetCount)*2.20;
+
+let reds=
+(bocaReds-riverReds)*14;
+
+return chances+shots+target+reds;
+
+}
+
+
+/* PROBABILIDADES */
+
+function calculateProbabilities(){
+
+/* 90' */
+
+if(minute>=90){
+
+if(riverScore>bocaScore){
+
+return{
+home:100,
+draw:0,
+away:0
+};
+
+}
+
+if(bocaScore>riverScore){
+
+return{
+home:0,
+draw:0,
+away:100
+};
+
+}
+
+return{
+home:0,
+draw:100,
+away:0
+};
+
+}
+
+
+let base=
+normalize(
+riverStrength+2,
+30,
+bocaStrength
+);
+
+let time=minute/90;
+
+let pressure=livePressure();
+
+let effect=
+pressure*(0.32+time*0.75);
+
+
+/* 0-0 */
+
+if(riverScore===0 && bocaScore===0){
+
+let draw=
+30+time*34;
+
+draw-=
+Math.abs(effect)*0.12;
+
+let river=
+base.home*(1-time*0.42);
+
+let boca=
+base.away*(1-time*0.42);
+
+river+=effect;
+
+boca-=effect;
+
+river=Math.max(river,7);
+
+boca=Math.max(boca,7);
+
+draw=Math.max(draw,20);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+
+/* EMPATE */
+
+if(riverScore===bocaScore){
+
+let river=
+base.home*(1-time*0.45);
+
+let boca=
+base.away*(1-time*0.45);
+
+river+=effect;
+
+boca-=effect;
+
+let draw=
+30+time*38;
+
+draw-=
+Math.abs(effect)*0.18;
+
+river=Math.max(river,8);
+
+boca=Math.max(boca,8);
+
+draw=Math.max(draw,20);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+
+/* RIVER GANA */
+
+if(riverScore>bocaScore){
+
+let difference=
+riverScore-bocaScore;
+
+let scoreWeight=
+1-time*0.35;
+
+
+if(difference===1){
+
+let river=
+base.home+
+16*scoreWeight+
+effect;
+
+let draw=
+base.draw+
+10+
+time*8;
+
+let boca=
+base.away-
+8*scoreWeight-
+effect;
+
+river-=
+riverReds*
+12*
+scoreWeight;
+
+boca+=
+riverReds*
+4*
+scoreWeight;
+
+boca-=
+bocaReds*
+12*
+scoreWeight;
+
+river+=
+bocaReds*
+4*
+scoreWeight;
+
+river=Math.max(river,20);
+
+draw=Math.max(draw,18);
+
+boca=Math.max(boca,5);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+
+let river=
+base.home+
+difference*22*scoreWeight+
+effect;
+
+let draw=
+base.draw+
+10+
+time*10;
+
+let boca=
+base.away-
+difference*15*scoreWeight-
+effect;
+
+river-=
+riverReds*
+12*
+scoreWeight;
+
+boca+=
+riverReds*
+4*
+scoreWeight;
+
+boca-=
+bocaReds*
+12*
+scoreWeight;
+
+river+=
+bocaReds*
+4*
+scoreWeight;
+
+river=Math.max(river,35);
+
+draw=Math.max(draw,10);
+
+boca=Math.max(boca,3);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+
+/* BOCA GANA */
+
+if(bocaScore>riverScore){
+
+let difference=
+bocaScore-riverScore;
+
+let scoreWeight=
+1-time*0.35;
+
+
+if(difference===1){
+
+let boca=
+base.away+
+16*scoreWeight-
+effect;
+
+let draw=
+base.draw+
+10+
+time*8;
+
+let river=
+base.home-
+8*scoreWeight+
+effect;
+
+boca-=
+bocaReds*
+12*
+scoreWeight;
+
+river+=
+bocaReds*
+4*
+scoreWeight;
+
+river-=
+riverReds*
+12*
+scoreWeight;
+
+boca+=
+riverReds*
+4*
+scoreWeight;
+
+boca=Math.max(boca,20);
+
+draw=Math.max(draw,18);
+
+river=Math.max(river,5);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+
+let boca=
+base.away+
+difference*22*scoreWeight-
+effect;
+
+let draw=
+base.draw+
+10+
+time*10;
+
+let river=
+base.home-
+difference*15*scoreWeight+
+effect;
+
+boca-=
+bocaReds*
+12*
+scoreWeight;
+
+river+=
+bocaReds*
+4*
+scoreWeight;
+
+river-=
+riverReds*
+12*
+scoreWeight;
+
+boca+=
+riverReds*
+4*
+scoreWeight;
+
+boca=Math.max(boca,35);
+
+draw=Math.max(draw,10);
+
+river=Math.max(river,3);
+
+return normalize(
+river,
+draw,
+boca
+);
+
+}
+
+return normalize(33,34,33);
+
+}
+
+
+/* ACTUALIZAR */
 
 function update(){
 
-document.getElementById("minute").textContent = minute;
+document.getElementById("minute").textContent=
+minute;
 
-document.getElementById("riverScore").textContent = riverScore;
-document.getElementById("bocaScore").textContent = bocaScore;
+document.getElementById("riverScore").textContent=
+riverScore;
 
-document.getElementById("riverShots").textContent = riverShots;
-document.getElementById("bocaShots").textContent = bocaShots;
+document.getElementById("bocaScore").textContent=
+bocaScore;
 
-document.getElementById("riverTarget").textContent = riverTargetCount;
-document.getElementById("bocaTarget").textContent = bocaTargetCount;
+document.getElementById("riverShots").textContent=
+riverShots;
 
-document.getElementById("riverChances").textContent = riverChances;
-document.getElementById("bocaChances").textContent = bocaChances;
+document.getElementById("bocaShots").textContent=
+bocaShots;
+
+document.getElementById("riverTarget").textContent=
+riverTargetCount;
+
+document.getElementById("bocaTarget").textContent=
+bocaTargetCount;
+
+document.getElementById("riverChances").textContent=
+riverChances;
+
+document.getElementById("bocaChances").textContent=
+bocaChances;
+
+document.getElementById("riverReds").textContent=
+riverReds;
+
+document.getElementById("bocaReds").textContent=
+bocaReds;
+
+document.getElementById("remaining").textContent=
+Math.max(90-minute,0);
+
+
+let p=
+calculateProbabilities();
+
+document.getElementById("riverProb").textContent=
+p.home+"%";
+
+document.getElementById("drawProb").textContent=
+p.draw+"%";
+
+document.getElementById("bocaProb").textContent=
+p.away+"%";
+
+
+let explanation;
+
+
+if(minute>=90){
+
+if(riverScore>bocaScore){
+
+explanation=
+"River termina ganando el partido.";
+
+}
+else if(bocaScore>riverScore){
+
+explanation=
+"Boca termina ganando el partido.";
+
+}
+else{
+
+explanation=
+"El partido termina empatado.";
 
 }
 
+}
+else if(riverReds>bocaReds){
+
+explanation=
+"River tiene más tarjetas rojas, lo que reduce su probabilidad.";
+
+}
+else if(bocaReds>riverReds){
+
+explanation=
+"Boca tiene más tarjetas rojas, lo que reduce su probabilidad.";
+
+}
+else if(
+riverChances>bocaChances ||
+riverTargetCount>bocaTargetCount
+){
+
+explanation=
+"River está generando más peligro ofensivo y eso aumenta su probabilidad.";
+
+}
+else if(
+bocaChances>riverChances ||
+bocaTargetCount>riverTargetCount
+){
+
+explanation=
+"Boca está generando más peligro ofensivo y eso aumenta su probabilidad.";
+
+}
+else{
+
+explanation=
+"Las probabilidades combinan fuerza previa, marcador, tiempo y desarrollo del partido.";
+
+}
+
+document.getElementById("explanation").textContent=
+explanation;
+
+}
+
+
+/* MINUTO */
 
 function addMinute(){
 
-if(minute < 90){
+if(minute>=90)return;
+
 minute++;
-}
 
 update();
 
@@ -164,6 +845,7 @@ update();
 function riverChance(){
 
 riverChances++;
+
 riverShots++;
 
 update();
@@ -174,6 +856,7 @@ update();
 function bocaChance(){
 
 bocaChances++;
+
 bocaShots++;
 
 update();
@@ -186,6 +869,7 @@ update();
 function riverWide(){
 
 riverChances++;
+
 riverShots++;
 
 update();
@@ -196,6 +880,7 @@ update();
 function bocaWide(){
 
 bocaChances++;
+
 bocaShots++;
 
 update();
@@ -208,7 +893,9 @@ update();
 function riverTarget(){
 
 riverChances++;
+
 riverShots++;
+
 riverTargetCount++;
 
 update();
@@ -219,7 +906,9 @@ update();
 function bocaTarget(){
 
 bocaChances++;
+
 bocaShots++;
+
 bocaTargetCount++;
 
 update();
@@ -234,7 +923,9 @@ function riverGoal(){
 riverScore++;
 
 riverChances++;
+
 riverShots++;
+
 riverTargetCount++;
 
 update();
@@ -247,8 +938,30 @@ function bocaGoal(){
 bocaScore++;
 
 bocaChances++;
+
 bocaShots++;
+
 bocaTargetCount++;
+
+update();
+
+}
+
+
+/* ROJAS */
+
+function riverRed(){
+
+riverReds++;
+
+update();
+
+}
+
+
+function bocaRed(){
+
+bocaReds++;
 
 update();
 
@@ -259,19 +972,22 @@ update();
 
 function resetMatch(){
 
-minute = 0;
+minute=0;
 
-riverScore = 0;
-bocaScore = 0;
+riverScore=0;
+bocaScore=0;
 
-riverShots = 0;
-bocaShots = 0;
+riverShots=0;
+bocaShots=0;
 
-riverTargetCount = 0;
-bocaTargetCount = 0;
+riverTargetCount=0;
+bocaTargetCount=0;
 
-riverChances = 0;
-bocaChances = 0;
+riverChances=0;
+bocaChances=0;
+
+riverReds=0;
+bocaReds=0;
 
 update();
 
