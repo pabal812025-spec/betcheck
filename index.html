@@ -562,7 +562,6 @@
 
 /* =========================================================
    NOMBRES DE LOS EQUIPOS
-   Después la API los reemplazará automáticamente.
 ========================================================= */
 
 const TEAM_NAMES = {
@@ -602,6 +601,24 @@ const match = {
   }
 
 };
+
+
+/* =========================================================
+   CONTROL DEL MOMENTO DEL COMENTARIO
+
+   El porcentaje sigue actualizándose siempre.
+   El comentario se renueva:
+   - aproximadamente cada 7 minutos
+   - inmediatamente después de un gol
+   - inmediatamente después de una roja
+========================================================= */
+
+let lastAnalysisMinute = -7;
+
+let lastAnalysisHomeGoals = 0;
+let lastAnalysisAwayGoals = 0;
+let lastAnalysisHomeReds = 0;
+let lastAnalysisAwayReds = 0;
 
 
 /* =========================================================
@@ -691,7 +708,7 @@ function normalize(home, draw, away){
 
 /* =========================================================
    CÁLCULO DE PROBABILIDADES
-   SIN CAMBIOS RESPECTO A LA VERSIÓN ANTERIOR.
+   SE MANTIENE IGUAL.
 ========================================================= */
 
 function calculateProbabilities(){
@@ -1208,6 +1225,450 @@ function calculateProbabilities(){
 
 
 /* =========================================================
+   MEDIR EL PELIGRO OFENSIVO
+   SOLO SE USA PARA EL COMENTARIO.
+   NO MODIFICA LOS PORCENTAJES.
+========================================================= */
+
+function getDanger(team){
+
+  const data = match[team];
+
+  return (
+    data.arrivals * 1.0 +
+    data.shots * 0.65 +
+    data.shotsOnTarget * 1.50 +
+    data.corners * 0.20
+  );
+
+}
+
+
+/* =========================================================
+   DETERMINAR SI LA DIFERENCIA OFENSIVA ES REAL
+   No alcanza con tener una llegada más.
+========================================================= */
+
+function getOffensiveSituation(){
+
+  const homeDanger = getDanger("home");
+  const awayDanger = getDanger("away");
+
+  const totalDanger =
+    homeDanger + awayDanger;
+
+
+  if(totalDanger < 1){
+    return "equilibrado";
+  }
+
+
+  const difference =
+    Math.abs(homeDanger - awayDanger);
+
+  const ratio =
+    difference / totalDanger;
+
+
+  /*
+     Diferencia menor al 15%:
+     partido bastante parejo.
+  */
+
+  if(ratio < 0.15){
+    return "equilibrado";
+  }
+
+
+  if(homeDanger > awayDanger){
+    return "home";
+  }
+
+
+  return "away";
+
+}
+
+
+/* =========================================================
+   SABER SI UN EQUIPO ESTÁ GENERANDO PELIGRO REAL
+========================================================= */
+
+function isStrongDanger(team){
+
+  const ownDanger = getDanger(team);
+
+  const other =
+    team === "home"
+      ? getDanger("away")
+      : getDanger("home");
+
+
+  if(ownDanger < 3){
+    return false;
+  }
+
+
+  if(ownDanger <= other){
+    return false;
+  }
+
+
+  const difference =
+    ownDanger - other;
+
+
+  /*
+     También pedimos una diferencia mínima absoluta
+     para no exagerar diferencias pequeñas.
+  */
+
+  return difference >= 2.5;
+
+}
+
+
+/* =========================================================
+   ACTUALIZAR LA EXPLICACIÓN
+   NO TOCA NINGUNA PROBABILIDAD.
+========================================================= */
+
+function generateAnalysis(){
+
+  const minute = match.minute;
+
+  const hg = match.home.goals;
+  const ag = match.away.goals;
+
+  const home = TEAM_NAMES.home;
+  const away = TEAM_NAMES.away;
+
+  const situation =
+    getOffensiveSituation();
+
+
+  const homeStrong =
+    isStrongDanger("home");
+
+  const awayStrong =
+    isStrongDanger("away");
+
+
+  /* =======================================================
+     ROJAS
+  ======================================================= */
+
+  if(match.home.reds > 0){
+
+    if(hg > ag){
+
+      return (
+        "🟥 " +
+        home +
+        " quedó con un jugador menos, por lo que su ventaja se vuelve más difícil de sostener."
+      );
+
+    }
+
+    if(ag > hg){
+
+      return (
+        "🟥 " +
+        home +
+        " quedó con un jugador menos y ahora " +
+        away +
+        " tiene una situación más favorable para sostener su ventaja."
+      );
+
+    }
+
+    return (
+      "🟥 " +
+      home +
+      " quedó con un jugador menos y el escenario del partido cambia."
+    );
+
+  }
+
+
+  if(match.away.reds > 0){
+
+    if(ag > hg){
+
+      return (
+        "🟥 " +
+        away +
+        " quedó con un jugador menos, por lo que su ventaja se vuelve más difícil de sostener."
+      );
+
+    }
+
+    if(hg > ag){
+
+      return (
+        "🟥 " +
+        away +
+        " quedó con un jugador menos y ahora " +
+        home +
+        " tiene una situación más favorable para sostener su ventaja."
+      );
+
+    }
+
+    return (
+      "🟥 " +
+      away +
+      " quedó con un jugador menos y el escenario del partido cambia."
+    );
+
+  }
+
+
+  /* =======================================================
+     PARTIDO EMPATADO
+  ======================================================= */
+
+  if(hg === ag){
+
+    if(minute >= 75 && minute < 90){
+
+      if(situation === "home" && homeStrong){
+
+        return (
+          home +
+          " está tomando la iniciativa y busca ponerse en ventaja. El partido sigue abierto."
+        );
+
+      }
+
+
+      if(situation === "away" && awayStrong){
+
+        return (
+          away +
+          " está tomando la iniciativa y busca ponerse en ventaja. El partido sigue abierto."
+        );
+
+      }
+
+
+      return (
+        "⏱️ Quedan pocos minutos y el marcador está igualado. Ninguno logra imponer una diferencia clara."
+      );
+
+    }
+
+
+    if(situation === "home" && homeStrong){
+
+      return (
+        home +
+        " está generando más peligro y empieza a buscar la victoria."
+      );
+
+    }
+
+
+    if(situation === "away" && awayStrong){
+
+      return (
+        away +
+        " está generando más peligro y empieza a buscar la victoria."
+      );
+
+    }
+
+
+    return (
+      "El partido está bastante equilibrado y ninguno consigue imponer una ventaja clara."
+    );
+
+  }
+
+
+  /* =======================================================
+     GANA EL LOCAL
+  ======================================================= */
+
+  if(hg > ag){
+
+    if(situation === "away" && awayStrong){
+
+      return (
+        home +
+        " gana " +
+        hg +
+        "-" +
+        ag +
+        ", pero " +
+        away +
+        " está jugando mejor y generando mucho más peligro. " +
+        away +
+        " está haciendo todo para conseguir el empate."
+      );
+
+    }
+
+
+    if(situation === "home" && homeStrong){
+
+      return (
+        home +
+        " gana " +
+        hg +
+        "-" +
+        ag +
+        " y además está controlando mejor el partido. Su ventaja es más sólida."
+      );
+
+    }
+
+
+    return (
+      home +
+      " mantiene la ventaja " +
+      hg +
+      "-" +
+      ag +
+      ", aunque el partido todavía puede cambiar."
+    );
+
+  }
+
+
+  /* =======================================================
+     GANA EL VISITANTE
+  ======================================================= */
+
+  if(ag > hg){
+
+    if(situation === "home" && homeStrong){
+
+      return (
+        away +
+        " gana " +
+        ag +
+        "-" +
+        hg +
+        ", pero " +
+        home +
+        " está jugando mejor y generando mucho más peligro. " +
+        home +
+        " está haciendo todo para conseguir el empate."
+      );
+
+    }
+
+
+    if(situation === "away" && awayStrong){
+
+      return (
+        away +
+        " gana " +
+        ag +
+        "-" +
+        hg +
+        " y además está controlando mejor el partido. Su ventaja es más sólida."
+      );
+
+    }
+
+
+    return (
+      away +
+      " mantiene la ventaja " +
+      ag +
+      "-" +
+      hg +
+      ", aunque el partido todavía puede cambiar."
+    );
+
+  }
+
+
+  return (
+    "Los indicadores disponibles todavía no muestran una diferencia clara."
+  );
+
+}
+
+
+/* =========================================================
+   CONTROL DE CUÁNDO CAMBIAR EL COMENTARIO
+========================================================= */
+
+function shouldUpdateAnalysis(){
+
+  const scoreChanged =
+    match.home.goals !== lastAnalysisHomeGoals ||
+    match.away.goals !== lastAnalysisAwayGoals;
+
+
+  const redChanged =
+    match.home.reds !== lastAnalysisHomeReds ||
+    match.away.reds !== lastAnalysisAwayReds;
+
+
+  /*
+     Gol o roja:
+     actualización inmediata.
+  */
+
+  if(scoreChanged || redChanged){
+    return true;
+  }
+
+
+  /*
+     Primera carga.
+  */
+
+  if(lastAnalysisMinute < 0){
+    return true;
+  }
+
+
+  /*
+     Después de aproximadamente 7 minutos.
+  */
+
+  if(
+    match.minute - lastAnalysisMinute >= 7
+  ){
+    return true;
+  }
+
+
+  return false;
+
+}
+
+
+/* =========================================================
+   GUARDAR EL ESTADO DEL ÚLTIMO COMENTARIO
+========================================================= */
+
+function saveAnalysisState(){
+
+  lastAnalysisMinute =
+    match.minute;
+
+  lastAnalysisHomeGoals =
+    match.home.goals;
+
+  lastAnalysisAwayGoals =
+    match.away.goals;
+
+  lastAnalysisHomeReds =
+    match.home.reds;
+
+  lastAnalysisAwayReds =
+    match.away.reds;
+
+}
+
+
+/* =========================================================
    ACTUALIZAR PANTALLA
 ========================================================= */
 
@@ -1293,6 +1754,12 @@ function update(){
     match.away.fouls;
 
 
+  /*
+     IMPORTANTE:
+     Las probabilidades siguen calculándose exactamente
+     con el motor anterior.
+  */
+
   const probabilities =
     calculateProbabilities();
 
@@ -1307,7 +1774,19 @@ function update(){
     probabilities.away + "%";
 
 
-  updateAnalysis();
+  /*
+     El comentario tiene su propio ritmo.
+     No se recalcula en cada click.
+  */
+
+  if(shouldUpdateAnalysis()){
+
+    document.getElementById("analysis").innerHTML =
+      `<div class="analysis-line">${generateAnalysis()}</div>`;
+
+    saveAnalysisState();
+
+  }
 
 }
 
@@ -1408,220 +1887,6 @@ function changeGoal(team,amount){
 
 
   update();
-
-}
-
-
-/* =========================================================
-   COMENTARIOS / EXPLICACIÓN AUTOMÁTICA
-
-   IMPORTANTE:
-   Esta función NO modifica ninguna probabilidad.
-   Solamente lee los datos y genera texto.
-========================================================= */
-
-function updateAnalysis(){
-
-  const minute = match.minute;
-
-  const hg = match.home.goals;
-  const ag = match.away.goals;
-
-  const home = TEAM_NAMES.home;
-  const away = TEAM_NAMES.away;
-
-
-  const comments = [];
-
-
-  /* -------------------------------------------------------
-     MARCADOR
-  ------------------------------------------------------- */
-
-  if(hg > ag){
-
-    comments.push(
-      "⚽ " +
-      home +
-      " tomó ventaja en el marcador."
-    );
-
-  }
-  else if(ag > hg){
-
-    comments.push(
-      "⚽ " +
-      away +
-      " tomó ventaja en el marcador."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     EMPATE EN LOS ÚLTIMOS MINUTOS
-  ------------------------------------------------------- */
-
-  if(
-    hg === ag &&
-    minute >= 75 &&
-    minute < 90
-  ){
-
-    comments.push(
-      "⏱️ Quedan pocos minutos y el marcador está igualado, por eso aumenta el peso del empate."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     LLEGADAS
-  ------------------------------------------------------- */
-
-  if(match.home.arrivals > match.away.arrivals){
-
-    comments.push(
-      "🔥 " +
-      home +
-      " está generando más llegadas."
-    );
-
-  }
-  else if(match.away.arrivals > match.home.arrivals){
-
-    comments.push(
-      "🔥 " +
-      away +
-      " está generando más llegadas."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     TIROS
-  ------------------------------------------------------- */
-
-  if(match.home.shots > match.away.shots){
-
-    comments.push(
-      "🎯 " +
-      home +
-      " tiene más tiros."
-    );
-
-  }
-  else if(match.away.shots > match.home.shots){
-
-    comments.push(
-      "🎯 " +
-      away +
-      " tiene más tiros."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     TIROS AL ARCO
-  ------------------------------------------------------- */
-
-  if(
-    match.home.shotsOnTarget >
-    match.away.shotsOnTarget
-  ){
-
-    comments.push(
-      "🎯 " +
-      home +
-      " tiene ventaja en tiros al arco."
-    );
-
-  }
-  else if(
-    match.away.shotsOnTarget >
-    match.home.shotsOnTarget
-  ){
-
-    comments.push(
-      "🎯 " +
-      away +
-      " tiene ventaja en tiros al arco."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     CÓRNERS
-  ------------------------------------------------------- */
-
-  if(match.home.corners > match.away.corners){
-
-    comments.push(
-      "🚩 " +
-      home +
-      " tiene más córners."
-    );
-
-  }
-  else if(match.away.corners > match.home.corners){
-
-    comments.push(
-      "🚩 " +
-      away +
-      " tiene más córners."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     ROJAS
-  ------------------------------------------------------- */
-
-  if(match.home.reds > 0){
-
-    comments.push(
-      "🟥 " +
-      home +
-      " tiene una roja, por lo que su probabilidad se reduce, aunque todavía conserva posibilidades mientras el partido siga en juego."
-    );
-
-  }
-
-
-  if(match.away.reds > 0){
-
-    comments.push(
-      "🟥 " +
-      away +
-      " tiene una roja, por lo que su probabilidad se reduce, aunque todavía conserva posibilidades mientras el partido siga en juego."
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     SI NO HAY NINGÚN COMENTARIO
-  ------------------------------------------------------- */
-
-  if(comments.length === 0){
-
-    comments.push(
-      "📊 Los indicadores disponibles todavía no muestran una diferencia clara."
-    );
-
-  }
-
-
-  document.getElementById("analysis").innerHTML =
-    comments
-      .map(comment =>
-        `<div class="analysis-line">${comment}</div>`
-      )
-      .join("");
 
 }
 
