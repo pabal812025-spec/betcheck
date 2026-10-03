@@ -6,9 +6,7 @@
 <title>MatchIA</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -37,9 +35,7 @@ header{
   font-weight:800;
 }
 
-.logo span{
-  color:#27d17f;
-}
+.logo span{color:#27d17f}
 
 .header-icons{
   display:flex;
@@ -229,7 +225,7 @@ button{
 .value{
   font-size:20px;
   font-weight:800;
-  min-width:70px;
+  min-width:55px;
   text-align:center;
 }
 
@@ -308,17 +304,9 @@ button{
   border-radius:20px;
 }
 
-.home-fill{
-  background:#31c979;
-}
-
-.draw-fill{
-  background:#e5ad42;
-}
-
-.away-fill{
-  background:#4f8cff;
-}
+.home-fill{background:#31c979}
+.draw-fill{background:#e5ad42}
+.away-fill{background:#4f8cff}
 
 .explanation{
   margin-top:16px;
@@ -355,13 +343,9 @@ button{
   padding:15px;
 }
 
-.info h3{
-  margin-top:0;
-}
+.info h3{margin-top:0}
 
-.hidden{
-  display:none;
-}
+.hidden{display:none}
 </style>
 </head>
 
@@ -371,6 +355,7 @@ button{
 
 <header>
   <div class="logo">⚽ <span>Match</span>IA</div>
+
   <div class="header-icons">
     <div class="icon">🔔</div>
     <div class="icon">⚙️</div>
@@ -395,6 +380,7 @@ button{
   <div class="section-title">🔥 Partidos destacados</div>
 
   <div class="match-card">
+
     <div class="match-top">
       <span>Argentina</span>
       <span>20:00</span>
@@ -411,6 +397,7 @@ button{
     <button class="open-match" onclick="openMatch()">
       🧠 Analizar partido
     </button>
+
   </div>
 
   <div class="section-title">Otros partidos</div>
@@ -449,7 +436,9 @@ button{
 
   <div class="match-title">
     <div class="names">River — Boca</div>
-    <div class="competition">Argentina · Partido de prueba MatchIA</div>
+    <div class="competition">
+      Argentina · Partido de prueba MatchIA
+    </div>
   </div>
 
   <div class="panel">
@@ -461,9 +450,11 @@ button{
     </div>
 
     <div class="control-group">
+
       <div class="control-label">⏱️ Minuto del partido</div>
 
       <div class="control">
+
         <button onclick="changeMinute(-5)">−5</button>
         <button onclick="changeMinute(-1)">−1</button>
 
@@ -473,34 +464,37 @@ button{
 
         <button onclick="changeMinute(1)">+1</button>
         <button onclick="changeMinute(5)">+5</button>
+
       </div>
+
     </div>
 
     <div class="control-group">
+
       <div class="control-label">⚽ Marcador</div>
 
       <div class="control">
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             River
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeScore('home',-1)">−</button>
             <div class="value" id="homeGoals">0</div>
             <button onclick="changeScore('home',1)">+</button>
           </div>
         </div>
 
-        <div style="font-size:18px;">—</div>
+        <div>—</div>
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             Boca
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeScore('away',-1)">−</button>
             <div class="value" id="awayGoals">0</div>
             <button onclick="changeScore('away',1)">+</button>
@@ -508,19 +502,21 @@ button{
         </div>
 
       </div>
+
     </div>
 
     <div class="control-group">
+
       <div class="control-label">🔥 Llegadas</div>
 
       <div class="control">
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             River
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeStat('homeChances',-1)">−</button>
             <div class="value" id="homeChances">10</div>
             <button onclick="changeStat('homeChances',1)">+</button>
@@ -528,11 +524,11 @@ button{
         </div>
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             Boca
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeStat('awayChances',-1)">−</button>
             <div class="value" id="awayChances">3</div>
             <button onclick="changeStat('awayChances',1)">+</button>
@@ -540,19 +536,21 @@ button{
         </div>
 
       </div>
+
     </div>
 
     <div class="control-group">
+
       <div class="control-label">🎯 Tiros al arco</div>
 
       <div class="control">
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             River
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeStat('homeTarget',-1)">−</button>
             <div class="value" id="homeTarget">4</div>
             <button onclick="changeStat('homeTarget',1)">+</button>
@@ -560,11 +558,11 @@ button{
         </div>
 
         <div>
-          <div style="font-size:12px;color:#8fa2b7;text-align:center;">
+          <div style="font-size:12px;color:#8fa2b7;text-align:center">
             Boca
           </div>
 
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px">
             <button onclick="changeStat('awayTarget',-1)">−</button>
             <div class="value" id="awayTarget">2</div>
             <button onclick="changeStat('awayTarget',1)">+</button>
@@ -572,30 +570,47 @@ button{
         </div>
 
       </div>
+
     </div>
 
     <div class="control-group">
+
       <div class="control-label">🟥 Tarjetas rojas</div>
 
       <div class="reds">
 
         <div class="red-box">
+
           🟥 Roja River
-          <div id="homeReds" style="font-size:22px;font-weight:bold;">
+
+          <div id="homeReds"
+               style="font-size:22px;font-weight:bold">
             0
           </div>
-          <button onclick="changeRed('home',1)">+ Roja River</button>
+
+          <button onclick="changeRed('home')">
+            + Roja River
+          </button>
+
         </div>
 
         <div class="red-box">
+
           🟥 Roja Boca
-          <div id="awayReds" style="font-size:22px;font-weight:bold;">
+
+          <div id="awayReds"
+               style="font-size:22px;font-weight:bold">
             0
           </div>
-          <button onclick="changeRed('away',1)">+ Roja Boca</button>
+
+          <button onclick="changeRed('away')">
+            + Roja Boca
+          </button>
+
         </div>
 
       </div>
+
     </div>
 
     <button class="reset" onclick="resetTest()">
@@ -609,30 +624,57 @@ button{
     <h3>🧠 River vs Boca</h3>
 
     <div class="prob-row">
+
       <div class="prob-label">🏠 River</div>
-      <div class="prob-number" id="homeProb">51%</div>
+
+      <div class="prob-number" id="homeProb">
+        51%
+      </div>
 
       <div class="bar">
-        <div class="fill home-fill" id="homeBar" style="width:51%"></div>
+        <div
+          class="fill home-fill"
+          id="homeBar"
+          style="width:51%">
+        </div>
       </div>
+
     </div>
 
     <div class="prob-row">
+
       <div class="prob-label">🤝 Empate</div>
-      <div class="prob-number" id="drawProb">35%</div>
+
+      <div class="prob-number" id="drawProb">
+        35%
+      </div>
 
       <div class="bar">
-        <div class="fill draw-fill" id="drawBar" style="width:35%"></div>
+        <div
+          class="fill draw-fill"
+          id="drawBar"
+          style="width:35%">
+        </div>
       </div>
+
     </div>
 
     <div class="prob-row">
+
       <div class="prob-label">✈️ Boca</div>
-      <div class="prob-number" id="awayProb">14%</div>
+
+      <div class="prob-number" id="awayProb">
+        14%
+      </div>
 
       <div class="bar">
-        <div class="fill away-fill" id="awayBar" style="width:14%"></div>
+        <div
+          class="fill away-fill"
+          id="awayBar"
+          style="width:14%">
+        </div>
       </div>
+
     </div>
 
     <div class="explanation" id="explanation"></div>
@@ -649,7 +691,7 @@ button{
 
   <div class="info">
     <h3>📊 Resumen</h3>
-    <p style="color:#91a5b9;">
+    <p style="color:#91a5b9">
       MatchIA analiza lo que está ocurriendo durante el partido.
     </p>
   </div>
@@ -685,8 +727,13 @@ const state = {
 
 function openMatch(){
 
-  document.getElementById("homeScreen").classList.add("hidden");
-  document.getElementById("matchScreen").classList.remove("hidden");
+  document
+    .getElementById("homeScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("matchScreen")
+    .classList.remove("hidden");
 
   updateUI();
 }
@@ -694,9 +741,13 @@ function openMatch(){
 
 function goHome(){
 
-  document.getElementById("matchScreen").classList.add("hidden");
-  document.getElementById("homeScreen").classList.remove("hidden");
+  document
+    .getElementById("matchScreen")
+    .classList.add("hidden");
 
+  document
+    .getElementById("homeScreen")
+    .classList.remove("hidden");
 }
 
 
@@ -720,7 +771,7 @@ function changeMinute(amount){
 }
 
 
-function changeScore(team, amount){
+function changeScore(team,amount){
 
   if(team === "home"){
 
@@ -744,7 +795,7 @@ function changeScore(team, amount){
 }
 
 
-function changeStat(stat, amount){
+function changeStat(stat,amount){
 
   state[stat] += amount;
 
@@ -756,16 +807,12 @@ function changeStat(stat, amount){
 }
 
 
-function changeRed(team, amount){
+function changeRed(team){
 
   if(team === "home"){
-
-    state.homeReds += amount;
-
+    state.homeReds++;
   }else{
-
-    state.awayReds += amount;
-
+    state.awayReds++;
   }
 
   updateUI();
@@ -816,12 +863,7 @@ function calculateProbabilities(){
   /*
     BASE
 
-    Equipo local tiene una ventaja
-    inicial moderada.
-
-    No representa una apuesta.
-    Es solamente un punto de partida
-    estadístico del demo.
+    Se mantiene una base equilibrada.
   */
 
   let home = 42;
@@ -831,74 +873,93 @@ function calculateProbabilities(){
 
   /* =========================
      LLEGADAS
+
+     Influyen, pero no pueden
+     borrar completamente una
+     ventaja de marcador.
   ========================= */
 
   const chanceDiff = homeCh - awayCh;
 
-  home += chanceDiff * 0.60;
-  away -= chanceDiff * 0.60;
+  home += chanceDiff * 0.45;
+  away -= chanceDiff * 0.45;
 
 
   /* =========================
      TIROS AL ARCO
 
-     Tienen más peso que las
+     Más importantes que las
      llegadas generales.
   ========================= */
 
   const targetDiff = homeTarget - awayTarget;
 
-  home += targetDiff * 2.60;
-  away -= targetDiff * 2.60;
+  home += targetDiff * 1.90;
+  away -= targetDiff * 1.90;
 
 
   /* =========================
-     PESO DEL MARCADOR SEGÚN
-     MINUTO
+     PESO DEL MARCADOR
 
-     IMPORTANTE:
+     Esta es la corrección principal.
 
-     Un 0-1 temprano no debe
-     definir el partido.
+     El peso crece bastante con
+     el paso del partido.
 
-     A medida que pasan los
-     minutos, el resultado
-     pesa más.
+     0-1 a los 20':
+     todavía hay muchísimo partido.
+
+     0-1 a los 60':
+     la ventaja de Boca ya pesa
+     claramente.
+
+     0-1 a los 80':
+     el tiempo restante hace que
+     el resultado actual tenga
+     mucho más peso.
   ========================= */
 
   let scoreWeight;
 
-  if(m < 20){
+  if(m < 15){
 
-    scoreWeight = 0.45;
+    scoreWeight = 0.35;
+
+  }else if(m < 25){
+
+    scoreWeight = 0.60;
 
   }else if(m < 35){
 
-    scoreWeight = 0.65;
+    scoreWeight = 0.90;
 
-  }else if(m < 50){
+  }else if(m < 45){
 
-    scoreWeight = 0.85;
+    scoreWeight = 1.25;
 
-  }else if(m < 60){
+  }else if(m < 55){
 
-    scoreWeight = 1.15;
+    scoreWeight = 1.65;
 
-  }else if(m < 70){
+  }else if(m < 65){
 
-    scoreWeight = 1.50;
+    scoreWeight = 2.15;
 
-  }else if(m < 80){
+  }else if(m < 75){
 
-    scoreWeight = 2.00;
+    scoreWeight = 2.75;
 
-  }else if(m < 85){
+  }else if(m < 82){
 
-    scoreWeight = 2.70;
+    scoreWeight = 3.45;
+
+  }else if(m < 87){
+
+    scoreWeight = 4.20;
 
   }else{
 
-    scoreWeight = 3.50;
+    scoreWeight = 5.00;
 
   }
 
@@ -906,26 +967,19 @@ function calculateProbabilities(){
   const scoreDiff = hg - ag;
 
 
-  /*
-    MARCADOR
-
-    El equipo que va ganando
-    recibe una ventaja progresiva.
-
-    El que pierde baja, pero nunca
-    automáticamente queda eliminado
-    mientras quede bastante tiempo.
-  */
+  /* =========================
+     EFECTO DEL MARCADOR
+  ========================= */
 
   if(scoreDiff > 0){
 
-    home += 14 * scoreDiff * scoreWeight;
-    away -= 10 * scoreDiff * scoreWeight;
+    home += 15 * scoreDiff * scoreWeight;
+    away -= 11 * scoreDiff * scoreWeight;
 
   }else if(scoreDiff < 0){
 
-    away += 14 * Math.abs(scoreDiff) * scoreWeight;
-    home -= 10 * Math.abs(scoreDiff) * scoreWeight;
+    away += 15 * Math.abs(scoreDiff) * scoreWeight;
+    home -= 11 * Math.abs(scoreDiff) * scoreWeight;
 
   }
 
@@ -933,42 +987,53 @@ function calculateProbabilities(){
   /* =========================
      EMPATE
 
-     Mientras el partido siga
-     empatado, el empate conserva
-     peso importante.
+     Si está empatado, el empate
+     conserva peso, especialmente
+     cuando el partido está avanzado.
   ========================= */
 
   if(scoreDiff === 0){
 
-    const timeFactor = Math.max(0, 1 - (m / 120));
+    if(m < 30){
 
-    draw += 7 * timeFactor;
+      draw += 4;
+
+    }else if(m < 60){
+
+      draw += 7;
+
+    }else if(m < 80){
+
+      draw += 10;
+
+    }else{
+
+      draw += 14;
+
+    }
 
   }
 
 
   /* =========================
-     PRESIÓN TEMPORAL
+     TIEMPO RESTANTE
 
-     Desde el minuto 55,
-     una desventaja empieza a
-     ser un poco más difícil
+     Una desventaja empieza a ser
+     progresivamente más difícil
      de remontar.
-
-     Es deliberadamente moderada.
   ========================= */
 
   if(scoreDiff < 0){
 
     if(m >= 55){
 
-      home -= (m - 55) * 0.16;
+      home -= (m - 55) * 0.20;
 
     }
 
     if(m >= 70){
 
-      home -= (m - 70) * 0.25;
+      home -= (m - 70) * 0.35;
 
     }
 
@@ -979,13 +1044,13 @@ function calculateProbabilities(){
 
     if(m >= 55){
 
-      away -= (m - 55) * 0.16;
+      away -= (m - 55) * 0.20;
 
     }
 
     if(m >= 70){
 
-      away -= (m - 70) * 0.25;
+      away -= (m - 70) * 0.35;
 
     }
 
@@ -993,10 +1058,10 @@ function calculateProbabilities(){
 
 
   /* =========================
-     TARJETAS ROJAS
+     ROJAS
 
-     Mantener la lógica que ya
-     estaba funcionando.
+     Se mantiene la lógica
+     que ya estaba funcionando.
   ========================= */
 
   const redPressure =
@@ -1006,14 +1071,6 @@ function calculateProbabilities(){
   away -= redPressure;
 
 
-  /*
-    Efecto explícito de cada roja.
-
-    La roja reduce las posibilidades
-    del equipo afectado y aumenta
-    moderadamente las del rival.
-  */
-
   home -= homeReds * 12 * scoreWeight;
   away += homeReds * 4 * scoreWeight;
 
@@ -1022,27 +1079,27 @@ function calculateProbabilities(){
 
 
   /* =========================
-     PROTECCIONES
+     MÍNIMOS
   ========================= */
 
-  home = Math.max(1, home);
-  draw = Math.max(1, draw);
-  away = Math.max(1, away);
-
-
-  /*
-    Normalización
-  */
-
-  const total = home + draw + away;
-
-  let ph = (home / total) * 100;
-  let pd = (draw / total) * 100;
-  let pa = (away / total) * 100;
+  home = Math.max(1,home);
+  draw = Math.max(1,draw);
+  away = Math.max(1,away);
 
 
   /* =========================
-     PARTIDO FINALIZADO
+     NORMALIZACIÓN
+  ========================= */
+
+  const total = home + draw + away;
+
+  let ph = home / total * 100;
+  let pd = draw / total * 100;
+  let pa = away / total * 100;
+
+
+  /* =========================
+     FINAL
   ========================= */
 
   if(m >= 90){
@@ -1070,20 +1127,16 @@ function calculateProbabilities(){
   }
 
 
-  /*
-    Redondeo y corrección para
-    que siempre sume 100.
-  */
-
   ph = Math.round(ph);
   pd = Math.round(pd);
   pa = Math.round(pa);
 
-  const roundedTotal = ph + pd + pa;
 
-  if(roundedTotal !== 100){
+  const sum = ph + pd + pa;
 
-    pa += 100 - roundedTotal;
+  if(sum !== 100){
+
+    pa += 100 - sum;
 
   }
 
@@ -1101,14 +1154,14 @@ function calculateProbabilities(){
    EXPLICACIÓN
 ========================= */
 
-function buildExplanation(prob){
+function buildExplanation(){
 
   const m = state.minute;
-
   const hg = state.homeGoals;
   const ag = state.awayGoals;
 
   const parts = [];
+
 
   if(state.homeChances > state.awayChances){
 
@@ -1142,16 +1195,22 @@ function buildExplanation(prob){
 
   if(hg < ag){
 
-    if(m < 50){
+    if(m < 35){
 
       parts.push(
-        "Boca gana 0-1, pero todavía queda mucho partido y River conserva posibilidades."
+        "Boca gana, pero todavía queda mucho partido."
       );
 
-    }else if(m < 75){
+    }else if(m < 60){
 
       parts.push(
-        "Boca mantiene la ventaja y el paso del tiempo empieza a darle más peso al resultado."
+        "Boca mantiene la ventaja, aunque River todavía tiene tiempo para reaccionar."
+      );
+
+    }else if(m < 80){
+
+      parts.push(
+        "La ventaja de Boca gana peso porque queda menos tiempo para la remontada."
       );
 
     }else{
@@ -1164,10 +1223,10 @@ function buildExplanation(prob){
 
   }else if(hg > ag){
 
-    if(m < 50){
+    if(m < 60){
 
       parts.push(
-        "River gana, aunque todavía queda bastante partido."
+        "River gana, aunque todavía queda tiempo para que el partido cambie."
       );
 
     }else{
@@ -1210,7 +1269,7 @@ function buildExplanation(prob){
 
 
 /* =========================
-   ACTUALIZAR PANTALLA
+   ACTUALIZAR UI
 ========================= */
 
 function updateUI(){
@@ -1243,39 +1302,34 @@ function updateUI(){
     state.awayReds;
 
 
-  const probabilities =
-    calculateProbabilities();
+  const p = calculateProbabilities();
 
 
   document.getElementById("homeProb").textContent =
-    probabilities.home + "%";
+    p.home + "%";
 
   document.getElementById("drawProb").textContent =
-    probabilities.draw + "%";
+    p.draw + "%";
 
   document.getElementById("awayProb").textContent =
-    probabilities.away + "%";
+    p.away + "%";
 
 
   document.getElementById("homeBar").style.width =
-    probabilities.home + "%";
+    p.home + "%";
 
   document.getElementById("drawBar").style.width =
-    probabilities.draw + "%";
+    p.draw + "%";
 
   document.getElementById("awayBar").style.width =
-    probabilities.away + "%";
+    p.away + "%";
 
 
   document.getElementById("explanation").textContent =
-    buildExplanation(probabilities);
+    buildExplanation();
 
 }
 
-
-/* =========================
-   INICIO
-========================= */
 
 updateUI();
 
