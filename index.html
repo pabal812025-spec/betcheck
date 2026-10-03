@@ -128,6 +128,10 @@ button{
   cursor:pointer;
 }
 
+button:active{
+  transform:scale(.98);
+}
+
 .back{
   margin-bottom:14px;
 }
@@ -191,13 +195,32 @@ button{
 .controls{
   display:flex;
   flex-wrap:wrap;
-  gap:7px;
+  gap:8px;
   margin-top:15px;
 }
 
-.controls button{
-  flex:1;
-  min-width:90px;
+.control-group{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.control-title{
+  grid-column:1/-1;
+  color:#8fa7c2;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.control-group button{
+  width:100%;
+}
+
+.reset{
+  width:100%;
+  margin-top:4px;
+  background:#26384d;
 }
 
 .small-grid{
@@ -236,6 +259,22 @@ button{
 .hidden{
   display:none;
 }
+
+.tabs{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  margin-bottom:12px;
+}
+
+.tab{
+  white-space:nowrap;
+  padding:8px 11px;
+  background:#102943;
+  border-radius:8px;
+  color:#9fb2c7;
+  font-size:12px;
+}
 </style>
 </head>
 
@@ -270,6 +309,7 @@ button{
 
   </div>
 
+
   <div id="detailView" class="hidden">
 
     <button class="back" onclick="goHome()">← Volver</button>
@@ -280,7 +320,12 @@ button{
 
 </div>
 
+
 <script>
+
+/* =====================================================
+   PARTIDOS DEMO
+===================================================== */
 
 const matchesByDay = [
 
@@ -496,54 +541,71 @@ const matchesByDay = [
 
 ];
 
-let selectedDay = 2;
 
-let matchState = {
-  minute:40,
-  homeScore:0,
-  awayScore:0,
-  homeChances:10,
-  awayChances:3,
-  homeTarget:4,
-  awayTarget:2,
-  homeReds:0,
-  awayReds:0
-};
+let selectedDay = 2;
 
 let currentMatch = null;
 
 
-/* =========================
-   DATOS DEMO
-========================= */
+/* =====================================================
+   ESTADO DEL PARTIDO
+===================================================== */
+
+let matchState = {
+
+  minute:40,
+
+  homeScore:0,
+  awayScore:0,
+
+  homeChances:10,
+  awayChances:3,
+
+  homeTarget:4,
+  awayTarget:2,
+
+  homeReds:0,
+  awayReds:0
+
+};
+
+
+/* =====================================================
+   DATOS PRE-PARTIDO
+===================================================== */
 
 const preMatch = {
+
   "palmeiras-river":{
     goals:"2–3",
     btts:64,
     corners:9,
     shots:21
   },
+
   "river-boca":{
     goals:"2–3",
     btts:61,
     corners:9,
     shots:22
   },
+
   default:{
     goals:"2–3",
     btts:58,
     corners:8,
     shots:19
   }
+
 };
 
 
-/* =========================
+/* =====================================================
    HOME
-========================= */
+===================================================== */
 
 function selectDay(day){
+
   selectedDay = day;
 
   document.querySelectorAll(".day").forEach((el,i)=>{
@@ -551,44 +613,59 @@ function selectDay(day){
   });
 
   renderMatches();
+
 }
 
 
 function renderMatches(){
 
-  const container = document.getElementById("matches");
+  const container =
+    document.getElementById("matches");
 
-  const search = document
-    .getElementById("search")
-    .value
-    .toLowerCase()
-    .trim();
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
 
-  let matches = matchesByDay[selectedDay] || [];
+  let matches =
+    matchesByDay[selectedDay] || [];
 
   if(search){
-    matches = matches.filter(m =>
-      (
-        m.home+" "+
-        m.away+" "+
-        m.competition
-      ).toLowerCase().includes(search)
-    );
+
+    matches =
+      matches.filter(m =>
+        (
+          m.home+" "+
+          m.away+" "+
+          m.competition
+        )
+        .toLowerCase()
+        .includes(search)
+      );
+
   }
 
-  let html = "";
 
   if(!matches.length){
-    html = `
+
+    container.innerHTML = `
       <div class="card">
         No se encontraron partidos.
       </div>
     `;
+
+    return;
   }
+
+
+  let html = "";
 
   matches.forEach((m,index)=>{
 
     html += `
+
       <div
         class="card match-card"
         onclick="openMatch('${m.id}')"
@@ -607,26 +684,36 @@ function renderMatches(){
 
         ${
           index===0
-          ? `<div class="status">🧠 Análisis MatchIA</div>`
-          : ""
+          ?
+          `<div class="status">
+             🧠 Análisis MatchIA
+           </div>`
+          :
+          ""
         }
 
       </div>
+
     `;
+
   });
 
+
   container.innerHTML = html;
+
 }
 
 
 function searchMatches(){
+
   renderMatches();
+
 }
 
 
-/* =========================
+/* =====================================================
    ABRIR PARTIDO
-========================= */
+===================================================== */
 
 function openMatch(id){
 
@@ -636,82 +723,148 @@ function openMatch(id){
 
   if(!match) return;
 
+
+  /*
+    DEMO PRINCIPAL RIVER - BOCA
+
+    Arranca exactamente con:
+    40'
+    0-0
+    10-3 llegadas
+    4-2 tiros al arco
+    0-0 rojas
+  */
+
   if(id==="river-boca"){
 
     matchState = {
+
       minute:40,
+
       homeScore:0,
       awayScore:0,
+
       homeChances:10,
       awayChances:3,
+
       homeTarget:4,
       awayTarget:2,
+
       homeReds:0,
       awayReds:0
+
     };
 
-  }else{
+  }
+  else{
 
     matchState = {
+
       minute:40,
+
       homeScore:0,
       awayScore:0,
+
       homeChances:8,
       awayChances:6,
+
       homeTarget:3,
       awayTarget:3,
+
       homeReds:0,
       awayReds:0
+
     };
 
   }
 
-  document.getElementById("homeView").classList.add("hidden");
-  document.getElementById("detailView").classList.remove("hidden");
+
+  document
+    .getElementById("homeView")
+    .classList.add("hidden");
+
+  document
+    .getElementById("detailView")
+    .classList.remove("hidden");
+
 
   renderDetail();
+
 }
 
 
 function findMatch(id){
 
   for(const day of matchesByDay){
-    const match = day.find(m=>m.id===id);
+
+    const match =
+      day.find(m=>m.id===id);
+
     if(match) return match;
+
   }
 
   return null;
+
 }
 
 
 function goHome(){
 
-  document.getElementById("detailView").classList.add("hidden");
-  document.getElementById("homeView").classList.remove("hidden");
+  document
+    .getElementById("detailView")
+    .classList.add("hidden");
+
+  document
+    .getElementById("homeView")
+    .classList.remove("hidden");
 
   renderMatches();
+
 }
 
 
-/* =========================
+/* =====================================================
    MOTOR DE PROBABILIDADES
-========================= */
+===================================================== */
 
 function calculateProbabilities(){
 
   const s = matchState;
 
+
+  /*
+    FINAL
+  */
+
   if(s.minute>=90){
 
     if(s.homeScore>s.awayScore){
-      return {home:100,draw:0,away:0};
+
+      return {
+        home:100,
+        draw:0,
+        away:0
+      };
+
     }
 
     if(s.awayScore>s.homeScore){
-      return {home:0,draw:0,away:100};
+
+      return {
+        home:0,
+        draw:0,
+        away:100
+      };
+
     }
 
-    return {home:0,draw:100,away:0};
+    return {
+      home:0,
+      draw:100,
+      away:0
+    };
+
   }
 
 
@@ -725,7 +878,10 @@ function calculateProbabilities(){
 
 
   /*
-    DIFERENCIA DE LLEGADAS
+    LLEGADAS
+
+    Las llegadas influyen,
+    pero de forma moderada.
   */
 
   const chanceDiff =
@@ -738,9 +894,7 @@ function calculateProbabilities(){
   /*
     TIROS AL ARCO
 
-    Tienen más peso que las llegadas,
-    pero sin dominar completamente
-    la situación.
+    Tienen más peso que las llegadas.
   */
 
   const targetDiff =
@@ -751,117 +905,166 @@ function calculateProbabilities(){
 
 
   /*
-    PESO DEL MARCADOR SEGÚN MINUTO
+    PESO DEL MARCADOR
   */
 
   let scoreWeight;
 
   if(s.minute<15){
+
     scoreWeight=0.35;
+
   }
   else if(s.minute<25){
+
     scoreWeight=0.60;
+
   }
   else if(s.minute<35){
+
     scoreWeight=0.90;
+
   }
   else if(s.minute<45){
+
     scoreWeight=1.25;
+
   }
   else if(s.minute<55){
+
     scoreWeight=1.55;
+
   }
   else if(s.minute<65){
+
     scoreWeight=1.85;
+
   }
   else if(s.minute<75){
+
     scoreWeight=2.05;
+
   }
   else if(s.minute<82){
+
     scoreWeight=2.25;
+
   }
   else if(s.minute<87){
+
     scoreWeight=2.80;
+
   }
   else{
+
     scoreWeight=3.40;
+
   }
 
 
   /*
-    EFECTO DEL MARCADOR
+    MARCADOR
 
-    Cuando hay empate NO aplicamos
-    una penalización artificial a los
-    equipos. El empate recibe un refuerzo
-    progresivo al acercarse el final.
+    Importante:
+    si hay empate, NO damos
+    ventaja artificial a ningún equipo.
   */
 
   const scoreDiff =
     s.homeScore - s.awayScore;
 
+
   if(scoreDiff>0){
 
-    home += scoreDiff * 15 * scoreWeight;
-    away -= scoreDiff * 11 * scoreWeight;
+    home +=
+      scoreDiff *
+      15 *
+      scoreWeight;
+
+    away -=
+      scoreDiff *
+      11 *
+      scoreWeight;
 
   }
   else if(scoreDiff<0){
 
-    away += Math.abs(scoreDiff) * 15 * scoreWeight;
-    home -= Math.abs(scoreDiff) * 11 * scoreWeight;
+    away +=
+      Math.abs(scoreDiff) *
+      15 *
+      scoreWeight;
+
+    home -=
+      Math.abs(scoreDiff) *
+      11 *
+      scoreWeight;
 
   }
   else{
 
     /*
-      PARTIDO EMPATADO:
-
-      Antes del 60' el empate tiene
-      una ventaja moderada.
-
-      Después del 60' aumenta,
-      pero dejamos que las llegadas
-      sigan sosteniendo a ambos equipos.
+      Refuerzo del empate según
+      el tiempo restante.
     */
 
     if(s.minute<30){
+
       draw += 4;
+
     }
     else if(s.minute<60){
+
       draw += 6;
+
     }
     else if(s.minute<70){
+
       draw += 8;
+
     }
     else if(s.minute<80){
+
       draw += 10;
+
     }
     else if(s.minute<87){
+
       draw += 12;
+
     }
     else{
+
       draw += 16;
+
     }
 
   }
 
 
   /*
-    SI UN EQUIPO VA PERDIENDO,
+    PENALIZACIÓN TEMPORAL
+    DEL EQUIPO QUE VA PERDIENDO
 
-    la presión temporal existe,
-    pero es moderada.
+    Moderada para no aplastar
+    sus posibilidades demasiado pronto.
   */
 
   if(scoreDiff<0){
 
     if(s.minute>55){
-      home -= (s.minute-55)*0.10;
+
+      home -=
+        (s.minute-55) *
+        0.10;
+
     }
 
     if(s.minute>70){
-      home -= (s.minute-70)*0.16;
+
+      home -=
+        (s.minute-70) *
+        0.16;
+
     }
 
   }
@@ -870,39 +1073,63 @@ function calculateProbabilities(){
   if(scoreDiff>0){
 
     if(s.minute>55){
-      away -= (s.minute-55)*0.10;
+
+      away -=
+        (s.minute-55) *
+        0.10;
+
     }
 
     if(s.minute>70){
-      away -= (s.minute-70)*0.16;
+
+      away -=
+        (s.minute-70) *
+        0.16;
+
     }
 
   }
 
 
   /*
-    TARJETAS ROJAS
+    ROJAS
 
-    Se conserva la lógica que ya
-    estaba funcionando.
+    Se mantiene la lógica que
+    veníamos utilizando.
   */
 
   const redPressure =
-    (s.awayReds - s.homeReds) * 14;
+    (s.awayReds - s.homeReds) *
+    14;
 
   home += redPressure;
   away -= redPressure;
 
 
-  home -= s.homeReds * 12 * scoreWeight;
-  away += s.homeReds * 4 * scoreWeight;
+  home -=
+    s.homeReds *
+    12 *
+    scoreWeight;
 
-  away -= s.awayReds * 12 * scoreWeight;
-  home += s.awayReds * 4 * scoreWeight;
+  away +=
+    s.homeReds *
+    4 *
+    scoreWeight;
+
+
+  away -=
+    s.awayReds *
+    12 *
+    scoreWeight;
+
+  home +=
+    s.awayReds *
+    4 *
+    scoreWeight;
 
 
   /*
-    EVITAR VALORES NEGATIVOS
+    EVITAR NEGATIVOS
   */
 
   home = Math.max(0,home);
@@ -911,16 +1138,35 @@ function calculateProbabilities(){
 
 
   /*
-    NORMALIZACIÓN
+    NORMALIZAR A 100
   */
 
   const total =
-    home + draw + away;
+    home +
+    draw +
+    away;
 
-  home = Math.round(home / total * 100);
-  draw = Math.round(draw / total * 100);
 
-  away = 100 - home - draw;
+  home =
+    Math.round(
+      home /
+      total *
+      100
+    );
+
+
+  draw =
+    Math.round(
+      draw /
+      total *
+      100
+    );
+
+
+  away =
+    100 -
+    home -
+    draw;
 
 
   return {
@@ -928,288 +1174,708 @@ function calculateProbabilities(){
     draw,
     away
   };
+
 }
 
 
-/* =========================
+/* =====================================================
    RENDER DETALLE
-========================= */
+===================================================== */
 
 function renderDetail(){
 
-  const match = findMatch(currentMatch);
+  const match =
+    findMatch(currentMatch);
 
-  const p = calculateProbabilities();
+  const p =
+    calculateProbabilities();
 
-  const stats = getStats();
+  const stats =
+    getStats();
 
   const pm =
     preMatch[currentMatch] ||
     preMatch.default;
 
 
-  document.getElementById("detail").innerHTML = `
+  document
+    .getElementById("detail")
+    .innerHTML = `
 
-    <div class="card">
+      <div class="card">
 
-      <div class="match-top">
-        <span>${match.competition}</span>
-        <span>🧠 MatchIA</span>
-      </div>
-
-      <div class="detail-title">
-        ${match.home} vs ${match.away}
-      </div>
-
-      <div class="detail-score">
-        ${matchState.homeScore}
-        -
-        ${matchState.awayScore}
-      </div>
-
-      <div class="minute">
-        ${matchState.minute}'
-      </div>
-
-      <div class="probs">
-
-        <div class="prob">
-          <div class="prob-number home">${p.home}%</div>
-          <div class="label">🏠 ${match.home}</div>
+        <div class="match-top">
+          <span>${match.competition}</span>
+          <span>🧠 MatchIA</span>
         </div>
 
-        <div class="prob">
-          <div class="prob-number draw">${p.draw}%</div>
-          <div class="label">🤝 Empate</div>
+
+        <div class="detail-title">
+          ${match.home} vs ${match.away}
         </div>
 
-        <div class="prob">
-          <div class="prob-number away">${p.away}%</div>
-          <div class="label">✈️ ${match.away}</div>
+
+        <div class="detail-score">
+          ${matchState.homeScore}
+          -
+          ${matchState.awayScore}
         </div>
 
-      </div>
 
-      <div class="controls">
-
-        <button onclick="changeMinute(-10)">
-          −10'
-        </button>
-
-        <button onclick="changeMinute(10)">
-          +10'
-        </button>
-
-        <button onclick="goalHome()">
-          ⚽ Gol ${match.home}
-        </button>
-
-        <button onclick="goalAway()">
-          ⚽ Gol ${match.away}
-        </button>
-
-        <button onclick="redHome()">
-          🟥 Roja ${match.home}
-        </button>
-
-        <button onclick="redAway()">
-          🟥 Roja ${match.away}
-        </button>
-
-      </div>
-
-    </div>
+        <div class="minute">
+          ${matchState.minute}'
+        </div>
 
 
-    <div class="card">
+        <div class="probs">
 
-      <div class="section-title">
-        📊 Estadísticas en vivo
-      </div>
+          <div class="prob">
 
-      <div class="small-grid">
+            <div class="prob-number home">
+              ${p.home}%
+            </div>
 
-        <div class="stat">
-          <div class="stat-name">Llegadas</div>
-          <div class="stat-value">
-            ${stats.homeChances} - ${stats.awayChances}
+            <div class="label">
+              🏠 ${match.home}
+            </div>
+
           </div>
-        </div>
 
-        <div class="stat">
-          <div class="stat-name">Tiros al arco</div>
-          <div class="stat-value">
-            ${stats.homeTarget} - ${stats.awayTarget}
+
+          <div class="prob">
+
+            <div class="prob-number draw">
+              ${p.draw}%
+            </div>
+
+            <div class="label">
+              🤝 Empate
+            </div>
+
           </div>
-        </div>
 
-        <div class="stat">
-          <div class="stat-name">Rojas</div>
-          <div class="stat-value">
-            ${stats.homeReds} - ${stats.awayReds}
+
+          <div class="prob">
+
+            <div class="prob-number away">
+              ${p.away}%
+            </div>
+
+            <div class="label">
+              ✈️ ${match.away}
+            </div>
+
           </div>
+
         </div>
 
-        <div class="stat">
-          <div class="stat-name">Minuto</div>
-          <div class="stat-value">
-            ${stats.minute}'
+
+        <div class="controls">
+
+
+          <!-- MARCADOR -->
+
+          <div class="control-group">
+
+            <div class="control-title">
+              ⚽ Marcador
+            </div>
+
+            <button onclick="changeScore('home',-1)">
+              ${match.home} −
+            </button>
+
+            <button onclick="changeScore('home',1)">
+              ${match.home} +
+            </button>
+
+            <button onclick="changeScore('away',-1)">
+              ${match.away} −
+            </button>
+
+            <button onclick="changeScore('away',1)">
+              ${match.away} +
+            </button>
+
           </div>
+
+
+          <!-- MINUTO -->
+
+          <div class="control-group">
+
+            <div class="control-title">
+              ⏱️ Minuto
+            </div>
+
+            <button onclick="changeMinute(-5)">
+              −5'
+            </button>
+
+            <button onclick="changeMinute(5)">
+              +5'
+            </button>
+
+          </div>
+
+
+          <!-- LLEGADAS -->
+
+          <div class="control-group">
+
+            <div class="control-title">
+              🔥 Llegadas
+            </div>
+
+            <button onclick="changeChances('home',-1)">
+              ${match.home} −
+            </button>
+
+            <button onclick="changeChances('home',1)">
+              ${match.home} +
+            </button>
+
+            <button onclick="changeChances('away',-1)">
+              ${match.away} −
+            </button>
+
+            <button onclick="changeChances('away',1)">
+              ${match.away} +
+            </button>
+
+          </div>
+
+
+          <!-- TIROS AL ARCO -->
+
+          <div class="control-group">
+
+            <div class="control-title">
+              🎯 Tiros al arco
+            </div>
+
+            <button onclick="changeTarget('home',-1)">
+              ${match.home} −
+            </button>
+
+            <button onclick="changeTarget('home',1)">
+              ${match.home} +
+            </button>
+
+            <button onclick="changeTarget('away',-1)">
+              ${match.away} −
+            </button>
+
+            <button onclick="changeTarget('away',1)">
+              ${match.away} +
+            </button>
+
+          </div>
+
+
+          <!-- ROJAS -->
+
+          <div class="control-group">
+
+            <div class="control-title">
+              🟥 Tarjetas rojas
+            </div>
+
+            <button onclick="changeRed('home',-1)">
+              🟥 ${match.home} −
+            </button>
+
+            <button onclick="changeRed('home',1)">
+              🟥 ${match.home} +
+            </button>
+
+            <button onclick="changeRed('away',-1)">
+              🟥 ${match.away} −
+            </button>
+
+            <button onclick="changeRed('away',1)">
+              🟥 ${match.away} +
+            </button>
+
+          </div>
+
+
+          <button
+            class="reset"
+            onclick="resetTest()"
+          >
+            ↺ Reiniciar prueba
+          </button>
+
+
         </div>
 
       </div>
 
-    </div>
 
+      <div class="card">
 
-    <div class="card">
-
-      <div class="section-title">
-        🔮 Pre-partido
-      </div>
-
-      <div class="small-grid">
-
-        <div class="stat">
-          <div class="stat-name">Goles esperados</div>
-          <div class="stat-value">${pm.goals}</div>
+        <div class="section-title">
+          📊 Estadísticas en vivo
         </div>
 
-        <div class="stat">
-          <div class="stat-name">Ambos marcan</div>
-          <div class="stat-value">${pm.btts}%</div>
-        </div>
 
-        <div class="stat">
-          <div class="stat-name">Corners</div>
-          <div class="stat-value">${pm.corners}</div>
-        </div>
+        <div class="small-grid">
 
-        <div class="stat">
-          <div class="stat-name">Tiros totales</div>
-          <div class="stat-value">${pm.shots}</div>
+          <div class="stat">
+
+            <div class="stat-name">
+              Llegadas
+            </div>
+
+            <div class="stat-value">
+              ${stats.homeChances}
+              -
+              ${stats.awayChances}
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Tiros al arco
+            </div>
+
+            <div class="stat-value">
+              ${stats.homeTarget}
+              -
+              ${stats.awayTarget}
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Tarjetas rojas
+            </div>
+
+            <div class="stat-value">
+              ${stats.homeReds}
+              -
+              ${stats.awayReds}
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Minuto
+            </div>
+
+            <div class="stat-value">
+              ${stats.minute}'
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
-    </div>
 
+      <div class="card">
 
-    <div class="card">
+        <div class="tabs">
+          <div class="tab">Resumen</div>
+          <div class="tab">Análisis</div>
+          <div class="tab">Estadísticas</div>
+          <div class="tab">Alineaciones</div>
+          <div class="tab">Eventos</div>
+        </div>
 
-      <div class="section-title">
-        🧠 Lectura MatchIA
+        <div class="section-title">
+          📊 Resumen
+        </div>
+
+        <div class="notice">
+          MatchIA analiza lo que está ocurriendo durante el partido.
+        </div>
+
       </div>
 
-      <div class="notice">
-        ${buildExplanation(p)}
+
+      <div class="card">
+
+        <div class="section-title">
+          🔮 Pre-partido
+        </div>
+
+
+        <div class="small-grid">
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Goles esperados
+            </div>
+
+            <div class="stat-value">
+              ${pm.goals}
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Ambos marcan
+            </div>
+
+            <div class="stat-value">
+              ${pm.btts}%
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Corners
+            </div>
+
+            <div class="stat-value">
+              ${pm.corners}
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-name">
+              Tiros totales
+            </div>
+
+            <div class="stat-value">
+              ${pm.shots}
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
-    </div>
 
-  `;
+      <div class="card">
+
+        <div class="section-title">
+          🧠 Lectura MatchIA
+        </div>
+
+        <div class="notice">
+          ${buildExplanation(p)}
+        </div>
+
+      </div>
+
+    `;
+
 }
 
 
-/* =========================
+/* =====================================================
    ESTADÍSTICAS
-========================= */
+===================================================== */
 
 function getStats(){
 
   return {
-    minute:matchState.minute,
-    homeChances:matchState.homeChances,
-    awayChances:matchState.awayChances,
-    homeTarget:matchState.homeTarget,
-    awayTarget:matchState.awayTarget,
-    homeReds:matchState.homeReds,
-    awayReds:matchState.awayReds
+
+    minute:
+      matchState.minute,
+
+    homeChances:
+      matchState.homeChances,
+
+    awayChances:
+      matchState.awayChances,
+
+    homeTarget:
+      matchState.homeTarget,
+
+    awayTarget:
+      matchState.awayTarget,
+
+    homeReds:
+      matchState.homeReds,
+
+    awayReds:
+      matchState.awayReds
+
   };
+
 }
 
 
-/* =========================
+/* =====================================================
    EXPLICACIÓN
-========================= */
+===================================================== */
 
 function buildExplanation(p){
 
-  const s = matchState;
+  const s =
+    matchState;
+
+  const match =
+    findMatch(currentMatch);
+
 
   if(s.minute>=90){
+
     return "El partido terminó y el resultado final determina la distribución.";
+
   }
+
 
   if(s.homeScore===s.awayScore){
 
-    if(p.draw >= p.home && p.draw >= p.away){
-      return "El partido está empatado y, al acercarse el final, el empate gana peso. Las llegadas y los tiros al arco siguen influyendo en las posibilidades de cada equipo.";
+    if(
+      p.draw >= p.home &&
+      p.draw >= p.away
+    ){
+
+      return `
+        El partido está empatado y el tiempo restante
+        aumenta el peso del empate. Las llegadas y los
+        tiros al arco siguen influyendo en las posibilidades
+        de cada equipo.
+      `;
+
     }
 
-    return "El marcador está igualado, pero las estadísticas de juego generan diferencias entre ambos equipos.";
+    return `
+      El marcador está igualado, pero las estadísticas
+      de juego generan diferencias entre ambos equipos.
+    `;
+
   }
+
 
   if(s.homeScore>s.awayScore){
 
-    return "River está arriba en el marcador. El efecto del resultado aumenta con el paso de los minutos, mientras las llegadas y los tiros al arco mantienen una influencia sobre el análisis.";
+    return `
+      ${match.home} está arriba en el marcador.
+      Las llegadas y los tiros al arco mantienen su influencia
+      sobre el análisis.
+    `;
+
   }
 
-  return "Boca está arriba en el marcador. El paso del tiempo aumenta el peso del resultado, pero las llegadas y los tiros al arco de River siguen siendo considerados.";
+
+  return `
+    ${match.away} está arriba en el marcador.
+    Las llegadas y los tiros al arco del equipo que pierde
+    siguen siendo considerados.
+  `;
+
 }
 
 
-/* =========================
-   CONTROLES
-========================= */
+/* =====================================================
+   CAMBIAR MARCADOR
+   SOLO MARCADOR
+===================================================== */
+
+function changeScore(team,amount){
+
+  if(team==="home"){
+
+    matchState.homeScore =
+      Math.max(
+        0,
+        matchState.homeScore + amount
+      );
+
+  }
+
+
+  if(team==="away"){
+
+    matchState.awayScore =
+      Math.max(
+        0,
+        matchState.awayScore + amount
+      );
+
+  }
+
+
+  renderDetail();
+
+}
+
+
+/* =====================================================
+   CAMBIAR MINUTO
+   SOLO MINUTO
+===================================================== */
 
 function changeMinute(amount){
 
-  matchState.minute += amount;
+  matchState.minute =
+    Math.max(
+      1,
+      Math.min(
+        90,
+        matchState.minute + amount
+      )
+    );
 
-  if(matchState.minute<1){
-    matchState.minute=1;
+
+  renderDetail();
+
+}
+
+
+/* =====================================================
+   CAMBIAR LLEGADAS
+   SOLO LLEGADAS
+===================================================== */
+
+function changeChances(team,amount){
+
+  if(team==="home"){
+
+    matchState.homeChances =
+      Math.max(
+        0,
+        matchState.homeChances + amount
+      );
+
   }
 
-  if(matchState.minute>90){
-    matchState.minute=90;
+
+  if(team==="away"){
+
+    matchState.awayChances =
+      Math.max(
+        0,
+        matchState.awayChances + amount
+      );
+
   }
 
+
   renderDetail();
+
 }
 
 
-function goalHome(){
+/* =====================================================
+   CAMBIAR TIROS AL ARCO
+   SOLO TIROS AL ARCO
+===================================================== */
 
-  matchState.homeScore++;
+function changeTarget(team,amount){
+
+  if(team==="home"){
+
+    matchState.homeTarget =
+      Math.max(
+        0,
+        matchState.homeTarget + amount
+      );
+
+  }
+
+
+  if(team==="away"){
+
+    matchState.awayTarget =
+      Math.max(
+        0,
+        matchState.awayTarget + amount
+      );
+
+  }
+
+
   renderDetail();
+
 }
 
 
-function goalAway(){
+/* =====================================================
+   CAMBIAR ROJAS
+   SOLO ROJAS
+===================================================== */
 
-  matchState.awayScore++;
+function changeRed(team,amount){
+
+  if(team==="home"){
+
+    matchState.homeReds =
+      Math.max(
+        0,
+        matchState.homeReds + amount
+      );
+
+  }
+
+
+  if(team==="away"){
+
+    matchState.awayReds =
+      Math.max(
+        0,
+        matchState.awayReds + amount
+      );
+
+  }
+
+
   renderDetail();
+
 }
 
 
-function redHome(){
+/* =====================================================
+   REINICIAR PRUEBA
+===================================================== */
 
-  matchState.homeReds++;
+function resetTest(){
+
+  matchState = {
+
+    minute:40,
+
+    homeScore:0,
+    awayScore:0,
+
+    homeChances:10,
+    awayChances:3,
+
+    homeTarget:4,
+    awayTarget:2,
+
+    homeReds:0,
+    awayReds:0
+
+  };
+
+
   renderDetail();
+
 }
 
 
-function redAway(){
-
-  matchState.awayReds++;
-  renderDetail();
-}
-
-
-/* =========================
+/* =====================================================
    INICIO
-========================= */
+===================================================== */
 
 renderMatches();
 
