@@ -38,9 +38,9 @@ header{
 }
 
 .header-icons{
-  font-size:22px;
   display:flex;
   gap:18px;
+  font-size:22px;
 }
 
 .container{
@@ -94,8 +94,7 @@ header{
   box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
-.card h2,
-.card h3{
+.card h2{
   margin-top:0;
 }
 
@@ -335,9 +334,9 @@ button.active{
     </div>
   </div>
 
-  <!-- ========================= -->
-  <!-- PANEL DE PRUEBA -->
-  <!-- ========================= -->
+  <!-- =====================================================
+       PANEL DE PRUEBA
+  ====================================================== -->
 
   <div class="card">
 
@@ -348,6 +347,7 @@ button.active{
     </p>
 
     <div class="buttons" style="margin-bottom:16px;">
+
       <button
         id="liveButton"
         class="active"
@@ -362,6 +362,7 @@ button.active{
       >
         🏁 FINALIZADO
       </button>
+
     </div>
 
     <div class="test-grid">
@@ -372,7 +373,10 @@ button.active{
         <label>Minuto</label>
 
         <div class="control-row">
-          <button onclick="changeMinute(-1)">−</button>
+
+          <button onclick="changeMinute(-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -381,17 +385,24 @@ button.active{
             0'
           </div>
 
-          <button onclick="changeMinute(1)">+</button>
+          <button onclick="changeMinute(1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- GOLES LOCAL -->
+
+      <!-- GOLES -->
 
       <div class="control">
         <label>⚽ Goles River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeGoals',-1)">−</button>
+
+          <button onclick="changeStat('homeGoals',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -400,17 +411,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeGoals',1)">+</button>
+          <button onclick="changeStat('homeGoals',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- GOLES VISITANTE -->
 
       <div class="control">
         <label>⚽ Goles Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayGoals',-1)">−</button>
+
+          <button onclick="changeStat('awayGoals',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -419,17 +435,24 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayGoals',1)">+</button>
+          <button onclick="changeStat('awayGoals',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- LLEGADAS LOCAL -->
+
+      <!-- LLEGADAS -->
 
       <div class="control">
         <label>🔥 Llegadas River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeArrivals',-1)">−</button>
+
+          <button onclick="changeStat('homeArrivals',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -438,17 +461,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeArrivals',1)">+</button>
+          <button onclick="changeStat('homeArrivals',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- LLEGADAS VISITANTE -->
 
       <div class="control">
         <label>🔥 Llegadas Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayArrivals',-1)">−</button>
+
+          <button onclick="changeStat('awayArrivals',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -457,17 +485,24 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayArrivals',1)">+</button>
+          <button onclick="changeStat('awayArrivals',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- TIROS LOCAL -->
+
+      <!-- TIROS -->
 
       <div class="control">
         <label>🎯 Tiros River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeShots',-1)">−</button>
+
+          <button onclick="changeStat('homeShots',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -476,17 +511,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeShots',1)">+</button>
+          <button onclick="changeStat('homeShots',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- TIROS VISITANTE -->
 
       <div class="control">
         <label>🎯 Tiros Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayShots',-1)">−</button>
+
+          <button onclick="changeStat('awayShots',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -495,17 +535,24 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayShots',1)">+</button>
+          <button onclick="changeStat('awayShots',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- TIROS AL ARCO LOCAL -->
+
+      <!-- TIROS AL ARCO -->
 
       <div class="control">
         <label>🎯 Tiros al arco River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeShotsOnTarget',-1)">−</button>
+
+          <button onclick="changeStat('homeShotsOnTarget',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -514,17 +561,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeShotsOnTarget',1)">+</button>
+          <button onclick="changeStat('homeShotsOnTarget',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- TIROS AL ARCO VISITANTE -->
 
       <div class="control">
         <label>🎯 Tiros al arco Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayShotsOnTarget',-1)">−</button>
+
+          <button onclick="changeStat('awayShotsOnTarget',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -533,17 +585,24 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayShotsOnTarget',1)">+</button>
+          <button onclick="changeStat('awayShotsOnTarget',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- CORNERS LOCAL -->
+
+      <!-- CORNERS -->
 
       <div class="control">
         <label>🚩 Córners River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeCorners',-1)">−</button>
+
+          <button onclick="changeStat('homeCorners',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -552,17 +611,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeCorners',1)">+</button>
+          <button onclick="changeStat('homeCorners',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- CORNERS VISITANTE -->
 
       <div class="control">
         <label>🚩 Córners Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayCorners',-1)">−</button>
+
+          <button onclick="changeStat('awayCorners',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -571,17 +635,24 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayCorners',1)">+</button>
+          <button onclick="changeStat('awayCorners',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- ROJAS LOCAL -->
+
+      <!-- ROJAS -->
 
       <div class="control">
         <label>🟥 Rojas River Plate</label>
 
         <div class="control-row">
-          <button onclick="changeValue('homeReds',-1)">−</button>
+
+          <button onclick="changeStat('homeReds',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -590,17 +661,22 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('homeReds',1)">+</button>
+          <button onclick="changeStat('homeReds',1)">
+            +
+          </button>
+
         </div>
       </div>
 
-      <!-- ROJAS VISITANTE -->
 
       <div class="control">
         <label>🟥 Rojas Boca Juniors</label>
 
         <div class="control-row">
-          <button onclick="changeValue('awayReds',-1)">−</button>
+
+          <button onclick="changeStat('awayReds',-1)">
+            −
+          </button>
 
           <div
             class="value"
@@ -609,20 +685,27 @@ button.active{
             0
           </div>
 
-          <button onclick="changeValue('awayReds',1)">+</button>
+          <button onclick="changeStat('awayReds',1)">
+            +
+          </button>
+
         </div>
       </div>
 
     </div>
 
+
     <div class="buttons" style="margin-top:18px;">
+
       <button
         class="danger"
         onclick="resetTest()"
       >
         🔄 Restablecer prueba
       </button>
+
     </div>
+
 
     <!-- PORCENTAJES -->
 
@@ -630,20 +713,32 @@ button.active{
 
       <div class="prob home">
         <div>River Plate</div>
-        <strong id="homeProbability">33%</strong>
+
+        <strong id="homeProbability">
+          33%
+        </strong>
       </div>
+
 
       <div class="prob draw">
         <div>Empate</div>
-        <strong id="drawProbability">34%</strong>
+
+        <strong id="drawProbability">
+          34%
+        </strong>
       </div>
+
 
       <div class="prob away">
         <div>Boca Juniors</div>
-        <strong id="awayProbability">33%</strong>
+
+        <strong id="awayProbability">
+          33%
+        </strong>
       </div>
 
     </div>
+
 
     <div
       class="analysis"
@@ -656,35 +751,36 @@ button.active{
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   ESTADO DE PRUEBA
+   ESTADO
 ========================================================= */
 
 let testState = {
 
-  status: "live",
+  status:"live",
 
-  minute: 0,
+  minute:0,
 
-  homeGoals: 0,
-  awayGoals: 0,
+  homeGoals:0,
+  awayGoals:0,
 
-  homeArrivals: 0,
-  awayArrivals: 0,
+  homeArrivals:0,
+  awayArrivals:0,
 
-  homeShots: 0,
-  awayShots: 0,
+  homeShots:0,
+  awayShots:0,
 
-  homeShotsOnTarget: 0,
-  awayShotsOnTarget: 0,
+  homeShotsOnTarget:0,
+  awayShotsOnTarget:0,
 
-  homeReds: 0,
-  awayReds: 0,
+  homeReds:0,
+  awayReds:0,
 
-  homeCorners: 0,
-  awayCorners: 0
+  homeCorners:0,
+  awayCorners:0
 };
 
 
@@ -706,7 +802,6 @@ function formatMinute(minute){
   if(minute <= 90){
 
     return `${minute}'`;
-
   }
 
   return `90+${minute - 90}'`;
@@ -714,7 +809,7 @@ function formatMinute(minute){
 
 
 /* =========================================================
-   ESTADO EN VIVO / FINALIZADO
+   ESTADO DEL PARTIDO
 ========================================================= */
 
 function setStatus(status){
@@ -740,7 +835,7 @@ function setStatus(status){
 
 
 /* =========================================================
-   CAMBIAR MINUTO
+   MINUTO
 ========================================================= */
 
 function changeMinute(amount){
@@ -756,87 +851,196 @@ function changeMinute(amount){
 
 
 /* =========================================================
-   CAMBIAR VALORES
+   CAMBIO DE ESTADÍSTICAS
 ========================================================= */
 
-function changeValue(key,amount){
-
-  testState[key] = Math.max(
-    0,
-    testState[key] + amount
-  );
+function changeStat(key,amount){
 
   /*
-    RELACIONES AUTOMÁTICAS
-
-    GOL:
-    + llegada
-    + tiro
-    + tiro al arco
-
-    TIRO:
-    + llegada
-
-    TIRO AL ARCO:
-    + tiro
-    + llegada
-
-    LLEGADA:
-    no genera tiro automáticamente.
+    No permitimos valores negativos.
   */
 
-  if(key === "homeGoals" && amount > 0){
+  if(
+    testState[key] + amount < 0
+  ){
 
-    testState.homeArrivals += amount;
-    testState.homeShots += amount;
-    testState.homeShotsOnTarget += amount;
-  }
-
-  if(key === "awayGoals" && amount > 0){
-
-    testState.awayArrivals += amount;
-    testState.awayShots += amount;
-    testState.awayShotsOnTarget += amount;
-  }
-
-
-  if(key === "homeShots" && amount > 0){
-
-    testState.homeArrivals += amount;
-  }
-
-  if(key === "awayShots" && amount > 0){
-
-    testState.awayArrivals += amount;
-  }
-
-
-  if(key === "homeShotsOnTarget" && amount > 0){
-
-    testState.homeShots += amount;
-    testState.homeArrivals += amount;
-  }
-
-  if(key === "awayShotsOnTarget" && amount > 0){
-
-    testState.awayShots += amount;
-    testState.awayArrivals += amount;
+    return;
   }
 
 
   /*
-    Al bajar un gol, tiro o tiro al arco no hacemos
-    una reconstrucción destructiva de todos los datos.
-    Así evitamos romper los valores que el usuario
-    ya cargó manualmente.
+    ========================================================
+    BAJAR VALORES
+    ========================================================
+
+    Al disminuir manualmente una estadística,
+    solamente disminuye esa estadística.
+
+    No destruimos otras estadísticas que el usuario
+    haya cargado.
   */
+
+  if(amount < 0){
+
+    testState[key] += amount;
+
+    updateUI();
+
+    return;
+  }
+
+
+  /*
+    ========================================================
+    LLEGADA
+    ========================================================
+
+    Una llegada NO genera tiro.
+  */
+
+  if(key === "homeArrivals"){
+
+    testState.homeArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  if(key === "awayArrivals"){
+
+    testState.awayArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  /*
+    ========================================================
+    TIRO
+    ========================================================
+
+    Un tiro siempre implica una llegada.
+
+    Tiro:
+      +1 tiro
+      +1 llegada
+  */
+
+  if(key === "homeShots"){
+
+    testState.homeShots++;
+    testState.homeArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  if(key === "awayShots"){
+
+    testState.awayShots++;
+    testState.awayArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  /*
+    ========================================================
+    TIRO AL ARCO
+    ========================================================
+
+    Un tiro al arco es también:
+
+      +1 tiro al arco
+      +1 tiro
+      +1 llegada
+  */
+
+  if(key === "homeShotsOnTarget"){
+
+    testState.homeShotsOnTarget++;
+    testState.homeShots++;
+    testState.homeArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  if(key === "awayShotsOnTarget"){
+
+    testState.awayShotsOnTarget++;
+    testState.awayShots++;
+    testState.awayArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  /*
+    ========================================================
+    GOL
+    ========================================================
+
+    Un gol necesariamente implica:
+
+      +1 gol
+      +1 tiro al arco
+      +1 tiro
+      +1 llegada
+  */
+
+  if(key === "homeGoals"){
+
+    testState.homeGoals++;
+    testState.homeShotsOnTarget++;
+    testState.homeShots++;
+    testState.homeArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  if(key === "awayGoals"){
+
+    testState.awayGoals++;
+    testState.awayShotsOnTarget++;
+    testState.awayShots++;
+    testState.awayArrivals++;
+
+    updateUI();
+
+    return;
+  }
+
+
+  /*
+    ========================================================
+    ROJAS Y CÓRNERS
+    ========================================================
+  */
+
+  testState[key]++;
 
   updateUI();
 }
 
 
 /* =========================================================
-   MOTOR DE PROBABILIDADES
+   PROBABILIDADES
 ========================================================= */
 
 function calculateTestProbabilities(){
@@ -863,9 +1067,7 @@ function calculateTestProbabilities(){
 
 
   /*
-    PARTIDO FINALIZADO
-
-    Acá sí la probabilidad es definitiva.
+    FINALIZADO
   */
 
   if(testState.status === "final"){
@@ -877,7 +1079,6 @@ function calculateTestProbabilities(){
         draw:0,
         away:0
       };
-
     }
 
     if(hg < ag){
@@ -887,7 +1088,6 @@ function calculateTestProbabilities(){
         draw:0,
         away:100
       };
-
     }
 
     return {
@@ -899,7 +1099,7 @@ function calculateTestProbabilities(){
 
 
   /*
-    BASE NEUTRA
+    BASE
   */
 
   let home = 33;
@@ -911,54 +1111,70 @@ function calculateTestProbabilities(){
     LLEGADAS
   */
 
-  const arrivalDiff = ha - aa;
+  const arrivalDiff =
+    ha - aa;
 
-  home += arrivalDiff * 0.55;
-  away -= arrivalDiff * 0.55;
+  home +=
+    arrivalDiff * 0.55;
+
+  away -=
+    arrivalDiff * 0.55;
 
 
   /*
     TIROS
   */
 
-  const shotDiff = hs - as;
+  const shotDiff =
+    hs - as;
 
-  home += shotDiff * 0.30;
-  away -= shotDiff * 0.30;
+  home +=
+    shotDiff * 0.30;
+
+  away -=
+    shotDiff * 0.30;
 
 
   /*
     TIROS AL ARCO
-
-    Pesan más porque representan
-    peligro real sobre el arco.
   */
 
-  const targetDiff = hot - aot;
+  const targetDiff =
+    hot - aot;
 
-  home += targetDiff * 1.15;
-  away -= targetDiff * 1.15;
+  home +=
+    targetDiff * 1.15;
+
+  away -=
+    targetDiff * 1.15;
 
 
   /*
     CÓRNERS
   */
 
-  const cornerDiff = hc - ac;
+  const cornerDiff =
+    hc - ac;
 
-  home += cornerDiff * 0.20;
-  away -= cornerDiff * 0.20;
+  home +=
+    cornerDiff * 0.20;
+
+  away -=
+    cornerDiff * 0.20;
 
 
   /*
-    RESULTADO DEL MARCADOR
+    MARCADOR
   */
 
-  const goalDiff = hg - ag;
+  const goalDiff =
+    hg - ag;
+
 
   if(goalDiff !== 0){
 
     let goalWeight;
+
 
     if(minute <= 15){
 
@@ -990,19 +1206,20 @@ function calculateTestProbabilities(){
     }
 
 
-    home += goalDiff * goalWeight;
-    away -= goalDiff * goalWeight;
+    home +=
+      goalDiff * goalWeight;
 
-    draw -= Math.abs(goalDiff) * (
-      goalWeight * 0.35
-    );
+    away -=
+      goalDiff * goalWeight;
+
+    draw -=
+      Math.abs(goalDiff) *
+      (goalWeight * 0.35);
   }
 
 
   /*
-    SI ESTÁ EMPATADO,
-    EL PASO DEL TIEMPO LE DA MÁS PESO
-    AL EMPATE.
+    EMPATE
   */
 
   if(goalDiff === 0){
@@ -1010,57 +1227,55 @@ function calculateTestProbabilities(){
     const timeWeight =
       Math.min(minute,90) / 90;
 
-    draw += timeWeight * 8;
+    draw +=
+      timeWeight * 8;
 
-    home -= timeWeight * 4;
-    away -= timeWeight * 4;
+    home -=
+      timeWeight * 4;
+
+    away -=
+      timeWeight * 4;
   }
 
 
   /*
-    TARJETAS ROJAS
+    ROJAS
   */
 
   const redDifference =
     awayReds - homeReds;
 
-  home += redDifference * 7;
-  away -= redDifference * 7;
+  home +=
+    redDifference * 7;
+
+  away -=
+    redDifference * 7;
 
 
   if(homeReds > 0){
 
-    away += homeReds * 2;
-    home -= homeReds * 2;
+    away +=
+      homeReds * 2;
+
+    home -=
+      homeReds * 2;
   }
 
 
   if(awayReds > 0){
 
-    home += awayReds * 2;
-    away -= awayReds * 2;
+    home +=
+      awayReds * 2;
+
+    away -=
+      awayReds * 2;
   }
 
 
   /*
     ========================================================
-    CAPA DE CIERRE DE PARTIDO
+    CIERRE DEL PARTIDO
     ========================================================
-
-    Importante:
-
-    85' no significa automáticamente FINALIZADO.
-
-    Mientras está EN VIVO:
-      - 85' empieza a aumentar mucho la certeza.
-      - 89' el resultado actual debe concentrar casi
-        toda la probabilidad.
-      - 90' sigue siendo EN VIVO porque puede existir
-        tiempo adicional.
-      - 90+ también sigue EN VIVO.
-
-    Cuando el estado pasa a FINALIZADO:
-      100% resultado real.
   */
 
   if(minute >= 85){
@@ -1073,19 +1288,13 @@ function calculateTestProbabilities(){
         1.15
       );
 
-    lateTarget = clamp(
-      lateTarget,
-      90,
-      97.5
-    );
+    lateTarget =
+      clamp(
+        lateTarget,
+        90,
+        97.5
+      );
 
-
-    /*
-      PARTIDO EMPATADO
-
-      El empate pasa a ser el resultado
-      claramente dominante.
-    */
 
     if(hg === ag){
 
@@ -1106,13 +1315,10 @@ function calculateTestProbabilities(){
         (away / nonDraw) *
         remaining;
 
-      draw = lateTarget;
+      draw =
+        lateTarget;
     }
 
-
-    /*
-      LOCAL VA GANANDO
-    */
 
     else if(hg > ag){
 
@@ -1133,13 +1339,10 @@ function calculateTestProbabilities(){
         (away / nonHome) *
         remaining;
 
-      home = lateTarget;
+      home =
+        lateTarget;
     }
 
-
-    /*
-      VISITANTE VA GANANDO
-    */
 
     else{
 
@@ -1160,19 +1363,14 @@ function calculateTestProbabilities(){
         (draw / nonAway) *
         remaining;
 
-      away = lateTarget;
+      away =
+        lateTarget;
     }
   }
 
 
   /*
     LÍMITES
-
-    Antes del tramo final mantenemos
-    una probabilidad mínima razonable.
-
-    En el tramo final dejamos que la
-    capa de cierre sea mucho más fuerte.
   */
 
   if(minute < 85){
@@ -1180,28 +1378,31 @@ function calculateTestProbabilities(){
     const minimumProbability =
       minute < 75 ? 8 : 3;
 
-    home = clamp(
-      home,
-      minimumProbability,
-      94
-    );
+    home =
+      clamp(
+        home,
+        minimumProbability,
+        94
+      );
 
-    draw = clamp(
-      draw,
-      minimumProbability,
-      94
-    );
+    draw =
+      clamp(
+        draw,
+        minimumProbability,
+        94
+      );
 
-    away = clamp(
-      away,
-      minimumProbability,
-      94
-    );
+    away =
+      clamp(
+        away,
+        minimumProbability,
+        94
+      );
   }
 
 
   /*
-    NORMALIZAR A 100
+    NORMALIZACIÓN
   */
 
   const total =
@@ -1218,26 +1419,22 @@ function calculateTestProbabilities(){
   }
 
 
-  home =
-    home / total * 100;
-
-  draw =
-    draw / total * 100;
-
-  away =
-    away / total * 100;
-
-
   return {
-    home,
-    draw,
-    away
+
+    home:
+      home / total * 100,
+
+    draw:
+      draw / total * 100,
+
+    away:
+      away / total * 100
   };
 }
 
 
 /* =========================================================
-   EXPLICACIÓN
+   TEXTO DE ANÁLISIS
 ========================================================= */
 
 function buildAnalysisText(probabilities){
@@ -1251,29 +1448,32 @@ function buildAnalysisText(probabilities){
 
   if(testState.status === "final"){
 
-    let resultText;
-
     if(testState.homeGoals > testState.awayGoals){
 
-      resultText =
-        "River Plate terminó ganando.";
+      return `
+        <strong>🏁 Partido finalizado.</strong><br>
+        ${minuteText} · ${score}.
+        River Plate terminó ganando.
+        El resultado queda fijado en 100%.
+      `;
+    }
 
-    }else if(testState.homeGoals < testState.awayGoals){
 
-      resultText =
-        "Boca Juniors terminó ganando.";
+    if(testState.homeGoals < testState.awayGoals){
 
-    }else{
-
-      resultText =
-        "El partido terminó empatado.";
+      return `
+        <strong>🏁 Partido finalizado.</strong><br>
+        ${minuteText} · ${score}.
+        Boca Juniors terminó ganando.
+        El resultado queda fijado en 100%.
+      `;
     }
 
 
     return `
-      <strong>🏁 Partido finalizado.</strong>
+      <strong>🏁 Partido finalizado.</strong><br>
       ${minuteText} · ${score}.
-      ${resultText}
+      El partido terminó empatado.
       El resultado queda fijado en 100%.
     `;
   }
@@ -1291,27 +1491,7 @@ function buildAnalysisText(probabilities){
         ${minuteText} · ${score}.
         Queda muy poco tiempo y el empate concentra
         casi toda la probabilidad mientras el partido
-        sigue en juego. River tiene
-        ${Math.round(probabilities.home)}%
-        y Boca
-        ${Math.round(probabilities.away)}%
-        para romper la igualdad.
-      `;
-    }
-
-
-    if(
-      testState.homeGoals >
-      testState.awayGoals
-    ){
-
-      return `
-        <strong>🧠 ¿Por qué?</strong><br>
-        ${minuteText} · ${score}.
-        Queda muy poco tiempo y el marcador actual
-        concentra casi toda la probabilidad.
-        El partido sigue en juego y todavía puede
-        existir tiempo adicional.
+        sigue en juego.
       `;
     }
 
@@ -1320,9 +1500,8 @@ function buildAnalysisText(probabilities){
       <strong>🧠 ¿Por qué?</strong><br>
       ${minuteText} · ${score}.
       Queda muy poco tiempo y el marcador actual
-      concentra casi toda la probabilidad.
-      El partido sigue en juego y todavía puede
-      existir tiempo adicional.
+      concentra casi toda la probabilidad, aunque
+      el partido sigue en juego.
     `;
   }
 
@@ -1508,8 +1687,6 @@ function resetTest(){
 
 
   setStatus("live");
-
-  updateUI();
 }
 
 
