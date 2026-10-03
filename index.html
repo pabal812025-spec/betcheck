@@ -1040,13 +1040,11 @@
 
     if (important.length) {
       html += `<div class="section-title">⭐ Partidos destacados</div>`;
-
       html += important.map(renderMatchCard).join("");
     }
 
     if (others.length) {
       html += `<div class="section-title">⚽ Otros partidos</div>`;
-
       html += others.map(renderMatchCard).join("");
     }
 
@@ -1132,14 +1130,16 @@
   /*
     MOTOR DE CALIBRACIÓN
 
-    Importante:
-    - El gol no destruye automáticamente la probabilidad del rival.
-    - El minuto aumenta progresivamente la importancia del marcador.
-    - Las llegadas influyen, pero con peso moderado.
-    - Los tiros influyen poco.
-    - Los tiros al arco tienen más peso.
-    - Las rojas tienen un efecto separado.
-    - Todo termina normalizado a 100%.
+    Se mantienen intactos los pesos de:
+    - llegadas
+    - tiros
+    - tiros al arco
+    - córners
+    - tarjetas rojas
+
+    La única modificación de esta versión está
+    en cómo aumenta el peso temporal del marcador
+    y en el comportamiento del empate en el tramo final.
   */
 
   function calculateTestProbabilities() {
@@ -1159,18 +1159,12 @@
       awayCorners: ac
     } = testState;
 
-    /*
-      Base neutra solamente para esta prueba.
-      Más adelante será reemplazada por la probabilidad
-      pre-partido calculada con fuerza, forma, localía, etc.
-    */
     let home = 33;
     let draw = 34;
     let away = 33;
 
     /*
       1. LLEGADAS
-      Tienen influencia, pero no deben decidir solas el partido.
     */
     const arrivalDiff = ha - aa;
 
@@ -1179,7 +1173,6 @@
 
     /*
       2. TIROS
-      Peso pequeño porque un tiro puede ser poco peligroso.
     */
     const shotDiff = hs - as;
 
@@ -1188,7 +1181,6 @@
 
     /*
       3. TIROS AL ARCO
-      Más importantes que los tiros totales.
     */
     const targetDiff = hot - aot;
 
@@ -1197,7 +1189,6 @@
 
     /*
       4. CÓRNERS
-      Influencia moderada/baja.
     */
     const cornerDiff = hc - ac;
 
@@ -1207,20 +1198,18 @@
     /*
       5. MARCADOR
 
-      El peso comienza bajo y aumenta con el tiempo.
+      La parte importante de esta versión:
 
-      A los 20':
-        el gol todavía no debería definir el partido.
+      El peso temporal ya no cambia en bloques rígidos.
 
-      A los 50':
-        el marcador pesa bastante, pero Boca conserva
-        una probabilidad relevante.
+      Desde 70' hasta 90' crece de manera continua.
 
-      A los 80':
-        el 1-0 pesa mucho más porque queda poco tiempo.
+      Esto evita:
+      70' = 75'
+      80' = 85'
 
-      No usamos una penalización directa exagerada
-      contra el equipo que pierde.
+      y hace que cada minuto tenga un efecto ligeramente
+      mayor que el anterior.
     */
     if (hg !== ag) {
       const goalDiff = hg - ag;
@@ -1235,36 +1224,78 @@
         goalWeight = 7.5;
       } else if (minute <= 60) {
         goalWeight = 9.0;
-      } else if (minute <= 75) {
+      } else if (minute <= 70) {
+        /*
+          Conservamos la referencia de 70'.
+        */
         goalWeight = 12.0;
-      } else if (minute <= 85) {
-        goalWeight = 16.0;
       } else {
-        goalWeight = 22.0;
+        /*
+          Desde 70' hasta 90':
+
+          70'  -> 12.0
+          75'  -> 13.0
+          80'  -> 14.0
+          85'  -> 15.0
+          90'  -> 16.0
+
+          El crecimiento es continuo y deliberadamente
+          moderado para no destruir la probabilidad
+          del equipo que pierde.
+        */
+        goalWeight = 12.0 + ((minute - 70) * 0.20);
       }
 
       home += goalDiff * goalWeight;
       away -= goalDiff * goalWeight;
 
       /*
-        El empate conserva valor porque un solo gol
-        puede cambiar el resultado.
+        El empate pierde peso gradualmente cuando
+        existe un marcador diferente.
       */
       draw -= Math.abs(goalDiff) * (goalWeight * 0.35);
 
       /*
-        Si hay un solo gol de diferencia y todavía queda
-        bastante partido, evitamos que el equipo perdedor
-        quede artificialmente cerca de cero.
+        Conservamos la protección que ya funcionaba
+        para el equipo que pierde mientras todavía
+        queda bastante partido.
       */
       if (Math.abs(goalDiff) === 1 && minute < 70) {
         away = Math.max(away, 17);
         home = Math.max(home, 17);
       }
+
+      /*
+        TRAMO FINAL CON UN GOL DE DIFERENCIA
+
+        Desde 86' el marcador debe pesar un poco más,
+        pero seguimos considerando que el partido está
+        EN VIVO y puede existir descuento.
+
+        No se fuerza 100%.
+      */
+      if (minute >= 86 && Math.abs(goalDiff) === 1) {
+        const finalProgress = Math.min(
+          1,
+          (minute - 86) / 4
+        );
+
+        const extraFinalWeight =
+          2 + (finalProgress * 2);
+
+        home += goalDiff * extraFinalWeight;
+        away -= goalDiff * extraFinalWeight;
+      }
+
     } else {
       /*
-        Si están empatados, el empate gana peso
-        progresivamente a medida que termina el partido.
+        PARTIDO EMPATADO
+
+        Hasta 85' conservamos exactamente la lógica
+        anterior.
+
+        Desde 86' el empate debe dominar claramente,
+        porque queda muy poco tiempo.
       */
       const timeWeight = minute / 90;
 
@@ -1272,23 +1303,39 @@
 
       home -= timeWeight * 4;
       away -= timeWeight * 4;
+
+      /*
+        TRAMO FINAL DEL EMPATE
+
+        86' -> empate mínimo ~82
+        90' -> empate mínimo ~86
+
+        Esto se aplica solamente mientras el partido
+        sigue EN VIVO.
+      */
+      if (minute >= 86) {
+        const lateProgress = Math.min(
+          1,
+          (minute - 86) / 4
+        );
+
+        const drawFloor =
+          82 + (lateProgress * 4);
+
+        draw = Math.max(draw, drawFloor);
+      }
     }
 
     /*
       6. TARJETAS ROJAS
 
-      Una roja sí tiene efecto fuerte, pero separado
-      del marcador.
+      SIN CAMBIOS.
     */
     const redDifference = ar - hr;
 
     home += redDifference * 7;
     away -= redDifference * 7;
 
-    /*
-      Si un equipo tiene una roja, el rival gana
-      una pequeña compensación adicional.
-    */
     if (hr > 0) {
       away += hr * 2;
       home -= hr * 2;
@@ -1301,9 +1348,6 @@
 
     /*
       Límites de seguridad.
-
-      Nunca queremos 0% mientras queda mucho partido
-      salvo situaciones extremas que luego calibraremos.
     */
     const minimumProbability = minute < 75 ? 8 : 3;
 
@@ -1312,7 +1356,7 @@
     away = clamp(away, minimumProbability, 94);
 
     /*
-      Normalización final a 100%.
+      Normalización.
     */
     const total = home + draw + away;
 
@@ -1321,7 +1365,7 @@
     away = (away / total) * 100;
 
     /*
-      Redondeo y corrección para que siempre sume exactamente 100.
+      Redondeo.
     */
     let h = Math.round(home);
     let d = Math.round(draw);
@@ -1393,12 +1437,25 @@
       );
     }
 
-    if (minute < 70) {
-      parts.push("Todavía queda bastante partido para que la situación cambie.");
+    if (
+      minute >= 86 &&
+      homeGoals === awayGoals
+    ) {
+      parts.push(
+        "Queda muy poco tiempo y el empate gana mucho peso, aunque el partido continúa en juego."
+      );
+    } else if (minute < 70) {
+      parts.push(
+        "Todavía queda bastante partido para que la situación cambie."
+      );
     } else if (minute < 85) {
-      parts.push("Queda tiempo suficiente para que el partido todavía cambie.");
+      parts.push(
+        "Queda tiempo suficiente para que el partido todavía cambie."
+      );
     } else {
-      parts.push("Queda poco tiempo y cada acción tiene mayor impacto.");
+      parts.push(
+        "Queda poco tiempo y cada acción tiene mayor impacto."
+      );
     }
 
     return parts.join(" ");
@@ -1412,11 +1469,6 @@
     document.getElementById("detailCompetition").textContent =
       selectedMatch.competition;
 
-    /*
-      IMPORTANTE:
-      El encabezado ahora usa el estado de prueba.
-      Antes mostraba siempre el score original del partido.
-    */
     document.getElementById("detailScore").textContent =
       `${testState.homeGoals} - ${testState.awayGoals}`;
 
@@ -1498,15 +1550,6 @@
     updateUI();
   }
 
-  /*
-    GOL
-
-    Gol = automáticamente:
-    +1 llegada
-    +1 tiro
-    +1 tiro al arco
-    +1 gol
-  */
   function changeScore(team, amount) {
     const goalKey =
       team === "home" ? "homeGoals" : "awayGoals";
@@ -1544,11 +1587,6 @@
     updateUI();
   }
 
-  /*
-    LLEGADA
-
-    Una llegada no genera automáticamente tiro.
-  */
   function changeArrival(team, amount) {
     const key =
       team === "home"
@@ -1563,12 +1601,6 @@
     updateUI();
   }
 
-  /*
-    TIRO
-
-    Un tiro genera automáticamente una llegada,
-    pero no necesariamente un tiro al arco.
-  */
   function changeShot(team, amount) {
     const shotKey =
       team === "home"
@@ -1597,14 +1629,6 @@
     updateUI();
   }
 
-  /*
-    TIRO AL ARCO
-
-    Un tiro al arco genera:
-    +1 tiro
-    +1 llegada
-    +1 tiro al arco
-  */
   function changeTarget(team, amount) {
     const targetKey =
       team === "home"
@@ -1641,11 +1665,6 @@
     updateUI();
   }
 
-  /*
-    ROJA
-
-    La roja modifica solamente el contador de rojas.
-  */
   function changeRed(team, amount) {
     const key =
       team === "home"
@@ -1660,11 +1679,6 @@
     updateUI();
   }
 
-  /*
-    CÓRNER
-
-    El córner modifica solamente el contador de córners.
-  */
   function changeCorner(team, amount) {
     const key =
       team === "home"
