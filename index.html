@@ -6,241 +6,241 @@
   <title>MatchIA</title>
 
   <style>
-    *{
-      box-sizing:border-box;
+    * {
+      box-sizing: border-box;
     }
 
-    body{
-      margin:0;
-      font-family:Arial,Helvetica,sans-serif;
-      background:#07111f;
-      color:#fff;
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #07111f;
+      color: #ffffff;
     }
 
-    .app{
-      max-width:520px;
-      margin:0 auto;
-      min-height:100vh;
-      background:#0b1728;
-      padding-bottom:40px;
+    .app {
+      max-width: 520px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #0b1728;
+      padding-bottom: 40px;
     }
 
-    header{
-      padding:18px 16px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#0d1b2e;
-      border-bottom:1px solid #1d3048;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 16px;
+      background: #0d1b2e;
+      border-bottom: 1px solid #1d3048;
     }
 
-    .logo{
-      font-size:24px;
-      font-weight:800;
-      color:#35e08b;
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #35e08b;
     }
 
-    .header-icons{
-      display:flex;
-      gap:10px;
+    .header-icons {
+      display: flex;
+      gap: 10px;
     }
 
-    .icon-btn{
-      width:38px;
-      height:38px;
-      border:0;
-      border-radius:10px;
-      background:#16263d;
-      color:#fff;
-      font-size:18px;
-      cursor:pointer;
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 10px;
+      background: #16263d;
+      color: #ffffff;
+      font-size: 18px;
+      cursor: pointer;
     }
 
-    .content{
-      padding:16px;
+    .content {
+      padding: 16px;
     }
 
-    .match-card{
-      background:#101f34;
-      border:1px solid #203653;
-      border-radius:18px;
-      padding:16px;
-      margin-bottom:16px;
+    .section-title {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .match-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:15px;
-      color:#9db0c8;
-      font-size:13px;
+    .match-card {
+      background: #101f34;
+      border: 1px solid #203653;
+      border-radius: 18px;
+      padding: 16px;
     }
 
-    .teams{
-      display:grid;
-      grid-template-columns:1fr 90px 1fr;
-      align-items:center;
-      gap:8px;
+    .match-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      color: #9db0c8;
+      font-size: 13px;
     }
 
-    .team{
-      text-align:center;
+    .live {
+      color: #35e08b;
+      font-weight: 800;
     }
 
-    .team-name{
-      font-size:17px;
-      font-weight:700;
-      margin-bottom:8px;
+    .teams {
+      display: grid;
+      grid-template-columns: 1fr 100px 1fr;
+      align-items: center;
+      gap: 8px;
     }
 
-    .score{
-      text-align:center;
-      font-size:34px;
-      font-weight:800;
+    .team {
+      text-align: center;
     }
 
-    .minute{
-      text-align:center;
-      color:#35e08b;
-      font-weight:700;
-      font-size:13px;
-      margin-top:4px;
+    .team-name {
+      font-size: 17px;
+      font-weight: 700;
     }
 
-    .time-controls{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:7px;
-      margin-top:10px;
+    .score {
+      text-align: center;
+      font-size: 34px;
+      font-weight: 800;
     }
 
-    .time-btn{
-      width:34px;
-      height:30px;
-      border:0;
-      border-radius:8px;
-      background:#1a304d;
-      color:#fff;
-      font-size:18px;
-      font-weight:800;
-      cursor:pointer;
+    .minute {
+      margin-top: 4px;
+      text-align: center;
+      color: #35e08b;
+      font-size: 13px;
+      font-weight: 700;
     }
 
-    .time-btn:hover{
-      background:#244366;
+    .time-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
     }
 
-    .time-label{
-      min-width:48px;
-      text-align:center;
-      color:#9db0c8;
-      font-size:12px;
+    .time-btn {
+      width: 34px;
+      height: 30px;
+      border: 0;
+      border-radius: 8px;
+      background: #1a304d;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
-    .probabilities{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:8px;
+    .time-btn:hover,
+    .stat-btn:hover {
+      background: #2a486d;
     }
 
-    .prob{
-      background:#0b1728;
-      border-radius:12px;
-      padding:10px 6px;
-      text-align:center;
+    .time-label {
+      min-width: 48px;
+      text-align: center;
+      color: #9db0c8;
+      font-size: 12px;
     }
 
-    .prob-value{
-      font-size:22px;
-      font-weight:800;
-      color:#35e08b;
+    .probabilities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 18px;
     }
 
-    .prob-label{
-      color:#9db0c8;
-      font-size:11px;
-      margin-top:4px;
+    .prob {
+      padding: 10px 6px;
+      background: #0b1728;
+      border-radius: 12px;
+      text-align: center;
     }
 
-    .stats{
-      margin-top:18px;
+    .prob-value {
+      color: #35e08b;
+      font-size: 22px;
+      font-weight: 800;
     }
 
-    .stats-title{
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:10px;
+    .prob-label {
+      margin-top: 4px;
+      color: #9db0c8;
+      font-size: 11px;
     }
 
-    .stat-row{
-      display:grid;
-      grid-template-columns:70px 1fr 70px;
-      align-items:center;
-      gap:8px;
-      margin:10px 0;
+    .stats {
+      margin-top: 20px;
     }
 
-    .stat-side{
-      display:flex;
-      align-items:center;
-      gap:6px;
+    .stats-title {
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 700;
     }
 
-    .stat-side.right{
-      justify-content:flex-end;
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      align-items: center;
+      gap: 6px;
+      margin: 9px 0;
     }
 
-    .stat-number{
-      font-weight:700;
-      min-width:20px;
-      text-align:center;
+    .stat-side {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .stat-name{
-      text-align:center;
-      color:#8fa3bc;
-      font-size:11px;
+    .stat-side.right {
+      justify-content: flex-end;
     }
 
-    .stat-btn{
-      width:28px;
-      height:28px;
-      border:0;
-      border-radius:7px;
-      background:#1a304d;
-      color:#fff;
-      font-size:17px;
-      font-weight:800;
-      cursor:pointer;
-      line-height:28px;
-      padding:0;
+    .stat-number {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 700;
     }
 
-    .stat-btn:hover{
-      background:#244366;
+    .stat-name {
+      text-align: center;
+      color: #8fa3bc;
+      font-size: 11px;
     }
 
-    .analysis{
-      margin-top:18px;
-      background:#0b1728;
-      border-radius:12px;
-      padding:13px;
-      color:#c5d2e2;
-      line-height:1.45;
-      font-size:13px;
+    .stat-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: 7px;
+      background: #1a304d;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 28px;
+      cursor: pointer;
     }
 
-    .analysis strong{
-      color:#fff;
+    .analysis {
+      margin-top: 18px;
+      padding: 13px;
+      background: #0b1728;
+      border-radius: 12px;
+      color: #c5d2e2;
+      font-size: 13px;
+      line-height: 1.45;
     }
 
-    .section-title{
-      font-size:18px;
-      font-weight:800;
-      margin-bottom:12px;
+    .analysis strong {
+      color: #ffffff;
     }
   </style>
 </head>
@@ -258,6 +258,7 @@
     <div class="header-icons">
 
       <button
+        type="button"
         class="icon-btn"
         onclick="showMessage('Notificaciones')"
       >
@@ -265,6 +266,7 @@
       </button>
 
       <button
+        type="button"
         class="icon-btn"
         onclick="showMessage('Configuración')"
       >
@@ -276,7 +278,7 @@
   </header>
 
 
-  <div class="content">
+  <main class="content">
 
     <div class="section-title">
       Análisis del partido
@@ -288,10 +290,10 @@
       <div class="match-top">
 
         <span>
-          Demo · Partido en vivo
+          Partido en vivo
         </span>
 
-        <span id="status">
+        <span class="live">
           EN VIVO
         </span>
 
@@ -300,13 +302,10 @@
 
       <div class="teams">
 
-
         <div class="team">
-
           <div class="team-name">
             River
           </div>
-
         </div>
 
 
@@ -339,6 +338,7 @@
           <div class="time-controls">
 
             <button
+              type="button"
               class="time-btn"
               onclick="changeMinute(-1)"
             >
@@ -350,6 +350,7 @@
             </div>
 
             <button
+              type="button"
               class="time-btn"
               onclick="changeMinute(1)"
             >
@@ -362,11 +363,9 @@
 
 
         <div class="team">
-
           <div class="team-name">
             Boca
           </div>
-
         </div>
 
       </div>
@@ -377,8 +376,8 @@
         <div class="prob">
 
           <div
-            class="prob-value"
             id="homeProb"
+            class="prob-value"
           >
             33%
           </div>
@@ -393,8 +392,8 @@
         <div class="prob">
 
           <div
-            class="prob-value"
             id="drawProb"
+            class="prob-value"
           >
             34%
           </div>
@@ -409,8 +408,8 @@
         <div class="prob">
 
           <div
-            class="prob-value"
             id="awayProb"
+            class="prob-value"
           >
             33%
           </div>
@@ -438,6 +437,7 @@
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','arrival',-1)"
             >
@@ -445,13 +445,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeArrivals"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','arrival',1)"
             >
@@ -469,6 +470,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','arrival',-1)"
             >
@@ -476,13 +478,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayArrivals"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','arrival',1)"
             >
@@ -501,6 +504,7 @@
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','shot',-1)"
             >
@@ -508,13 +512,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeShots"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','shot',1)"
             >
@@ -532,6 +537,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','shot',-1)"
             >
@@ -539,13 +545,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayShots"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','shot',1)"
             >
@@ -564,6 +571,7 @@
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','target',-1)"
             >
@@ -571,13 +579,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeOnTarget"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','target',1)"
             >
@@ -595,6 +604,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','target',-1)"
             >
@@ -602,13 +612,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayOnTarget"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','target',1)"
             >
@@ -627,6 +638,7 @@
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','goal',-1)"
             >
@@ -634,13 +646,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeGoalsStat"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','goal',1)"
             >
@@ -658,6 +671,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','goal',-1)"
             >
@@ -665,13 +679,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayGoalsStat"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','goal',1)"
             >
@@ -683,13 +698,14 @@
         </div>
 
 
-        <!-- CÓRNERS -->
+        <!-- CORNERS -->
 
         <div class="stat-row">
 
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','corner',-1)"
             >
@@ -697,13 +713,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeCorners"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','corner',1)"
             >
@@ -721,6 +738,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','corner',-1)"
             >
@@ -728,13 +746,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayCorners"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','corner',1)"
             >
@@ -753,6 +772,7 @@
           <div class="stat-side">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','red',-1)"
             >
@@ -760,13 +780,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="homeReds"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('home','red',1)"
             >
@@ -784,6 +805,7 @@
           <div class="stat-side right">
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','red',-1)"
             >
@@ -791,13 +813,14 @@
             </button>
 
             <span
-              class="stat-number"
               id="awayReds"
+              class="stat-number"
             >
               0
             </span>
 
             <button
+              type="button"
               class="stat-btn"
               onclick="changeStat('away','red',1)"
             >
@@ -825,67 +848,73 @@
 
     </div>
 
-  </div>
+  </main>
 
 </div>
 
 
 <script>
 
+  /*
+   * ==========================================
+   * ESTADO DEL PARTIDO
+   * ==========================================
+   */
 
   const match = {
 
-    minute:89,
+    minute: 89,
 
-    homeGoals:0,
-    awayGoals:0,
+    homeGoals: 0,
+    awayGoals: 0,
 
-    homeArrivals:0,
-    awayArrivals:0,
+    homeArrivals: 0,
+    awayArrivals: 0,
 
-    homeShots:0,
-    awayShots:0,
+    homeShots: 0,
+    awayShots: 0,
 
-    homeOnTarget:0,
-    awayOnTarget:0,
+    homeOnTarget: 0,
+    awayOnTarget: 0,
 
-    homeCorners:0,
-    awayCorners:0,
+    homeCorners: 0,
+    awayCorners: 0,
 
-    homeReds:0,
-    awayReds:0
+    homeReds: 0,
+    awayReds: 0
 
   };
 
 
-  function clamp(
-    value,
-    min,
-    max
-  ){
+  /*
+   * ==========================================
+   * UTILIDADES
+   * ==========================================
+   */
+
+  function clamp(value, min, max) {
 
     return Math.max(
       min,
-      Math.min(max,value)
+      Math.min(max, value)
     );
 
   }
 
 
   /*
-    MINUTOS
-  */
+   * ==========================================
+   * MINUTO
+   * ==========================================
+   */
 
-  function changeMinute(
-    amount
-  ){
+  function changeMinute(amount) {
 
-    match.minute =
-      clamp(
-        match.minute + amount,
-        0,
-        90
-      );
+    match.minute = clamp(
+      match.minute + amount,
+      0,
+      90
+    );
 
     render();
 
@@ -893,60 +922,42 @@
 
 
   /*
-    PROBABILIDADES
-  */
+   * ==========================================
+   * MOTOR DE PROBABILIDADES
+   * ==========================================
+   */
 
-  function calculateProbabilities(){
+  function calculateProbabilities() {
 
-    const minute =
-      clamp(
-        Number(match.minute) || 0,
-        0,
-        90
-      );
-
-
-    const hg =
-      Number(match.homeGoals) || 0;
-
-    const ag =
-      Number(match.awayGoals) || 0;
+    const minute = clamp(
+      Number(match.minute) || 0,
+      0,
+      90
+    );
 
 
-    const ha =
-      Number(match.homeArrivals) || 0;
+    const hg = Number(match.homeGoals) || 0;
+    const ag = Number(match.awayGoals) || 0;
 
-    const aa =
-      Number(match.awayArrivals) || 0;
+    const ha = Number(match.homeArrivals) || 0;
+    const aa = Number(match.awayArrivals) || 0;
 
+    const hs = Number(match.homeShots) || 0;
+    const as = Number(match.awayShots) || 0;
 
-    const hs =
-      Number(match.homeShots) || 0;
+    const hot = Number(match.homeOnTarget) || 0;
+    const aot = Number(match.awayOnTarget) || 0;
 
-    const as =
-      Number(match.awayShots) || 0;
+    const hc = Number(match.homeCorners) || 0;
+    const ac = Number(match.awayCorners) || 0;
 
-
-    const hot =
-      Number(match.homeOnTarget) || 0;
-
-    const aot =
-      Number(match.awayOnTarget) || 0;
+    const homeReds = Number(match.homeReds) || 0;
+    const awayReds = Number(match.awayReds) || 0;
 
 
-    const hc =
-      Number(match.homeCorners) || 0;
-
-    const ac =
-      Number(match.awayCorners) || 0;
-
-
-    const homeReds =
-      Number(match.homeReds) || 0;
-
-    const awayReds =
-      Number(match.awayReds) || 0;
-
+    /*
+     * BASE
+     */
 
     let home = 33;
     let draw = 34;
@@ -954,125 +965,87 @@
 
 
     /*
-      LLEGADAS
-    */
+     * LLEGADAS
+     */
 
-    const arrivalDiff =
-      ha - aa;
+    const arrivalDiff = ha - aa;
 
-
-    home +=
-      arrivalDiff * 0.55;
-
-    away -=
-      arrivalDiff * 0.55;
+    home += arrivalDiff * 0.55;
+    away -= arrivalDiff * 0.55;
 
 
     /*
-      TIROS
-    */
+     * TIROS
+     */
 
-    const shotDiff =
-      hs - as;
+    const shotDiff = hs - as;
 
-
-    home +=
-      shotDiff * 0.30;
-
-    away -=
-      shotDiff * 0.30;
+    home += shotDiff * 0.30;
+    away -= shotDiff * 0.30;
 
 
     /*
-      AL ARCO
-    */
+     * TIROS AL ARCO
+     */
 
-    const targetDiff =
-      hot - aot;
+    const targetDiff = hot - aot;
 
-
-    home +=
-      targetDiff * 1.15;
-
-    away -=
-      targetDiff * 1.15;
+    home += targetDiff * 1.15;
+    away -= targetDiff * 1.15;
 
 
     /*
-      CÓRNERS
-    */
+     * CÓRNERS
+     */
 
-    const cornerDiff =
-      hc - ac;
+    const cornerDiff = hc - ac;
 
-
-    home +=
-      cornerDiff * 0.20;
-
-    away -=
-      cornerDiff * 0.20;
+    home += cornerDiff * 0.20;
+    away -= cornerDiff * 0.20;
 
 
     /*
-      MARCADOR
-    */
+     * MARCADOR
+     */
 
-    const goalDiff =
-      hg - ag;
-
+    const goalDiff = hg - ag;
 
     let goalWeight = 4.5;
 
 
-    if(minute <= 15){
+    if (minute <= 15) {
 
       goalWeight = 4.5;
 
-    }
-
-    else if(minute <= 30){
+    } else if (minute <= 30) {
 
       goalWeight = 6.0;
 
-    }
-
-    else if(minute <= 45){
+    } else if (minute <= 45) {
 
       goalWeight = 7.5;
 
-    }
-
-    else if(minute <= 60){
+    } else if (minute <= 60) {
 
       goalWeight = 9.0;
 
-    }
-
-    else if(minute <= 75){
+    } else if (minute <= 75) {
 
       goalWeight = 12.0;
 
-    }
-
-    else if(minute <= 85){
+    } else if (minute <= 85) {
 
       goalWeight = 16.0;
 
-    }
-
-    else{
+    } else {
 
       goalWeight = 22.0;
 
     }
 
 
-    home +=
-      goalDiff * goalWeight;
-
-    away -=
-      goalDiff * goalWeight;
-
+    home += goalDiff * goalWeight;
+    away -= goalDiff * goalWeight;
 
     draw -=
       Math.abs(goalDiff) *
@@ -1080,88 +1053,71 @@
 
 
     /*
-      EMPATE
-    */
+     * SI ESTÁN EMPATADOS
+     */
 
-    if(goalDiff === 0){
+    if (goalDiff === 0) {
 
       const timeWeight =
-        Math.min(minute,90) / 90;
+        Math.min(minute, 90) / 90;
 
+      draw += timeWeight * 8;
 
-      draw +=
-        timeWeight * 8;
-
-
-      home -=
-        timeWeight * 4;
-
-
-      away -=
-        timeWeight * 4;
+      home -= timeWeight * 4;
+      away -= timeWeight * 4;
 
     }
 
 
     /*
-      ROJAS
-    */
+     * ROJAS
+     */
 
     const redDifference =
       awayReds - homeReds;
 
-
-    home +=
-      redDifference * 7;
-
-
-    away -=
-      redDifference * 7;
+    home += redDifference * 7;
+    away -= redDifference * 7;
 
 
-    if(homeReds > 0){
+    if (homeReds > 0) {
 
-      away +=
-        homeReds * 2;
-
-      home -=
-        homeReds * 2;
+      away += homeReds * 2;
+      home -= homeReds * 2;
 
     }
 
 
-    if(awayReds > 0){
+    if (awayReds > 0) {
 
-      home +=
-        awayReds * 2;
-
-      away -=
-        awayReds * 2;
+      home += awayReds * 2;
+      away -= awayReds * 2;
 
     }
 
 
     /*
-      CIERRE
-    */
+     * ========================================
+     * CIERRE DE PARTIDO
+     * ========================================
+     */
 
-    if(minute >= 85){
+    if (minute >= 85) {
 
       let lateTarget =
         90 +
         7.5 *
         Math.pow(
-          (Math.min(minute,90)-85)/5,
+          (Math.min(minute, 90) - 85) / 5,
           1.15
         );
 
 
-      lateTarget =
-        clamp(
-          lateTarget,
-          90,
-          97.5
-        );
+      lateTarget = clamp(
+        lateTarget,
+        90,
+        97.5
+      );
 
 
       const remaining =
@@ -1169,69 +1125,62 @@
 
 
       /*
-        EMPATE
-      */
+       * EMPATE
+       */
 
-      if(hg === ag){
+      if (hg === ag) {
 
         const positiveHome =
-          Math.max(home,0);
-
+          Math.max(home, 0);
 
         const positiveAway =
-          Math.max(away,0);
-
+          Math.max(away, 0);
 
         const nonDraw =
-          positiveHome +
-          positiveAway;
+          positiveHome + positiveAway;
 
 
-        if(nonDraw > 0){
-
-          home =
-            (positiveHome/nonDraw) *
-            remaining;
-
-
-          away =
-            (positiveAway/nonDraw) *
-            remaining;
-
-        }
-
-        else{
+        if (nonDraw > 0) {
 
           home =
-            remaining/2;
-
+            (positiveHome / nonDraw) *
+            remaining;
 
           away =
-            remaining/2;
+            (positiveAway / nonDraw) *
+            remaining;
+
+        } else {
+
+          home = remaining / 2;
+          away = remaining / 2;
 
         }
 
 
-        draw =
-          lateTarget;
+        draw = lateTarget;
 
       }
 
 
       /*
-        LOCAL
-      */
+       * LOCAL GANANDO
+       */
 
-      else if(hg > ag){
+      else if (hg > ag) {
 
         const goalLead =
           hg - ag;
 
 
-        if(
+        /*
+         * 89' o más y 4+ goles
+         */
+
+        if (
           minute >= 89 &&
           goalLead >= 4
-        ){
+        ) {
 
           home = 100;
           draw = 0;
@@ -1240,10 +1189,14 @@
         }
 
 
-        else if(
+        /*
+         * 89' o más y 3 goles
+         */
+
+        else if (
           minute >= 89 &&
           goalLead === 3
-        ){
+        ) {
 
           home = 99.6;
           draw = 0.25;
@@ -1252,10 +1205,14 @@
         }
 
 
-        else if(
+        /*
+         * 89' o más y 2 goles
+         */
+
+        else if (
           minute >= 89 &&
           goalLead === 2
-        ){
+        ) {
 
           home = 99.0;
           draw = 0.7;
@@ -1264,43 +1221,39 @@
         }
 
 
-        else{
+        /*
+         * RESTO
+         */
+
+        else {
 
           const positiveDraw =
-            Math.max(draw,0);
-
+            Math.max(draw, 0);
 
           const positiveAway =
-            Math.max(away,0);
-
+            Math.max(away, 0);
 
           const nonHome =
-            positiveDraw +
-            positiveAway;
+            positiveDraw + positiveAway;
 
 
-          home =
-            lateTarget;
+          home = lateTarget;
 
 
-          if(nonHome > 0){
+          if (nonHome > 0) {
 
             draw =
-              (positiveDraw/nonHome) *
+              (positiveDraw / nonHome) *
               remaining;
-
 
             away =
-              (positiveAway/nonHome) *
+              (positiveAway / nonHome) *
               remaining;
 
-          }
-
-          else{
+          } else {
 
             draw =
               remaining * 0.75;
-
 
             away =
               remaining * 0.25;
@@ -1313,19 +1266,23 @@
 
 
       /*
-        VISITANTE
-      */
+       * VISITANTE GANANDO
+       */
 
-      else{
+      else {
 
         const goalLead =
           ag - hg;
 
 
-        if(
+        /*
+         * 89' o más y 4+ goles
+         */
+
+        if (
           minute >= 89 &&
           goalLead >= 4
-        ){
+        ) {
 
           away = 100;
           draw = 0;
@@ -1334,10 +1291,14 @@
         }
 
 
-        else if(
+        /*
+         * 89' o más y 3 goles
+         */
+
+        else if (
           minute >= 89 &&
           goalLead === 3
-        ){
+        ) {
 
           away = 99.6;
           draw = 0.25;
@@ -1346,10 +1307,14 @@
         }
 
 
-        else if(
+        /*
+         * 89' o más y 2 goles
+         */
+
+        else if (
           minute >= 89 &&
           goalLead === 2
-        ){
+        ) {
 
           away = 99.0;
           draw = 0.7;
@@ -1358,43 +1323,39 @@
         }
 
 
-        else{
+        /*
+         * RESTO
+         */
+
+        else {
 
           const positiveHome =
-            Math.max(home,0);
-
+            Math.max(home, 0);
 
           const positiveDraw =
-            Math.max(draw,0);
-
+            Math.max(draw, 0);
 
           const nonAway =
-            positiveHome +
-            positiveDraw;
+            positiveHome + positiveDraw;
 
 
-          away =
-            lateTarget;
+          away = lateTarget;
 
 
-          if(nonAway > 0){
+          if (nonAway > 0) {
 
             home =
-              (positiveHome/nonAway) *
+              (positiveHome / nonAway) *
               remaining;
-
 
             draw =
-              (positiveDraw/nonAway) *
+              (positiveDraw / nonAway) *
               remaining;
 
-          }
-
-          else{
+          } else {
 
             home =
               remaining * 0.25;
-
 
             draw =
               remaining * 0.75;
@@ -1409,72 +1370,58 @@
 
 
     /*
-      MÍNIMOS
-    */
+     * MÍNIMOS ANTES DE 85'
+     */
 
-    if(minute < 85){
+    if (minute < 85) {
 
       const minimumProbability =
         minute < 75 ? 8 : 3;
 
 
-      home =
-        clamp(
-          home,
-          minimumProbability,
-          94
-        );
+      home = clamp(
+        home,
+        minimumProbability,
+        94
+      );
 
+      draw = clamp(
+        draw,
+        minimumProbability,
+        94
+      );
 
-      draw =
-        clamp(
-          draw,
-          minimumProbability,
-          94
-        );
-
-
-      away =
-        clamp(
-          away,
-          minimumProbability,
-          94
-        );
+      away = clamp(
+        away,
+        minimumProbability,
+        94
+      );
 
     }
 
 
     /*
-      SEGURIDAD
-    */
+     * SEGURIDAD
+     */
 
-    home =
-      Math.max(home,0);
-
-
-    draw =
-      Math.max(draw,0);
-
-
-    away =
-      Math.max(away,0);
+    home = Math.max(home, 0);
+    draw = Math.max(draw, 0);
+    away = Math.max(away, 0);
 
 
     const total =
-      home +
-      draw +
-      away;
+      home + draw + away;
 
 
-    if(
+    if (
       !Number.isFinite(total) ||
       total <= 0
-    ){
+    ) {
 
       return {
-        home:33,
-        draw:34,
-        away:33
+        home: 33,
+        draw: 34,
+        away: 33
       };
 
     }
@@ -1483,13 +1430,13 @@
     return {
 
       home:
-        home / total * 100,
+        (home / total) * 100,
 
       draw:
-        draw / total * 100,
+        (draw / total) * 100,
 
       away:
-        away / total * 100
+        (away / total) * 100
 
     };
 
@@ -1497,14 +1444,16 @@
 
 
   /*
-    CAMBIO DE ESTADÍSTICA
-  */
+   * ==========================================
+   * CAMBIAR ESTADÍSTICAS
+   * ==========================================
+   */
 
   function changeStat(
     team,
     stat,
     amount
-  ){
+  ) {
 
     const prefix =
       team === 'home'
@@ -1512,47 +1461,48 @@
         : 'away';
 
 
-    const value =
-      Number(amount) || 0;
-
-
     /*
-      LLEGADA
-    */
+     * LLEGADA
+     *
+     * Solo modifica llegada.
+     */
 
-    if(stat === 'arrival'){
+    if (stat === 'arrival') {
 
-      match[prefix + 'Arrivals'] +=
-        value;
+      if (amount > 0) {
+
+        match[prefix + 'Arrivals'] += 1;
+
+      } else {
+
+        match[prefix + 'Arrivals'] =
+          Math.max(
+            0,
+            match[prefix + 'Arrivals'] - 1
+          );
+
+      }
 
     }
 
 
     /*
-      TIRO
+     * TIRO
+     *
+     * Tiro = tiro + llegada.
+     */
 
-      Al sumar tiro:
-        +1 tiro
-        +1 llegada
+    else if (stat === 'shot') {
 
-      Al quitar tiro:
-        -1 tiro
-        -1 llegada
-    */
-
-    else if(stat === 'shot'){
-
-      if(value > 0){
+      if (amount > 0) {
 
         match[prefix + 'Shots'] += 1;
 
         match[prefix + 'Arrivals'] += 1;
 
-      }
+      } else {
 
-      else if(value < 0){
-
-        if(match[prefix + 'Shots'] > 0){
+        if (match[prefix + 'Shots'] > 0) {
 
           match[prefix + 'Shots'] -= 1;
 
@@ -1570,22 +1520,14 @@
 
 
     /*
-      AL ARCO
+     * TIRO AL ARCO
+     *
+     * Al arco = tiro + llegada.
+     */
 
-      Al sumar:
-        +1 al arco
-        +1 tiro
-        +1 llegada
+    else if (stat === 'target') {
 
-      Al quitar:
-        -1 al arco
-        -1 tiro
-        -1 llegada
-    */
-
-    else if(stat === 'target'){
-
-      if(value > 0){
+      if (amount > 0) {
 
         match[prefix + 'OnTarget'] += 1;
 
@@ -1593,11 +1535,9 @@
 
         match[prefix + 'Arrivals'] += 1;
 
-      }
+      } else {
 
-      else if(value < 0){
-
-        if(match[prefix + 'OnTarget'] > 0){
+        if (match[prefix + 'OnTarget'] > 0) {
 
           match[prefix + 'OnTarget'] -= 1;
 
@@ -1621,24 +1561,14 @@
 
 
     /*
-      GOL
+     * GOL
+     *
+     * Gol = al arco + tiro + llegada.
+     */
 
-      Al sumar:
-        +1 gol
-        +1 al arco
-        +1 tiro
-        +1 llegada
+    else if (stat === 'goal') {
 
-      Al quitar:
-        -1 gol
-        -1 al arco
-        -1 tiro
-        -1 llegada
-    */
-
-    else if(stat === 'goal'){
-
-      if(value > 0){
+      if (amount > 0) {
 
         match[prefix + 'Goals'] += 1;
 
@@ -1648,11 +1578,9 @@
 
         match[prefix + 'Arrivals'] += 1;
 
-      }
+      } else {
 
-      else if(value < 0){
-
-        if(match[prefix + 'Goals'] > 0){
+        if (match[prefix + 'Goals'] > 0) {
 
           match[prefix + 'Goals'] -= 1;
 
@@ -1682,9 +1610,269 @@
 
 
     /*
-      CÓRNER
-    */
+     * CÓRNER
+     */
 
-    else if(stat === 'corner'){
+    else if (stat === 'corner') {
 
-      match[prefix + 'Corners
+      if (amount > 0) {
+
+        match[prefix + 'Corners'] += 1;
+
+      } else {
+
+        match[prefix + 'Corners'] =
+          Math.max(
+            0,
+            match[prefix + 'Corners'] - 1
+          );
+
+      }
+
+    }
+
+
+    /*
+     * ROJA
+     */
+
+    else if (stat === 'red') {
+
+      if (amount > 0) {
+
+        match[prefix + 'Reds'] += 1;
+
+      } else {
+
+        match[prefix + 'Reds'] =
+          Math.max(
+            0,
+            match[prefix + 'Reds'] - 1
+          );
+
+      }
+
+    }
+
+
+    render();
+
+  }
+
+
+  /*
+   * ==========================================
+   * RENDER
+   * ==========================================
+   */
+
+  function render() {
+
+    document.getElementById('homeGoals').textContent =
+      match.homeGoals;
+
+    document.getElementById('awayGoals').textContent =
+      match.awayGoals;
+
+
+    document.getElementById('homeGoalsStat').textContent =
+      match.homeGoals;
+
+    document.getElementById('awayGoalsStat').textContent =
+      match.awayGoals;
+
+
+    document.getElementById('minute').textContent =
+      match.minute;
+
+
+    document.getElementById('homeArrivals').textContent =
+      match.homeArrivals;
+
+    document.getElementById('awayArrivals').textContent =
+      match.awayArrivals;
+
+
+    document.getElementById('homeShots').textContent =
+      match.homeShots;
+
+    document.getElementById('awayShots').textContent =
+      match.awayShots;
+
+
+    document.getElementById('homeOnTarget').textContent =
+      match.homeOnTarget;
+
+    document.getElementById('awayOnTarget').textContent =
+      match.awayOnTarget;
+
+
+    document.getElementById('homeCorners').textContent =
+      match.homeCorners;
+
+    document.getElementById('awayCorners').textContent =
+      match.awayCorners;
+
+
+    document.getElementById('homeReds').textContent =
+      match.homeReds;
+
+    document.getElementById('awayReds').textContent =
+      match.awayReds;
+
+
+    const probabilities =
+      calculateProbabilities();
+
+
+    document.getElementById('homeProb').textContent =
+      Math.round(probabilities.home) + '%';
+
+    document.getElementById('drawProb').textContent =
+      Math.round(probabilities.draw) + '%';
+
+    document.getElementById('awayProb').textContent =
+      Math.round(probabilities.away) + '%';
+
+
+    updateAnalysis();
+
+  }
+
+
+  /*
+   * ==========================================
+   * ANÁLISIS
+   * ==========================================
+   */
+
+  function updateAnalysis() {
+
+    const minute =
+      match.minute;
+
+    const hg =
+      match.homeGoals;
+
+    const ag =
+      match.awayGoals;
+
+
+    let text =
+      minute +
+      "' · " +
+      hg +
+      "-" +
+      ag +
+      ". ";
+
+
+    if (hg === ag) {
+
+      text +=
+        "El marcador está igualado y todavía puede producirse un cambio en el resultado.";
+
+    }
+
+    else if (hg > ag) {
+
+      const difference =
+        hg - ag;
+
+
+      if (
+        minute >= 89 &&
+        difference >= 4
+      ) {
+
+        text +=
+          "Queda muy poco tiempo y la diferencia de goles hace que el resultado esté prácticamente cerrado.";
+
+      }
+
+      else if (
+        minute >= 89 &&
+        difference >= 2
+      ) {
+
+        text +=
+          "Queda muy poco tiempo y la diferencia de goles concentra casi toda la probabilidad en River.";
+
+      }
+
+      else {
+
+        text +=
+          "River está por delante en el marcador y el tiempo restante aumenta el peso del resultado actual.";
+
+      }
+
+    }
+
+    else {
+
+      const difference =
+        ag - hg;
+
+
+      if (
+        minute >= 89 &&
+        difference >= 4
+      ) {
+
+        text +=
+          "Queda muy poco tiempo y la diferencia de goles hace que el resultado esté prácticamente cerrado.";
+
+      }
+
+      else if (
+        minute >= 89 &&
+        difference >= 2
+      ) {
+
+        text +=
+          "Queda muy poco tiempo y la diferencia de goles concentra casi toda la probabilidad en Boca.";
+
+      }
+
+      else {
+
+        text +=
+          "Boca está por delante en el marcador y el tiempo restante aumenta el peso del resultado actual.";
+
+      }
+
+    }
+
+
+    document.getElementById('analysisText').textContent =
+      text;
+
+  }
+
+
+  /*
+   * ==========================================
+   * BOTONES SUPERIORES
+   * ==========================================
+   */
+
+  function showMessage(message) {
+
+    alert(message);
+
+  }
+
+
+  /*
+   * ==========================================
+   * INICIO
+   * ==========================================
+   */
+
+  render();
+
+</script>
+
+</body>
+</html>
