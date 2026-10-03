@@ -13,1697 +13,1310 @@
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #07111f;
-      color: #f4f7fb;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    .app {
-      max-width: 900px;
-      margin: 0 auto;
-      min-height: 100vh;
-      background: #0a1626;
+      background: #f4f6f8;
+      color: #111827;
     }
 
     header {
-      padding: 18px 18px 14px;
-      border-bottom: 1px solid #203047;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #20d47b, #159bff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 23px;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .brand small {
-      color: #8ea0b8;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      border: 1px solid #263953;
-      background: #101e31;
-      color: #dbe7f5;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    main {
-      padding: 16px;
-    }
-
-    .search {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid #263953;
-      background: #101e31;
+      background: #111827;
       color: white;
-      outline: none;
-      margin-bottom: 15px;
-    }
-
-    .days {
-      display: flex;
-      gap: 7px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 18px;
-    }
-
-    .day {
-      flex: 0 0 auto;
-      border: 1px solid #263953;
-      background: #101e31;
-      color: #9fb0c6;
-      padding: 9px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .day.active {
-      background: #19b86a;
-      color: white;
-      border-color: #19b86a;
-    }
-
-    .section-title {
-      font-size: 15px;
-      margin: 18px 0 9px;
-      color: #dce7f3;
-    }
-
-    .match-card {
-      background: #101e31;
-      border: 1px solid #233650;
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-
-    .match-top {
-      display: flex;
-      justify-content: space-between;
-      color: #8497b0;
-      font-size: 12px;
-      margin-bottom: 11px;
-    }
-
-    .teams {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .team {
-      font-weight: bold;
-    }
-
-    .team:last-child {
-      text-align: right;
-    }
-
-    .score {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .match-bottom {
-      display: flex;
-      gap: 8px;
-      margin-top: 13px;
-    }
-
-    .mini-btn {
-      border: 1px solid #2b425f;
-      background: #0d1a2b;
-      color: #b9c9db;
-      border-radius: 8px;
-      padding: 7px 9px;
-      font-size: 12px;
-    }
-
-    .important {
-      border-color: #1679b7;
-      box-shadow: 0 0 0 1px rgba(23, 137, 211, .12);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .back {
-      margin-bottom: 13px;
-      border: 0;
-      background: transparent;
-      color: #6fc7ff;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .match-header {
-      background: #101e31;
-      border: 1px solid #263953;
-      border-radius: 15px;
       padding: 18px;
       text-align: center;
     }
 
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .match-header {
+      text-align: center;
+    }
+
     .competition {
-      color: #8fa2b9;
-      font-size: 12px;
-      margin-bottom: 14px;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
-    .match-score {
-      font-size: 31px;
+    .teams {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 25px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .score {
+      font-size: 34px;
+      margin: 12px 0;
       font-weight: 800;
-      margin: 10px 0 4px;
     }
 
-    .minute {
-      color: #6fc7ff;
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #e2e8f0;
       font-size: 13px;
+      font-weight: bold;
     }
 
-    .analysis {
-      margin-top: 14px;
-      background: #0e1b2d;
-      border: 1px solid #253a55;
-      border-radius: 15px;
-      padding: 15px;
+    .status.live {
+      background: #fee2e2;
+      color: #b91c1c;
     }
 
-    .analysis h2 {
-      font-size: 17px;
-      margin: 0 0 5px;
-    }
-
-    .analysis p {
-      color: #9fb1c8;
-      line-height: 1.5;
-      margin: 8px 0 0;
-      font-size: 13px;
+    .status.finished {
+      background: #dcfce7;
+      color: #166534;
     }
 
     .probabilities {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 14px;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .prob {
-      background: #111f32;
-      border-radius: 11px;
-      padding: 12px 7px;
-      text-align: center;
-    }
-
-    .prob strong {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
-
-    .prob span {
-      color: #8fa2b9;
-      font-size: 11px;
-    }
-
-    .home-prob strong {
-      color: #43df92;
-    }
-
-    .draw-prob strong {
-      color: #f3ca65;
-    }
-
-    .away-prob strong {
-      color: #ff8793;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 5px;
-      overflow-x: auto;
-      margin-top: 15px;
-    }
-
-    .tab {
-      flex: 0 0 auto;
-      border: 1px solid #263953;
-      background: #101e31;
-      color: #8fa2b9;
-      padding: 9px 12px;
-      border-radius: 9px;
-    }
-
-    .tab.active {
-      color: white;
-      background: #172941;
-    }
-
-    .panel {
-      margin-top: 14px;
-      background: #101e31;
-      border: 1px solid #263953;
-      border-radius: 15px;
+      border-radius: 12px;
       padding: 15px;
+      text-align: center;
+      background: #f8fafc;
     }
 
-    .panel h3 {
-      margin-top: 0;
-      font-size: 16px;
+    .prob .number {
+      display: block;
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .prob .label {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .home .number {
+      color: #15803d;
+    }
+
+    .draw .number {
+      color: #475569;
+    }
+
+    .away .number {
+      color: #dc2626;
     }
 
     .why {
-      color: #b3c1d1;
-      line-height: 1.55;
-      font-size: 13px;
+      margin-top: 18px;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 14px;
+      line-height: 1.5;
+      font-size: 14px;
     }
 
-    .test-panel {
-      margin-top: 15px;
-      background: #0d1a2b;
-      border: 1px solid #28405e;
-      border-radius: 15px;
-      padding: 15px;
-    }
-
-    .test-panel h3 {
-      margin: 0 0 14px;
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 14px;
     }
 
     .control {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
     .control-title {
-      color: #dce7f3;
-      font-size: 13px;
       font-weight: bold;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
 
     .control-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-    }
-
-    .counter {
-      background: #111f32;
-      border: 1px solid #263953;
-      border-radius: 10px;
-      padding: 9px;
-    }
-
-    .counter-name {
-      color: #93a6bd;
-      font-size: 12px;
-      margin-bottom: 7px;
-    }
-
-    .counter-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 7px;
-    }
-
-    .counter-controls button {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      border: 1px solid #304968;
-      background: #172941;
-      color: white;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .counter-value {
-      min-width: 30px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .minute-control {
-      display: flex;
+      grid-template-columns: 1fr 60px 1fr;
       align-items: center;
       gap: 8px;
     }
 
-    .minute-control button {
-      width: 42px;
-      height: 38px;
-      border: 1px solid #304968;
+    .team-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .team-control span {
+      flex: 1;
+    }
+
+    button {
+      border: none;
       border-radius: 9px;
-      background: #172941;
-      color: white;
+      background: #e2e8f0;
+      color: #111827;
+      font-size: 18px;
+      min-width: 36px;
+      min-height: 36px;
       cursor: pointer;
     }
 
-    .minute-display {
-      flex: 1;
+    button:hover {
+      background: #cbd5e1;
+    }
+
+    .value {
       text-align: center;
       font-weight: bold;
       font-size: 18px;
     }
 
+    .minute-box {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .minute {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .minute-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .state-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .state-buttons button {
+      padding: 8px 14px;
+      font-size: 14px;
+      min-width: auto;
+    }
+
+    .state-buttons .active {
+      background: #111827;
+      color: white;
+    }
+
     .reset {
       width: 100%;
-      border: 1px solid #3a526e;
-      background: #15263c;
-      color: #dbe7f5;
-      border-radius: 10px;
-      padding: 11px;
-      cursor: pointer;
+      background: #111827;
+      color: white;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .reset:hover {
+      background: #1f2937;
+    }
+
+    .small {
+      color: #64748b;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 8px;
     }
 
     @media (max-width: 600px) {
-      main {
-        padding: 12px;
+      .teams {
+        font-size: 17px;
+        gap: 12px;
       }
 
-      .prob strong {
-        font-size: 18px;
+      .probabilities {
+        gap: 6px;
+      }
+
+      .prob {
+        padding: 12px 6px;
+      }
+
+      .prob .number {
+        font-size: 23px;
+      }
+
+      .control-row {
+        grid-template-columns: 1fr;
+      }
+
+      .team-control {
+        margin-bottom: 4px;
       }
     }
   </style>
 </head>
 
 <body>
-<div class="app">
 
-  <header>
-    <div class="brand">
-      <div class="logo">⚽</div>
-      <div>
-        <h1>MatchIA</h1>
-        <small>Análisis inteligente de partidos</small>
+<header>
+  <h1>⚽ MatchIA</h1>
+  <p>Análisis estadístico en tiempo real</p>
+</header>
+
+<div class="container">
+
+  <div class="card match-header">
+    <div class="competition">🧪 Partido de prueba</div>
+
+    <div class="teams">
+      <span>River Plate</span>
+      <span>vs</span>
+      <span>Boca Juniors</span>
+    </div>
+
+    <div class="score" id="topScore">0 - 0</div>
+
+    <div id="statusBadge" class="status live">EN VIVO</div>
+  </div>
+
+
+  <div class="card">
+
+    <div class="probabilities">
+
+      <div class="prob home">
+        <span class="number" id="homeProb">33%</span>
+        <span class="label">River Plate</span>
+      </div>
+
+      <div class="prob draw">
+        <span class="number" id="drawProb">34%</span>
+        <span class="label">Empate</span>
+      </div>
+
+      <div class="prob away">
+        <span class="number" id="awayProb">33%</span>
+        <span class="label">Boca Juniors</span>
+      </div>
+
+    </div>
+
+    <div class="why">
+      <strong>🧠 ¿Por qué?</strong>
+      <div id="explanation">
+        El partido está empatado. Los indicadores disponibles están equilibrados.
       </div>
     </div>
 
-    <div class="header-actions">
-      <button class="icon-btn">🔔</button>
-      <button class="icon-btn">⚙️</button>
+  </div>
+
+
+  <div class="card">
+
+    <div class="section-title">
+      🧪 Probador minuto a minuto
     </div>
-  </header>
 
-  <main>
+    <div class="minute-box">
 
-    <section id="homeScreen">
-      <input
-        id="searchInput"
-        class="search"
-        type="text"
-        placeholder="Buscar equipos, partidos o ligas"
-      >
-
-      <div class="days" id="days"></div>
-
-      <div id="matchList"></div>
-    </section>
-
-    <section id="detailScreen" class="hidden">
-
-      <button class="back" id="backButton">← Volver</button>
-
-      <div class="match-header">
-        <div class="competition" id="detailCompetition"></div>
-
-        <div class="teams">
-          <div class="team" id="detailHome"></div>
-
-          <div>
-            <div class="match-score" id="detailScore">0 - 0</div>
-            <div class="minute" id="detailMinute">Próximo</div>
-          </div>
-
-          <div class="team" id="detailAway"></div>
-        </div>
+      <div class="minute">
+        <span id="minute">0</span>'
       </div>
 
-      <div class="analysis">
-        <h2>🧠 Análisis MatchIA</h2>
-        <p>Probá el partido minuto a minuto. Los porcentajes se recalculan automáticamente.</p>
-
-        <div class="probabilities">
-          <div class="prob home-prob">
-            <strong id="homeProbability">33%</strong>
-            <span id="homeProbName">Local</span>
-          </div>
-
-          <div class="prob draw-prob">
-            <strong id="drawProbability">34%</strong>
-            <span>Empate</span>
-          </div>
-
-          <div class="prob away-prob">
-            <strong id="awayProbability">33%</strong>
-            <span id="awayProbName">Visitante</span>
-          </div>
-        </div>
-
-        <p class="why" id="analysisText"></p>
+      <div class="minute-buttons">
+        <button onclick="changeMinute(-5)">−5</button>
+        <button onclick="changeMinute(-1)">−1</button>
+        <button onclick="changeMinute(1)">+1</button>
+        <button onclick="changeMinute(5)">+5</button>
       </div>
 
-      <div class="tabs">
-        <button class="tab active">⚽ Resumen</button>
-        <button class="tab">🧠 Análisis</button>
-        <button class="tab">📊 Estadísticas</button>
-        <button class="tab">👥 Alineaciones</button>
-        <button class="tab">📋 Eventos</button>
+    </div>
+
+
+    <div class="control">
+
+      <div class="control-title">⚽ Marcador</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>River Plate</span>
+          <button onclick="changeStat('homeGoals', -1)">−</button>
+          <div class="value" id="homeGoals">0</div>
+          <button onclick="changeStat('homeGoals', 1)">+</button>
+        </div>
+
+        <div></div>
+
+        <div class="team-control">
+          <span>Boca Juniors</span>
+          <button onclick="changeStat('awayGoals', -1)">−</button>
+          <div class="value" id="awayGoals">0</div>
+          <button onclick="changeStat('awayGoals', 1)">+</button>
+        </div>
+
       </div>
 
-      <div class="panel">
-        <h3>📊 Resumen</h3>
+    </div>
 
-        <div class="probabilities">
-          <div class="prob home-prob">
-            <strong id="summaryHomeProbability">33%</strong>
-            <span id="summaryHomeName">Local</span>
-          </div>
 
-          <div class="prob draw-prob">
-            <strong id="summaryDrawProbability">34%</strong>
-            <span>Empate</span>
-          </div>
+    <div class="control">
 
-          <div class="prob away-prob">
-            <strong id="summaryAwayProbability">33%</strong>
-            <span id="summaryAwayName">Visitante</span>
-          </div>
+      <div class="control-title">🔥 Llegadas</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>River Plate</span>
+          <button onclick="changeStat('homeArrivals', -1)">−</button>
+          <div class="value" id="homeArrivals">0</div>
+          <button onclick="changeStat('homeArrivals', 1)">+</button>
         </div>
 
-        <h3 style="margin-top:18px;">🧠 ¿Por qué?</h3>
-        <p class="why" id="whyText"></p>
+        <div></div>
+
+        <div class="team-control">
+          <span>Boca Juniors</span>
+          <button onclick="changeStat('awayArrivals', -1)">−</button>
+          <div class="value" id="awayArrivals">0</div>
+          <button onclick="changeStat('awayArrivals', 1)">+</button>
+        </div>
+
       </div>
 
-      <div class="test-panel">
-        <h3>🧪 Probador minuto a minuto</h3>
+    </div>
 
-        <div class="control">
-          <div class="control-title">⏱️ Minuto del partido</div>
 
-          <div class="minute-control">
-            <button onclick="changeMinute(-5)">−5</button>
-            <button onclick="changeMinute(-1)">−1</button>
-            <div class="minute-display" id="minuteValue">0'</div>
-            <button onclick="changeMinute(1)">+1</button>
-            <button onclick="changeMinute(5)">+5</button>
-          </div>
+    <div class="control">
+
+      <div class="control-title">🎯 Tiros</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>River Plate</span>
+          <button onclick="changeStat('homeShots', -1)">−</button>
+          <div class="value" id="homeShots">0</div>
+          <button onclick="changeStat('homeShots', 1)">+</button>
         </div>
 
-        <div class="control">
-          <div class="control-title">⚽ Marcador</div>
+        <div></div>
 
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name" id="scoreHomeName">River Plate</div>
-
-              <div class="counter-controls">
-                <button onclick="changeScore('home', -1)">−</button>
-                <div class="counter-value" id="homeGoals">0</div>
-                <button onclick="changeScore('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name" id="scoreAwayName">Boca Juniors</div>
-
-              <div class="counter-controls">
-                <button onclick="changeScore('away', -1)">−</button>
-                <div class="counter-value" id="awayGoals">0</div>
-                <button onclick="changeScore('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
+        <div class="team-control">
+          <span>Boca Juniors</span>
+          <button onclick="changeStat('awayShots', -1)">−</button>
+          <div class="value" id="awayShots">0</div>
+          <button onclick="changeStat('awayShots', 1)">+</button>
         </div>
-
-        <div class="control">
-          <div class="control-title">🔥 Llegadas</div>
-
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name" id="arrivalHomeName">River Plate</div>
-
-              <div class="counter-controls">
-                <button onclick="changeArrival('home', -1)">−</button>
-                <div class="counter-value" id="homeArrivals">0</div>
-                <button onclick="changeArrival('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name" id="arrivalAwayName">Boca Juniors</div>
-
-              <div class="counter-controls">
-                <button onclick="changeArrival('away', -1)">−</button>
-                <div class="counter-value" id="awayArrivals">0</div>
-                <button onclick="changeArrival('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="control">
-          <div class="control-title">🎯 Tiros</div>
-
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name" id="shotsHomeName">River Plate</div>
-
-              <div class="counter-controls">
-                <button onclick="changeShot('home', -1)">−</button>
-                <div class="counter-value" id="homeShots">0</div>
-                <button onclick="changeShot('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name" id="shotsAwayName">Boca Juniors</div>
-
-              <div class="counter-controls">
-                <button onclick="changeShot('away', -1)">−</button>
-                <div class="counter-value" id="awayShots">0</div>
-                <button onclick="changeShot('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="control">
-          <div class="control-title">🎯 Tiros al arco</div>
-
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name" id="targetHomeName">River Plate</div>
-
-              <div class="counter-controls">
-                <button onclick="changeTarget('home', -1)">−</button>
-                <div class="counter-value" id="homeShotsOnTarget">0</div>
-                <button onclick="changeTarget('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name" id="targetAwayName">Boca Juniors</div>
-
-              <div class="counter-controls">
-                <button onclick="changeTarget('away', -1)">−</button>
-                <div class="counter-value" id="awayShotsOnTarget">0</div>
-                <button onclick="changeTarget('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="control">
-          <div class="control-title">🟥 Tarjetas rojas</div>
-
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name">🟥 Roja River</div>
-
-              <div class="counter-controls">
-                <button onclick="changeRed('home', -1)">−</button>
-                <div class="counter-value" id="homeReds">0</div>
-                <button onclick="changeRed('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name">🟥 Roja Boca</div>
-
-              <div class="counter-controls">
-                <button onclick="changeRed('away', -1)">−</button>
-                <div class="counter-value" id="awayReds">0</div>
-                <button onclick="changeRed('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="control">
-          <div class="control-title">🚩 Córners</div>
-
-          <div class="control-row">
-
-            <div class="counter">
-              <div class="counter-name">River</div>
-
-              <div class="counter-controls">
-                <button onclick="changeCorner('home', -1)">−</button>
-                <div class="counter-value" id="homeCorners">0</div>
-                <button onclick="changeCorner('home', 1)">+</button>
-              </div>
-            </div>
-
-            <div class="counter">
-              <div class="counter-name">Boca</div>
-
-              <div class="counter-controls">
-                <button onclick="changeCorner('away', -1)">−</button>
-                <div class="counter-value" id="awayCorners">0</div>
-                <button onclick="changeCorner('away', 1)">+</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <button class="reset" onclick="resetTest()">↺ Reiniciar prueba</button>
 
       </div>
-    </section>
 
-  </main>
+    </div>
+
+
+    <div class="control">
+
+      <div class="control-title">🎯 Tiros al arco</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>River Plate</span>
+          <button onclick="changeStat('homeOnTarget', -1)">−</button>
+          <div class="value" id="homeOnTarget">0</div>
+          <button onclick="changeStat('homeOnTarget', 1)">+</button>
+        </div>
+
+        <div></div>
+
+        <div class="team-control">
+          <span>Boca Juniors</span>
+          <button onclick="changeStat('awayOnTarget', -1)">−</button>
+          <div class="value" id="awayOnTarget">0</div>
+          <button onclick="changeStat('awayOnTarget', 1)">+</button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="control">
+
+      <div class="control-title">🟥 Tarjetas rojas</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>🟥 Roja River</span>
+          <button onclick="changeStat('homeReds', -1)">−</button>
+          <div class="value" id="homeReds">0</div>
+          <button onclick="changeStat('homeReds', 1)">+</button>
+        </div>
+
+        <div></div>
+
+        <div class="team-control">
+          <span>🟥 Roja Boca</span>
+          <button onclick="changeStat('awayReds', -1)">−</button>
+          <div class="value" id="awayReds">0</div>
+          <button onclick="changeStat('awayReds', 1)">+</button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="control">
+
+      <div class="control-title">🚩 Córners</div>
+
+      <div class="control-row">
+
+        <div class="team-control">
+          <span>River</span>
+          <button onclick="changeStat('homeCorners', -1)">−</button>
+          <div class="value" id="homeCorners">0</div>
+          <button onclick="changeStat('homeCorners', 1)">+</button>
+        </div>
+
+        <div></div>
+
+        <div class="team-control">
+          <span>Boca</span>
+          <button onclick="changeStat('awayCorners', -1)">−</button>
+          <div class="value" id="awayCorners">0</div>
+          <button onclick="changeStat('awayCorners', 1)">+</button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="control">
+
+      <div class="control-title">⏱️ Estado del partido</div>
+
+      <div class="state-buttons">
+        <button id="liveButton" class="active" onclick="setMatchStatus('live')">
+          EN VIVO
+        </button>
+
+        <button id="finishedButton" onclick="setMatchStatus('finished')">
+          FINALIZADO
+        </button>
+      </div>
+
+      <div class="small">
+        El 100% se asigna únicamente cuando el partido está finalizado.
+      </div>
+
+    </div>
+
+
+    <button class="reset" onclick="resetTest()">
+      ↺ Reiniciar prueba
+    </button>
+
+  </div>
+
 </div>
 
+
 <script>
-  const matches = [
-    {
-      id: "palmeiras-river",
-      home: "Palmeiras",
-      away: "River Plate",
-      competition: "Libertadores",
-      date: "30 SEP",
-      time: "Finalizado",
-      score: "0 - 1",
-      important: true,
-      goals: "2–3",
-      btts: 64,
-      corners: 9,
-      shots: 21
-    },
-    {
-      id: "boca-racing",
-      home: "Boca Juniors",
-      away: "Racing",
-      competition: "Liga Argentina",
-      date: "30 SEP",
-      time: "Finalizado",
-      score: "2 - 1",
-      important: true
-    },
-    {
-      id: "lanus-tigre",
-      home: "Lanús",
-      away: "Tigre",
-      competition: "Liga Argentina",
-      date: "30 SEP",
-      time: "Finalizado",
-      score: "1 - 0"
-    },
-    {
-      id: "sanlorenzo-huracan",
-      home: "San Lorenzo",
-      away: "Huracán",
-      competition: "Liga Argentina",
-      date: "30 SEP",
-      time: "Finalizado",
-      score: "0 - 0"
-    },
 
-    {
-      id: "river-independiente",
-      home: "River Plate",
-      away: "Independiente",
-      competition: "Liga Argentina",
-      date: "01 OCT",
-      time: "Finalizado",
-      score: "2 - 0",
-      important: true
-    },
-    {
-      id: "boca-velez",
-      home: "Boca Juniors",
-      away: "Vélez",
-      competition: "Liga Argentina",
-      date: "01 OCT",
-      time: "Finalizado",
-      score: "1 - 0",
-      important: true
-    },
-    {
-      id: "talleres-lanus",
-      home: "Talleres",
-      away: "Lanús",
-      competition: "Liga Argentina",
-      date: "01 OCT",
-      time: "Finalizado",
-      score: "1 - 1"
-    },
-    {
-      id: "racing-sanlorenzo",
-      home: "Racing",
-      away: "San Lorenzo",
-      competition: "Liga Argentina",
-      date: "01 OCT",
-      time: "Finalizado",
-      score: "2 - 2"
-    },
+  const state = {
 
-    {
-      id: "river-boca",
-      home: "River Plate",
-      away: "Boca Juniors",
-      competition: "Liga Argentina",
-      date: "02 OCT",
-      time: "20:00",
-      score: "0 - 0",
-      important: true,
-      goals: "2–3",
-      btts: 61,
-      corners: 9,
-      shots: 22
-    },
-    {
-      id: "racing-independiente",
-      home: "Racing",
-      away: "Independiente",
-      competition: "Liga Argentina",
-      date: "02 OCT",
-      time: "21:30",
-      score: "0 - 0",
-      important: true
-    },
-    {
-      id: "lanus-tigre-2",
-      home: "Lanús",
-      away: "Tigre",
-      competition: "Liga Argentina",
-      date: "02 OCT",
-      time: "17:00",
-      score: "0 - 0"
-    },
-    {
-      id: "sanlorenzo-huracan-2",
-      home: "San Lorenzo",
-      away: "Huracán",
-      competition: "Liga Argentina",
-      date: "02 OCT",
-      time: "18:30",
-      score: "0 - 0"
-    },
-    {
-      id: "talleres-central",
-      home: "Talleres",
-      away: "Rosario Central",
-      competition: "Liga Argentina",
-      date: "02 OCT",
-      time: "20:30",
-      score: "0 - 0"
-    },
-
-    {
-      id: "independiente-river",
-      home: "Independiente",
-      away: "River Plate",
-      competition: "Liga Argentina",
-      date: "03 OCT",
-      time: "20:00",
-      score: "0 - 0"
-    },
-    {
-      id: "boca-estudiantes",
-      home: "Boca Juniors",
-      away: "Estudiantes",
-      competition: "Liga Argentina",
-      date: "03 OCT",
-      time: "18:00",
-      score: "0 - 0",
-      important: true
-    },
-    {
-      id: "tigre-racing",
-      home: "Tigre",
-      away: "Racing",
-      competition: "Liga Argentina",
-      date: "03 OCT",
-      time: "17:00",
-      score: "0 - 0"
-    },
-    {
-      id: "lanus-velez",
-      home: "Lanús",
-      away: "Vélez",
-      competition: "Liga Argentina",
-      date: "03 OCT",
-      time: "21:00",
-      score: "0 - 0"
-    },
-
-    {
-      id: "river-racing",
-      home: "River Plate",
-      away: "Racing",
-      competition: "Liga Argentina",
-      date: "04 OCT",
-      time: "20:00",
-      score: "0 - 0",
-      important: true
-    },
-    {
-      id: "boca-sanlorenzo",
-      home: "Boca Juniors",
-      away: "San Lorenzo",
-      competition: "Liga Argentina",
-      date: "04 OCT",
-      time: "18:00",
-      score: "0 - 0"
-    },
-    {
-      id: "huracan-tigre",
-      home: "Huracán",
-      away: "Tigre",
-      competition: "Liga Argentina",
-      date: "04 OCT",
-      time: "17:00",
-      score: "0 - 0"
-    },
-    {
-      id: "independiente-lanus",
-      home: "Independiente",
-      away: "Lanús",
-      competition: "Liga Argentina",
-      date: "04 OCT",
-      time: "19:00",
-      score: "0 - 0"
-    },
-
-    {
-      id: "river-talleres",
-      home: "River Plate",
-      away: "Talleres",
-      competition: "Liga Argentina",
-      date: "05 OCT",
-      time: "20:00",
-      score: "0 - 0",
-      important: true
-    },
-    {
-      id: "velez-boca",
-      home: "Vélez",
-      away: "Boca Juniors",
-      competition: "Liga Argentina",
-      date: "05 OCT",
-      time: "18:00",
-      score: "0 - 0"
-    },
-    {
-      id: "racing-lanus",
-      home: "Racing",
-      away: "Lanús",
-      competition: "Liga Argentina",
-      date: "05 OCT",
-      time: "21:00",
-      score: "0 - 0"
-    }
-  ];
-
-  const days = ["30 SEP", "01 OCT", "02 OCT", "03 OCT", "04 OCT", "05 OCT"];
-
-  let selectedDay = 2;
-  let selectedMatch = null;
-
-  let testState = {
     minute: 0,
+
+    status: 'live',
+
     homeGoals: 0,
     awayGoals: 0,
+
     homeArrivals: 0,
     awayArrivals: 0,
+
     homeShots: 0,
     awayShots: 0,
-    homeShotsOnTarget: 0,
-    awayShotsOnTarget: 0,
+
+    homeOnTarget: 0,
+    awayOnTarget: 0,
+
     homeReds: 0,
     awayReds: 0,
+
     homeCorners: 0,
     awayCorners: 0
+
   };
 
-  function renderDays() {
-    const container = document.getElementById("days");
-
-    container.innerHTML = days.map((day, index) => `
-      <button
-        class="day ${index === selectedDay ? "active" : ""}"
-        onclick="selectDay(${index})"
-      >
-        ${day}
-      </button>
-    `).join("");
-  }
-
-  function selectDay(index) {
-    selectedDay = index;
-    renderDays();
-    renderMatches();
-  }
-
-  function renderMatches() {
-    const container = document.getElementById("matchList");
-    const search = document.getElementById("searchInput").value
-      .toLowerCase()
-      .trim();
-
-    let list = matches.filter(match => match.date === days[selectedDay]);
-
-    if (search) {
-      list = matches.filter(match =>
-        `${match.home} ${match.away} ${match.competition}`
-          .toLowerCase()
-          .includes(search)
-      );
-    }
-
-    if (!list.length) {
-      container.innerHTML = `
-        <div class="panel">
-          No se encontraron partidos.
-        </div>
-      `;
-      return;
-    }
-
-    const important = list.filter(match => match.important);
-    const others = list.filter(match => !match.important);
-
-    let html = "";
-
-    if (important.length) {
-      html += `<div class="section-title">⭐ Partidos destacados</div>`;
-
-      html += important.map(renderMatchCard).join("");
-    }
-
-    if (others.length) {
-      html += `<div class="section-title">⚽ Otros partidos</div>`;
-
-      html += others.map(renderMatchCard).join("");
-    }
-
-    container.innerHTML = html;
-  }
-
-  function renderMatchCard(match) {
-    return `
-      <div
-        class="match-card ${match.important ? "important" : ""}"
-        onclick="openMatch('${match.id}')"
-      >
-        <div class="match-top">
-          <span>${match.competition}</span>
-          <span>${match.time}</span>
-        </div>
-
-        <div class="teams">
-          <div class="team">${match.home}</div>
-
-          <div class="score">${match.score}</div>
-
-          <div class="team">${match.away}</div>
-        </div>
-
-        <div class="match-bottom">
-          <button class="mini-btn">🧠 Pronóstico</button>
-          <button class="mini-btn">📰 Noticias</button>
-          <button class="mini-btn">⚽ Ver partido</button>
-        </div>
-      </div>
-    `;
-  }
-
-  function openMatch(id) {
-    selectedMatch = matches.find(match => match.id === id);
-
-    if (!selectedMatch) return;
-
-    document.getElementById("homeScreen").classList.add("hidden");
-    document.getElementById("detailScreen").classList.remove("hidden");
-
-    resetTest();
-    updateDetailNames();
-    updateUI();
-  }
-
-  function updateDetailNames() {
-    document.getElementById("detailHome").textContent = selectedMatch.home;
-    document.getElementById("detailAway").textContent = selectedMatch.away;
-
-    document.getElementById("homeProbName").textContent = selectedMatch.home;
-    document.getElementById("awayProbName").textContent = selectedMatch.away;
-
-    document.getElementById("summaryHomeName").textContent = selectedMatch.home;
-    document.getElementById("summaryAwayName").textContent = selectedMatch.away;
-
-    document.getElementById("scoreHomeName").textContent = selectedMatch.home;
-    document.getElementById("scoreAwayName").textContent = selectedMatch.away;
-
-    document.getElementById("arrivalHomeName").textContent = selectedMatch.home;
-    document.getElementById("arrivalAwayName").textContent = selectedMatch.away;
-
-    document.getElementById("shotsHomeName").textContent = selectedMatch.home;
-    document.getElementById("shotsAwayName").textContent = selectedMatch.away;
-
-    document.getElementById("targetHomeName").textContent = selectedMatch.home;
-    document.getElementById("targetAwayName").textContent = selectedMatch.away;
-  }
-
-  document.getElementById("backButton").addEventListener("click", () => {
-    document.getElementById("detailScreen").classList.add("hidden");
-    document.getElementById("homeScreen").classList.remove("hidden");
-    selectedMatch = null;
-  });
-
-  document.getElementById("searchInput").addEventListener("input", renderMatches);
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
 
-  /*
-    MOTOR DE CALIBRACIÓN
 
-    Importante:
-    - El gol no destruye automáticamente la probabilidad del rival.
-    - El minuto aumenta progresivamente la importancia del marcador.
-    - Las llegadas influyen, pero con peso moderado.
-    - Los tiros influyen poco.
-    - Los tiros al arco tienen más peso.
-    - Las rojas tienen un efecto separado.
-    - Todo termina normalizado a 100%.
-  */
+  function normalize(home, draw, away) {
 
-  function calculateTestProbabilities() {
-    const {
-      minute,
-      homeGoals: hg,
-      awayGoals: ag,
-      homeArrivals: ha,
-      awayArrivals: aa,
-      homeShots: hs,
-      awayShots: as,
-      homeShotsOnTarget: hot,
-      awayShotsOnTarget: aot,
-      homeReds: hr,
-      awayReds: ar,
-      homeCorners: hc,
-      awayCorners: ac
-    } = testState;
+    const total = home + draw + away;
+
+    if (total <= 0) {
+      return {
+        home: 33,
+        draw: 34,
+        away: 33
+      };
+    }
+
+    return {
+      home: home / total * 100,
+      draw: draw / total * 100,
+      away: away / total * 100
+    };
+
+  }
+
+
+  function calculateProbabilities() {
 
     /*
-      Base neutra solamente para esta prueba.
-      Más adelante será reemplazada por la probabilidad
-      pre-partido calculada con fuerza, forma, localía, etc.
+      PARTIDO FINALIZADO
+
+      Esta condición tiene prioridad absoluta.
+      El minuto 90 NO finaliza por sí solo el partido.
     */
+
+    if (state.status === 'finished') {
+
+      if (state.homeGoals > state.awayGoals) {
+
+        return {
+          home: 100,
+          draw: 0,
+          away: 0
+        };
+
+      }
+
+      if (state.awayGoals > state.homeGoals) {
+
+        return {
+          home: 0,
+          draw: 0,
+          away: 100
+        };
+
+      }
+
+      return {
+        home: 0,
+        draw: 100,
+        away: 0
+      };
+
+    }
+
+
+    /*
+      BASE NEUTRA DEL PROBADOR.
+
+      Se mantiene para calibración.
+      Más adelante será reemplazada por la
+      probabilidad prepartido calculada con
+      fuerza de equipos, forma, localía, etc.
+    */
+
     let home = 33;
     let draw = 34;
     let away = 33;
 
+
     /*
-      1. LLEGADAS
-      Tienen influencia, pero no deben decidir solas el partido.
+      LLEGADAS
+
+      Una llegada es una acción peligrosa.
+      Tiene influencia moderada.
     */
-    const arrivalDiff = ha - aa;
+
+    const arrivalDiff =
+      state.homeArrivals - state.awayArrivals;
 
     home += arrivalDiff * 0.55;
     away -= arrivalDiff * 0.55;
 
+
     /*
-      2. TIROS
-      Peso pequeño porque un tiro puede ser poco peligroso.
+      TIROS
+
+      Peso menor que tiros al arco.
     */
-    const shotDiff = hs - as;
+
+    const shotDiff =
+      state.homeShots - state.awayShots;
 
     home += shotDiff * 0.30;
     away -= shotDiff * 0.30;
 
+
     /*
-      3. TIROS AL ARCO
-      Más importantes que los tiros totales.
+      TIROS AL ARCO
+
+      Tienen más peso porque indican peligro
+      concreto sobre el arco.
     */
-    const targetDiff = hot - aot;
+
+    const targetDiff =
+      state.homeOnTarget - state.awayOnTarget;
 
     home += targetDiff * 1.15;
     away -= targetDiff * 1.15;
 
+
     /*
-      4. CÓRNERS
+      CÓRNERS
+
       Influencia moderada/baja.
     */
-    const cornerDiff = hc - ac;
+
+    const cornerDiff =
+      state.homeCorners - state.awayCorners;
 
     home += cornerDiff * 0.20;
     away -= cornerDiff * 0.20;
 
+
     /*
-      5. MARCADOR
+      MARCADOR + TIEMPO
 
-      El peso comienza bajo y aumenta con el tiempo.
-
-      A los 20':
-        el gol todavía no debería definir el partido.
-
-      A los 50':
-        el marcador pesa bastante, pero Boca conserva
-        una probabilidad relevante.
-
-      A los 80':
-        el 1-0 pesa mucho más porque queda poco tiempo.
-
-      No usamos una penalización directa exagerada
-      contra el equipo que pierde.
+      Conservamos la calibración actual.
     */
-    if (hg !== ag) {
-      const goalDiff = hg - ag;
+
+    if (state.homeGoals !== state.awayGoals) {
+
+      const goalDiff =
+        state.homeGoals - state.awayGoals;
 
       let goalWeight;
 
-      if (minute <= 15) {
+      if (state.minute <= 15) {
         goalWeight = 4.5;
-      } else if (minute <= 30) {
+      } else if (state.minute <= 30) {
         goalWeight = 6.0;
-      } else if (minute <= 45) {
+      } else if (state.minute <= 45) {
         goalWeight = 7.5;
-      } else if (minute <= 60) {
+      } else if (state.minute <= 60) {
         goalWeight = 9.0;
-      } else if (minute <= 75) {
+      } else if (state.minute <= 75) {
         goalWeight = 12.0;
-      } else if (minute <= 85) {
+      } else if (state.minute <= 85) {
         goalWeight = 16.0;
       } else {
+        /*
+          TRAMO FINAL
+
+          No ponemos 100% automáticamente.
+          El partido puede tener tiempo añadido.
+        */
+
         goalWeight = 22.0;
       }
+
 
       home += goalDiff * goalWeight;
       away -= goalDiff * goalWeight;
 
-      /*
-        El empate conserva valor porque un solo gol
-        puede cambiar el resultado.
-      */
       draw -= Math.abs(goalDiff) * (goalWeight * 0.35);
 
+
       /*
-        Si hay un solo gol de diferencia y todavía queda
-        bastante partido, evitamos que el equipo perdedor
-        quede artificialmente cerca de cero.
+        Si la diferencia es de un gol y todavía
+        no estamos en el tramo final, mantenemos
+        posibilidades reales para el rival.
       */
-      if (Math.abs(goalDiff) === 1 && minute < 70) {
-        away = Math.max(away, 17);
+
+      if (
+        Math.abs(goalDiff) === 1 &&
+        state.minute < 70
+      ) {
+
         home = Math.max(home, 17);
+        away = Math.max(away, 17);
+
       }
+
     } else {
+
       /*
         Si están empatados, el empate gana peso
-        progresivamente a medida que termina el partido.
+        a medida que avanza el partido.
       */
-      const timeWeight = minute / 90;
+
+      const timeWeight =
+        state.minute / 90;
 
       draw += timeWeight * 8;
 
       home -= timeWeight * 4;
       away -= timeWeight * 4;
+
     }
 
-    /*
-      6. TARJETAS ROJAS
 
-      Una roja sí tiene efecto fuerte, pero separado
-      del marcador.
+    /*
+      TARJETAS ROJAS
+
+      Una roja favorece al rival.
+      Dos rojas, una por lado, se compensan.
     */
-    const redDifference = ar - hr;
+
+    const redDifference =
+      state.awayReds - state.homeReds;
 
     home += redDifference * 7;
     away -= redDifference * 7;
 
-    /*
-      Si un equipo tiene una roja, el rival gana
-      una pequeña compensación adicional.
-    */
-    if (hr > 0) {
-      away += hr * 2;
-      home -= hr * 2;
+
+    if (state.homeReds > 0) {
+
+      away += state.homeReds * 2;
+      home -= state.homeReds * 2;
+
     }
 
-    if (ar > 0) {
-      home += ar * 2;
-      away -= ar * 2;
+
+    if (state.awayReds > 0) {
+
+      home += state.awayReds * 2;
+      away -= state.awayReds * 2;
+
     }
 
-    /*
-      Límites de seguridad.
-
-      Nunca queremos 0% mientras queda mucho partido
-      salvo situaciones extremas que luego calibraremos.
-    */
-    const minimumProbability = minute < 75 ? 8 : 3;
-
-    home = clamp(home, minimumProbability, 94);
-    draw = clamp(draw, minimumProbability, 94);
-    away = clamp(away, minimumProbability, 94);
 
     /*
-      Normalización final a 100%.
+      CORRECCIÓN ESPECÍFICA DEL TRAMO FINAL
+
+      No se aplica antes de 85'.
+
+      A partir de 86' reducimos la posibilidad
+      de que el ganador quede artificialmente baja.
+
+      IMPORTANTE:
+      esto NO significa que sea 100%.
+      Sigue siendo EN VIVO.
     */
-    const total = home + draw + away;
 
-    home = (home / total) * 100;
-    draw = (draw / total) * 100;
-    away = (away / total) * 100;
+    if (
+      state.minute >= 86 &&
+      state.homeGoals !== state.awayGoals
+    ) {
 
-    /*
-      Redondeo y corrección para que siempre sume exactamente 100.
-    */
-    let h = Math.round(home);
-    let d = Math.round(draw);
-    let a = Math.round(away);
+      const goalDiff =
+        state.homeGoals - state.awayGoals;
 
-    const roundedTotal = h + d + a;
+      if (Math.abs(goalDiff) === 1) {
 
-    if (roundedTotal !== 100) {
-      h += 100 - roundedTotal;
+        if (goalDiff > 0) {
+
+          /*
+            River gana por un gol.
+            El tiempo restante es muy pequeño,
+            por lo que elevamos progresivamente
+            su probabilidad.
+          */
+
+          if (state.minute >= 90) {
+
+            home = Math.max(home, 88);
+            draw = Math.min(draw, 9);
+            away = Math.min(away, 4);
+
+          } else if (state.minute >= 89) {
+
+            home = Math.max(home, 82);
+            draw = Math.min(draw, 13);
+            away = Math.min(away, 6);
+
+          } else {
+
+            home = Math.max(home, 75);
+            draw = Math.min(draw, 17);
+            away = Math.min(away, 8);
+
+          }
+
+        } else {
+
+          /*
+            Boca gana por un gol.
+          */
+
+          if (state.minute >= 90) {
+
+            away = Math.max(away, 88);
+            draw = Math.min(draw, 9);
+            home = Math.min(home, 4);
+
+          } else if (state.minute >= 89) {
+
+            away = Math.max(away, 82);
+            draw = Math.min(draw, 13);
+            home = Math.min(home, 6);
+
+          } else {
+
+            away = Math.max(away, 75);
+            draw = Math.min(draw, 17);
+            home = Math.min(home, 8);
+
+          }
+
+        }
+
+      }
+
     }
 
-    return {
-      home: h,
-      draw: d,
-      away: a
-    };
+
+    /*
+      LÍMITES.
+
+      Nunca forzamos 100% mientras esté EN VIVO.
+    */
+
+    const minimumProbability =
+      state.minute < 75 ? 8 : 3;
+
+    home = clamp(home, minimumProbability, 96);
+    draw = clamp(draw, minimumProbability, 96);
+    away = clamp(away, minimumProbability, 96);
+
+
+    return normalize(home, draw, away);
+
   }
 
-  function buildAnalysisText(probabilities) {
-    const {
-      minute,
-      homeGoals,
-      awayGoals,
-      homeArrivals,
-      awayArrivals,
-      homeShotsOnTarget,
-      awayShotsOnTarget
-    } = testState;
-
-    if (minute === 0 && homeGoals === 0 && awayGoals === 0) {
-      return `${minute}' · 0-0. El partido todavía no comenzó. Las probabilidades de esta prueba parten de una base neutral.`;
-    }
-
-    let parts = [];
-
-    parts.push(
-      `${minute}' · ${homeGoals}-${awayGoals}.`
-    );
-
-    if (homeGoals > awayGoals) {
-      parts.push(
-        `${selectedMatch.home} está arriba en el marcador.`
-      );
-    } else if (awayGoals > homeGoals) {
-      parts.push(
-        `${selectedMatch.away} está arriba en el marcador.`
-      );
-    } else {
-      parts.push("El partido está empatado.");
-    }
-
-    if (homeArrivals > awayArrivals) {
-      parts.push(
-        `${selectedMatch.home} está generando más llegadas.`
-      );
-    } else if (awayArrivals > homeArrivals) {
-      parts.push(
-        `${selectedMatch.away} está generando más llegadas.`
-      );
-    }
-
-    if (homeShotsOnTarget > awayShotsOnTarget) {
-      parts.push(
-        `${selectedMatch.home} también tiene ventaja en tiros al arco.`
-      );
-    } else if (awayShotsOnTarget > homeShotsOnTarget) {
-      parts.push(
-        `${selectedMatch.away} también tiene ventaja en tiros al arco.`
-      );
-    }
-
-    if (minute < 70) {
-      parts.push("Todavía queda bastante partido para que la situación cambie.");
-    } else if (minute < 85) {
-      parts.push("Queda tiempo suficiente para que el partido todavía cambie.");
-    } else {
-      parts.push("Queda poco tiempo y cada acción tiene mayor impacto.");
-    }
-
-    return parts.join(" ");
-  }
 
   function updateUI() {
-    if (!selectedMatch) return;
 
-    const probabilities = calculateTestProbabilities();
+    document.getElementById('minute').textContent =
+      state.minute;
 
-    document.getElementById("detailCompetition").textContent =
-      selectedMatch.competition;
+    document.getElementById('homeGoals').textContent =
+      state.homeGoals;
+
+    document.getElementById('awayGoals').textContent =
+      state.awayGoals;
+
+    document.getElementById('homeArrivals').textContent =
+      state.homeArrivals;
+
+    document.getElementById('awayArrivals').textContent =
+      state.awayArrivals;
+
+    document.getElementById('homeShots').textContent =
+      state.homeShots;
+
+    document.getElementById('awayShots').textContent =
+      state.awayShots;
+
+    document.getElementById('homeOnTarget').textContent =
+      state.homeOnTarget;
+
+    document.getElementById('awayOnTarget').textContent =
+      state.awayOnTarget;
+
+    document.getElementById('homeReds').textContent =
+      state.homeReds;
+
+    document.getElementById('awayReds').textContent =
+      state.awayReds;
+
+    document.getElementById('homeCorners').textContent =
+      state.homeCorners;
+
+    document.getElementById('awayCorners').textContent =
+      state.awayCorners;
+
+
+    document.getElementById('topScore').textContent =
+      `${state.homeGoals} - ${state.awayGoals}`;
+
+
+    const badge =
+      document.getElementById('statusBadge');
+
+    if (state.status === 'finished') {
+
+      badge.textContent = 'FINALIZADO';
+      badge.className = 'status finished';
+
+    } else {
+
+      badge.textContent = 'EN VIVO';
+      badge.className = 'status live';
+
+    }
+
+
+    document.getElementById('liveButton')
+      .classList.toggle(
+        'active',
+        state.status === 'live'
+      );
+
+    document.getElementById('finishedButton')
+      .classList.toggle(
+        'active',
+        state.status === 'finished'
+      );
+
+
+    const probabilities =
+      calculateProbabilities();
+
+
+    document.getElementById('homeProb').textContent =
+      `${Math.round(probabilities.home)}%`;
+
+    document.getElementById('drawProb').textContent =
+      `${Math.round(probabilities.draw)}%`;
+
+    document.getElementById('awayProb').textContent =
+      `${Math.round(probabilities.away)}%`;
+
+
+    updateExplanation();
+
+  }
+
+
+  function updateExplanation() {
+
+    const explanation =
+      document.getElementById('explanation');
+
+
+    if (state.status === 'finished') {
+
+      if (state.homeGoals > state.awayGoals) {
+
+        explanation.textContent =
+          `Partido finalizado. River Plate ganó ${state.homeGoals}-${state.awayGoals}. El resultado final queda fijado en 100% River Plate.`;
+
+      } else if (state.awayGoals > state.homeGoals) {
+
+        explanation.textContent =
+          `Partido finalizado. Boca Juniors ganó ${state.awayGoals}-${state.homeGoals}. El resultado final queda fijado en 100% Boca Juniors.`;
+
+      } else {
+
+        explanation.textContent =
+          `Partido finalizado ${state.homeGoals}-${state.awayGoals}. El empate queda fijado en 100%.`;
+
+      }
+
+      return;
+
+    }
+
+
+    let text =
+      `${state.minute}' · ${state.homeGoals}-${state.awayGoals}. `;
+
+
+    if (state.homeGoals > state.awayGoals) {
+
+      text +=
+        `River Plate está arriba en el marcador. `;
+
+    } else if (state.awayGoals > state.homeGoals) {
+
+      text +=
+        `Boca Juniors está arriba en el marcador. `;
+
+    } else {
+
+      text +=
+        `El partido está empatado. `;
+
+    }
+
+
+    if (
+      state.homeArrivals >
+      state.awayArrivals
+    ) {
+
+      text +=
+        `River Plate está generando más llegadas. `;
+
+    } else if (
+      state.awayArrivals >
+      state.homeArrivals
+    ) {
+
+      text +=
+        `Boca Juniors está generando más llegadas. `;
+
+    }
+
+
+    if (
+      state.homeOnTarget >
+      state.awayOnTarget
+    ) {
+
+      text +=
+        `River Plate también tiene ventaja en tiros al arco. `;
+
+    } else if (
+      state.awayOnTarget >
+      state.homeOnTarget
+    ) {
+
+      text +=
+        `Boca Juniors también tiene ventaja en tiros al arco. `;
+
+    }
+
+
+    if (state.homeReds > 0) {
+
+      text +=
+        `River Plate tiene ${state.homeReds} tarjeta(s) roja(s). `;
+
+    }
+
+
+    if (state.awayReds > 0) {
+
+      text +=
+        `Boca Juniors tiene ${state.awayReds} tarjeta(s) roja(s). `;
+
+    }
+
+
+    if (state.minute >= 85) {
+
+      text +=
+        `Queda muy poco tiempo, aunque el partido continúa en juego.`;
+
+    } else {
+
+      text +=
+        `Queda tiempo suficiente para que el partido todavía cambie.`;
+
+    }
+
+
+    explanation.textContent = text;
+
+  }
+
+
+  function changeMinute(amount) {
+
+    state.minute =
+      clamp(
+        state.minute + amount,
+        0,
+        120
+      );
 
     /*
       IMPORTANTE:
-      El encabezado ahora usa el estado de prueba.
-      Antes mostraba siempre el score original del partido.
+      cambiar el minuto nunca finaliza
+      automáticamente el partido.
     */
-    document.getElementById("detailScore").textContent =
-      `${testState.homeGoals} - ${testState.awayGoals}`;
-
-    document.getElementById("detailMinute").textContent =
-      testState.minute === 0
-        ? "Próximo"
-        : `${testState.minute}'`;
-
-    document.getElementById("homeProbability").textContent =
-      `${probabilities.home}%`;
-
-    document.getElementById("drawProbability").textContent =
-      `${probabilities.draw}%`;
-
-    document.getElementById("awayProbability").textContent =
-      `${probabilities.away}%`;
-
-    document.getElementById("summaryHomeProbability").textContent =
-      `${probabilities.home}%`;
-
-    document.getElementById("summaryDrawProbability").textContent =
-      `${probabilities.draw}%`;
-
-    document.getElementById("summaryAwayProbability").textContent =
-      `${probabilities.away}%`;
-
-    const analysis = buildAnalysisText(probabilities);
-
-    document.getElementById("analysisText").textContent = analysis;
-    document.getElementById("whyText").textContent = analysis;
-
-    document.getElementById("minuteValue").textContent =
-      `${testState.minute}'`;
-
-    document.getElementById("homeGoals").textContent =
-      testState.homeGoals;
-
-    document.getElementById("awayGoals").textContent =
-      testState.awayGoals;
-
-    document.getElementById("homeArrivals").textContent =
-      testState.homeArrivals;
-
-    document.getElementById("awayArrivals").textContent =
-      testState.awayArrivals;
-
-    document.getElementById("homeShots").textContent =
-      testState.homeShots;
-
-    document.getElementById("awayShots").textContent =
-      testState.awayShots;
-
-    document.getElementById("homeShotsOnTarget").textContent =
-      testState.homeShotsOnTarget;
-
-    document.getElementById("awayShotsOnTarget").textContent =
-      testState.awayShotsOnTarget;
-
-    document.getElementById("homeReds").textContent =
-      testState.homeReds;
-
-    document.getElementById("awayReds").textContent =
-      testState.awayReds;
-
-    document.getElementById("homeCorners").textContent =
-      testState.homeCorners;
-
-    document.getElementById("awayCorners").textContent =
-      testState.awayCorners;
-  }
-
-  function changeMinute(amount) {
-    testState.minute = clamp(
-      testState.minute + amount,
-      0,
-      90
-    );
 
     updateUI();
+
   }
 
-  /*
-    GOL
 
-    Gol = automáticamente:
-    +1 llegada
-    +1 tiro
-    +1 tiro al arco
-    +1 gol
-  */
-  function changeScore(team, amount) {
-    const goalKey =
-      team === "home" ? "homeGoals" : "awayGoals";
+  function changeStat(name, amount) {
 
-    const arrivalKey =
-      team === "home" ? "homeArrivals" : "awayArrivals";
+    const previous =
+      state[name];
 
-    const shotKey =
-      team === "home" ? "homeShots" : "awayShots";
+    state[name] =
+      Math.max(
+        0,
+        state[name] + amount
+      );
 
-    const targetKey =
-      team === "home"
-        ? "homeShotsOnTarget"
-        : "awayShotsOnTarget";
 
-    const current = testState[goalKey];
+    /*
+      RELACIONES AUTOMÁTICAS:
 
-    if (amount > 0) {
-      testState[goalKey] += 1;
-      testState[arrivalKey] += 1;
-      testState[shotKey] += 1;
-      testState[targetKey] += 1;
-    }
+      GOL:
+      +1 llegada
+      +1 tiro
+      +1 tiro al arco
 
-    if (amount < 0 && current > 0) {
-      testState[goalKey] -= 1;
-      testState[arrivalKey] =
-        Math.max(0, testState[arrivalKey] - 1);
-      testState[shotKey] =
-        Math.max(0, testState[shotKey] - 1);
-      testState[targetKey] =
-        Math.max(0, testState[targetKey] - 1);
-    }
+      TIRO:
+      +1 llegada
 
-    updateUI();
-  }
+      TIRO AL ARCO:
+      +1 llegada
+      +1 tiro
+    */
 
-  /*
-    LLEGADA
-
-    Una llegada no genera automáticamente tiro.
-  */
-  function changeArrival(team, amount) {
-    const key =
-      team === "home"
-        ? "homeArrivals"
-        : "awayArrivals";
-
-    testState[key] = Math.max(
-      0,
-      testState[key] + amount
-    );
-
-    updateUI();
-  }
-
-  /*
-    TIRO
-
-    Un tiro genera automáticamente una llegada,
-    pero no necesariamente un tiro al arco.
-  */
-  function changeShot(team, amount) {
-    const shotKey =
-      team === "home"
-        ? "homeShots"
-        : "awayShots";
-
-    const arrivalKey =
-      team === "home"
-        ? "homeArrivals"
-        : "awayArrivals";
-
-    if (amount > 0) {
-      testState[shotKey] += 1;
-      testState[arrivalKey] += 1;
-    }
 
     if (
-      amount < 0 &&
-      testState[shotKey] > 0
+      name === 'homeGoals' &&
+      state[name] > previous
     ) {
-      testState[shotKey] -= 1;
-      testState[arrivalKey] =
-        Math.max(0, testState[arrivalKey] - 1);
+
+      state.homeArrivals +=
+        state[name] - previous;
+
+      state.homeShots +=
+        state[name] - previous;
+
+      state.homeOnTarget +=
+        state[name] - previous;
+
     }
 
-    updateUI();
-  }
-
-  /*
-    TIRO AL ARCO
-
-    Un tiro al arco genera:
-    +1 tiro
-    +1 llegada
-    +1 tiro al arco
-  */
-  function changeTarget(team, amount) {
-    const targetKey =
-      team === "home"
-        ? "homeShotsOnTarget"
-        : "awayShotsOnTarget";
-
-    const shotKey =
-      team === "home"
-        ? "homeShots"
-        : "awayShots";
-
-    const arrivalKey =
-      team === "home"
-        ? "homeArrivals"
-        : "awayArrivals";
-
-    if (amount > 0) {
-      testState[targetKey] += 1;
-      testState[shotKey] += 1;
-      testState[arrivalKey] += 1;
-    }
 
     if (
-      amount < 0 &&
-      testState[targetKey] > 0
+      name === 'awayGoals' &&
+      state[name] > previous
     ) {
-      testState[targetKey] -= 1;
-      testState[shotKey] =
-        Math.max(0, testState[shotKey] - 1);
-      testState[arrivalKey] =
-        Math.max(0, testState[arrivalKey] - 1);
+
+      state.awayArrivals +=
+        state[name] - previous;
+
+      state.awayShots +=
+        state[name] - previous;
+
+      state.awayOnTarget +=
+        state[name] - previous;
+
     }
 
+
+    if (
+      name === 'homeShots' &&
+      state[name] > previous
+    ) {
+
+      state.homeArrivals +=
+        state[name] - previous;
+
+    }
+
+
+    if (
+      name === 'awayShots' &&
+      state[name] > previous
+    ) {
+
+      state.awayArrivals +=
+        state[name] - previous;
+
+    }
+
+
+    if (
+      name === 'homeOnTarget' &&
+      state[name] > previous
+    ) {
+
+      state.homeArrivals +=
+        state[name] - previous;
+
+      state.homeShots +=
+        state[name] - previous;
+
+    }
+
+
+    if (
+      name === 'awayOnTarget' &&
+      state[name] > previous
+    ) {
+
+      state.awayArrivals +=
+        state[name] - previous;
+
+      state.awayShots +=
+        state[name] - previous;
+
+    }
+
+
     updateUI();
+
   }
 
-  /*
-    ROJA
 
-    La roja modifica solamente el contador de rojas.
-  */
-  function changeRed(team, amount) {
-    const key =
-      team === "home"
-        ? "homeReds"
-        : "awayReds";
+  function setMatchStatus(status) {
 
-    testState[key] = Math.max(
-      0,
-      testState[key] + amount
-    );
+    state.status =
+      status;
 
     updateUI();
+
   }
 
-  /*
-    CÓRNER
-
-    El córner modifica solamente el contador de córners.
-  */
-  function changeCorner(team, amount) {
-    const key =
-      team === "home"
-        ? "homeCorners"
-        : "awayCorners";
-
-    testState[key] = Math.max(
-      0,
-      testState[key] + amount
-    );
-
-    updateUI();
-  }
 
   function resetTest() {
-    testState = {
-      minute: 0,
-      homeGoals: 0,
-      awayGoals: 0,
-      homeArrivals: 0,
-      awayArrivals: 0,
-      homeShots: 0,
-      awayShots: 0,
-      homeShotsOnTarget: 0,
-      awayShotsOnTarget: 0,
-      homeReds: 0,
-      awayReds: 0,
-      homeCorners: 0,
-      awayCorners: 0
-    };
 
-    if (selectedMatch) {
-      updateDetailNames();
-      updateUI();
-    }
+    state.minute = 0;
+
+    state.status = 'live';
+
+    state.homeGoals = 0;
+    state.awayGoals = 0;
+
+    state.homeArrivals = 0;
+    state.awayArrivals = 0;
+
+    state.homeShots = 0;
+    state.awayShots = 0;
+
+    state.homeOnTarget = 0;
+    state.awayOnTarget = 0;
+
+    state.homeReds = 0;
+    state.awayReds = 0;
+
+    state.homeCorners = 0;
+    state.awayCorners = 0;
+
+    updateUI();
+
   }
 
-  renderDays();
-  renderMatches();
+
+  updateUI();
+
 </script>
 
 </body>
