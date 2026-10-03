@@ -6,7 +6,9 @@
 <title>MatchIA</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -15,261 +17,429 @@ body{
   color:#fff;
 }
 
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
 header{
-  background:#0b1930;
-  padding:18px 16px;
-  border-bottom:1px solid #20324d;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin-bottom:20px;
 }
 
 .logo{
-  font-size:25px;
-  font-weight:bold;
+  font-size:28px;
+  font-weight:800;
 }
 
 .header-icons{
   display:flex;
-  gap:10px;
-}
-
-.icon-btn{
-  background:#132641;
-  color:#fff;
-  border:1px solid #29415f;
-  border-radius:10px;
-  padding:9px 12px;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:16px;
-}
-
-h2{
-  font-size:19px;
-  margin:22px 0 10px;
-}
-
-.card{
-  background:#0d1d33;
-  border:1px solid #203957;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:10px;
+  gap:12px;
+  font-size:22px;
 }
 
 .search{
   display:flex;
-  gap:8px;
+  gap:10px;
+  margin-bottom:20px;
 }
 
-input{
-  width:100%;
-  background:#081525;
-  color:#fff;
-  border:1px solid #29415f;
-  border-radius:9px;
-  padding:11px;
-  font-size:14px;
+.search input{
+  flex:1;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #26384f;
+  background:#101d2d;
+  color:white;
+  font-size:16px;
 }
 
-button{
-  cursor:pointer;
+.search button{
+  padding:14px 18px;
   border:0;
-  border-radius:9px;
-  padding:10px 13px;
-  background:#1769e0;
-  color:#fff;
-  font-weight:bold;
+  border-radius:12px;
+  background:#19c37d;
+  color:#04130d;
+  font-weight:700;
 }
 
-button:hover{
-  background:#2580ff;
+h2{
+  margin-top:24px;
 }
 
 .days{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:6px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:8px;
 }
 
 .day{
+  min-width:75px;
+  padding:12px 8px;
   text-align:center;
-  background:#0d1d33;
-  border:1px solid #29415f;
-  border-radius:10px;
-  padding:9px 3px;
+  border-radius:12px;
+  background:#101d2d;
+  border:1px solid #26384f;
   cursor:pointer;
-  font-size:12px;
 }
 
 .day.active{
-  background:#1769e0;
-  border-color:#1769e0;
+  background:#19c37d;
+  color:#04130d;
+  border-color:#19c37d;
+  font-weight:bold;
 }
 
-.match{
-  cursor:pointer;
-}
-
-.match:hover{
-  border-color:#357dd9;
-}
-
-.match-top{
+.section-title{
   display:flex;
   justify-content:space-between;
-  color:#8ea7c5;
-  font-size:12px;
+  align-items:center;
+  margin:22px 0 10px;
+}
+
+.section-title span{
+  color:#91a4bb;
+  font-size:14px;
+}
+
+.matches{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:14px;
+}
+
+.match-card{
+  background:#101d2d;
+  border:1px solid #26384f;
+  border-radius:16px;
+  padding:16px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.match-card:hover{
+  border-color:#19c37d;
+  transform:translateY(-2px);
+}
+
+.competition{
+  color:#8fa2b8;
+  font-size:13px;
   margin-bottom:10px;
 }
 
+.match-time{
+  color:#19c37d;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
 .teams{
-  display:grid;
-  grid-template-columns:1fr 60px 1fr;
+  display:flex;
+  justify-content:space-between;
   align-items:center;
-  text-align:center;
-  gap:5px;
+  font-size:18px;
+  font-weight:bold;
+  gap:10px;
 }
 
 .team{
-  font-weight:bold;
+  flex:1;
+}
+
+.team:last-child{
+  text-align:right;
 }
 
 .score{
-  font-size:22px;
-  font-weight:bold;
+  min-width:45px;
+  text-align:center;
+  color:#19c37d;
+  font-size:20px;
 }
 
-.status{
-  color:#6fceff;
-  font-size:12px;
-  margin-top:5px;
+.analysis-label{
+  margin-top:14px;
+  padding:9px;
+  border-radius:10px;
+  background:#16263a;
+  color:#a9bdd2;
+  text-align:center;
+  font-size:14px;
 }
 
-.badge{
-  display:inline-block;
-  padding:4px 7px;
-  border-radius:7px;
-  background:#162b49;
-  color:#b8c9dd;
-  font-size:11px;
+.demo-note{
+  color:#8296ad;
+  font-size:13px;
+  margin-top:6px;
 }
 
-#matchDetail{
+/* PARTIDO */
+
+.match-detail{
   display:none;
 }
 
 .back{
-  margin-bottom:12px;
-  background:#182b45;
+  display:inline-block;
+  margin-bottom:16px;
+  color:#19c37d;
+  cursor:pointer;
+}
+
+.match-header{
+  background:#101d2d;
+  border:1px solid #26384f;
+  border-radius:18px;
+  padding:22px;
+  text-align:center;
+}
+
+.match-header .competition{
+  margin-bottom:14px;
+}
+
+.big-teams{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:15px;
+}
+
+.big-team{
+  font-size:25px;
+  font-weight:800;
+}
+
+.big-score{
+  font-size:32px;
+  color:#19c37d;
+  font-weight:800;
+}
+
+.status{
+  margin-top:10px;
+  color:#91a4bb;
+}
+
+/* MOTOR */
+
+.engine{
+  margin-top:18px;
+  background:#101d2d;
+  border:1px solid #26384f;
+  border-radius:18px;
+  padding:20px;
+}
+
+.engine h2{
+  margin-top:0;
+}
+
+.engine-subtitle{
+  color:#91a4bb;
+  font-size:14px;
+  margin-bottom:18px;
+}
+
+.inputs{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.input-group label{
+  color:#a9bdd2;
+  font-size:13px;
+}
+
+.input-group input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #30445d;
+  background:#0a1726;
+  color:#fff;
+  font-size:16px;
+}
+
+.calculate{
+  width:100%;
+  margin-top:18px;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#19c37d;
+  color:#04130d;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.examples{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+
+.example{
+  padding:8px 10px;
+  border-radius:9px;
+  border:1px solid #30445d;
+  background:#16263a;
+  color:#c9d5e2;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* RESULTADO */
+
+.result{
+  margin-top:18px;
+  background:#081522;
+  border:1px solid #26384f;
+  border-radius:16px;
+  padding:18px;
+}
+
+.result-title{
+  text-align:center;
+  font-weight:800;
+  font-size:18px;
+  margin-bottom:15px;
 }
 
 .probabilities{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:15px;
-}
-
-.prob{
-  text-align:center;
-  padding:14px 5px;
-  background:#09182b;
-  border-radius:10px;
-}
-
-.prob strong{
-  display:block;
-  font-size:27px;
-  margin-top:5px;
-}
-
-.home{color:#55b6ff}
-.draw{color:#ffc857}
-.away{color:#ff7070}
-
-.tabs{
-  display:flex;
-  gap:5px;
-  overflow:auto;
-  margin:14px 0;
-}
-
-.tab{
-  white-space:nowrap;
-  background:#132641;
-  border:1px solid #29415f;
-}
-
-.tab.active{
-  background:#1769e0;
-}
-
-.tab-content{
-  display:none;
-}
-
-.tab-content.active{
-  display:block;
-}
-
-.stat-row{
-  display:grid;
-  grid-template-columns:1fr 100px 1fr;
-  text-align:center;
-  padding:9px 0;
-  border-bottom:1px solid #1b304b;
-}
-
-.test-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
   gap:10px;
 }
 
-.test-result{
-  display:none;
-  margin-top:15px;
-  border:2px solid #1769e0;
-  background:#09182b;
-}
-
-.test-result.visible{
-  display:block;
-}
-
-.test-total{
+.prob{
+  background:#101d2d;
+  border-radius:12px;
+  padding:15px 8px;
   text-align:center;
-  color:#8ea7c5;
-  margin-top:12px;
 }
 
-.reason{
-  margin-top:15px;
-  background:#10243d;
-  border-radius:10px;
-  padding:12px;
-  color:#d8e5f4;
-  line-height:1.5;
-}
-
-.note{
-  color:#8ea7c5;
+.prob-label{
+  color:#9eb0c4;
   font-size:13px;
+}
+
+.prob-value{
+  font-size:27px;
+  font-weight:800;
+  margin-top:7px;
+  color:#19c37d;
+}
+
+.explanation{
+  margin-top:15px;
+  padding:12px;
+  border-radius:10px;
+  background:#101d2d;
+  color:#b9c8d8;
+  font-size:14px;
   line-height:1.5;
 }
 
-@media(max-width:600px){
-  .test-grid{
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin-top:18px;
+}
+
+.tab{
+  padding:10px 14px;
+  border-radius:10px;
+  background:#101d2d;
+  border:1px solid #26384f;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:#19c37d;
+  color:#04130d;
+  font-weight:bold;
+}
+
+.tab-content{
+  margin-top:15px;
+  background:#101d2d;
+  border:1px solid #26384f;
+  border-radius:16px;
+  padding:18px;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.stat{
+  padding:12px;
+  background:#16263a;
+  border-radius:10px;
+}
+
+.stat-title{
+  color:#91a4bb;
+  font-size:12px;
+}
+
+.stat-value{
+  margin-top:5px;
+  font-weight:bold;
+}
+
+.event{
+  padding:10px 0;
+  border-bottom:1px solid #26384f;
+}
+
+.event:last-child{
+  border-bottom:0;
+}
+
+.hidden{
+  display:none;
+}
+
+@media(max-width:650px){
+  .inputs{
     grid-template-columns:1fr;
   }
 
-  .prob strong{
-    font-size:23px;
+  .big-teams{
+    grid-template-columns:1fr;
+  }
+
+  .big-team,
+  .team:last-child{
+    text-align:center;
+  }
+
+  .probabilities{
+    grid-template-columns:1fr;
+  }
+
+  .search{
+    flex-direction:column;
   }
 }
 </style>
@@ -277,1772 +447,824 @@ button:hover{
 
 <body>
 
+<div class="container">
+
 <header>
   <div class="logo">⚽ MatchIA</div>
 
   <div class="header-icons">
-    <button class="icon-btn">🔔</button>
-    <button class="icon-btn">⚙️</button>
+    <span>🔔</span>
+    <span>⚙️</span>
   </div>
 </header>
 
-<div class="container">
-
-<section id="home">
-
-<h2>🔎 Buscar equipos, partidos o ligas</h2>
-
 <div class="search">
-  <input id="searchInput" placeholder="River, Boca, River vs Palmeiras, Libertadores...">
+  <input
+    id="searchInput"
+    type="text"
+    placeholder="Buscar equipos, partidos o ligas"
+  >
   <button onclick="searchMatches()">Buscar</button>
 </div>
 
-<div id="searchResults"></div>
+<div id="homeView">
 
-<h2>📅 Fechas</h2>
-<div id="days" class="days"></div>
+  <h2>📅 Fechas</h2>
 
-<h2>⭐ Partidos importantes</h2>
-<div id="importantMatches"></div>
+  <div class="days">
+    <div class="day" onclick="selectDay(0)">30 SEP</div>
+    <div class="day" onclick="selectDay(1)">01 OCT</div>
+    <div class="day active" onclick="selectDay(2)">02 OCT</div>
+    <div class="day" onclick="selectDay(3)">03 OCT</div>
+    <div class="day" onclick="selectDay(4)">04 OCT</div>
+    <div class="day" onclick="selectDay(5)">05 OCT</div>
+  </div>
 
-<h2>➕ Otros partidos</h2>
-<div id="otherMatches"></div>
+  <div class="section-title">
+    <h2>⭐ Partidos importantes</h2>
+    <span>DEMO</span>
+  </div>
 
-<h2>🧠 Panel de prueba MatchIA</h2>
+  <div id="importantMatches" class="matches"></div>
 
-<div class="card">
+  <div class="section-title">
+    <h2>➕ Otros partidos</h2>
+    <span>DEMO</span>
+  </div>
 
-<p class="note">
-Probamos el motor minuto a minuto antes de conectarlo con API-Football.
-</p>
-
-<div class="test-grid">
-
-<div>
-<label>⏱️ Minuto</label>
-<input id="testMinute" type="number" value="40" min="0" max="120">
-</div>
-
-<div>
-<label>⚽ Goles local</label>
-<input id="testHomeGoals" type="number" value="0" min="0">
-</div>
-
-<div>
-<label>⚽ Goles visitante</label>
-<input id="testAwayGoals" type="number" value="0" min="0">
-</div>
-
-<div>
-<label>🔥 Llegadas local</label>
-<input id="testHomeChances" type="number" value="10" min="0">
-</div>
-
-<div>
-<label>🔥 Llegadas visitante</label>
-<input id="testAwayChances" type="number" value="3" min="0">
-</div>
-
-<div>
-<label>🎯 Tiros al arco local</label>
-<input id="testHomeTarget" type="number" value="4" min="0">
-</div>
-
-<div>
-<label>🎯 Tiros al arco visitante</label>
-<input id="testAwayTarget" type="number" value="1" min="0">
-</div>
-
-<div>
-<label>🟥 Rojas local</label>
-<input id="testHomeReds" type="number" value="0" min="0">
-</div>
-
-<div>
-<label>🟥 Rojas visitante</label>
-<input id="testAwayReds" type="number" value="0" min="0">
-</div>
+  <div id="otherMatches" class="matches"></div>
 
 </div>
 
-<button style="width:100%;margin-top:14px" onclick="runEngineTest()">
-🧠 Calcular probabilidades
-</button>
 
-<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px">
+<!-- DETALLE DEL PARTIDO -->
 
-<button onclick="loadTestExample(40,0,0,10,3,4,1,0,0)">
-40' · 0-0 · 10-3 llegadas
-</button>
+<div id="matchDetail" class="match-detail">
 
-<button onclick="loadTestExample(70,0,0,7,5,3,2,0,0)">
-70' · 0-0 · 7-5 llegadas
-</button>
+  <div class="back" onclick="closeMatch()">← Volver a partidos</div>
 
-<button onclick="loadTestExample(83,0,1,5,7,1,3,1,0)">
-83' · 0-1 · roja local
-</button>
+  <div class="match-header">
 
-<button onclick="loadTestExample(85,3,3,8,8,4,4,0,0)">
-85' · 3-3
-</button>
+    <div id="detailCompetition" class="competition"></div>
+
+    <div class="big-teams">
+
+      <div id="detailHome" class="big-team"></div>
+
+      <div id="detailScore" class="big-score">—</div>
+
+      <div id="detailAway" class="big-team"></div>
+
+    </div>
+
+    <div id="detailStatus" class="status"></div>
+
+  </div>
+
+
+  <!-- MOTOR DENTRO DEL PARTIDO -->
+
+  <div class="engine">
+
+    <h2>🧠 Análisis MatchIA</h2>
+
+    <div class="engine-subtitle">
+      Agregá lo que está pasando en el partido y MatchIA calcula las probabilidades dinámicas.
+    </div>
+
+    <div class="inputs">
+
+      <div class="input-group">
+        <label>⏱️ Minuto</label>
+        <input id="minute" type="number" min="0" max="120" value="40">
+      </div>
+
+      <div class="input-group">
+        <label>⚽ Goles local</label>
+        <input id="homeGoals" type="number" min="0" value="0">
+      </div>
+
+      <div class="input-group">
+        <label>⚽ Goles visitante</label>
+        <input id="awayGoals" type="number" min="0" value="0">
+      </div>
+
+      <div class="input-group">
+        <label>🔥 Llegadas local</label>
+        <input id="homeChances" type="number" min="0" value="10">
+      </div>
+
+      <div class="input-group">
+        <label>🔥 Llegadas visitante</label>
+        <input id="awayChances" type="number" min="0" value="3">
+      </div>
+
+      <div class="input-group">
+        <label>🎯 Tiros al arco local</label>
+        <input id="homeTarget" type="number" min="0" value="4">
+      </div>
+
+      <div class="input-group">
+        <label>🎯 Tiros al arco visitante</label>
+        <input id="awayTarget" type="number" min="0" value="1">
+      </div>
+
+      <div class="input-group">
+        <label>🟥 Rojas local</label>
+        <input id="homeReds" type="number" min="0" value="0">
+      </div>
+
+      <div class="input-group">
+        <label>🟥 Rojas visitante</label>
+        <input id="awayReds" type="number" min="0" value="0">
+      </div>
+
+    </div>
+
+    <button class="calculate" onclick="runEngine()">
+      🧠 Calcular probabilidades
+    </button>
+
+    <div class="examples">
+      <button class="example" onclick="loadExample(40,0,0,10,3,4,1,0,0)">
+        40' · 0-0 · 10-3
+      </button>
+
+      <button class="example" onclick="loadExample(70,0,0,7,5,3,2,0,0)">
+        70' · 0-0 · 7-5
+      </button>
+
+      <button class="example" onclick="loadExample(83,0,1,4,6,1,3,1,0)">
+        83' · 0-1 · roja local
+      </button>
+
+      <button class="example" onclick="loadExample(85,3,3,8,7,4,4,0,0)">
+        85' · 3-3
+      </button>
+    </div>
+
+
+    <div id="result" class="result">
+
+      <div class="result-title">
+        Resultado del análisis
+      </div>
+
+      <div class="probabilities">
+
+        <div class="prob">
+          <div class="prob-label">🏠 River</div>
+          <div id="homeProbability" class="prob-value">—%</div>
+        </div>
+
+        <div class="prob">
+          <div class="prob-label">🤝 Empate</div>
+          <div id="drawProbability" class="prob-value">—%</div>
+        </div>
+
+        <div class="prob">
+          <div class="prob-label">✈️ Boca</div>
+          <div id="awayProbability" class="prob-value">—%</div>
+        </div>
+
+      </div>
+
+      <div id="explanation" class="explanation">
+        Cargá los datos del partido y presioná "Calcular probabilidades".
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="tabs">
+
+    <div class="tab active" onclick="showTab('summary',this)">
+      Resumen
+    </div>
+
+    <div class="tab" onclick="showTab('analysis',this)">
+      Análisis
+    </div>
+
+    <div class="tab" onclick="showTab('stats',this)">
+      Estadísticas
+    </div>
+
+    <div class="tab" onclick="showTab('lineups',this)">
+      Alineaciones
+    </div>
+
+    <div class="tab" onclick="showTab('events',this)">
+      Eventos
+    </div>
+
+  </div>
+
+
+  <div id="summary" class="tab-content">
+    <h3>📊 Resumen</h3>
+    <p>
+      MatchIA analiza el marcador, minuto de juego, llegadas,
+      tiros al arco y tarjetas rojas.
+    </p>
+  </div>
+
+
+  <div id="analysis" class="tab-content hidden">
+    <h3>🧠 Análisis</h3>
+    <p>
+      Las probabilidades se actualizan según lo que ocurre
+      durante el partido.
+    </p>
+  </div>
+
+
+  <div id="stats" class="tab-content hidden">
+
+    <h3>📈 Estadísticas</h3>
+
+    <div class="stat-grid">
+
+      <div class="stat">
+        <div class="stat-title">Tiros</div>
+        <div class="stat-value">12 - 7</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">Tiros al arco</div>
+        <div class="stat-value">6 - 3</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">Llegadas</div>
+        <div class="stat-value">14 - 8</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">Corners</div>
+        <div class="stat-value">7 - 3</div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="lineups" class="tab-content hidden">
+
+    <h3>👥 Alineaciones</h3>
+
+    <p>
+      Alineaciones aún no disponibles.
+    </p>
+
+  </div>
+
+
+  <div id="events" class="tab-content hidden">
+
+    <h3>⚡ Eventos</h3>
+
+    <div class="event">⚽ 24' Gol — Demo</div>
+    <div class="event">🟨 51' Tarjeta amarilla — Demo</div>
+    <div class="event">🔄 67' Sustitución — Demo</div>
+
+  </div>
 
 </div>
-
-<div id="testResult" class="test-result"></div>
-
-</div>
-
-<div class="card">
-
-<b>Qué estamos comprobando</b>
-
-<p class="note">
-El motor combina minuto, marcador, llegadas, tiros al arco y tarjetas rojas.
-Las probabilidades siempre suman 100%.
-</p>
-
-</div>
-
-</section>
-
-
-<section id="matchDetail">
-
-<button class="back" onclick="closeMatch()">← Volver</button>
-
-<div id="detailContent"></div>
-
-</section>
 
 </div>
 
 
 <script>
 
-const matches=[
+const matchesByDay = [
 
-{
-date:"30 SEP",
-home:"Palmeiras",
-away:"River",
-time:"Finalizado",
-score:"0-1",
-competition:"Libertadores",
-important:true,
-status:"Finalizado",
-stats:{
-homeShots:7,
-awayShots:10,
-homeTarget:3,
-awayTarget:5,
-homeChances:8,
-awayChances:12,
-homeCorners:4,
-awayCorners:6,
-homeReds:0,
-awayReds:0
-}
-},
+  [
+    {
+      home:"Palmeiras",
+      away:"River",
+      time:"20:00",
+      score:"0 - 1",
+      status:"Finalizado",
+      competition:"Libertadores"
+    },
+    {
+      home:"Boca",
+      away:"Racing",
+      time:"21:30",
+      score:"2 - 1",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Lanús",
+      away:"Tigre",
+      time:"17:00",
+      score:"1 - 0",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"San Lorenzo",
+      away:"Huracán",
+      time:"18:30",
+      score:"0 - 0",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    }
+  ],
 
-{
-date:"30 SEP",
-home:"Boca",
-away:"Racing",
-time:"Finalizado",
-score:"2-1",
-competition:"Liga Argentina",
-important:true,
-status:"Finalizado",
-stats:{
-homeShots:9,
-awayShots:7,
-homeTarget:5,
-awayTarget:3,
-homeChances:11,
-awayChances:8,
-homeCorners:5,
-awayCorners:4,
-homeReds:0,
-awayReds:0
-}
-},
+  [
+    {
+      home:"River",
+      away:"Independiente",
+      time:"20:00",
+      score:"2 - 0",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Boca",
+      away:"Vélez",
+      time:"21:30",
+      score:"1 - 0",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Talleres",
+      away:"Lanús",
+      time:"19:00",
+      score:"1 - 1",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Racing",
+      away:"San Lorenzo",
+      time:"21:00",
+      score:"2 - 2",
+      status:"Finalizado",
+      competition:"Liga Argentina"
+    }
+  ],
 
-{
-date:"30 SEP",
-home:"Lanús",
-away:"Tigre",
-time:"Finalizado",
-score:"1-0",
-competition:"Liga Argentina",
-important:false,
-status:"Finalizado"
-},
+  [
+    {
+      home:"River",
+      away:"Boca",
+      time:"20:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina",
+      important:true
+    },
+    {
+      home:"Racing",
+      away:"Independiente",
+      time:"21:30",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina",
+      important:true
+    },
+    {
+      home:"Lanús",
+      away:"Tigre",
+      time:"17:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"San Lorenzo",
+      away:"Huracán",
+      time:"18:30",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Talleres",
+      away:"Rosario Central",
+      time:"20:30",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    }
+  ],
 
-{
-date:"30 SEP",
-home:"San Lorenzo",
-away:"Huracán",
-time:"Finalizado",
-score:"0-0",
-competition:"Liga Argentina",
-important:false,
-status:"Finalizado"
-},
+  [
+    {
+      home:"Independiente",
+      away:"River",
+      time:"20:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Boca",
+      away:"Estudiantes",
+      time:"21:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Tigre",
+      away:"Racing",
+      time:"18:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Lanús",
+      away:"Vélez",
+      time:"19:30",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    }
+  ],
 
-{
-date:"01 OCT",
-home:"River",
-away:"Independiente",
-time:"Finalizado",
-score:"2-0",
-competition:"Liga Argentina",
-important:true,
-status:"Finalizado",
-stats:{
-homeShots:12,
-awayShots:5,
-homeTarget:6,
-awayTarget:2,
-homeChances:14,
-awayChances:6,
-homeCorners:7,
-awayCorners:2,
-homeReds:0,
-awayReds:0
-}
-},
+  [
+    {
+      home:"River",
+      away:"Racing",
+      time:"20:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Boca",
+      away:"San Lorenzo",
+      time:"18:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Huracán",
+      away:"Tigre",
+      time:"17:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Independiente",
+      away:"Lanús",
+      time:"21:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    }
+  ],
 
-{
-date:"01 OCT",
-home:"Boca",
-away:"Vélez",
-time:"Finalizado",
-score:"1-0",
-competition:"Liga Argentina",
-important:true,
-status:"Finalizado"
-},
-
-{
-date:"01 OCT",
-home:"Talleres",
-away:"Lanús",
-time:"Finalizado",
-score:"1-1",
-competition:"Liga Argentina",
-important:false,
-status:"Finalizado"
-},
-
-{
-date:"01 OCT",
-home:"Racing",
-away:"San Lorenzo",
-time:"Finalizado",
-score:"2-2",
-competition:"Liga Argentina",
-important:false,
-status:"Finalizado"
-},
-
-{
-date:"02 OCT",
-home:"River",
-away:"Boca",
-time:"20:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"02 OCT",
-home:"Racing",
-away:"Independiente",
-time:"21:30",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"02 OCT",
-home:"Lanús",
-away:"Tigre",
-time:"17:00",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"02 OCT",
-home:"San Lorenzo",
-away:"Huracán",
-time:"18:30",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"02 OCT",
-home:"Talleres",
-away:"Rosario Central",
-time:"20:30",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"03 OCT",
-home:"Independiente",
-away:"River",
-time:"20:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"03 OCT",
-home:"Boca",
-away:"Estudiantes",
-time:"21:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"03 OCT",
-home:"Tigre",
-away:"Racing",
-time:"18:00",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"03 OCT",
-home:"Lanús",
-away:"Vélez",
-time:"20:00",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"04 OCT",
-home:"River",
-away:"Racing",
-time:"20:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"04 OCT",
-home:"Boca",
-away:"San Lorenzo",
-time:"18:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"04 OCT",
-home:"Huracán",
-away:"Tigre",
-time:"17:00",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"04 OCT",
-home:"Independiente",
-away:"Lanús",
-time:"19:00",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-},
-
-{
-date:"05 OCT",
-home:"River",
-away:"Talleres",
-time:"20:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"05 OCT",
-home:"Vélez",
-away:"Boca",
-time:"18:00",
-competition:"Liga Argentina",
-important:true,
-status:"Próximo"
-},
-
-{
-date:"05 OCT",
-home:"Racing",
-away:"Lanús",
-time:"20:30",
-competition:"Liga Argentina",
-important:false,
-status:"Próximo"
-}
+  [
+    {
+      home:"River",
+      away:"Talleres",
+      time:"20:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Vélez",
+      away:"Boca",
+      time:"21:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    },
+    {
+      home:"Racing",
+      away:"Lanús",
+      time:"19:00",
+      score:"—",
+      status:"Próximo",
+      competition:"Liga Argentina"
+    }
+  ]
 
 ];
 
+let selectedDay = 2;
+let selectedMatch = null;
 
-const dates=[
-"30 SEP",
-"01 OCT",
-"02 OCT",
-"03 OCT",
-"04 OCT",
-"05 OCT"
-];
 
-let selectedDay=2;
-
-
-/* =========================
-   MOTOR DE PROBABILIDADES
-========================= */
-
-function calculateProbabilities(data){
-
-const minute=Math.max(
-0,
-Math.min(120,Number(data.minute)||0)
-);
-
-const hg=Math.max(
-0,
-Number(data.homeGoals)||0
-);
-
-const ag=Math.max(
-0,
-Number(data.awayGoals)||0
-);
-
-const hc=Math.max(
-0,
-Number(data.homeChances)||0
-);
-
-const ac=Math.max(
-0,
-Number(data.awayChances)||0
-);
-
-const ht=Math.max(
-0,
-Number(data.homeTarget)||0
-);
-
-const at=Math.max(
-0,
-Number(data.awayTarget)||0
-);
-
-const hr=Math.max(
-0,
-Number(data.homeReds)||0
-);
-
-const ar=Math.max(
-0,
-Number(data.awayReds)||0
-);
-
-
-/* FINAL */
-
-if(minute>=90){
-
-if(hg>ag){
-
-return{
-home:100,
-draw:0,
-away:0,
-reason:"Partido finalizado: gana el local."
-};
-
-}
-
-if(ag>hg){
-
-return{
-home:0,
-draw:0,
-away:100,
-reason:"Partido finalizado: gana el visitante."
-};
-
-}
-
-return{
-home:0,
-draw:100,
-away:0,
-reason:"Partido finalizado: empate."
-};
-
-}
-
-
-/* BASE */
-
-let ph=55;
-let pd=30;
-let pa=15;
-
-
-/* LLEGADAS */
-
-const chanceDiff=hc-ac;
-
-const chanceEffect=Math.max(
--15,
-Math.min(15,chanceDiff*0.9)
-);
-
-ph+=chanceEffect;
-pa-=chanceEffect*0.75;
-
-
-/* TIROS AL ARCO */
-
-const targetDiff=ht-at;
-
-const targetEffect=Math.max(
--18,
-Math.min(18,targetDiff*3.5)
-);
-
-ph+=targetEffect;
-pa-=targetEffect*0.75;
-
-
-/* MARCADOR */
-
-if(hg>ag){
-
-const lead=hg-ag;
-
-const scoreEffect=Math.min(
-25,
-10+(lead-1)*6
-);
-
-ph+=scoreEffect;
-pa-=scoreEffect*0.55;
-pd-=scoreEffect*0.45;
-
-}
-
-else if(ag>hg){
-
-const lead=ag-hg;
-
-const scoreEffect=Math.min(
-25,
-10+(lead-1)*6
-);
-
-pa+=scoreEffect;
-ph-=scoreEffect*0.55;
-pd-=scoreEffect*0.45;
-
-}
-
-else{
-
-const timeFactor=Math.max(
-0,
-Math.min(1,(minute-20)/70)
-);
-
-const drawBoost=timeFactor*12;
-
-pd+=drawBoost;
-ph-=drawBoost/2;
-pa-=drawBoost/2;
-
-}
-
-
-/* MINUTOS FINALES */
-
-if(minute>=75){
-
-const lateFactor=(minute-75)/15;
-
-if(hg>ag){
-
-ph+=4*lateFactor;
-pd-=2*lateFactor;
-pa-=2*lateFactor;
-
-}
-
-if(ag>hg){
-
-pa+=4*lateFactor;
-pd-=2*lateFactor;
-ph-=2*lateFactor;
-
-}
-
-}
-
-
-/* ROJAS */
-
-if(hr>0){
-
-const scoreWeight=
-0.65+(minute/90)*0.35;
-
-ph-=hr*12*scoreWeight;
-pa+=hr*4*scoreWeight;
-
-}
-
-if(ar>0){
-
-const scoreWeight=
-0.65+(minute/90)*0.35;
-
-pa-=ar*12*scoreWeight;
-ph+=ar*4*scoreWeight;
-
-}
-
-
-/* PRESIÓN EXTRA POR ROJAS */
-
-const redPressure=(ar-hr)*14;
-
-ph+=redPressure;
-pa-=redPressure*0.75;
-
-
-/* EVITAR EXTREMOS */
-
-ph=Math.max(1,ph);
-pd=Math.max(1,pd);
-pa=Math.max(1,pa);
-
-
-/* NORMALIZAR */
-
-const total=ph+pd+pa;
-
-ph=(ph/total)*100;
-pd=(pd/total)*100;
-pa=(pa/total)*100;
-
-
-/* REDONDEAR */
-
-let home=Math.round(ph);
-let draw=Math.round(pd);
-let away=Math.round(pa);
-
-
-/* ASEGURAR 100 */
-
-let difference=100-(home+draw+away);
-
-away+=difference;
-
-
-/* SEGURIDAD */
-
-home=Math.max(1,home);
-draw=Math.max(1,draw);
-away=Math.max(1,away);
-
-
-/* VOLVER A ASEGURAR 100 */
-
-const finalTotal=home+draw+away;
-
-if(finalTotal!==100){
-
-away+=100-finalTotal;
-
-}
-
-
-/* EXPLICACIÓN */
-
-let reasons=[];
-
-if(hc>ac){
-
-reasons.push(
-"El local genera más llegadas."
-);
-
-}
-
-else if(ac>hc){
-
-reasons.push(
-"El visitante genera más llegadas."
-);
-
-}
-
-if(ht>at){
-
-reasons.push(
-"El local tiene más tiros al arco."
-);
-
-}
-
-else if(at>ht){
-
-reasons.push(
-"El visitante tiene más tiros al arco."
-);
-
-}
-
-if(hg>ag){
-
-reasons.push(
-"El marcador favorece al local."
-);
-
-}
-
-else if(ag>hg){
-
-reasons.push(
-"El marcador favorece al visitante."
-);
-
-}
-
-else{
-
-reasons.push(
-"El marcador está empatado."
-);
-
-}
-
-if(hr>0){
-
-reasons.push(
-"La roja del local reduce sus probabilidades."
-);
-
-}
-
-if(ar>0){
-
-reasons.push(
-"La roja del visitante reduce sus probabilidades."
-);
-
-}
-
-if(minute<25){
-
-reasons.push(
-"Todavía queda mucho partido y las probabilidades conservan margen."
-);
-
-}
-
-if(minute>=75){
-
-reasons.push(
-"Queda poco tiempo, por lo que el marcador actual pesa más."
-);
-
-}
-
-
-return{
-
-home,
-draw,
-away,
-
-reason:reasons.join(" ")
-
-};
-
-}
-
-
-/* =========================
-   TEST DEL MOTOR
-========================= */
-
-function runEngineTest(){
-
-const data={
-
-minute:document.getElementById(
-"testMinute"
-).value,
-
-homeGoals:document.getElementById(
-"testHomeGoals"
-).value,
-
-awayGoals:document.getElementById(
-"testAwayGoals"
-).value,
-
-homeChances:document.getElementById(
-"testHomeChances"
-).value,
-
-awayChances:document.getElementById(
-"testAwayChances"
-).value,
-
-homeTarget:document.getElementById(
-"testHomeTarget"
-).value,
-
-awayTarget:document.getElementById(
-"testAwayTarget"
-).value,
-
-homeReds:document.getElementById(
-"testHomeReds"
-).value,
-
-awayReds:document.getElementById(
-"testAwayReds"
-).value
-
-};
-
-
-const result=
-calculateProbabilities(data);
-
-
-const box=
-document.getElementById("testResult");
-
-
-box.innerHTML=`
-
-<h3 style="margin-top:0;text-align:center">
-🧠 Resultado del motor
-</h3>
-
-<div class="probabilities">
-
-<div class="prob">
-<span class="home">🏠 Local</span>
-<strong class="home">
-${result.home}%
-</strong>
-</div>
-
-<div class="prob">
-<span class="draw">🤝 Empate</span>
-<strong class="draw">
-${result.draw}%
-</strong>
-</div>
-
-<div class="prob">
-<span class="away">✈️ Visitante</span>
-<strong class="away">
-${result.away}%
-</strong>
-</div>
-
-</div>
-
-<div class="test-total">
-Total: ${result.home+result.draw+result.away}%
-</div>
-
-<div class="reason">
-<b>📊 Por qué:</b><br>
-${result.reason}
-</div>
-
-`;
-
-
-box.classList.add("visible");
-
-
-box.scrollIntoView({
-behavior:"smooth",
-block:"nearest"
-});
-
-}
-
-
-/* =========================
-   EJEMPLOS
-========================= */
-
-function loadTestExample(
-minute,
-homeGoals,
-awayGoals,
-homeChances,
-awayChances,
-homeTarget,
-awayTarget,
-homeReds,
-awayReds
-){
-
-document.getElementById("testMinute").value=minute;
-
-document.getElementById("testHomeGoals").value=homeGoals;
-
-document.getElementById("testAwayGoals").value=awayGoals;
-
-document.getElementById("testHomeChances").value=homeChances;
-
-document.getElementById("testAwayChances").value=awayChances;
-
-document.getElementById("testHomeTarget").value=homeTarget;
-
-document.getElementById("testAwayTarget").value=awayTarget;
-
-document.getElementById("testHomeReds").value=homeReds;
-
-document.getElementById("testAwayReds").value=awayReds;
-
-runEngineTest();
-
-}
-
-
-/* =========================
-   FECHAS
-========================= */
-
-function renderDays(){
-
-const container=
-document.getElementById("days");
-
-container.innerHTML="";
-
-
-dates.forEach((date,index)=>{
-
-const div=document.createElement("div");
-
-div.className=
-"day"+(index===selectedDay?" active":"");
-
-div.textContent=date;
-
-div.onclick=()=>{
-
-selectedDay=index;
-
-renderDays();
-renderMatches();
-
-};
-
-container.appendChild(div);
-
-});
-
-}
-
-
-/* =========================
-   TARJETAS DE PARTIDOS
-========================= */
-
-function matchCard(match){
-
-const score=
-match.score || "—";
-
-return`
-
-<div class="card match"
-onclick="openMatch(${matches.indexOf(match)})">
-
-<div class="match-top">
-
-<span>
-${match.competition}
-</span>
-
-<span>
-${match.status==="Finalizado"
-?"FINAL"
-:match.time}
-</span>
-
-</div>
-
-
-<div class="teams">
-
-<div class="team">
-${match.home}
-</div>
-
-<div>
-
-<div class="score">
-${score}
-</div>
-
-<div class="status">
-${match.status}
-</div>
-
-</div>
-
-<div class="team">
-${match.away}
-</div>
-
-</div>
-
-
-<div style="margin-top:10px">
-
-<span class="badge">
-🧠 Análisis MatchIA
-</span>
-
-</div>
-
-</div>
-
-`;
-
-}
-
-
-/* =========================
-   MOSTRAR PARTIDOS
-========================= */
+/* MOSTRAR PARTIDOS */
 
 function renderMatches(){
 
-const date=dates[selectedDay];
+  const important = document.getElementById("importantMatches");
+  const others = document.getElementById("otherMatches");
 
-const list=
-matches.filter(
-m=>m.date===date
-);
+  important.innerHTML = "";
+  others.innerHTML = "";
 
-const important=
-list.filter(
-m=>m.important
-);
+  const matches = matchesByDay[selectedDay];
 
-const other=
-list.filter(
-m=>!m.important
-);
+  matches.forEach((match,index)=>{
 
+    const card = document.createElement("div");
 
-document.getElementById(
-"importantMatches"
-).innerHTML=
+    card.className = "match-card";
 
-important.length
-?important.map(matchCard).join("")
-:
-`<div class="card note">
-No hay partidos destacados para esta fecha.
-</div>`;
+    card.innerHTML = `
+      <div class="competition">${match.competition}</div>
+      <div class="match-time">${match.time}</div>
 
+      <div class="teams">
+        <div class="team">${match.home}</div>
+        <div class="score">${match.score}</div>
+        <div class="team">${match.away}</div>
+      </div>
 
-document.getElementById(
-"otherMatches"
-).innerHTML=
+      <div class="analysis-label">
+        🧠 Análisis MatchIA
+      </div>
+    `;
 
-other.length
-?other.map(matchCard).join("")
-:
-`<div class="card note">
-No hay otros partidos para esta fecha.
-</div>`;
+    card.onclick = function(){
+      openMatch(match);
+    };
 
-}
+    if(match.important){
+      important.appendChild(card);
+    }else{
+      others.appendChild(card);
+    }
 
-
-/* =========================
-   ABRIR PARTIDO
-========================= */
-
-function openMatch(index){
-
-const match=matches[index];
-
-document.getElementById(
-"home"
-).style.display="none";
-
-document.getElementById(
-"matchDetail"
-).style.display="block";
-
-
-let hs=0;
-let as=0;
-
-
-if(match.score){
-
-const parts=
-match.score.split("-");
-
-hs=parseInt(parts[0])||0;
-as=parseInt(parts[1])||0;
+  });
 
 }
 
 
-const stats=match.stats||{
+/* FECHAS */
 
-homeShots:6,
-awayShots:8,
-homeTarget:3,
-awayTarget:4,
-homeChances:8,
-awayChances:9,
-homeCorners:4,
-awayCorners:5,
-homeReds:0,
-awayReds:0
+function selectDay(day){
 
-};
+  selectedDay = day;
 
+  document.querySelectorAll(".day").forEach((element,index)=>{
+    element.classList.toggle("active",index===day);
+  });
 
-const probabilities=
-calculateProbabilities({
-
-minute:
-match.status==="Finalizado"
-?90
-:0,
-
-homeGoals:hs,
-awayGoals:as,
-
-homeChances:
-stats.homeChances,
-
-awayChances:
-stats.awayChances,
-
-homeTarget:
-stats.homeTarget,
-
-awayTarget:
-stats.awayTarget,
-
-homeReds:
-stats.homeReds,
-
-awayReds:
-stats.awayReds
-
-});
-
-
-document.getElementById(
-"detailContent"
-).innerHTML=`
-
-<div class="card">
-
-<div class="match-top">
-
-<span>${match.competition}</span>
-
-<span>${match.status}</span>
-
-</div>
-
-
-<div class="teams">
-
-<div class="team">
-${match.home}
-</div>
-
-<div>
-
-<div class="score">
-${match.score||match.time}
-</div>
-
-<div class="status">
-${match.status}
-</div>
-
-</div>
-
-<div class="team">
-${match.away}
-</div>
-
-</div>
-
-
-<div class="probabilities">
-
-<div class="prob">
-
-<span class="home">
-🏠 Local
-</span>
-
-<strong class="home">
-${probabilities.home}%
-</strong>
-
-</div>
-
-
-<div class="prob">
-
-<span class="draw">
-🤝 Empate
-</span>
-
-<strong class="draw">
-${probabilities.draw}%
-</strong>
-
-</div>
-
-
-<div class="prob">
-
-<span class="away">
-✈️ Visitante
-</span>
-
-<strong class="away">
-${probabilities.away}%
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="reason">
-
-<b>🧠 Análisis MatchIA</b><br>
-
-${probabilities.reason}
-
-</div>
-
-</div>
-
-
-<div class="tabs">
-
-<button class="tab active"
-onclick="showTab('summary',this)">
-Resumen
-</button>
-
-<button class="tab"
-onclick="showTab('analysis',this)">
-Análisis
-</button>
-
-<button class="tab"
-onclick="showTab('stats',this)">
-Estadísticas
-</button>
-
-<button class="tab"
-onclick="showTab('lineups',this)">
-Alineaciones
-</button>
-
-<button class="tab"
-onclick="showTab('changes',this)">
-Cambios
-</button>
-
-<button class="tab"
-onclick="showTab('events',this)">
-Eventos
-</button>
-
-<button class="tab"
-onclick="showTab('h2h',this)">
-H2H
-</button>
-
-<button class="tab"
-onclick="showTab('last5',this)">
-Últimos 5
-</button>
-
-</div>
-
-
-<div id="tab-summary"
-class="tab-content active">
-
-<div class="card">
-
-<h3>
-🧠 Pronóstico estadístico
-</h3>
-
-<div class="probabilities">
-
-<div class="prob">
-
-<span class="home">
-Local
-</span>
-
-<strong class="home">
-${probabilities.home}%
-</strong>
-
-</div>
-
-
-<div class="prob">
-
-<span class="draw">
-Empate
-</span>
-
-<strong class="draw">
-${probabilities.draw}%
-</strong>
-
-</div>
-
-
-<div class="prob">
-
-<span class="away">
-Visitante
-</span>
-
-<strong class="away">
-${probabilities.away}%
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚽ Pre-partido
-</h3>
-
-<p class="note">
-Goles esperados: 2–3
-</p>
-
-<p class="note">
-Ambos marcan: 58%
-</p>
-
-<p class="note">
-Córners estimados: 8
-</p>
-
-<p class="note">
-Tiros estimados: 19
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-analysis"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-🧠 Análisis automático
-</h3>
-
-<p>
-${probabilities.reason}
-</p>
-
-<p class="note">
-
-MatchIA combina marcador, minuto,
-llegadas, tiros al arco y tarjetas rojas.
-
-A medida que incorporemos datos reales
-se sumarán forma, localía, H2H,
-lesiones y demás indicadores.
-
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-stats"
-class="tab-content">
-
-<div class="card">
-
-<div class="stat-row">
-<b>${stats.homeShots}</b>
-<span>Tiros</span>
-<b>${stats.awayShots}</b>
-</div>
-
-<div class="stat-row">
-<b>${stats.homeTarget}</b>
-<span>Tiros al arco</span>
-<b>${stats.awayTarget}</b>
-</div>
-
-<div class="stat-row">
-<b>${stats.homeChances}</b>
-<span>Llegadas</span>
-<b>${stats.awayChances}</b>
-</div>
-
-<div class="stat-row">
-<b>${stats.homeCorners}</b>
-<span>Córners</span>
-<b>${stats.awayCorners}</b>
-</div>
-
-<div class="stat-row">
-<b>${stats.homeReds}</b>
-<span>🟥 Rojas</span>
-<b>${stats.awayReds}</b>
-</div>
-
-</div>
-
-</div>
-
-
-<div id="tab-lineups"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-${match.home}
-</h3>
-
-<p class="note">
-Alineaciones aún no disponibles.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-${match.away}
-</h3>
-
-<p class="note">
-Alineaciones aún no disponibles.
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-changes"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-🔄 Cambios
-</h3>
-
-<p class="note">
-No hay cambios disponibles en el modo demo.
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-events"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-📋 Eventos
-</h3>
-
-<p class="note">
-Los eventos aparecerán cronológicamente
-cuando estén disponibles los datos reales.
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-h2h"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-🤝 Historial H2H
-</h3>
-
-<p class="note">
-Historial entre ambos equipos pendiente
-de datos reales.
-</p>
-
-</div>
-
-</div>
-
-
-<div id="tab-last5"
-class="tab-content">
-
-<div class="card">
-
-<h3>
-📊 Últimos 5
-</h3>
-
-<p class="note">
-Últimos partidos pendientes de datos reales.
-</p>
-
-</div>
-
-</div>
-
-`;
+  renderMatches();
 
 }
 
 
-/* =========================
-   PESTAÑAS
-========================= */
+/* ABRIR PARTIDO */
 
-function showTab(name,button){
+function openMatch(match){
 
-document
-.querySelectorAll(".tab-content")
-.forEach(el=>{
-el.classList.remove("active");
-});
+  selectedMatch = match;
 
+  document.getElementById("homeView").style.display = "none";
+  document.getElementById("matchDetail").style.display = "block";
 
-document
-.querySelectorAll(".tab")
-.forEach(el=>{
-el.classList.remove("active");
-});
+  document.getElementById("detailCompetition").textContent =
+    match.competition;
 
+  document.getElementById("detailHome").textContent =
+    match.home;
 
-const target=
-document.getElementById(
-"tab-"+name
-);
+  document.getElementById("detailAway").textContent =
+    match.away;
 
-if(target){
+  document.getElementById("detailScore").textContent =
+    match.score;
 
-target.classList.add("active");
+  document.getElementById("detailStatus").textContent =
+    match.status;
+
+  /*
+    Si abrimos River-Boca,
+    dejamos el motor listo para ese partido.
+  */
+
+  if(match.home === "River" && match.away === "Boca"){
+
+    document.querySelector(".result-title").textContent =
+      "🧠 River vs Boca — Probabilidades MatchIA";
+
+  }else{
+
+    document.querySelector(".result-title").textContent =
+      "🧠 " + match.home + " vs " + match.away + " — Probabilidades MatchIA";
+
+  }
 
 }
 
-if(button){
 
-button.classList.add("active");
-
-}
-
-}
-
-
-/* =========================
-   VOLVER
-========================= */
+/* CERRAR PARTIDO */
 
 function closeMatch(){
 
-document.getElementById(
-"matchDetail"
-).style.display="none";
-
-document.getElementById(
-"home"
-).style.display="block";
+  document.getElementById("matchDetail").style.display = "none";
+  document.getElementById("homeView").style.display = "block";
 
 }
 
 
-/* =========================
-   BUSCAR
-========================= */
+/* MOTOR DE PROBABILIDADES */
 
-function searchMatches(){
+function calculateProbabilities(
+  minute,
+  homeGoals,
+  awayGoals,
+  homeChances,
+  awayChances,
+  homeTarget,
+  awayTarget,
+  homeReds,
+  awayReds
+){
 
-const query=
-document.getElementById(
-"searchInput"
-).value
-.trim()
-.toLowerCase();
+  minute = Math.max(0,Math.min(120,Number(minute)));
 
+  homeGoals = Number(homeGoals);
+  awayGoals = Number(awayGoals);
 
-const container=
-document.getElementById(
-"searchResults"
-);
+  homeChances = Number(homeChances);
+  awayChances = Number(awayChances);
 
+  homeTarget = Number(homeTarget);
+  awayTarget = Number(awayTarget);
 
-if(!query){
-
-container.innerHTML="";
-
-return;
-
-}
-
-
-const results=
-matches.filter(m=>
-
-m.home.toLowerCase().includes(query) ||
-
-m.away.toLowerCase().includes(query) ||
-
-m.competition.toLowerCase().includes(query) ||
-
-`${m.home} ${m.away}`
-.toLowerCase()
-.includes(query)
-
-);
+  homeReds = Number(homeReds);
+  awayReds = Number(awayReds);
 
 
-if(!results.length){
+  /*
+    Base:
+    antes de incorporar información,
+    damos más peso al local.
+  */
 
-container.innerHTML=`
-
-<div class="card note">
-
-No encontramos partidos para
-"${query}".
-
-</div>
-
-`;
-
-return;
-
-}
+  let home = 55;
+  let draw = 30;
+  let away = 15;
 
 
-container.innerHTML=`
+  /* LLEGADAS */
 
-<h2>
-🔎 Resultados
-</h2>
+  const chanceDiff = homeChances - awayChances;
 
-${results.map(matchCard).join("")}
+  const chanceEffect =
+    Math.max(-15,Math.min(15,chanceDiff * 0.9));
 
-`;
-
-}
+  home += chanceEffect;
+  away -= chanceEffect;
 
 
-/* =========================
-   ENTER EN BUSCADOR
-========================= */
+  /* TIROS AL ARCO */
 
-document
-.getElementById("searchInput")
-.addEventListener(
-"keydown",
-function(e){
+  const targetDiff = homeTarget - awayTarget;
 
-if(e.key==="Enter"){
+  const targetEffect =
+    Math.max(-18,Math.min(18,targetDiff * 3.5));
 
-searchMatches();
-
-}
-
-}
-);
+  home += targetEffect;
+  away -= targetEffect;
 
 
-/* =========================
-   INICIO
-========================= */
+  /* MARCADOR */
 
-renderDays();
-renderMatches();
+  if(homeGoals > awayGoals){
 
-</script>
+    const diff = homeGoals - awayGoals;
 
-</body>
-</html>
+    home += 20 + diff * 8;
+    draw -= 12 + diff * 3;
+    away -= 8 + diff * 4;
+
+  }
+
+  else if(awayGoals > homeGoals){
+
+    const diff = awayGoals - homeGoals;
+
+    away += 20 + diff * 8;
+    draw -= 12 + diff * 3;
+    home -= 8 + diff * 4;
+
+  }
+
+
+  /* EMPATE */
+
+  if(homeGoals === awayGoals){
+
+    const remaining = Math.max(0,90-minute);
+
+    if(remaining > 60){
+
+      draw += 8;
+
+    }else if(remaining > 30){
+
+      draw += 12;
+
+    }else if(remaining > 15){
+
+      draw += 17;
+
+    }else{
+
+      draw += 24;
+
+    }
+
+  }
+
+
+  /* TARJETAS ROJAS */
+
+  home -= homeReds * 12;
+  away += homeReds * 4;
+
+  away -= awayReds * 12;
+  home += awayReds * 4;
+
+
+  /*
+    Presión adicional por diferencia
+    de expulsiones.
+  */
+
+  const redPressure =
+    (awayReds - homeReds) * 14;
+
+  home += redPressure;
+  away -= redPressure;
+
+
+  /* FASE FINAL */
+
+  if(minute >= 75){
+
+    if(homeGoals > awayGoals){
+
+      home += 8;
+
+    }else if(awayGoals > homeGoals){
+
+      away += 8;
+
+    }else{
+
+      draw += 8;
+
+    }
+
+  }
+
+
+  /*
+    No dejamos probabilidades negativas.
+  */
+
+  home = Math.max(1,home);
+  draw = Math.max(1,draw);
+  away = Math.max(1,away);
+
+
+  /*
+    Normalización.
+  */
+
+  const total = home + draw + away;
+
+  home = home / total * 100;
+  draw = draw / total * 100;
+  away = away / total * 100;
+
+
+  /*
+    Redondeo asegurando que sumen 100.
+  */
+
+  let homeRounded = Math.round(home);
+  let drawRounded = Math.round(draw);
+  let awayRounded = Math.round(away);
+
+  let roundedTotal =
+    homeRounded + drawRounded + awayRounded;
+
+  awayRounded += 100 - roundedTotal;
+
+
+  return {
+    home:homeRounded,
+    draw
