@@ -6,7 +6,10 @@
   "use strict";
 
   let fixturesCache = [];
-  let selectedDate = "today";
+  let selectedDate = null;
+
+  const MIN_DATE = "2026-09-30";
+  const MAX_DATE = "2026-10-11";
 
   function getArgentinaDate(offsetDays) {
     const now = new Date();
@@ -29,6 +32,47 @@
     ].join("-");
   }
 
+  function getToday() {
+    return getArgentinaDate(0);
+  }
+
+  function isValidDate(value) {
+    return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  }
+
+  function clampDate(value) {
+    if (!isValidDate(value)) {
+      return getToday();
+    }
+
+    if (value < MIN_DATE) {
+      return MIN_DATE;
+    }
+
+    if (value > MAX_DATE) {
+      return MAX_DATE;
+    }
+
+    return value;
+  }
+
+  function formatDateTitle(dateString) {
+    if (!dateString) return "";
+
+    const date = new Date(dateString + "T12:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    return new Intl.DateTimeFormat("es-AR", {
+      day: "numeric",
+      month: "long"
+    })
+      .format(date)
+      .toUpperCase();
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -49,7 +93,8 @@
 
     return date.toLocaleTimeString("es-AR", {
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
+      hour12: false
     });
   }
 
@@ -73,6 +118,10 @@
     ].includes(partido.estado);
   }
 
+  function isUpcoming(partido) {
+    return !isLive(partido) && !isFinished(partido);
+  }
+
   function renderTeamLogo(logo, name) {
     if (logo) {
       return `
@@ -88,39 +137,64 @@
     return `<div class="team-logo-placeholder">⚽</div>`;
   }
 
-  function renderMatchCard(partido, options) {
+  function renderMatchCard(partido) {
     const live = isLive(partido);
     const finished = isFinished(partido);
+    const upcoming = isUpcoming(partido);
 
-    const marcador =
-      live || finished
-        ? `${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}`
-        : formatTime(partido.fecha);
+    let centro;
 
-    const estado =
-      live
-        ? `${partido.minuto || 0}'`
-        : finished
-          ? "FINAL"
-          : formatTime(partido.fecha);
+    if (live) {
+      centro = `
+        <div class="match-score">
+          <strong>
+            ${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}
+          </strong>
+          <small class="live-label">
+            ${partido.minuto || 0}'
+          </small>
+        </div>
+      `;
+    } else if (finished) {
+      centro = `
+        <div class="match-score">
+          <strong>
+            ${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}
+          </strong>
+          <small>RESULTADO</small>
+        </div>
+      `;
+    } else {
+      centro = `
+        <div class="match-score">
+          <strong>${formatTime(partido.fecha)}</strong>
+          <small>VS</small>
+        </div>
+      `;
+    }
 
     const clase =
       live
         ? "match-card live-card"
         : finished
           ? "match-card finished-card"
-          : "match-card";
+          : "match-card upcoming-card";
 
     return `
       <div
         class="${clase}"
         onclick="openMatch(${Number(partido.id)}, ${live})"
+        data-fixture-id="${Number(partido.id)}"
       >
+
         <div class="match-card-top">
           <span>${escapeHtml(partido.liga || "Liga")}</span>
-          <span class="${live ? "live-label" : ""}">
-            ${escapeHtml(estado)}
-          </span>
+
+          ${
+            live
+              ? `<span class="live-label">EN VIVO</span>`
+              : ""
+          }
         </div>
 
         <div class="match-teams">
@@ -130,16 +204,7 @@
             <span>${escapeHtml(partido.local)}</span>
           </div>
 
-          <div class="match-score">
-            <strong>${escapeHtml(marcador)}</strong>
-            ${
-              live
-                ? `<small>EN VIVO</small>`
-                : finished
-                  ? `<small>FINAL</small>`
-                  : `<small>VS</small>`
-            }
-          </div>
+          ${centro}
 
           <div class="team">
             ${renderTeamLogo(partido.logoVisitante, partido.visitante)}
@@ -147,157 +212,221 @@
           </div>
 
         </div>
+
       </div>
     `;
   }
 
-  function renderFeatured(partidos) {
-    const container = document.getElementById("featuredMatch");
+  function groupByLeague(partidos) {
+    const grupos = {};
 
+    partidos.forEach(function (partido) {
+      const liga = partido.liga || "OTRAS COMPETICIONES";
+
+      if (!grupos[liga]) {
+        grupos[liga] = [];
+      }
+
+      grupos[liga].push(partido);
+    });
+
+    return grupos;
+  }
+
+  function renderLeagueGroups(partidos, container) {
     if (!container) return;
 
     if (!partidos.length) {
       container.innerHTML = `
         <div class="empty-card">
-          No hay partidos destacados para esta fecha.
+          No hay partidos para esta fecha.
         </div>
       `;
       return;
     }
 
-    const partido = partidos[0];
+    const grupos = groupByLeague(partidos);
 
-    container.innerHTML = `
-      <div
-        class="featured-match"
-        onclick="openMatch(${Number(partido.id)}, ${isLive(partido)})"
-      >
+    const html = Object.keys(grupos)
+      .sort(function (a, b) {
+        return a.localeCompare(b, "es");
+      })
+      .map(function (liga) {
+        return `
+          <section class="league-group">
 
-        <div class="featured-league">
-          ${escapeHtml(partido.liga || "Liga")}
-        </div>
+            <div class="league-title">
+              <span>${escapeHtml(liga)}</span>
+            </div>
 
-        <div class="featured-teams">
+            <div class="league-matches">
+              ${grupos[liga]
+                .map(function (partido) {
+                  return renderMatchCard(partido);
+                })
+                .join("")}
+            </div>
 
-          <div>
-            ${renderTeamLogo(partido.logoLocal, partido.local)}
-            <strong>${escapeHtml(partido.local)}</strong>
-          </div>
-
-          <div class="featured-center">
-            <span>
-              ${
-                isLive(partido)
-                  ? `${partido.minuto || 0}'`
-                  : formatTime(partido.fecha)
-              }
-            </span>
-
-            <b>
-              ${
-                isLive(partido) || isFinished(partido)
-                  ? `${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}`
-                  : "VS"
-              }
-            </b>
-          </div>
-
-          <div>
-            ${renderTeamLogo(partido.logoVisitante, partido.visitante)}
-            <strong>${escapeHtml(partido.visitante)}</strong>
-          </div>
-
-        </div>
-
-        <div class="featured-footer">
-          VER ANÁLISIS →
-        </div>
-
-      </div>
-    `;
-  }
-
-  function renderUpcoming(partidos) {
-    const container = document.getElementById("upcomingMatches");
-
-    if (!container) return;
-
-    const upcoming = partidos.filter(function (partido) {
-      return !isLive(partido) && !isFinished(partido);
-    });
-
-    if (!upcoming.length) {
-      container.innerHTML = `
-        <div class="empty-card">
-          No hay próximos partidos.
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = upcoming
-      .slice(0, 12)
-      .map(function (partido) {
-        return renderMatchCard(partido);
+          </section>
+        `;
       })
       .join("");
+
+    container.innerHTML = html;
   }
 
-  function renderLivePreview(partidos) {
-    const container = document.getElementById("livePreview");
+  function renderHomeForSelectedDate(partidos) {
+    const today = getToday();
 
-    if (!container) return;
+    const isToday = selectedDate === today;
+    const isPast = selectedDate < today;
+    const isFuture = selectedDate > today;
 
     const live = partidos.filter(isLive);
+    const finished = partidos.filter(isFinished);
+    const upcoming = partidos.filter(isUpcoming);
 
-    if (!live.length) {
-      container.innerHTML = `
-        <div class="empty-card">
-          No hay partidos en vivo en este momento.
-        </div>
-      `;
+    const liveContainer =
+      document.getElementById("livePreview");
+
+    const upcomingContainer =
+      document.getElementById("upcomingMatches");
+
+    const finishedContainer =
+      document.getElementById("finishedPreview");
+
+    /*
+     * FUTURO
+     * Solo próximos.
+     */
+    if (isFuture) {
+
+      if (liveContainer) {
+        liveContainer.innerHTML = "";
+      }
+
+      if (finishedContainer) {
+        finishedContainer.innerHTML = "";
+      }
+
+      if (upcomingContainer) {
+        renderLeagueGroups(
+          upcoming,
+          upcomingContainer
+        );
+      }
+
       return;
     }
 
-    container.innerHTML = live
-      .slice(0, 8)
-      .map(function (partido) {
-        return renderMatchCard(partido);
-      })
-      .join("");
+    /*
+     * PASADO
+     * Solo terminados.
+     */
+    if (isPast) {
+
+      if (liveContainer) {
+        liveContainer.innerHTML = "";
+      }
+
+      if (upcomingContainer) {
+        upcomingContainer.innerHTML = "";
+      }
+
+      if (finishedContainer) {
+        renderLeagueGroups(
+          finished,
+          finishedContainer
+        );
+      }
+
+      return;
+    }
+
+    /*
+     * HOY
+     * En vivo + próximos + terminados.
+     */
+
+    if (liveContainer) {
+      if (live.length) {
+        renderLeagueGroups(
+          live,
+          liveContainer
+        );
+      } else {
+        liveContainer.innerHTML = `
+          <div class="empty-card">
+            No hay partidos en vivo en este momento.
+          </div>
+        `;
+      }
+    }
+
+    if (upcomingContainer) {
+      if (upcoming.length) {
+        renderLeagueGroups(
+          upcoming,
+          upcomingContainer
+        );
+      } else {
+        upcomingContainer.innerHTML = `
+          <div class="empty-card">
+            No hay próximos partidos.
+          </div>
+        `;
+      }
+    }
+
+    if (finishedContainer) {
+      if (finished.length) {
+        renderLeagueGroups(
+          finished,
+          finishedContainer
+        );
+      } else {
+        finishedContainer.innerHTML = `
+          <div class="empty-card">
+            Todavía no hay partidos terminados.
+          </div>
+        `;
+      }
+    }
   }
 
-  function renderFinishedPreview(partidos) {
-    const container = document.getElementById("finishedPreview");
+  function renderFeatured(partidos) {
+    const container =
+      document.getElementById("featuredMatch");
 
     if (!container) return;
 
-    const finished = partidos.filter(isFinished);
+    /*
+     * La pantalla principal ya no mostrará
+     * un análisis o porcentaje destacado.
+     *
+     * Dejamos el contenedor vacío para que
+     * los partidos ocupen ese espacio.
+     */
 
-    if (!finished.length) {
-      container.innerHTML = `
-        <div class="empty-card">
-          No hay partidos finalizados.
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = finished
-      .slice(0, 8)
-      .map(function (partido) {
-        return renderMatchCard(partido);
-      })
-      .join("");
+    container.innerHTML = "";
   }
 
   window.renderFinishedMatches = function () {
-    const container = document.getElementById("finishedMatches");
+    const container =
+      document.getElementById("finishedMatches");
 
     if (!container) return;
 
-    const finished = fixturesCache.filter(isFinished);
+    const today = getToday();
 
+    const finished = fixturesCache.filter(function (partido) {
+      return isFinished(partido);
+    });
+
+    /*
+     * La pantalla "Finalizados" solo muestra
+     * partidos terminados.
+     */
     if (!finished.length) {
       container.innerHTML = `
         <div class="empty-card">
@@ -307,36 +436,110 @@
       return;
     }
 
-    container.innerHTML = finished
-      .map(function (partido) {
-        return renderMatchCard(partido);
-      })
-      .join("");
+    renderLeagueGroups(
+      finished,
+      container
+    );
+  };
+
+  function updateDateSelector() {
+    const dateElement =
+      document.getElementById("selectedDate");
+
+    if (dateElement) {
+      dateElement.textContent =
+        formatDateTitle(selectedDate);
+    }
+
+    const previous =
+      document.getElementById("previousDate");
+
+    const next =
+      document.getElementById("nextDate");
+
+    if (previous) {
+      previous.disabled =
+        selectedDate <= MIN_DATE;
+    }
+
+    if (next) {
+      next.disabled =
+        selectedDate >= MAX_DATE;
+    }
+  }
+
+  window.setMatchIADate = function (dateString) {
+    selectedDate = clampDate(dateString);
+
+    updateDateSelector();
+
+    loadFixtures(true, selectedDate);
+  };
+
+  window.changeMatchIADate = function (days) {
+    if (!selectedDate) {
+      selectedDate = getToday();
+    }
+
+    const date =
+      new Date(selectedDate + "T12:00:00");
+
+    date.setDate(
+      date.getDate() + Number(days || 0)
+    );
+
+    const nuevaFecha = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0")
+    ].join("-");
+
+    if (
+      nuevaFecha < MIN_DATE ||
+      nuevaFecha > MAX_DATE
+    ) {
+      return;
+    }
+
+    selectedDate = nuevaFecha;
+
+    updateDateSelector();
+
+    loadFixtures(true, selectedDate);
+  };
+
+  window.getSelectedMatchIADate = function () {
+    return selectedDate;
   };
 
   async function loadFixtures(forceRefresh, dateChoice) {
-    selectedDate = dateChoice || selectedDate || "today";
 
-    const offset =
-      selectedDate === "tomorrow"
-        ? 1
-        : 0;
+    selectedDate =
+      clampDate(
+        dateChoice ||
+        selectedDate ||
+        getToday()
+      );
 
-    const fecha = getArgentinaDate(offset);
+    updateDateSelector();
 
-    const loadingElements = document.querySelectorAll(
-      ".loading-fixtures"
-    );
+    const loadingElements =
+      document.querySelectorAll(
+        ".loading-fixtures"
+      );
 
     loadingElements.forEach(function (element) {
       element.style.display = "block";
     });
 
     try {
+
       const response = await fetch(
-        `/api/fixtures?date=${encodeURIComponent(fecha)}`,
+        `/api/fixtures?date=${encodeURIComponent(selectedDate)}`,
         {
-          cache: forceRefresh ? "no-store" : "default"
+          cache: forceRefresh
+            ? "no-store"
+            : "default"
         }
       );
 
@@ -347,22 +550,31 @@
         );
       }
 
-      const data = await response.json();
+      const data =
+        await response.json();
 
-      fixturesCache = Array.isArray(data.partidos)
-        ? data.partidos
-        : [];
+      fixturesCache =
+        Array.isArray(data.partidos)
+          ? data.partidos
+          : [];
 
-      window.MatchIAFixtures = fixturesCache;
+      window.MatchIAFixtures =
+        fixturesCache;
 
-      renderFeatured(fixturesCache);
-      renderUpcoming(fixturesCache);
-      renderLivePreview(fixturesCache);
-      renderFinishedPreview(fixturesCache);
+      renderFeatured(
+        fixturesCache
+      );
+
+      renderHomeForSelectedDate(
+        fixturesCache
+      );
 
       if (
         window.MatchIAUI &&
-        window.MatchIAUI.getCurrentScreen() === "finished"
+        typeof window.MatchIAUI.getCurrentScreen ===
+          "function" &&
+        window.MatchIAUI.getCurrentScreen() ===
+          "finished"
       ) {
         window.renderFinishedMatches();
       }
@@ -371,7 +583,7 @@
         "MatchIA: partidos cargados:",
         fixturesCache.length,
         "fecha:",
-        fecha
+        selectedDate
       );
 
     } catch (error) {
@@ -392,17 +604,24 @@
       ];
 
       containers.forEach(function (id) {
-        const element = document.getElementById(id);
+
+        const element =
+          document.getElementById(id);
 
         if (element) {
+
           element.innerHTML = `
             <div class="empty-card">
               No se pudieron cargar los partidos.
               <br>
-              <small>Revisá la conexión con la API.</small>
+              <small>
+                Revisá la conexión con la API.
+              </small>
             </div>
           `;
+
         }
+
       });
 
     } finally {
@@ -410,97 +629,151 @@
       loadingElements.forEach(function (element) {
         element.style.display = "none";
       });
+
     }
   }
 
-  window.loadFixtures = loadFixtures;
+  window.loadFixtures =
+    loadFixtures;
 
-  window.getFixtures = function () {
-    return fixturesCache;
-  };
+  window.getFixtures =
+    function () {
+      return fixturesCache;
+    };
 
-  window.doSearch = function () {
-    const input = document.getElementById("searchInput");
-    const container = document.getElementById("searchResults");
+  window.doSearch =
+    function () {
 
-    if (!input || !container) return;
+      const input =
+        document.getElementById(
+          "searchInput"
+        );
 
-    const texto = input.value
-      .trim()
-      .toLowerCase();
+      const container =
+        document.getElementById(
+          "searchResults"
+        );
 
-    if (!texto) {
-      container.innerHTML = `
-        <div class="empty-card">
-          Escribí un equipo para buscar.
-        </div>
-      `;
-      return;
-    }
+      if (!input || !container) return;
 
-    const resultados = fixturesCache.filter(function (partido) {
+      const texto =
+        input.value
+          .trim()
+          .toLowerCase();
 
-      const local = String(partido.local || "")
-        .toLowerCase();
+      if (!texto) {
 
-      const visitante = String(partido.visitante || "")
-        .toLowerCase();
+        container.innerHTML = `
+          <div class="empty-card">
+            Escribí un equipo para buscar.
+          </div>
+        `;
 
-      const liga = String(partido.liga || "")
-        .toLowerCase();
-
-      return (
-        local.includes(texto) ||
-        visitante.includes(texto) ||
-        liga.includes(texto)
-      );
-    });
-
-    if (!resultados.length) {
-      container.innerHTML = `
-        <div class="empty-card">
-          No encontramos partidos para "${escapeHtml(input.value)}".
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = resultados
-      .map(function (partido) {
-        return renderMatchCard(partido);
-      })
-      .join("");
-  };
-
-  window.refreshFixtures = function () {
-    loadFixtures(true, selectedDate);
-  };
-
-  document.addEventListener("DOMContentLoaded", function () {
-
-    const searchInput =
-      document.getElementById("searchInput");
-
-    if (searchInput) {
-      searchInput.addEventListener(
-        "input",
-        function () {
-          window.doSearch();
-        }
-      );
-    }
-
-    // Actualiza partidos automáticamente.
-    setInterval(function () {
-
-      if (
-        document.visibilityState === "visible"
-      ) {
-        loadFixtures(true, selectedDate);
+        return;
       }
 
-    }, 60000);
+      const resultados =
+        fixturesCache.filter(
+          function (partido) {
 
-  });
+            const local =
+              String(partido.local || "")
+                .toLowerCase();
+
+            const visitante =
+              String(partido.visitante || "")
+                .toLowerCase();
+
+            const liga =
+              String(partido.liga || "")
+                .toLowerCase();
+
+            return (
+              local.includes(texto) ||
+              visitante.includes(texto) ||
+              liga.includes(texto)
+            );
+          }
+        );
+
+      if (!resultados.length) {
+
+        container.innerHTML = `
+          <div class="empty-card">
+            No encontramos partidos para
+            "${escapeHtml(input.value)}".
+          </div>
+        `;
+
+        return;
+      }
+
+      renderLeagueGroups(
+        resultados,
+        container
+      );
+    };
+
+  window.refreshFixtures =
+    function () {
+      loadFixtures(
+        true,
+        selectedDate
+      );
+    };
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+      selectedDate = getToday();
+
+      updateDateSelector();
+
+      const searchInput =
+        document.getElementById(
+          "searchInput"
+        );
+
+      if (searchInput) {
+
+        searchInput.addEventListener(
+          "input",
+          function () {
+            window.doSearch();
+          }
+        );
+
+      }
+
+      /*
+       * Actualización automática.
+       *
+       * En vivo: cada 60 segundos.
+       * En otras fechas: también mantenemos
+       * la información actualizada.
+       */
+
+      setInterval(
+        function () {
+
+          if (
+            document.visibilityState ===
+            "visible"
+          ) {
+
+            loadFixtures(
+              true,
+              selectedDate
+            );
+
+          }
+
+        },
+        60000
+      );
+
+    }
+  );
 
 })();
