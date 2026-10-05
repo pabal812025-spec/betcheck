@@ -8,69 +8,458 @@
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;background:#02070d;color:#fff;font-family:Arial,sans-serif}
-button,input{font:inherit}
-.app{max-width:480px;margin:auto;min-height:100vh;background:linear-gradient(180deg,#07121f,#030912);position:relative}
-.page{min-height:100vh;padding-bottom:86px}
-.splash{position:fixed;inset:0;background:#020811;z-index:99;display:grid;place-items:center;transition:.55s}
-.splash.hide{opacity:0;pointer-events:none}
-.sball{width:138px;height:138px;border-radius:50%;display:grid;place-items:center;font-size:66px;background:radial-gradient(circle,#baff31,#218c25 48%,#07121c 72%);box-shadow:0 0 55px #7dff0066,0 0 20px #18dfff55;margin:auto auto 24px}
-.logo{font-size:43px;font-weight:900;letter-spacing:-2px;text-align:center}
-.logo i,.brand i{font-style:normal;color:#baff00;text-shadow:0 0 14px #8cff00}
-.tag{text-align:center;color:#aaff00;font-size:10px;letter-spacing:2px;margin-top:8px}
-.load{width:190px;height:4px;background:#172435;border-radius:9px;margin:22px auto 0;overflow:hidden}
-.load b{display:block;width:72%;height:100%;background:#baff00}
-.top{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center}
-.brand{font-size:25px;font-weight:900}
-.iconbtn{width:39px;height:39px;border-radius:50%;border:1px solid #26394d;background:#0c1724;color:#baff00}
-.hero{padding:8px 18px 15px}
-.hero h1{font-size:28px;margin:0}
-.hero p{font-size:13px;color:#8796a8;margin:5px 0}
-.search{margin:0 18px 16px;background:#0c1724;border:1px solid #26384d;border-radius:14px;padding:13px;color:#8191a4;cursor:pointer}
-.section{padding:0 18px}
-.head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px}
-.head h2{font-size:17px;margin:0}
-.head button,.head span{border:0;background:none;color:#baff00;font-size:12px}
-.days{display:flex;gap:8px;overflow:auto}
-.day{min-width:62px;border:1px solid #26384d;border-radius:12px;padding:9px;text-align:center;background:#0a1420;color:#8797a9}
-.day.active{background:#baff00;color:#071008;border-color:#baff00;font-weight:bold}
-.card{background:linear-gradient(145deg,#0d1927,#08111c);border:1px solid #203348;border-radius:17px;padding:14px;margin-bottom:10px;box-shadow:0 8px 25px #0005}
-.league{font-size:11px;color:#7f90a4;margin-bottom:11px}
-.match{display:flex;align-items:center;justify-content:space-between}
-.team{text-align:center;width:31%;font-size:12px}
-.crest{width:40px;height:40px;border-radius:50%;background:#152436;border:1px solid #35485d;display:grid;place-items:center;margin:auto auto 6px;font-weight:bold}
-.score{text-align:center}
-.time{font-size:11px;color:#baff00}
-.live{color:#ff5353!important}
-.go{width:100%;margin-top:12px;border:0;border-radius:10px;padding:10px;background:#baff00;color:#071008;font-weight:800}
-.secondary{background:#142235;color:#baff00;border:1px solid #30465e}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);height:76px;width:100%;max-width:480px;background:#07111d;border-top:1px solid #22354a;display:flex;justify-content:space-around;align-items:center;z-index:20}
-.nav button{background:none;border:0;color:#718196;font-size:10px}
-.nav b{display:block;font-size:21px;margin-bottom:3px}
-.nav .active{color:#baff00}
-.panel{padding:18px}
-.back{background:none;border:0;color:#baff00;padding:0;margin-bottom:16px}
-.hidden{display:none!important}
-.title{font-size:25px;margin:0 0 5px}
-.muted{color:#8291a4;font-size:13px}
-.prob{display:flex;gap:7px;margin:16px 0}
-.prob div{flex:1;text-align:center;background:#0e1b2a;border:1px solid #263b52;border-radius:12px;padding:11px 5px;font-size:10px}
-.prob strong{display:block;color:#baff00;font-size:24px}
-.tabs{display:flex;gap:7px;overflow:auto;margin:15px 0}
-.tabs button{white-space:nowrap;background:#0b1724;border:1px solid #26394f;color:#91a0b1;border-radius:10px;padding:9px}
-.tabs button.active{background:#baff00;color:#071008;border-color:#baff00}
-.metric{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1b2a3a;color:#9aa8b8}
-.metric b{color:#fff}
-.bar{height:6px;background:#172637;border-radius:8px;overflow:hidden;margin:6px 0 10px}
-.bar i{display:block;height:100%;background:#baff00}
-.explain li{margin:10px 0;color:#aab6c4;line-height:1.35}
-.input{width:100%;background:#0b1724;color:white;border:1px solid #2a3e54;border-radius:12px;padding:13px;outline:none}
-.result{margin-top:10px;cursor:pointer}
-.pill{display:inline-block;padding:5px 8px;border-radius:8px;background:#132335;color:#baff00;font-size:10px}
-.setting{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #1b2a3a}
-.toggle{width:44px;height:24px;border-radius:20px;background:#baff00;padding:3px}
-.toggle i{display:block;width:18px;height:18px;border-radius:50%;background:#071008;margin-left:18px}
-.footer-note{font-size:10px;color:#68788c;text-align:center;margin:18px}
+
+html,body{
+  margin:0;
+  background:#02070d;
+  color:#fff;
+  font-family:Arial,sans-serif
+}
+
+button,input{
+  font:inherit
+}
+
+.app{
+  max-width:480px;
+  margin:auto;
+  min-height:100vh;
+  background:linear-gradient(180deg,#07121f,#030912);
+  position:relative
+}
+
+.page{
+  min-height:100vh;
+  padding-bottom:86px
+}
+
+.splash{
+  position:fixed;
+  inset:0;
+  background:#020811;
+  z-index:99;
+  display:grid;
+  place-items:center;
+  transition:.55s
+}
+
+.splash.hide{
+  opacity:0;
+  pointer-events:none
+}
+
+.sball{
+  width:138px;
+  height:138px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:66px;
+  background:radial-gradient(circle,#baff31,#218c25 48%,#07121c 72%);
+  box-shadow:0 0 55px #7dff0066,0 0 20px #18dfff55;
+  margin:auto auto 24px
+}
+
+.logo{
+  font-size:43px;
+  font-weight:900;
+  letter-spacing:-2px;
+  text-align:center
+}
+
+.logo i,
+.brand i{
+  font-style:normal;
+  color:#baff00;
+  text-shadow:0 0 14px #8cff00
+}
+
+.tag{
+  text-align:center;
+  color:#aaff00;
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:8px
+}
+
+.load{
+  width:190px;
+  height:4px;
+  background:#172435;
+  border-radius:9px;
+  margin:22px auto 0;
+  overflow:hidden
+}
+
+.load b{
+  display:block;
+  width:72%;
+  height:100%;
+  background:#baff00
+}
+
+.top{
+  padding:18px 18px 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+
+.brand{
+  font-size:25px;
+  font-weight:900
+}
+
+.iconbtn{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  border:1px solid #26394d;
+  background:#0c1724;
+  color:#baff00
+}
+
+.hero{
+  padding:8px 18px 15px
+}
+
+.hero h1{
+  font-size:28px;
+  margin:0
+}
+
+.hero p{
+  font-size:13px;
+  color:#8796a8;
+  margin:5px 0
+}
+
+.search{
+  margin:0 18px 16px;
+  background:#0c1724;
+  border:1px solid #26384d;
+  border-radius:14px;
+  padding:13px;
+  color:#8191a4;
+  cursor:pointer
+}
+
+.section{
+  padding:0 18px
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:18px 0 10px
+}
+
+.head h2{
+  font-size:17px;
+  margin:0
+}
+
+.head button,
+.head span{
+  border:0;
+  background:none;
+  color:#baff00;
+  font-size:12px
+}
+
+.days{
+  display:flex;
+  gap:8px;
+  overflow:auto
+}
+
+.day{
+  min-width:62px;
+  border:1px solid #26384d;
+  border-radius:12px;
+  padding:9px;
+  text-align:center;
+  background:#0a1420;
+  color:#8797a9
+}
+
+.day.active{
+  background:#baff00;
+  color:#071008;
+  border-color:#baff00;
+  font-weight:bold
+}
+
+.card{
+  background:linear-gradient(145deg,#0d1927,#08111c);
+  border:1px solid #203348;
+  border-radius:17px;
+  padding:14px;
+  margin-bottom:10px;
+  box-shadow:0 8px 25px #0005
+}
+
+.league{
+  font-size:11px;
+  color:#7f90a4;
+  margin-bottom:11px
+}
+
+.match{
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.team{
+  text-align:center;
+  width:31%;
+  font-size:12px
+}
+
+.crest{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#152436;
+  border:1px solid #35485d;
+  display:grid;
+  place-items:center;
+  margin:auto auto 6px;
+  font-weight:bold
+}
+
+.score{
+  text-align:center
+}
+
+.time{
+  font-size:11px;
+  color:#baff00
+}
+
+.live{
+  color:#ff5353!important
+}
+
+.go{
+  width:100%;
+  margin-top:12px;
+  border:0;
+  border-radius:10px;
+  padding:10px;
+  background:#baff00;
+  color:#071008;
+  font-weight:800
+}
+
+.secondary{
+  background:#142235;
+  color:#baff00;
+  border:1px solid #30465e
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  height:76px;
+  width:100%;
+  max-width:480px;
+  background:#07111d;
+  border-top:1px solid #22354a;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:20
+}
+
+.nav button{
+  background:none;
+  border:0;
+  color:#718196;
+  font-size:10px
+}
+
+.nav b{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px
+}
+
+.nav .active{
+  color:#baff00
+}
+
+.panel{
+  padding:18px;
+  min-height:100vh;
+  padding-bottom:100px
+}
+
+.back{
+  background:none;
+  border:0;
+  color:#baff00;
+  padding:0;
+  margin-bottom:16px
+}
+
+.hidden{
+  display:none!important
+}
+
+.title{
+  font-size:25px;
+  margin:0 0 5px
+}
+
+.muted{
+  color:#8291a4;
+  font-size:13px
+}
+
+.prob{
+  display:flex;
+  gap:7px;
+  margin:16px 0
+}
+
+.prob div{
+  flex:1;
+  text-align:center;
+  background:#0e1b2a;
+  border:1px solid #263b52;
+  border-radius:12px;
+  padding:11px 5px;
+  font-size:10px
+}
+
+.prob strong{
+  display:block;
+  color:#baff00;
+  font-size:24px
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  margin:15px 0
+}
+
+.tabs button{
+  white-space:nowrap;
+  background:#0b1724;
+  border:1px solid #26394f;
+  color:#91a0b1;
+  border-radius:10px;
+  padding:9px
+}
+
+.tabs button.active{
+  background:#baff00;
+  color:#071008;
+  border-color:#baff00
+}
+
+.metric{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #1b2a3a;
+  color:#9aa8b8;
+  gap:12px
+}
+
+.metric b{
+  color:#fff;
+  text-align:right
+}
+
+.bar{
+  height:6px;
+  background:#172637;
+  border-radius:8px;
+  overflow:hidden;
+  margin:6px 0 10px
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:#baff00
+}
+
+.explain li{
+  margin:10px 0;
+  color:#aab6c4;
+  line-height:1.35
+}
+
+.input{
+  width:100%;
+  background:#0b1724;
+  color:white;
+  border:1px solid #2a3e54;
+  border-radius:12px;
+  padding:13px;
+  outline:none
+}
+
+.result{
+  margin-top:10px;
+  cursor:pointer
+}
+
+.pill{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:8px;
+  background:#132335;
+  color:#baff00;
+  font-size:10px
+}
+
+.setting{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #1b2a3a
+}
+
+.toggle{
+  width:44px;
+  height:24px;
+  border-radius:20px;
+  background:#baff00;
+  padding:3px
+}
+
+.toggle i{
+  display:block;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#071008;
+  margin-left:18px
+}
+
+.footer-note{
+  font-size:10px;
+  color:#68788c;
+  text-align:center;
+  margin:18px
+}
+
+.loading{
+  text-align:center;
+  padding:20px;
+  color:#8c9bad
+}
 </style>
 </head>
 
@@ -78,500 +467,848 @@ button,input{font:inherit}
 
 <div class="app">
 
+<!-- ========================================================
+     SPLASH
+======================================================== -->
+
 <div class="splash" id="splash">
-<div>
-<div class="sball">⚽</div>
-<div class="logo">Match<i>IA</i></div>
-<div class="tag">ANÁLISIS INTELIGENTE • PREDICCIONES REALES</div>
-<div class="load"><b></b></div>
+
+  <div>
+
+    <div class="sball">⚽</div>
+
+    <div class="logo">
+      Match<i>IA</i>
+    </div>
+
+    <div class="tag">
+      ANÁLISIS INTELIGENTE • PREDICCIONES REALES
+    </div>
+
+    <div class="load">
+      <b></b>
+    </div>
+
+  </div>
+
 </div>
-</div>
+
+
+<!-- ========================================================
+     INICIO
+======================================================== -->
 
 <main class="page" id="home">
 
 <header class="top">
-<div class="brand">Match<i>IA</i></div>
-<button class="iconbtn" onclick="show('config')">⚙</button>
+
+  <div class="brand">
+    Match<i>IA</i>
+  </div>
+
+  <button
+    class="iconbtn"
+    onclick="show('config')">
+    ⚙
+  </button>
+
 </header>
 
+
 <div class="hero">
-<h1>Partidos de hoy</h1>
-<p>Datos, estadísticas y análisis inteligente en un solo lugar.</p>
+
+  <h1>Partidos de hoy</h1>
+
+  <p>
+    Datos, estadísticas y análisis inteligente en un solo lugar.
+  </p>
+
 </div>
 
-<div class="search" onclick="show('search')">
-🔎 &nbsp; Buscar equipo o partido...
+
+<div
+  class="search"
+  onclick="show('search')">
+
+  🔎 &nbsp; Buscar equipo o partido...
+
 </div>
+
 
 <section class="section">
 
+
+<!-- FECHAS -->
+
 <div class="head">
-<h2>Fechas</h2>
-<button>Ver calendario</button>
+
+  <h2>Fechas</h2>
+
+  <button>
+    Ver calendario
+  </button>
+
 </div>
+
 
 <div class="days">
-<div class="day active">HOY<br><small>5 OCT</small></div>
-<div class="day">MAR<br><small>6 OCT</small></div>
-<div class="day">MIÉ<br><small>7 OCT</small></div>
-<div class="day">JUE<br><small>8 OCT</small></div>
-<div class="day">VIE<br><small>9 OCT</small></div>
+
+  <div class="day active">
+    HOY<br>
+    <small>5 OCT</small>
+  </div>
+
+  <div class="day">
+    MAR<br>
+    <small>6 OCT</small>
+  </div>
+
+  <div class="day">
+    MIÉ<br>
+    <small>7 OCT</small>
+  </div>
+
+  <div class="day">
+    JUE<br>
+    <small>8 OCT</small>
+  </div>
+
+  <div class="day">
+    VIE<br>
+    <small>9 OCT</small>
+  </div>
+
 </div>
+
+
+<!-- EN VIVO -->
 
 <div class="head">
-<h2>🔴 En vivo</h2>
-<button onclick="show('live')">Ver todos</button>
+
+  <h2>🔴 En vivo</h2>
+
+  <button onclick="show('live')">
+    Ver todos
+  </button>
+
 </div>
 
-<div class="card">
-<div class="league">EN VIVO • MIN 67'</div>
 
-<div class="match">
-<div class="team">
-<div class="crest">R</div>
-River
-</div>
+<div
+  class="card"
+  id="liveCard">
 
-<div class="score">
-<b style="font-size:22px">2 - 1</b>
-<div class="time live">● EN VIVO</div>
-</div>
+  <div class="league">
+    BUSCANDO PARTIDOS EN VIVO...
+  </div>
 
-<div class="team">
-<div class="crest">E</div>
-Equipo Chico
-</div>
-</div>
+  <div class="match">
 
-<button class="go" onclick="openMatch(true)">
-VER ANÁLISIS EN VIVO
-</button>
-</div>
+    <div class="team">
+      <div class="crest">-</div>
+      <span>Local</span>
+    </div>
 
-<div class="head">
-<h2>⭐ Destacados</h2>
-<button>Ver todos</button>
-</div>
+    <div class="score">
 
-<div class="card">
-<div class="league">LIGA • PARTIDO DESTACADO</div>
+      <b
+        id="liveScore"
+        style="font-size:22px">
+        - -
+      </b>
 
-<div class="match">
-<div class="team">
-<div class="crest">R</div>
-River
-</div>
+      <div
+        id="liveStatus"
+        class="time live">
+        ESPERANDO
+      </div>
 
-<div class="score">
-<div class="time">20:00</div>
-VS
-</div>
+    </div>
 
-<div class="team">
-<div class="crest">E</div>
-Equipo Chico
-</div>
-</div>
+    <div class="team">
+      <div class="crest">-</div>
+      <span>Visitante</span>
+    </div>
 
-<button class="go" onclick="openMatch(false)">
-VER ANÁLISIS
-</button>
+  </div>
+
+  <button
+    class="go"
+    onclick="openLiveFromHome()">
+
+    VER ANÁLISIS EN VIVO
+
+  </button>
+
 </div>
 
-<div class="head">
-<h2>🏆 Ligas importantes</h2>
-<button>Más</button>
-</div>
 
-<div class="card">
-<div class="league">CAMPEONATO</div>
-<div class="match">
-<div class="team">Local</div>
-<div class="score">
-<div class="time">18:30</div>
-VS
-</div>
-<div class="team">Visitante</div>
-</div>
-</div>
+<!-- DESTACADOS -->
 
 <div class="head">
-<h2>📅 Finalizados</h2>
-<button onclick="show('finished')">Ver historial</button>
+
+  <h2>⭐ Destacados</h2>
+
+  <button>
+    Ver todos
+  </button>
+
 </div>
 
+
+<div
+  class="card"
+  id="featuredCard">
+
+  <div class="league">
+    PARTIDO DESTACADO • API-FOOTBALL
+  </div>
+
+  <div class="match">
+
+    <div class="team">
+
+      <div
+        class="crest"
+        id="featuredHomeCrest">
+        -
+      </div>
+
+      <span id="featuredHome">
+        Cargando...
+      </span>
+
+    </div>
+
+
+    <div class="score">
+
+      <div
+        class="time"
+        id="featuredTime">
+        --:--
+      </div>
+
+      <div>
+        VS
+      </div>
+
+    </div>
+
+
+    <div class="team">
+
+      <div
+        class="crest"
+        id="featuredAwayCrest">
+        -
+      </div>
+
+      <span id="featuredAway">
+        Cargando...
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="go"
+    onclick="openPrematch()">
+
+    VER ANÁLISIS
+
+  </button>
+
+</div>
+
+
+<!-- LIGAS -->
+
+<div class="head">
+
+  <h2>🏆 Ligas importantes</h2>
+
+  <button>
+    Más
+  </button>
+
+</div>
+
+
 <div class="card">
-<div class="match">
-<div class="team">River</div>
-<div class="score">
-<b>2 - 0</b>
-<div class="muted">Final</div>
+
+  <div class="league">
+    PARTIDOS DISPONIBLES
+  </div>
+
+  <div
+    id="leaguePreview"
+    class="loading">
+
+    Cargando partidos...
+
+  </div>
+
 </div>
-<div class="team">Racing</div>
+
+
+<!-- FINALIZADOS -->
+
+<div class="head">
+
+  <h2>📅 Finalizados</h2>
+
+  <button onclick="show('finished')">
+    Ver historial
+  </button>
+
 </div>
+
+
+<div
+  class="card"
+  id="finishedPreview">
+
+  <div class="loading">
+    Cargando resultados...
+  </div>
+
 </div>
+
 
 </section>
+
 </main>
 
 
-<section class="panel hidden" id="match">
+<!-- ========================================================
+     PARTIDO
+======================================================== -->
 
-<button class="back" onclick="show('home')">← Volver</button>
+<section
+  class="panel hidden"
+  id="match">
 
-<h1 class="title" id="matchTitle">River vs Equipo Chico</h1>
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
+</button>
 
-<p class="muted" id="matchState">Análisis MatchIA</p>
+
+<h1
+  class="title"
+  id="matchTitle">
+  Cargando partido...
+</h1>
+
+
+<p
+  class="muted"
+  id="matchState">
+  Análisis MatchIA
+</p>
+
 
 <div class="prob">
 
-<div>
-<strong id="probHome">33%</strong>
-<span id="homeLabel">River</span>
+  <div>
+
+    <strong id="probHome">
+      --%
+    </strong>
+
+    <span id="homeLabel">
+      Local
+    </span>
+
+  </div>
+
+
+  <div>
+
+    <strong id="probDraw">
+      --%
+    </strong>
+
+    Empate
+
+  </div>
+
+
+  <div>
+
+    <strong id="probAway">
+      --%
+    </strong>
+
+    <span id="awayLabel">
+      Visitante
+    </span>
+
+  </div>
+
 </div>
 
-<div>
-<strong id="probDraw">34%</strong>
-Empate
-</div>
-
-<div>
-<strong id="probAway">33%</strong>
-<span id="awayLabel">Equipo Chico</span>
-</div>
-
-</div>
 
 <div class="tabs">
 
-<button class="active" onclick="tab(this,'analysis')">
-Análisis
-</button>
+  <button
+    class="active"
+    onclick="tab(this,'analysis')">
+    Análisis
+  </button>
 
-<button onclick="tab(this,'stats')">
-Estadísticas
-</button>
+  <button
+    onclick="tab(this,'stats')">
+    Estadísticas
+  </button>
 
-<button onclick="tab(this,'h2h')">
-H2H
-</button>
+  <button
+    onclick="tab(this,'h2h')">
+    H2H
+  </button>
 
-<button onclick="tab(this,'last5')">
-Últimos 5
-</button>
+  <button
+    onclick="tab(this,'last5')">
+    Últimos 5
+  </button>
 
 </div>
 
+
+<!-- ANÁLISIS -->
 
 <div id="analysis">
 
-<div class="card">
+  <div class="card">
 
-<h3>🧠 ¿Por qué estas probabilidades?</h3>
+    <h3>
+      🧠 ¿Por qué estas probabilidades?
+    </h3>
 
-<ul class="explain" id="analysisText">
-<li>Calculando la probabilidad inicial...</li>
-</ul>
+    <ul
+      class="explain"
+      id="analysisText">
+
+      <li>
+        Calculando con datos reales...
+      </li>
+
+    </ul>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>
+      📈 Datos utilizados
+    </h3>
+
+    <div class="metric">
+      <span>Fuente</span>
+      <b>API-Football</b>
+    </div>
+
+    <div class="metric">
+      <span>Tabla</span>
+      <b>Incluida</b>
+    </div>
+
+    <div class="metric">
+      <span>Forma reciente</span>
+      <b>Últimos 5</b>
+    </div>
+
+    <div class="metric">
+      <span>H2H</span>
+      <b>Últimos 5</b>
+    </div>
+
+    <div class="metric">
+      <span>Localía</span>
+      <b>Factor adicional</b>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ESTADÍSTICAS -->
+
+<div
+  id="stats"
+  class="hidden">
+
+  <div class="card">
+
+    <h3>
+      📊 Estadísticas
+    </h3>
+
+    <div class="metric">
+      <span>Posesión</span>
+      <b id="possessionValue">
+        -- — --
+      </b>
+    </div>
+
+    <div class="metric">
+      <span>⚽ Goles</span>
+      <b id="goalsValue">
+        0 — 0
+      </b>
+    </div>
+
+    <div class="metric">
+      <span>🎯 Tiros</span>
+      <b id="shotsValue">
+        0 — 0
+      </b>
+    </div>
+
+    <div class="metric">
+      <span>🎯 Tiros al arco</span>
+      <b id="shotsTargetValue">
+        0 — 0
+      </b>
+    </div>
+
+    <div class="metric">
+      <span>🚩 Córners</span>
+      <b id="cornersValue">
+        0 — 0
+      </b>
+    </div>
+
+    <div class="metric">
+      <span>🟥 Rojas</span>
+      <b id="redsValue">
+        0 — 0
+      </b>
+    </div>
+
+  </div>
 
 </div>
 
-<div class="card">
 
-<h3>📈 Confianza del análisis</h3>
+<!-- H2H -->
 
-<div class="bar">
-<i style="width:82%"></i>
-</div>
+<div
+  id="h2h"
+  class="hidden">
 
-<div class="muted">
-82% de confianza de datos disponibles
-</div>
+  <div class="card">
 
-</div>
+    <h3>
+      🤝 Últimos enfrentamientos
+    </h3>
 
-</div>
+    <div
+      id="h2hContent">
 
+      <p class="muted">
+        Cargando H2H real...
+      </p>
 
-<div id="stats" class="hidden">
+    </div>
 
-<div class="card">
-
-<h3>📊 Estadísticas</h3>
-
-<div class="metric">
-<span>Posesión</span>
-<b id="possessionValue">58% — 42%</b>
-</div>
-
-<div class="metric">
-<span>⚽ Goles</span>
-<b id="goalsValue">0 — 0</b>
-</div>
-
-<div class="metric">
-<span>🎯 Tiros</span>
-<b id="shotsValue">0 — 0</b>
-</div>
-
-<div class="metric">
-<span>🎯 Tiros al arco</span>
-<b id="shotsTargetValue">0 — 0</b>
-</div>
-
-<div class="metric">
-<span>🚩 Córners</span>
-<b id="cornersValue">0 — 0</b>
-</div>
-
-<div class="metric">
-<span>🟥 Rojas</span>
-<b id="redsValue">0 — 0</b>
-</div>
+  </div>
 
 </div>
-</div>
 
 
-<div id="h2h" class="hidden">
+<!-- ÚLTIMOS 5 -->
 
-<div class="card">
+<div
+  id="last5"
+  class="hidden">
 
-<h3>🤝 Últimos enfrentamientos</h3>
+  <div class="card">
 
-<div class="metric">
-<span>River 2 - 1 Equipo Chico</span>
-<b>Victoria</b>
-</div>
+    <h3>
+      📋 Últimos 5 partidos
+    </h3>
 
-<div class="metric">
-<span>Equipo Chico 0 - 0 River</span>
-<b>Empate</b>
-</div>
+    <div
+      id="last5Content">
 
-<div class="metric">
-<span>River 3 - 1 Equipo Chico</span>
-<b>Victoria</b>
-</div>
+      <p class="muted">
+        Cargando forma real...
+      </p>
 
-<div class="metric">
-<span>Equipo Chico 1 - 2 River</span>
-<b>Victoria</b>
-</div>
+    </div>
 
-<div class="metric">
-<span>River 1 - 1 Equipo Chico</span>
-<b>Empate</b>
-</div>
+  </div>
 
-</div>
-</div>
-
-
-<div id="last5" class="hidden">
-
-<div class="card">
-
-<h3>📋 Últimos 5 partidos</h3>
-
-<div class="metric">
-<span>River</span>
-<b>G G E G P</b>
-</div>
-
-<div class="metric">
-<span>Equipo Chico</span>
-<b>G P G E P</b>
-</div>
-
-</div>
 </div>
 
 </section>
 
 
-<section class="panel hidden" id="live">
+<!-- ========================================================
+     EN VIVO
+======================================================== -->
 
-<button class="back" onclick="show('home')">
-← Volver
+<section
+  class="panel hidden"
+  id="live">
+
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
 </button>
 
-<h1 class="title">Partidos en vivo</h1>
+
+<h1 class="title">
+  Partidos en vivo
+</h1>
+
 
 <p class="muted">
-Actualización de estadísticas preparada para datos en tiempo real.
+  Partidos detectados desde API-Football.
 </p>
 
-<div class="card">
 
-<span class="pill">● EN VIVO 67'</span>
+<div
+  id="liveList">
 
-<h3>River 2 — 1 Equipo Chico</h3>
-
-<div class="metric">
-<span>⚽ Goles</span>
-<b>2 — 1</b>
-</div>
-
-<div class="metric">
-<span>🚩 Córners</span>
-<b>6 — 3</b>
-</div>
-
-<div class="metric">
-<span>🎯 Tiros</span>
-<b>12 — 7</b>
-</div>
-
-<div class="metric">
-<span>🎯 Tiros al arco</span>
-<b>6 — 3</b>
-</div>
-
-<div class="metric">
-<span>🟥 Rojas</span>
-<b>0 — 0</b>
-</div>
-
-<button class="go" onclick="openMatch(true)">
-ABRIR ANÁLISIS
-</button>
+  <div class="loading">
+    Buscando partidos en vivo...
+  </div>
 
 </div>
+
 </section>
 
 
-<section class="panel hidden" id="search">
+<!-- ========================================================
+     BUSCAR
+======================================================== -->
 
-<button class="back" onclick="show('home')">
-← Volver
+<section
+  class="panel hidden"
+  id="search">
+
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
 </button>
 
-<h1 class="title">Buscar</h1>
+
+<h1 class="title">
+  Buscar
+</h1>
+
 
 <input
-class="input"
-id="q"
-placeholder="Equipo, liga o partido..."
-oninput="doSearch()">
+  class="input"
+  id="q"
+  placeholder="Equipo, liga o partido..."
+  oninput="doSearch()">
 
-<div id="results"></div>
+
+<div id="results">
+
+  <div class="card">
+    <p class="muted">
+      Escribí el nombre de un equipo o liga.
+    </p>
+  </div>
+
+</div>
 
 </section>
 
 
-<section class="panel hidden" id="finished">
+<!-- ========================================================
+     FINALIZADOS
+======================================================== -->
 
-<button class="back" onclick="show('home')">
-← Volver
+<section
+  class="panel hidden"
+  id="finished">
+
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
 </button>
 
-<h1 class="title">Partidos finalizados</h1>
+
+<h1 class="title">
+  Partidos finalizados
+</h1>
+
 
 <p class="muted">
-Historial y datos de partidos terminados.
+  Resultados obtenidos desde API-Football.
 </p>
 
-<div class="card">
 
-<div class="metric">
-<span>River 2 — 0 Racing</span>
-<b>Final</b>
-</div>
+<div
+  id="finishedList">
 
-<div class="metric">
-<span>Local 1 — 1 Visitante</span>
-<b>Final</b>
-</div>
-
-<div class="metric">
-<span>Equipo A 3 — 2 Equipo B</span>
-<b>Final</b>
-</div>
+  <div class="loading">
+    Cargando resultados...
+  </div>
 
 </div>
 
 </section>
 
 
-<section class="panel hidden" id="profile">
+<!-- ========================================================
+     PERFIL
+======================================================== -->
 
-<button class="back" onclick="show('home')">
-← Volver
+<section
+  class="panel hidden"
+  id="profile">
+
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
 </button>
 
-<h1 class="title">Perfil</h1>
+
+<h1 class="title">
+  Perfil
+</h1>
+
 
 <div class="card">
 
-<h3>⚽ Mi MatchIA</h3>
+  <h3>
+    ⚽ Mi MatchIA
+  </h3>
 
-<p class="muted">
-Favoritos, alertas y preferencias de análisis.
-</p>
+  <p class="muted">
+    Favoritos, alertas y preferencias de análisis.
+  </p>
 
-<button class="go secondary">
-MIS FAVORITOS
-</button>
+  <button class="go secondary">
+    MIS FAVORITOS
+  </button>
 
 </div>
 
 </section>
 
 
-<section class="panel hidden" id="config">
+<!-- ========================================================
+     CONFIGURACIÓN
+======================================================== -->
 
-<button class="back" onclick="show('home')">
-← Volver
+<section
+  class="panel hidden"
+  id="config">
+
+<button
+  class="back"
+  onclick="show('home')">
+  ← Volver
 </button>
 
-<h1 class="title">Configuración</h1>
+
+<h1 class="title">
+  Configuración
+</h1>
+
 
 <div class="card">
 
-<div class="setting">
-<span>Notificaciones</span>
-<div class="toggle"><i></i></div>
+  <div class="setting">
+
+    <span>
+      Notificaciones
+    </span>
+
+    <div class="toggle">
+      <i></i>
+    </div>
+
+  </div>
+
+
+  <div class="setting">
+
+    <span>
+      Actualización automática
+    </span>
+
+    <div class="toggle">
+      <i></i>
+    </div>
+
+  </div>
+
+
+  <div class="setting">
+
+    <span>
+      Modo oscuro
+    </span>
+
+    <div class="toggle">
+      <i></i>
+    </div>
+
+  </div>
+
 </div>
 
-<div class="setting">
-<span>Actualización automática</span>
-<div class="toggle"><i></i></div>
-</div>
-
-<div class="setting">
-<span>Modo oscuro</span>
-<div class="toggle"><i></i></div>
-</div>
-
-</div>
 
 <p class="footer-note">
-MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
+  MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
 </p>
 
 </section>
 
+
+<!-- ========================================================
+     NAVEGACIÓN
+======================================================== -->
 
 <nav class="nav">
 
 <button onclick="show('profile')">
-<b>♥</b>Favoritos
+  <b>♥</b>
+  Favoritos
 </button>
+
 
 <button onclick="show('search')">
-<b>⌕</b>Buscar
+  <b>⌕</b>
+  Buscar
 </button>
 
-<button class="active" onclick="show('home')">
-<b>⌂</b>Inicio
+
+<button
+  class="active"
+  onclick="show('home')">
+  <b>⌂</b>
+  Inicio
 </button>
+
 
 <button onclick="show('profile')">
-<b>◉</b>Perfil
+  <b>◉</b>
+  Perfil
 </button>
 
+
 <button onclick="show('config')">
-<b>⚙</b>Config.
+  <b>⚙</b>
+  Config.
 </button>
 
 </nav>
@@ -581,7 +1318,7 @@ MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
 
 <!-- ========================================================
      MOTORES
-     ======================================================== -->
+======================================================== -->
 
 <script src="js/calibraciones.js"></script>
 <script src="js/app.js"></script>
@@ -589,279 +1326,1057 @@ MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
 
 <script>
 
-const ids=[
-'home',
-'match',
-'live',
-'search',
-'finished',
-'profile',
-'config'
+/* ==========================================================
+   MATCHIA — CONTROL DE APLICACIÓN
+========================================================== */
+
+const ids = [
+  'home',
+  'match',
+  'live',
+  'search',
+  'finished',
+  'profile',
+  'config'
 ];
 
 
-// ------------------------------------------------------------
-// NAVEGACIÓN
-// ------------------------------------------------------------
+let fixturesCache = [];
 
-function show(id){
+let selectedFixtureId = null;
 
-ids.forEach(x=>{
-const el=document.getElementById(x);
-if(el) el.classList.add('hidden');
-});
-
-const target=document.getElementById(id);
-
-if(target){
-target.classList.remove('hidden');
-}
-
-window.scrollTo(0,0);
-}
+let selectedLiveFixtureId = null;
 
 
-// ------------------------------------------------------------
-// ACTUALIZAR PANTALLA
-// ------------------------------------------------------------
+/* ==========================================================
+   NAVEGACIÓN
+========================================================== */
 
-function updateScreen(probabilities,analysis){
+function show(id) {
 
-if(!probabilities) return;
+  ids.forEach(x => {
 
-const home=document.getElementById('probHome');
-const draw=document.getElementById('probDraw');
-const away=document.getElementById('probAway');
+    const el =
+      document.getElementById(x);
 
-if(home) home.textContent=probabilities.home+'%';
-if(draw) draw.textContent=probabilities.draw+'%';
-if(away) away.textContent=probabilities.away+'%';
+    if (el) {
+      el.classList.add('hidden');
+    }
 
-const analysisBox=document.getElementById('analysisText');
-
-if(
-analysisBox &&
-analysis &&
-Array.isArray(analysis)
-){
-
-analysisBox.innerHTML=
-analysis
-.map(text=>'<li>'+text+'</li>')
-.join('');
-
-}
-
-}
+  });
 
 
-// ------------------------------------------------------------
-// PREPARTIDO
-// ------------------------------------------------------------
+  const target =
+    document.getElementById(id);
 
-function openPrematch(){
 
-const homeName='River';
-const awayName='Equipo Chico';
+  if (target) {
+    target.classList.remove('hidden');
+  }
 
-document.getElementById('matchTitle').textContent=
-homeName+' vs '+awayName;
 
-document.getElementById('homeLabel').textContent=
-homeName;
+  window.scrollTo(0,0);
 
-document.getElementById('awayLabel').textContent=
-awayName;
 
-document.getElementById('matchState').textContent=
-'Análisis prepartido • Probabilidad inicial';
+  if (id === 'search') {
+    renderSearchInitial();
+  }
 
-if(window.MatchIAPrematch){
 
-const result=
-window.MatchIAPrematch.getPrematchPrediction(
-homeName,
-awayName
-);
+  if (id === 'live') {
+    renderLiveMatches();
+  }
 
-updateScreen(
-result.probabilities,
-result.analysis
-);
 
-}
+  if (id === 'finished') {
+    renderFinishedMatches();
+  }
 
 }
 
 
-// ------------------------------------------------------------
-// DATOS DEL PARTIDO EN VIVO
-// ------------------------------------------------------------
+/* ==========================================================
+   UTILIDADES
+========================================================== */
 
-function loadLiveMatch(){
+function escapeHtml(value) {
 
-if(!window.MatchIA) return;
-
-
-// Minuto
-window.MatchIA.changeMinute(67);
-
-
-// Goles
-window.MatchIA.changeGoal('home',2);
-window.MatchIA.changeGoal('away',1);
-
-
-// Estadísticas
-window.MatchIA.changeStat('home','arrivals',12);
-window.MatchIA.changeStat('away','arrivals',7);
-
-window.MatchIA.changeStat('home','shots',12);
-window.MatchIA.changeStat('away','shots',7);
-
-window.MatchIA.changeStat('home','shotsOnTarget',6);
-window.MatchIA.changeStat('away','shotsOnTarget',3);
-
-window.MatchIA.changeStat('home','corners',6);
-window.MatchIA.changeStat('away','corners',3);
-
-window.MatchIA.changeStat('home','reds',0);
-window.MatchIA.changeStat('away','reds',0);
-
-const result=
-window.MatchIA.update();
-
-updateScreen(
-result.probabilities,
-result.analysis.text
-);
-
-
-// Estadísticas visibles
-document.getElementById('goalsValue').textContent=
-'2 — 1';
-
-document.getElementById('shotsValue').textContent=
-'12 — 7';
-
-document.getElementById('shotsTargetValue').textContent=
-'6 — 3';
-
-document.getElementById('cornersValue').textContent=
-'6 — 3';
-
-document.getElementById('redsValue').textContent=
-'0 — 0';
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
 
 }
 
 
-// ------------------------------------------------------------
-// ABRIR PARTIDO
-// ------------------------------------------------------------
+function obtenerInicial(nombre) {
 
-function openMatch(live){
-
-show('match');
-
-tab(
-document.querySelector('.tabs button'),
-'analysis'
-);
-
-if(live){
-
-document.getElementById('matchTitle').textContent=
-'River 2 - 1 Equipo Chico';
-
-document.getElementById('homeLabel').textContent=
-'River';
-
-document.getElementById('awayLabel').textContent=
-'Equipo Chico';
-
-document.getElementById('matchState').textContent=
-'🔴 En vivo • minuto 67 • estadísticas actualizadas';
-
-loadLiveMatch();
-
-}else{
-
-openPrematch();
-
-}
+  return String(nombre || '-')
+    .trim()
+    .charAt(0)
+    .toUpperCase();
 
 }
 
 
-// ------------------------------------------------------------
-// PESTAÑAS
-// ------------------------------------------------------------
+function obtenerHora(fecha) {
 
-function tab(btn,id){
-
-[
-'analysis',
-'stats',
-'h2h',
-'last5'
-].forEach(x=>{
-document.getElementById(x).classList.add('hidden');
-});
-
-document.getElementById(id).classList.remove('hidden');
-
-document
-.querySelectorAll('.tabs button')
-.forEach(b=>b.classList.remove('active'));
-
-btn.classList.add('active');
-
-}
+  if (!fecha) {
+    return '--:--';
+  }
 
 
-// ------------------------------------------------------------
-// BÚSQUEDA
-// ------------------------------------------------------------
+  try {
 
-function doSearch(){
+    return new Intl.DateTimeFormat(
+      'es-AR',
+      {
+        hour:'2-digit',
+        minute:'2-digit',
+        hour12:false,
+        timeZone:
+          'America/Argentina/Buenos_Aires'
+      }
+    ).format(
+      new Date(fecha)
+    );
 
-let q=
-document.getElementById('q')
-.value
-.trim();
+  } catch {
 
-document.getElementById('results').innerHTML=
+    return '--:--';
 
-q
-?
-`<div class="card result" onclick="openMatch(false)">
-<span class="pill">RESULTADO</span>
-<h3>${q}</h3>
-<p class="muted">
-Ver partido y análisis MatchIA
-</p>
-</div>`
-:
-'';
+  }
 
 }
 
 
-// ------------------------------------------------------------
-// ARRANQUE
-// ------------------------------------------------------------
+function estadoTexto(partido) {
 
-setTimeout(()=>{
+  const estado =
+    String(
+      partido?.estado || ''
+    ).toUpperCase();
 
-document
-.getElementById('splash')
-.classList
-.add('hide');
 
-},1800);
+  if (
+    ['1H','2H','HT','ET','P','LIVE']
+      .includes(estado)
+  ) {
+    return '● EN VIVO';
+  }
 
-</script>
 
-</body>
-</html>
+  if (
+    ['FT','AET','PEN']
+      .includes(estado)
+  ) {
+    return 'FINAL';
+  }
+
+
+  return obtenerHora(
+    partido?.fecha
+  );
+
+}
+
+
+/* ==========================================================
+   CARGAR FIXTURES
+========================================================== */
+
+async function loadFixtures() {
+
+  try {
+
+    const response =
+      await fetch(
+        '/api/fixtures',
+        {
+          cache:'no-store'
+        }
+      );
+
+
+    if (!response.ok) {
+      throw new Error(
+        'Error HTTP ' +
+        response.status
+      );
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (data.error) {
+      throw new Error(
+        data.error
+      );
+    }
+
+
+    fixturesCache =
+      Array.isArray(data.partidos)
+        ? data.partidos
+        : [];
+
+
+    console.log(
+      'MatchIA — fixtures:',
+      fixturesCache
+    );
+
+
+    seleccionarDestacado();
+
+    renderLeaguePreview();
+
+    renderFinishedMatches();
+
+    renderLiveMatches();
+
+
+  } catch(error) {
+
+    console.error(
+      'MatchIA — error fixtures:',
+      error
+    );
+
+
+    document.getElementById(
+      'leaguePreview'
+    ).innerHTML = `
+      <p class="muted">
+        No se pudieron cargar los partidos.
+      </p>
+    `;
+
+  }
+
+}
+
+
+/* ==========================================================
+   SELECCIONAR DESTACADO
+========================================================== */
+
+function seleccionarDestacado() {
+
+  if (!fixturesCache.length) {
+    return;
+  }
+
+
+  const proximos =
+    fixturesCache.filter(partido => {
+
+      const estado =
+        String(
+          partido.estado || ''
+        ).toUpperCase();
+
+      return (
+        estado === 'NS' ||
+        estado === 'TBD'
+      );
+
+    });
+
+
+  let partido =
+    proximos[0] ||
+    fixturesCache[0];
+
+
+  if (!partido) {
+    return;
+  }
+
+
+  selectedFixtureId =
+    partido.id;
+
+
+  document.getElementById(
+    'featuredHome'
+  ).textContent =
+    partido.local ||
+    'Local';
+
+
+  document.getElementById(
+    'featuredAway'
+  ).textContent =
+    partido.visitante ||
+    'Visitante';
+
+
+  document.getElementById(
+    'featuredHomeCrest'
+  ).textContent =
+    obtenerInicial(
+      partido.local
+    );
+
+
+  document.getElementById(
+    'featuredAwayCrest'
+  ).textContent =
+    obtenerInicial(
+      partido.visitante
+    );
+
+
+  document.getElementById(
+    'featuredTime'
+  ).textContent =
+    estadoTexto(partido);
+
+}
+
+
+/* ==========================================================
+   PREVIEW DE LIGAS
+========================================================== */
+
+function renderLeaguePreview() {
+
+  const box =
+    document.getElementById(
+      'leaguePreview'
+    );
+
+
+  if (!box) return;
+
+
+  if (!fixturesCache.length) {
+
+    box.innerHTML = `
+      <p class="muted">
+        No hay partidos disponibles.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  const partidos =
+    fixturesCache
+      .slice(0,5);
+
+
+  box.innerHTML =
+    partidos.map(partido => {
+
+      return `
+        <div
+          class="metric"
+          style="cursor:pointer"
+          onclick="seleccionarPartido(${Number(partido.id)})">
+
+          <span>
+            ${escapeHtml(partido.local)}
+            —
+            ${escapeHtml(partido.visitante)}
+          </span>
+
+          <b>
+            ${estadoTexto(partido)}
+          </b>
+
+        </div>
+      `;
+
+    }).join('');
+
+}
+
+
+/* ==========================================================
+   SELECCIONAR PARTIDO
+========================================================== */
+
+function seleccionarPartido(id) {
+
+  selectedFixtureId =
+    Number(id);
+
+  openPrematch();
+
+}
+
+
+/* ==========================================================
+   ACTUALIZAR PANTALLA DE PORCENTAJES
+========================================================== */
+
+function updateScreen(
+  probabilities,
+  analysis
+) {
+
+  if (!probabilities) {
+    return;
+  }
+
+
+  document.getElementById(
+    'probHome'
+  ).textContent =
+    probabilities.home + '%';
+
+
+  document.getElementById(
+    'probDraw'
+  ).textContent =
+    probabilities.draw + '%';
+
+
+  document.getElementById(
+    'probAway'
+  ).textContent =
+    probabilities.away + '%';
+
+
+  const box =
+    document.getElementById(
+      'analysisText'
+    );
+
+
+  if (
+    box &&
+    Array.isArray(analysis)
+  ) {
+
+    box.innerHTML =
+      analysis.map(
+        text =>
+          `<li>${escapeHtml(text)}</li>`
+      ).join('');
+
+  }
+
+}
+
+
+/* ==========================================================
+   ABRIR PREPARTIDO REAL
+========================================================== */
+
+async function openPrematch() {
+
+  if (!selectedFixtureId) {
+
+    seleccionarDestacado();
+
+  }
+
+
+  if (!selectedFixtureId) {
+
+    alert(
+      'No hay un partido disponible para analizar.'
+    );
+
+    return;
+
+  }
+
+
+  show('match');
+
+
+  document.getElementById(
+    'matchTitle'
+  ).textContent =
+    'Cargando partido...';
+
+
+  document.getElementById(
+    'matchState'
+  ).textContent =
+    'Consultando datos reales de API-Football...';
+
+
+  document.getElementById(
+    'probHome'
+  ).textContent =
+    '--%';
+
+
+  document.getElementById(
+    'probDraw'
+  ).textContent =
+    '--%';
+
+
+  document.getElementById(
+    'probAway'
+  ).textContent =
+    '--%';
+
+
+  document.getElementById(
+    'analysisText'
+  ).innerHTML = `
+    <li>
+      Consultando tabla de posiciones...
+    </li>
+    <li>
+      Consultando forma reciente...
+    </li>
+    <li>
+      Consultando H2H...
+    </li>
+  `;
+
+
+  try {
+
+    const result =
+      await window.MatchIAPrematch
+        .getPrematchPredictionById(
+          selectedFixtureId
+        );
+
+
+    const fixture =
+      result.fixture;
+
+
+    const homeName =
+      fixture.local?.nombre ||
+      'Local';
+
+
+    const awayName =
+      fixture.visitante?.nombre ||
+      'Visitante';
+
+
+    document.getElementById(
+      'matchTitle'
+    ).textContent =
+      homeName +
+      ' vs ' +
+      awayName;
+
+
+    document.getElementById(
+      'homeLabel'
+    ).textContent =
+      homeName;
+
+
+    document.getElementById(
+      'awayLabel'
+    ).textContent =
+      awayName;
+
+
+    document.getElementById(
+      'matchState'
+    ).textContent =
+      'Análisis prepartido • Datos reales';
+
+
+    updateScreen(
+      result.probabilities,
+      result.analysis
+    );
+
+
+    cargarH2H(
+      result.details?.h2h
+    );
+
+
+    cargarUltimos5(
+      result.details?.homeRecent,
+      result.details?.awayRecent,
+      homeName,
+      awayName
+    );
+
+
+    cargarEstadisticas(
+      fixture
+    );
+
+
+    console.log(
+      'MatchIA — análisis real:',
+      result
+    );
+
+
+  } catch(error) {
+
+    console.error(
+      'MatchIA — error análisis:',
+      error
+    );
+
+
+    document.getElementById(
+      'matchState'
+    ).textContent =
+      'Error al obtener datos reales';
+
+
+    document.getElementById(
+      'analysisText'
+    ).innerHTML = `
+      <li>
+        No se pudieron obtener los datos del partido.
+      </li>
+
+      <li>
+        Verificá que la API esté configurada.
+      </li>
+    `;
+
+  }
+
+}
+
+
+/* ==========================================================
+   ESTADÍSTICAS DEL PARTIDO
+========================================================== */
+
+function cargarEstadisticas(fixture) {
+
+  const marcador =
+    fixture?.marcador || {};
+
+
+  document.getElementById(
+    'goalsValue'
+  ).textContent =
+    (marcador.local ?? 0) +
+    ' — ' +
+    (marcador.visitante ?? 0);
+
+
+  const estadisticas =
+    fixture?.estadisticas || [];
+
+
+  let posesionLocal = null;
+  let posesionVisitante = null;
+
+  let tirosLocal = null;
+  let tirosVisitante = null;
+
+  let tirosArcoLocal = null;
+  let tirosArcoVisitante = null;
+
+  let cornersLocal = null;
+  let cornersVisitante = null;
+
+  let rojasLocal = null;
+  let rojasVisitante = null;
+
+
+  estadisticas.forEach(equipo => {
+
+    const nombre =
+      String(
+        equipo.equipo?.nombre || ''
+      );
+
+
+    const esLocal =
+      Number(
+        equipo.equipo?.id
+      ) === Number(
+        fixture.local?.id
+      );
+
+
+    const esVisitante =
+      Number(
+        equipo.equipo?.id
+      ) === Number(
+        fixture.visitante?.id
+      );
+
+
+    if (!esLocal && !esVisitante) {
+      return;
+    }
+
+
+    (equipo.estadisticas || [])
+      .forEach(stat => {
+
+        const tipo =
+          String(
+            stat.tipo || ''
+          );
+
+
+        let valor =
+          stat.valor;
+
+
+        if (
+          typeof valor === 'string' &&
+          valor.includes('%')
+        ) {
+          valor =
+            Number(
+              valor.replace('%','')
+            );
+        }
+
+
+        if (
+          tipo === 'Ball Possession'
+        ) {
+
+          if (esLocal) {
+            posesionLocal = valor;
+          }
+
+          if (esVisitante) {
+            posesionVisitante = valor;
+          }
+
+        }
+
+
+        if (
+          tipo === 'Total Shots'
+        ) {
+
+          if (esLocal) {
+            tirosLocal = valor;
+          }
+
+          if (esVisitante) {
+            tirosVisitante = valor;
+          }
+
+        }
+
+
+        if (
+          tipo === 'Shots on Goal'
+        ) {
+
+          if (esLocal) {
+            tirosArcoLocal = valor;
+          }
+
+          if (esVisitante) {
+            tirosArcoVisitante = valor;
+          }
+
+        }
+
+
+        if (
+          tipo === 'Corner Kicks'
+        ) {
+
+          if (esLocal) {
+            cornersLocal = valor;
+          }
+
+          if (esVisitante) {
+            cornersVisitante = valor;
+          }
+
+        }
+
+
+        if (
+          tipo === 'Red Cards'
+        ) {
+
+          if (esLocal) {
+            rojasLocal = valor;
+          }
+
+          if (esVisitante) {
+            rojasVisitante = valor;
+          }
+
+        }
+
+      });
+
+  });
+
+
+  document.getElementById(
+    'possessionValue'
+  ).textContent =
+    (posesionLocal ?? '--') +
+    ' — ' +
+    (posesionVisitante ?? '--');
+
+
+  document.getElementById(
+    'shotsValue'
+  ).textContent =
+    (tirosLocal ?? 0) +
+    ' — ' +
+    (tirosVisitante ?? 0);
+
+
+  document.getElementById(
+    'shotsTargetValue'
+  ).textContent =
+    (tirosArcoLocal ?? 0) +
+    ' — ' +
+    (tirosArcoVisitante ?? 0);
+
+
+  document.getElementById(
+    'cornersValue'
+  ).textContent =
+    (cornersLocal ?? 0) +
+    ' — ' +
+    (cornersVisitante ?? 0);
+
+
+  document.getElementById(
+    'redsValue'
+  ).textContent =
+    (rojasLocal ?? 0) +
+    ' — ' +
+    (rojasVisitante ?? 0);
+
+}
+
+
+/* ==========================================================
+   H2H REAL
+========================================================== */
+
+function cargarH2H(h2h) {
+
+  const box =
+    document.getElementById(
+      'h2hContent'
+    );
+
+
+  if (!box) return;
+
+
+  if (
+    !Array.isArray(h2h) ||
+    !h2h.length
+  ) {
+
+    box.innerHTML = `
+      <p class="muted">
+        No hay enfrentamientos H2H disponibles.
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    h2h.map(partido => {
+
+      const gl =
+        Number(
+          partido.golesLocal || 0
+        );
+
+
+      const gv =
+        Number(
+          partido.golesVisitante || 0
+        );
+
+
+      let resultado =
+        'Empate';
+
+
+      if (gl > gv) {
+        resultado =
+          'Victoria local';
+      }
+
+
+      if (gv > gl) {
+        resultado =
+          'Victoria visitante';
+      }
+
+
+      return `
+        <div class="metric">
+
+          <span>
+            ${escapeHtml(partido.local)}
+            ${gl} - ${gv}
+            ${escapeHtml(partido.visitante)}
+          </span>
+
+          <b>
+            ${resultado}
+          </b>
+
+        </div>
+      `;
+
+    }).join('');
+
+}
+
+
+/* ==========================================================
+   ÚLTIMOS 5
+========================================================== */
+
+function calcularForma(
+  partidos,
+  nombre
+) {
+
+  const resultados = [];
+
+
+  const equipo =
+    String(
+      nombre || ''
+    )
+    .toLowerCase();
+
+
+  (partidos || []).forEach(
+    partido => {
+
+      const local =
+        String(
+          partido.local || ''
+        )
+        .toLowerCase();
+
+
+      const visitante =
+        String(
+          partido.visitante || ''
+        )
+        .toLowerCase();
+
+
+      const gl =
+        Number(
+          partido.golesLocal || 0
+        );
+
+
+      const gv =
+        Number(
+          partido.golesVisitante || 0
+        );
+
+
+      const esLocal =
+        local === equipo;
+
+
+      const esVisitante =
+        visitante === equipo;
+
+
+      if (
+        !esLocal &&
+        !esVisitante
+      ) {
+        return;
+      }
+
+
+      const propios =
+        esLocal
+          ? gl
+          : gv;
+
+
+      const recibidos =
+        esLocal
+          ? gv
+          : gl;
+
+
+      if (propios > recibidos) {
+        resultados.push('G');
+      }
+      else if (
+        propios === recibidos
+      ) {
+        resultados.push('E');
+      }
+      else {
+        resultados.push('P');
+      }
+
+    }
+  );
+
+
+  return resultados.join(' ');
+}
+
+
+function cargarUltimos5(
+  homeRecent,
+  awayRecent,
+  homeName,
+  awayName
+) {
+
+  const box =
+    document.getElementById(
+      'last5Content'
+    );
+
+
+  if (!box) return;
+
+
+  box.innerHTML = `
+
+    <div class="metric">
+
+      <span>
+        ${escapeHtml(homeName)}
+      </span>
+
+      <b>
+        ${
+          escapeHtml(
+            calcularForma(
+              homeRecent,
+              homeName
+            ) || 'Sin datos'
+          )
+        }
+      </b>
+
+    </div>
+
+
+    <div
