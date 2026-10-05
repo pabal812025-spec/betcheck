@@ -146,14 +146,82 @@ button{
 }
 
 /* =========================
-   DATES
+   MATCHIA DATE SELECTOR
+========================= */
+
+.matchia-date-selector{
+  width:100%;
+  min-height:88px;
+  margin:2px auto 24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+
+.selected-date-box{
+  flex:1;
+  min-width:0;
+  max-width:260px;
+  text-align:center;
+}
+
+.selected-date-label{
+  margin-bottom:5px;
+  color:#718398;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+
+.selected-date{
+  color:#fff;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:.8px;
+  white-space:nowrap;
+}
+
+.date-arrow{
+  flex:0 0 58px;
+  width:58px;
+  height:58px;
+  padding:0 0 5px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:17px;
+  background:#0b1d2e;
+  border:1px solid #24506e;
+  color:#fff;
+  font-size:44px;
+  font-weight:300;
+  line-height:1;
+  box-shadow:0 0 18px rgba(20,150,220,.08);
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.date-arrow:active{
+  transform:scale(.94);
+}
+
+.date-arrow:hover{
+  background:#102b42;
+  border-color:#38a8ed;
+  box-shadow:0 0 20px rgba(30,170,240,.18);
+}
+
+/* =========================
+   OLD DATE STYLES
+   Compatibility only
 ========================= */
 
 .date-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:18px;
+  display:none;
 }
 
 .date-btn{
@@ -1029,6 +1097,21 @@ button{
 
   .screen{
     padding:12px;
+  }
+
+  .matchia-date-selector{
+    gap:8px;
+  }
+
+  .date-arrow{
+    flex-basis:50px;
+    width:50px;
+    height:50px;
+    font-size:39px;
+  }
+
+  .selected-date{
+    font-size:20px;
   }
 
   .prob-circle{
