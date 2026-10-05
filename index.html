@@ -1,2382 +1,483 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#06101c">
-<title>MatchIA</title>
-
-<style>
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  background:#02070d;
-  color:#fff;
-  font-family:Arial,sans-serif
-}
-
-button,input{
-  font:inherit
-}
-
-.app{
-  max-width:480px;
-  margin:auto;
-  min-height:100vh;
-  background:linear-gradient(180deg,#07121f,#030912);
-  position:relative
-}
-
-.page{
-  min-height:100vh;
-  padding-bottom:86px
-}
-
-.splash{
-  position:fixed;
-  inset:0;
-  background:#020811;
-  z-index:99;
-  display:grid;
-  place-items:center;
-  transition:.55s
-}
-
-.splash.hide{
-  opacity:0;
-  pointer-events:none
-}
-
-.sball{
-  width:138px;
-  height:138px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:66px;
-  background:radial-gradient(circle,#baff31,#218c25 48%,#07121c 72%);
-  box-shadow:0 0 55px #7dff0066,0 0 20px #18dfff55;
-  margin:auto auto 24px
-}
-
-.logo{
-  font-size:43px;
-  font-weight:900;
-  letter-spacing:-2px;
-  text-align:center
-}
-
-.logo i,
-.brand i{
-  font-style:normal;
-  color:#baff00;
-  text-shadow:0 0 14px #8cff00
-}
-
-.tag{
-  text-align:center;
-  color:#aaff00;
-  font-size:10px;
-  letter-spacing:2px;
-  margin-top:8px
-}
-
-.load{
-  width:190px;
-  height:4px;
-  background:#172435;
-  border-radius:9px;
-  margin:22px auto 0;
-  overflow:hidden
-}
-
-.load b{
-  display:block;
-  width:72%;
-  height:100%;
-  background:#baff00
-}
-
-.top{
-  padding:18px 18px 8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center
-}
-
-.brand{
-  font-size:25px;
-  font-weight:900
-}
-
-.iconbtn{
-  width:39px;
-  height:39px;
-  border-radius:50%;
-  border:1px solid #26394d;
-  background:#0c1724;
-  color:#baff00
-}
-
-.hero{
-  padding:8px 18px 15px
-}
-
-.hero h1{
-  font-size:28px;
-  margin:0
-}
-
-.hero p{
-  font-size:13px;
-  color:#8796a8;
-  margin:5px 0
-}
-
-.search{
-  margin:0 18px 16px;
-  background:#0c1724;
-  border:1px solid #26384d;
-  border-radius:14px;
-  padding:13px;
-  color:#8191a4;
-  cursor:pointer
-}
-
-.section{
-  padding:0 18px
-}
-
-.head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:18px 0 10px
-}
-
-.head h2{
-  font-size:17px;
-  margin:0
-}
-
-.head button,
-.head span{
-  border:0;
-  background:none;
-  color:#baff00;
-  font-size:12px
-}
-
-.days{
-  display:flex;
-  gap:8px;
-  overflow:auto
-}
-
-.day{
-  min-width:62px;
-  border:1px solid #26384d;
-  border-radius:12px;
-  padding:9px;
-  text-align:center;
-  background:#0a1420;
-  color:#8797a9
-}
-
-.day.active{
-  background:#baff00;
-  color:#071008;
-  border-color:#baff00;
-  font-weight:bold
-}
-
-.card{
-  background:linear-gradient(145deg,#0d1927,#08111c);
-  border:1px solid #203348;
-  border-radius:17px;
-  padding:14px;
-  margin-bottom:10px;
-  box-shadow:0 8px 25px #0005
-}
-
-.league{
-  font-size:11px;
-  color:#7f90a4;
-  margin-bottom:11px
-}
-
-.match{
-  display:flex;
-  align-items:center;
-  justify-content:space-between
-}
-
-.team{
-  text-align:center;
-  width:31%;
-  font-size:12px
-}
-
-.crest{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:#152436;
-  border:1px solid #35485d;
-  display:grid;
-  place-items:center;
-  margin:auto auto 6px;
-  font-weight:bold
-}
-
-.score{
-  text-align:center
-}
-
-.time{
-  font-size:11px;
-  color:#baff00
-}
-
-.live{
-  color:#ff5353!important
-}
-
-.go{
-  width:100%;
-  margin-top:12px;
-  border:0;
-  border-radius:10px;
-  padding:10px;
-  background:#baff00;
-  color:#071008;
-  font-weight:800
-}
-
-.secondary{
-  background:#142235;
-  color:#baff00;
-  border:1px solid #30465e
-}
-
-.nav{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  height:76px;
-  width:100%;
-  max-width:480px;
-  background:#07111d;
-  border-top:1px solid #22354a;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:20
-}
-
-.nav button{
-  background:none;
-  border:0;
-  color:#718196;
-  font-size:10px
-}
-
-.nav b{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px
-}
-
-.nav .active{
-  color:#baff00
-}
-
-.panel{
-  padding:18px;
-  min-height:100vh;
-  padding-bottom:100px
-}
-
-.back{
-  background:none;
-  border:0;
-  color:#baff00;
-  padding:0;
-  margin-bottom:16px
-}
-
-.hidden{
-  display:none!important
-}
-
-.title{
-  font-size:25px;
-  margin:0 0 5px
-}
-
-.muted{
-  color:#8291a4;
-  font-size:13px
-}
-
-.prob{
-  display:flex;
-  gap:7px;
-  margin:16px 0
-}
-
-.prob div{
-  flex:1;
-  text-align:center;
-  background:#0e1b2a;
-  border:1px solid #263b52;
-  border-radius:12px;
-  padding:11px 5px;
-  font-size:10px
-}
-
-.prob strong{
-  display:block;
-  color:#baff00;
-  font-size:24px
-}
-
-.tabs{
-  display:flex;
-  gap:7px;
-  overflow:auto;
-  margin:15px 0
-}
-
-.tabs button{
-  white-space:nowrap;
-  background:#0b1724;
-  border:1px solid #26394f;
-  color:#91a0b1;
-  border-radius:10px;
-  padding:9px
-}
-
-.tabs button.active{
-  background:#baff00;
-  color:#071008;
-  border-color:#baff00
-}
-
-.metric{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-bottom:1px solid #1b2a3a;
-  color:#9aa8b8;
-  gap:12px
-}
-
-.metric b{
-  color:#fff;
-  text-align:right
-}
-
-.bar{
-  height:6px;
-  background:#172637;
-  border-radius:8px;
-  overflow:hidden;
-  margin:6px 0 10px
-}
-
-.bar i{
-  display:block;
-  height:100%;
-  background:#baff00
-}
-
-.explain li{
-  margin:10px 0;
-  color:#aab6c4;
-  line-height:1.35
-}
-
-.input{
-  width:100%;
-  background:#0b1724;
-  color:white;
-  border:1px solid #2a3e54;
-  border-radius:12px;
-  padding:13px;
-  outline:none
-}
-
-.result{
-  margin-top:10px;
-  cursor:pointer
-}
-
-.pill{
-  display:inline-block;
-  padding:5px 8px;
-  border-radius:8px;
-  background:#132335;
-  color:#baff00;
-  font-size:10px
-}
-
-.setting{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 0;
-  border-bottom:1px solid #1b2a3a
-}
-
-.toggle{
-  width:44px;
-  height:24px;
-  border-radius:20px;
-  background:#baff00;
-  padding:3px
-}
-
-.toggle i{
-  display:block;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:#071008;
-  margin-left:18px
-}
-
-.footer-note{
-  font-size:10px;
-  color:#68788c;
-  text-align:center;
-  margin:18px
-}
-
-.loading{
-  text-align:center;
-  padding:20px;
-  color:#8c9bad
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#06101c">
+  <title>MatchIA</title>
+
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<div class="app">
-
-<!-- ========================================================
-     SPLASH
-======================================================== -->
-
-<div class="splash" id="splash">
-
-  <div>
-
-    <div class="sball">⚽</div>
-
-    <div class="logo">
-      Match<i>IA</i>
-    </div>
-
-    <div class="tag">
-      ANÁLISIS INTELIGENTE • PREDICCIONES REALES
-    </div>
-
-    <div class="load">
-      <b></b>
-    </div>
-
+  <!-- SPLASH -->
+  <div id="splash" class="splash">
+    <img src="logo.png" alt="MatchIA" class="splash-logo"
+         onerror="this.style.display='none'">
+    <div class="splash-name">MatchIA</div>
+    <div class="splash-loading">Analizando partidos...</div>
   </div>
 
-</div>
+  <!-- APP -->
+  <div id="app">
 
-
-<!-- ========================================================
-     INICIO
-======================================================== -->
-
-<main class="page" id="home">
-
-<header class="top">
-
-  <div class="brand">
-    Match<i>IA</i>
-  </div>
-
-  <button
-    class="iconbtn"
-    onclick="show('config')">
-    ⚙
-  </button>
-
-</header>
-
-
-<div class="hero">
-
-  <h1>Partidos de hoy</h1>
-
-  <p>
-    Datos, estadísticas y análisis inteligente en un solo lugar.
-  </p>
-
-</div>
-
-
-<div
-  class="search"
-  onclick="show('search')">
-
-  🔎 &nbsp; Buscar equipo o partido...
-
-</div>
-
-
-<section class="section">
-
-
-<!-- FECHAS -->
-
-<div class="head">
-
-  <h2>Fechas</h2>
-
-  <button>
-    Ver calendario
-  </button>
-
-</div>
-
-
-<div class="days">
-
-  <div class="day active">
-    HOY<br>
-    <small>5 OCT</small>
-  </div>
-
-  <div class="day">
-    MAR<br>
-    <small>6 OCT</small>
-  </div>
-
-  <div class="day">
-    MIÉ<br>
-    <small>7 OCT</small>
-  </div>
-
-  <div class="day">
-    JUE<br>
-    <small>8 OCT</small>
-  </div>
-
-  <div class="day">
-    VIE<br>
-    <small>9 OCT</small>
-  </div>
-
-</div>
-
-
-<!-- EN VIVO -->
-
-<div class="head">
-
-  <h2>🔴 En vivo</h2>
-
-  <button onclick="show('live')">
-    Ver todos
-  </button>
-
-</div>
-
-
-<div
-  class="card"
-  id="liveCard">
-
-  <div class="league">
-    BUSCANDO PARTIDOS EN VIVO...
-  </div>
-
-  <div class="match">
-
-    <div class="team">
-      <div class="crest">-</div>
-      <span>Local</span>
-    </div>
-
-    <div class="score">
-
-      <b
-        id="liveScore"
-        style="font-size:22px">
-        - -
-      </b>
-
-      <div
-        id="liveStatus"
-        class="time live">
-        ESPERANDO
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">⚽</div>
+        <div>
+          <div class="brand-name">MatchIA</div>
+          <div class="brand-sub">Análisis inteligente</div>
+        </div>
       </div>
 
-    </div>
+      <button class="icon-btn" onclick="show('config')" aria-label="Configuración">
+        ⚙️
+      </button>
+    </header>
 
-    <div class="team">
-      <div class="crest">-</div>
-      <span>Visitante</span>
-    </div>
+    <!-- HOME -->
+    <main id="home" class="screen active">
 
-  </div>
+      <div class="date-row">
+        <button class="date-btn active" id="dateToday" onclick="selectDate('today')">
+          <span>HOY</span>
+          <strong id="todayDate">--/--</strong>
+        </button>
 
-  <button
-    class="go"
-    onclick="openLiveFromHome()">
-
-    VER ANÁLISIS EN VIVO
-
-  </button>
-
-</div>
-
-
-<!-- DESTACADOS -->
-
-<div class="head">
-
-  <h2>⭐ Destacados</h2>
-
-  <button>
-    Ver todos
-  </button>
-
-</div>
-
-
-<div
-  class="card"
-  id="featuredCard">
-
-  <div class="league">
-    PARTIDO DESTACADO • API-FOOTBALL
-  </div>
-
-  <div class="match">
-
-    <div class="team">
-
-      <div
-        class="crest"
-        id="featuredHomeCrest">
-        -
+        <button class="date-btn" id="dateTomorrow" onclick="selectDate('tomorrow')">
+          <span>MAÑANA</span>
+          <strong id="tomorrowDate">--/--</strong>
+        </button>
       </div>
 
-      <span id="featuredHome">
-        Cargando...
-      </span>
+      <!-- PARTIDO EN VIVO -->
+      <section class="section">
+        <div class="section-title">
+          <span>🔴 EN VIVO</span>
+          <button class="small-btn" onclick="loadFixtures(true)">Actualizar</button>
+        </div>
 
-    </div>
+        <div id="livePreview">
+          <div class="empty-card">
+            <div class="empty-icon">⚽</div>
+            <div>No hay partidos en vivo</div>
+            <small>Los partidos aparecerán automáticamente</small>
+          </div>
+        </div>
+      </section>
 
+      <!-- DESTACADO -->
+      <section class="section">
+        <div class="section-title">
+          <span>⭐ DESTACADO</span>
+        </div>
 
-    <div class="score">
+        <div id="featuredMatch">
+          <div class="empty-card loading-card">
+            <div class="loader"></div>
+            <div>Cargando partidos...</div>
+          </div>
+        </div>
+      </section>
 
-      <div
-        class="time"
-        id="featuredTime">
-        --:--
+      <!-- PRÓXIMOS -->
+      <section class="section">
+        <div class="section-title">
+          <span>📅 PRÓXIMOS PARTIDOS</span>
+        </div>
+
+        <div id="upcomingList">
+          <div class="empty-card">
+            <div class="loader"></div>
+            <div>Cargando...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINALIZADOS -->
+      <section class="section">
+        <div class="section-title">
+          <span>✅ FINALIZADOS</span>
+          <button class="small-btn" onclick="show('finished')">Ver todos</button>
+        </div>
+
+        <div id="finishedPreview"></div>
+      </section>
+
+    </main>
+
+    <!-- MATCH -->
+    <main id="match" class="screen">
+
+      <div class="back-row">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
       </div>
 
-      <div>
-        VS
-      </div>
+      <div id="matchContent">
 
-    </div>
+        <div class="match-header-card">
 
+          <div class="league-name" id="matchLeague">Liga</div>
 
-    <div class="team">
+          <div class="teams">
 
-      <div
-        class="crest"
-        id="featuredAwayCrest">
-        -
-      </div>
+            <div class="team">
+              <img id="matchHomeLogo" src="" alt="">
+              <div id="matchHome">Local</div>
+            </div>
 
-      <span id="featuredAway">
-        Cargando...
-      </span>
+            <div class="match-center">
+              <div id="matchTime" class="match-time">--:--</div>
+              <div id="matchStatus" class="match-status">PRÓXIMO</div>
+            </div>
 
-    </div>
+            <div class="team">
+              <img id="matchAwayLogo" src="" alt="">
+              <div id="matchAway">Visitante</div>
+            </div>
 
-  </div>
-
-
-  <button
-    class="go"
-    onclick="openPrematch()">
-
-    VER ANÁLISIS
-
-  </button>
-
-</div>
-
-
-<!-- LIGAS -->
-
-<div class="head">
-
-  <h2>🏆 Ligas importantes</h2>
-
-  <button>
-    Más
-  </button>
-
-</div>
-
-
-<div class="card">
-
-  <div class="league">
-    PARTIDOS DISPONIBLES
-  </div>
-
-  <div
-    id="leaguePreview"
-    class="loading">
-
-    Cargando partidos...
-
-  </div>
-
-</div>
-
-
-<!-- FINALIZADOS -->
-
-<div class="head">
-
-  <h2>📅 Finalizados</h2>
-
-  <button onclick="show('finished')">
-    Ver historial
-  </button>
-
-</div>
-
-
-<div
-  class="card"
-  id="finishedPreview">
-
-  <div class="loading">
-    Cargando resultados...
-  </div>
-
-</div>
-
-
-</section>
-
-</main>
-
-
-<!-- ========================================================
-     PARTIDO
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="match">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1
-  class="title"
-  id="matchTitle">
-  Cargando partido...
-</h1>
-
-
-<p
-  class="muted"
-  id="matchState">
-  Análisis MatchIA
-</p>
-
-
-<div class="prob">
-
-  <div>
-
-    <strong id="probHome">
-      --%
-    </strong>
-
-    <span id="homeLabel">
-      Local
-    </span>
-
-  </div>
-
-
-  <div>
-
-    <strong id="probDraw">
-      --%
-    </strong>
-
-    Empate
-
-  </div>
-
-
-  <div>
-
-    <strong id="probAway">
-      --%
-    </strong>
-
-    <span id="awayLabel">
-      Visitante
-    </span>
-
-  </div>
-
-</div>
-
-
-<div class="tabs">
-
-  <button
-    class="active"
-    onclick="tab(this,'analysis')">
-    Análisis
-  </button>
-
-  <button
-    onclick="tab(this,'stats')">
-    Estadísticas
-  </button>
-
-  <button
-    onclick="tab(this,'h2h')">
-    H2H
-  </button>
-
-  <button
-    onclick="tab(this,'last5')">
-    Últimos 5
-  </button>
-
-</div>
-
-
-<!-- ANÁLISIS -->
-
-<div id="analysis">
-
-  <div class="card">
-
-    <h3>
-      🧠 ¿Por qué estas probabilidades?
-    </h3>
-
-    <ul
-      class="explain"
-      id="analysisText">
-
-      <li>
-        Calculando con datos reales...
-      </li>
-
-    </ul>
-
-  </div>
-
-
-  <div class="card">
-
-    <h3>
-      📈 Datos utilizados
-    </h3>
-
-    <div class="metric">
-      <span>Fuente</span>
-      <b>API-Football</b>
-    </div>
-
-    <div class="metric">
-      <span>Tabla</span>
-      <b>Incluida</b>
-    </div>
-
-    <div class="metric">
-      <span>Forma reciente</span>
-      <b>Últimos 5</b>
-    </div>
-
-    <div class="metric">
-      <span>H2H</span>
-      <b>Últimos 5</b>
-    </div>
-
-    <div class="metric">
-      <span>Localía</span>
-      <b>Factor adicional</b>
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ESTADÍSTICAS -->
-
-<div
-  id="stats"
-  class="hidden">
-
-  <div class="card">
-
-    <h3>
-      📊 Estadísticas
-    </h3>
-
-    <div class="metric">
-      <span>Posesión</span>
-      <b id="possessionValue">
-        -- — --
-      </b>
-    </div>
-
-    <div class="metric">
-      <span>⚽ Goles</span>
-      <b id="goalsValue">
-        0 — 0
-      </b>
-    </div>
-
-    <div class="metric">
-      <span>🎯 Tiros</span>
-      <b id="shotsValue">
-        0 — 0
-      </b>
-    </div>
-
-    <div class="metric">
-      <span>🎯 Tiros al arco</span>
-      <b id="shotsTargetValue">
-        0 — 0
-      </b>
-    </div>
-
-    <div class="metric">
-      <span>🚩 Córners</span>
-      <b id="cornersValue">
-        0 — 0
-      </b>
-    </div>
-
-    <div class="metric">
-      <span>🟥 Rojas</span>
-      <b id="redsValue">
-        0 — 0
-      </b>
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- H2H -->
-
-<div
-  id="h2h"
-  class="hidden">
-
-  <div class="card">
-
-    <h3>
-      🤝 Últimos enfrentamientos
-    </h3>
-
-    <div
-      id="h2hContent">
-
-      <p class="muted">
-        Cargando H2H real...
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ÚLTIMOS 5 -->
-
-<div
-  id="last5"
-  class="hidden">
-
-  <div class="card">
-
-    <h3>
-      📋 Últimos 5 partidos
-    </h3>
-
-    <div
-      id="last5Content">
-
-      <p class="muted">
-        Cargando forma real...
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     EN VIVO
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="live">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1 class="title">
-  Partidos en vivo
-</h1>
-
-
-<p class="muted">
-  Partidos detectados desde API-Football.
-</p>
-
-
-<div
-  id="liveList">
-
-  <div class="loading">
-    Buscando partidos en vivo...
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     BUSCAR
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="search">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1 class="title">
-  Buscar
-</h1>
-
-
-<input
-  class="input"
-  id="q"
-  placeholder="Equipo, liga o partido..."
-  oninput="doSearch()">
-
-
-<div id="results">
-
-  <div class="card">
-    <p class="muted">
-      Escribí el nombre de un equipo o liga.
-    </p>
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     FINALIZADOS
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="finished">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1 class="title">
-  Partidos finalizados
-</h1>
-
-
-<p class="muted">
-  Resultados obtenidos desde API-Football.
-</p>
-
-
-<div
-  id="finishedList">
-
-  <div class="loading">
-    Cargando resultados...
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     PERFIL
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="profile">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1 class="title">
-  Perfil
-</h1>
-
-
-<div class="card">
-
-  <h3>
-    ⚽ Mi MatchIA
-  </h3>
-
-  <p class="muted">
-    Favoritos, alertas y preferencias de análisis.
-  </p>
-
-  <button class="go secondary">
-    MIS FAVORITOS
-  </button>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     CONFIGURACIÓN
-======================================================== -->
-
-<section
-  class="panel hidden"
-  id="config">
-
-<button
-  class="back"
-  onclick="show('home')">
-  ← Volver
-</button>
-
-
-<h1 class="title">
-  Configuración
-</h1>
-
-
-<div class="card">
-
-  <div class="setting">
-
-    <span>
-      Notificaciones
-    </span>
-
-    <div class="toggle">
-      <i></i>
-    </div>
-
-  </div>
-
-
-  <div class="setting">
-
-    <span>
-      Actualización automática
-    </span>
-
-    <div class="toggle">
-      <i></i>
-    </div>
-
-  </div>
-
-
-  <div class="setting">
-
-    <span>
-      Modo oscuro
-    </span>
-
-    <div class="toggle">
-      <i></i>
-    </div>
-
-  </div>
-
-</div>
-
-
-<p class="footer-note">
-  MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
-</p>
-
-</section>
-
-
-<!-- ========================================================
-     NAVEGACIÓN
-======================================================== -->
-
-<nav class="nav">
-
-<button onclick="show('profile')">
-  <b>♥</b>
-  Favoritos
-</button>
-
-
-<button onclick="show('search')">
-  <b>⌕</b>
-  Buscar
-</button>
-
-
-<button
-  class="active"
-  onclick="show('home')">
-  <b>⌂</b>
-  Inicio
-</button>
-
-
-<button onclick="show('profile')">
-  <b>◉</b>
-  Perfil
-</button>
-
-
-<button onclick="show('config')">
-  <b>⚙</b>
-  Config.
-</button>
-
-</nav>
-
-</div>
-
-
-<!-- ========================================================
-     MOTORES
-======================================================== -->
-
-<script src="js/calibraciones.js"></script>
-<script src="js/app.js"></script>
-
-
-<script>
-
-/* ==========================================================
-   MATCHIA — CONTROL DE APLICACIÓN
-========================================================== */
-
-const ids = [
-  'home',
-  'match',
-  'live',
-  'search',
-  'finished',
-  'profile',
-  'config'
-];
-
-
-let fixturesCache = [];
-
-let selectedFixtureId = null;
-
-let selectedLiveFixtureId = null;
-
-
-/* ==========================================================
-   NAVEGACIÓN
-========================================================== */
-
-function show(id) {
-
-  ids.forEach(x => {
-
-    const el =
-      document.getElementById(x);
-
-    if (el) {
-      el.classList.add('hidden');
-    }
-
-  });
-
-
-  const target =
-    document.getElementById(id);
-
-
-  if (target) {
-    target.classList.remove('hidden');
-  }
-
-
-  window.scrollTo(0,0);
-
-
-  if (id === 'search') {
-    renderSearchInitial();
-  }
-
-
-  if (id === 'live') {
-    renderLiveMatches();
-  }
-
-
-  if (id === 'finished') {
-    renderFinishedMatches();
-  }
-
-}
-
-
-/* ==========================================================
-   UTILIDADES
-========================================================== */
-
-function escapeHtml(value) {
-
-  return String(value ?? '')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-
-}
-
-
-function obtenerInicial(nombre) {
-
-  return String(nombre || '-')
-    .trim()
-    .charAt(0)
-    .toUpperCase();
-
-}
-
-
-function obtenerHora(fecha) {
-
-  if (!fecha) {
-    return '--:--';
-  }
-
-
-  try {
-
-    return new Intl.DateTimeFormat(
-      'es-AR',
-      {
-        hour:'2-digit',
-        minute:'2-digit',
-        hour12:false,
-        timeZone:
-          'America/Argentina/Buenos_Aires'
-      }
-    ).format(
-      new Date(fecha)
-    );
-
-  } catch {
-
-    return '--:--';
-
-  }
-
-}
-
-
-function estadoTexto(partido) {
-
-  const estado =
-    String(
-      partido?.estado || ''
-    ).toUpperCase();
-
-
-  if (
-    ['1H','2H','HT','ET','P','LIVE']
-      .includes(estado)
-  ) {
-    return '● EN VIVO';
-  }
-
-
-  if (
-    ['FT','AET','PEN']
-      .includes(estado)
-  ) {
-    return 'FINAL';
-  }
-
-
-  return obtenerHora(
-    partido?.fecha
-  );
-
-}
-
-
-/* ==========================================================
-   CARGAR FIXTURES
-========================================================== */
-
-async function loadFixtures() {
-
-  try {
-
-    const response =
-      await fetch(
-        '/api/fixtures',
-        {
-          cache:'no-store'
-        }
-      );
-
-
-    if (!response.ok) {
-      throw new Error(
-        'Error HTTP ' +
-        response.status
-      );
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (data.error) {
-      throw new Error(
-        data.error
-      );
-    }
-
-
-    fixturesCache =
-      Array.isArray(data.partidos)
-        ? data.partidos
-        : [];
-
-
-    console.log(
-      'MatchIA — fixtures:',
-      fixturesCache
-    );
-
-
-    seleccionarDestacado();
-
-    renderLeaguePreview();
-
-    renderFinishedMatches();
-
-    renderLiveMatches();
-
-
-  } catch(error) {
-
-    console.error(
-      'MatchIA — error fixtures:',
-      error
-    );
-
-
-    document.getElementById(
-      'leaguePreview'
-    ).innerHTML = `
-      <p class="muted">
-        No se pudieron cargar los partidos.
-      </p>
-    `;
-
-  }
-
-}
-
-
-/* ==========================================================
-   SELECCIONAR DESTACADO
-========================================================== */
-
-function seleccionarDestacado() {
-
-  if (!fixturesCache.length) {
-    return;
-  }
-
-
-  const proximos =
-    fixturesCache.filter(partido => {
-
-      const estado =
-        String(
-          partido.estado || ''
-        ).toUpperCase();
-
-      return (
-        estado === 'NS' ||
-        estado === 'TBD'
-      );
-
-    });
-
-
-  let partido =
-    proximos[0] ||
-    fixturesCache[0];
-
-
-  if (!partido) {
-    return;
-  }
-
-
-  selectedFixtureId =
-    partido.id;
-
-
-  document.getElementById(
-    'featuredHome'
-  ).textContent =
-    partido.local ||
-    'Local';
-
-
-  document.getElementById(
-    'featuredAway'
-  ).textContent =
-    partido.visitante ||
-    'Visitante';
-
-
-  document.getElementById(
-    'featuredHomeCrest'
-  ).textContent =
-    obtenerInicial(
-      partido.local
-    );
-
-
-  document.getElementById(
-    'featuredAwayCrest'
-  ).textContent =
-    obtenerInicial(
-      partido.visitante
-    );
-
-
-  document.getElementById(
-    'featuredTime'
-  ).textContent =
-    estadoTexto(partido);
-
-}
-
-
-/* ==========================================================
-   PREVIEW DE LIGAS
-========================================================== */
-
-function renderLeaguePreview() {
-
-  const box =
-    document.getElementById(
-      'leaguePreview'
-    );
-
-
-  if (!box) return;
-
-
-  if (!fixturesCache.length) {
-
-    box.innerHTML = `
-      <p class="muted">
-        No hay partidos disponibles.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  const partidos =
-    fixturesCache
-      .slice(0,5);
-
-
-  box.innerHTML =
-    partidos.map(partido => {
-
-      return `
-        <div
-          class="metric"
-          style="cursor:pointer"
-          onclick="seleccionarPartido(${Number(partido.id)})">
-
-          <span>
-            ${escapeHtml(partido.local)}
-            —
-            ${escapeHtml(partido.visitante)}
-          </span>
-
-          <b>
-            ${estadoTexto(partido)}
-          </b>
+          </div>
 
         </div>
-      `;
 
-    }).join('');
+        <!-- TABS -->
+        <div class="tabs">
+          <button class="tab active" onclick="tab('prediction',this)">Pronóstico</button>
+          <button class="tab" onclick="tab('stats',this)">Estadísticas</button>
+          <button class="tab" onclick="tab('h2h',this)">H2H</button>
+          <button class="tab" onclick="tab('form',this)">Forma</button>
+        </div>
 
-}
+        <!-- PRONÓSTICO -->
+        <section id="prediction" class="tab-panel active">
 
+          <div class="probability-card">
 
-/* ==========================================================
-   SELECCIONAR PARTIDO
-========================================================== */
+            <div class="prob-title">PROBABILIDADES MATCHIA</div>
 
-function seleccionarPartido(id) {
+            <div class="prob-grid">
 
-  selectedFixtureId =
-    Number(id);
+              <div class="prob-item">
+                <div class="prob-circle home" id="probHome">--%</div>
+                <span id="probHomeName">Local</span>
+              </div>
 
-  openPrematch();
+              <div class="prob-item">
+                <div class="prob-circle draw" id="probDraw">--%</div>
+                <span>Empate</span>
+              </div>
 
-}
+              <div class="prob-item">
+                <div class="prob-circle away" id="probAway">--%</div>
+                <span id="probAwayName">Visitante</span>
+              </div>
 
+            </div>
 
-/* ==========================================================
-   ACTUALIZAR PANTALLA DE PORCENTAJES
-========================================================== */
+            <div class="confidence">
+              <span>Confianza del análisis</span>
+              <strong id="confidenceValue">--%</strong>
+            </div>
 
-function updateScreen(
-  probabilities,
-  analysis
-) {
+          </div>
 
-  if (!probabilities) {
-    return;
-  }
+          <div class="panel">
+            <div class="panel-title">🧠 ¿Por qué estas probabilidades?</div>
+            <div id="analysisText" class="analysis-text">
+              Analizando los datos disponibles...
+            </div>
+          </div>
 
+          <div class="panel">
+            <div class="panel-title">📊 Datos utilizados</div>
 
-  document.getElementById(
-    'probHome'
-  ).textContent =
-    probabilities.home + '%';
+            <div class="data-grid">
+              <div>
+                <span>Posición local</span>
+                <strong id="homePosition">-</strong>
+              </div>
 
+              <div>
+                <span>Posición visitante</span>
+                <strong id="awayPosition">-</strong>
+              </div>
 
-  document.getElementById(
-    'probDraw'
-  ).textContent =
-    probabilities.draw + '%';
+              <div>
+                <span>Puntos local</span>
+                <strong id="homePoints">-</strong>
+              </div>
 
+              <div>
+                <span>Puntos visitante</span>
+                <strong id="awayPoints">-</strong>
+              </div>
+            </div>
+          </div>
 
-  document.getElementById(
-    'probAway'
-  ).textContent =
-    probabilities.away + '%';
+        </section>
 
+        <!-- ESTADÍSTICAS -->
+        <section id="stats" class="tab-panel">
 
-  const box =
-    document.getElementById(
-      'analysisText'
-    );
+          <div class="panel">
+            <div class="panel-title">📊 Estadísticas</div>
 
+            <div id="matchStats">
+              <div class="empty-card">
+                Cargando estadísticas...
+              </div>
+            </div>
+          </div>
 
-  if (
-    box &&
-    Array.isArray(analysis)
-  ) {
+        </section>
 
-    box.innerHTML =
-      analysis.map(
-        text =>
-          `<li>${escapeHtml(text)}</li>`
-      ).join('');
+        <!-- H2H -->
+        <section id="h2h" class="tab-panel">
 
-  }
+          <div class="panel">
+            <div class="panel-title">⚔️ Enfrentamientos directos</div>
 
-}
+            <div id="h2hList">
+              <div class="empty-card">
+                Cargando últimos enfrentamientos...
+              </div>
+            </div>
+          </div>
 
+        </section>
 
-/* ==========================================================
-   ABRIR PREPARTIDO REAL
-========================================================== */
+        <!-- FORMA -->
+        <section id="form" class="tab-panel">
 
-async function openPrematch() {
+          <div class="panel">
+            <div class="panel-title">📈 Últimos 5 partidos</div>
 
-  if (!selectedFixtureId) {
+            <div class="form-columns">
 
-    seleccionarDestacado();
+              <div>
+                <h4 id="formHomeTitle">Local</h4>
+                <div id="homeForm"></div>
+              </div>
 
-  }
+              <div>
+                <h4 id="formAwayTitle">Visitante</h4>
+                <div id="awayForm"></div>
+              </div>
 
+            </div>
+          </div>
 
-  if (!selectedFixtureId) {
+        </section>
 
-    alert(
-      'No hay un partido disponible para analizar.'
-    );
+      </div>
 
-    return;
+    </main>
 
-  }
+    <!-- LIVE -->
+    <main id="live" class="screen">
 
+      <div class="back-row">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
+      </div>
 
-  show('match');
+      <div class="live-card">
 
+        <div class="live-league" id="liveLeague">EN VIVO</div>
 
-  document.getElementById(
-    'matchTitle'
-  ).textContent =
-    'Cargando partido...';
+        <div class="live-teams">
 
+          <div class="live-team">
+            <img id="liveHomeLogo" src="" alt="">
+            <strong id="liveHome">Local</strong>
+          </div>
 
-  document.getElementById(
-    'matchState'
-  ).textContent =
-    'Consultando datos reales de API-Football...';
+          <div class="live-score">
+            <div id="liveScore">0 - 0</div>
+            <span id="liveMinute">0'</span>
+          </div>
 
-
-  document.getElementById(
-    'probHome'
-  ).textContent =
-    '--%';
-
-
-  document.getElementById(
-    'probDraw'
-  ).textContent =
-    '--%';
-
-
-  document.getElementById(
-    'probAway'
-  ).textContent =
-    '--%';
-
-
-  document.getElementById(
-    'analysisText'
-  ).innerHTML = `
-    <li>
-      Consultando tabla de posiciones...
-    </li>
-    <li>
-      Consultando forma reciente...
-    </li>
-    <li>
-      Consultando H2H...
-    </li>
-  `;
-
-
-  try {
-
-    const result =
-      await window.MatchIAPrematch
-        .getPrematchPredictionById(
-          selectedFixtureId
-        );
-
-
-    const fixture =
-      result.fixture;
-
-
-    const homeName =
-      fixture.local?.nombre ||
-      'Local';
-
-
-    const awayName =
-      fixture.visitante?.nombre ||
-      'Visitante';
-
-
-    document.getElementById(
-      'matchTitle'
-    ).textContent =
-      homeName +
-      ' vs ' +
-      awayName;
-
-
-    document.getElementById(
-      'homeLabel'
-    ).textContent =
-      homeName;
-
-
-    document.getElementById(
-      'awayLabel'
-    ).textContent =
-      awayName;
-
-
-    document.getElementById(
-      'matchState'
-    ).textContent =
-      'Análisis prepartido • Datos reales';
-
-
-    updateScreen(
-      result.probabilities,
-      result.analysis
-    );
-
-
-    cargarH2H(
-      result.details?.h2h
-    );
-
-
-    cargarUltimos5(
-      result.details?.homeRecent,
-      result.details?.awayRecent,
-      homeName,
-      awayName
-    );
-
-
-    cargarEstadisticas(
-      fixture
-    );
-
-
-    console.log(
-      'MatchIA — análisis real:',
-      result
-    );
-
-
-  } catch(error) {
-
-    console.error(
-      'MatchIA — error análisis:',
-      error
-    );
-
-
-    document.getElementById(
-      'matchState'
-    ).textContent =
-      'Error al obtener datos reales';
-
-
-    document.getElementById(
-      'analysisText'
-    ).innerHTML = `
-      <li>
-        No se pudieron obtener los datos del partido.
-      </li>
-
-      <li>
-        Verificá que la API esté configurada.
-      </li>
-    `;
-
-  }
-
-}
-
-
-/* ==========================================================
-   ESTADÍSTICAS DEL PARTIDO
-========================================================== */
-
-function cargarEstadisticas(fixture) {
-
-  const marcador =
-    fixture?.marcador || {};
-
-
-  document.getElementById(
-    'goalsValue'
-  ).textContent =
-    (marcador.local ?? 0) +
-    ' — ' +
-    (marcador.visitante ?? 0);
-
-
-  const estadisticas =
-    fixture?.estadisticas || [];
-
-
-  let posesionLocal = null;
-  let posesionVisitante = null;
-
-  let tirosLocal = null;
-  let tirosVisitante = null;
-
-  let tirosArcoLocal = null;
-  let tirosArcoVisitante = null;
-
-  let cornersLocal = null;
-  let cornersVisitante = null;
-
-  let rojasLocal = null;
-  let rojasVisitante = null;
-
-
-  estadisticas.forEach(equipo => {
-
-    const nombre =
-      String(
-        equipo.equipo?.nombre || ''
-      );
-
-
-    const esLocal =
-      Number(
-        equipo.equipo?.id
-      ) === Number(
-        fixture.local?.id
-      );
-
-
-    const esVisitante =
-      Number(
-        equipo.equipo?.id
-      ) === Number(
-        fixture.visitante?.id
-      );
-
-
-    if (!esLocal && !esVisitante) {
-      return;
-    }
-
-
-    (equipo.estadisticas || [])
-      .forEach(stat => {
-
-        const tipo =
-          String(
-            stat.tipo || ''
-          );
-
-
-        let valor =
-          stat.valor;
-
-
-        if (
-          typeof valor === 'string' &&
-          valor.includes('%')
-        ) {
-          valor =
-            Number(
-              valor.replace('%','')
-            );
-        }
-
-
-        if (
-          tipo === 'Ball Possession'
-        ) {
-
-          if (esLocal) {
-            posesionLocal = valor;
-          }
-
-          if (esVisitante) {
-            posesionVisitante = valor;
-          }
-
-        }
-
-
-        if (
-          tipo === 'Total Shots'
-        ) {
-
-          if (esLocal) {
-            tirosLocal = valor;
-          }
-
-          if (esVisitante) {
-            tirosVisitante = valor;
-          }
-
-        }
-
-
-        if (
-          tipo === 'Shots on Goal'
-        ) {
-
-          if (esLocal) {
-            tirosArcoLocal = valor;
-          }
-
-          if (esVisitante) {
-            tirosArcoVisitante = valor;
-          }
-
-        }
-
-
-        if (
-          tipo === 'Corner Kicks'
-        ) {
-
-          if (esLocal) {
-            cornersLocal = valor;
-          }
-
-          if (esVisitante) {
-            cornersVisitante = valor;
-          }
-
-        }
-
-
-        if (
-          tipo === 'Red Cards'
-        ) {
-
-          if (esLocal) {
-            rojasLocal = valor;
-          }
-
-          if (esVisitante) {
-            rojasVisitante = valor;
-          }
-
-        }
-
-      });
-
-  });
-
-
-  document.getElementById(
-    'possessionValue'
-  ).textContent =
-    (posesionLocal ?? '--') +
-    ' — ' +
-    (posesionVisitante ?? '--');
-
-
-  document.getElementById(
-    'shotsValue'
-  ).textContent =
-    (tirosLocal ?? 0) +
-    ' — ' +
-    (tirosVisitante ?? 0);
-
-
-  document.getElementById(
-    'shotsTargetValue'
-  ).textContent =
-    (tirosArcoLocal ?? 0) +
-    ' — ' +
-    (tirosArcoVisitante ?? 0);
-
-
-  document.getElementById(
-    'cornersValue'
-  ).textContent =
-    (cornersLocal ?? 0) +
-    ' — ' +
-    (cornersVisitante ?? 0);
-
-
-  document.getElementById(
-    'redsValue'
-  ).textContent =
-    (rojasLocal ?? 0) +
-    ' — ' +
-    (rojasVisitante ?? 0);
-
-}
-
-
-/* ==========================================================
-   H2H REAL
-========================================================== */
-
-function cargarH2H(h2h) {
-
-  const box =
-    document.getElementById(
-      'h2hContent'
-    );
-
-
-  if (!box) return;
-
-
-  if (
-    !Array.isArray(h2h) ||
-    !h2h.length
-  ) {
-
-    box.innerHTML = `
-      <p class="muted">
-        No hay enfrentamientos H2H disponibles.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  box.innerHTML =
-    h2h.map(partido => {
-
-      const gl =
-        Number(
-          partido.golesLocal || 0
-        );
-
-
-      const gv =
-        Number(
-          partido.golesVisitante || 0
-        );
-
-
-      let resultado =
-        'Empate';
-
-
-      if (gl > gv) {
-        resultado =
-          'Victoria local';
-      }
-
-
-      if (gv > gl) {
-        resultado =
-          'Victoria visitante';
-      }
-
-
-      return `
-        <div class="metric">
-
-          <span>
-            ${escapeHtml(partido.local)}
-            ${gl} - ${gv}
-            ${escapeHtml(partido.visitante)}
-          </span>
-
-          <b>
-            ${resultado}
-          </b>
+          <div class="live-team">
+            <img id="liveAwayLogo" src="" alt="">
+            <strong id="liveAway">Visitante</strong>
+          </div>
 
         </div>
-      `;
 
-    }).join('');
+      </div>
 
-}
+      <div class="probability-card live-probability">
 
+        <div class="prob-title">PROBABILIDADES EN VIVO</div>
 
-/* ==========================================================
-   ÚLTIMOS 5
-========================================================== */
+        <div class="prob-grid">
 
-function calcularForma(
-  partidos,
-  nombre
-) {
+          <div class="prob-item">
+            <div class="prob-circle home" id="liveProbHome">--%</div>
+            <span id="liveProbHomeName">Local</span>
+          </div>
 
-  const resultados = [];
+          <div class="prob-item">
+            <div class="prob-circle draw" id="liveProbDraw">--%</div>
+            <span>Empate</span>
+          </div>
 
+          <div class="prob-item">
+            <div class="prob-circle away" id="liveProbAway">--%</div>
+            <span id="liveProbAwayName">Visitante</span>
+          </div>
 
-  const equipo =
-    String(
-      nombre || ''
-    )
-    .toLowerCase();
+        </div>
 
+      </div>
 
-  (partidos || []).forEach(
-    partido => {
+      <div class="panel">
+        <div class="panel-title">📊 Estadísticas en vivo</div>
+        <div id="liveStats"></div>
+      </div>
 
-      const local =
-        String(
-          partido.local || ''
-        )
-        .toLowerCase();
+      <div class="panel">
+        <div class="panel-title">🧠 Análisis en vivo</div>
+        <div id="liveAnalysis" class="analysis-text">
+          Esperando estadísticas...
+        </div>
+      </div>
 
+    </main>
 
-      const visitante =
-        String(
-          partido.visitante || ''
-        )
-        .toLowerCase();
+    <!-- SEARCH -->
+    <main id="search" class="screen">
 
+      <div class="search-box">
+        <span>🔎</span>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Buscar equipo o partido..."
+          autocomplete="off"
+          oninput="doSearch()"
+        >
+      </div>
 
-      const gl =
-        Number(
-          partido.golesLocal || 0
-        );
+      <div id="searchResults">
+        <div class="empty-card">
+          Escribí el nombre de un equipo para buscar.
+        </div>
+      </div>
 
+    </main>
 
-      const gv =
-        Number(
-          partido.golesVisitante || 0
-        );
+    <!-- FINISHED -->
+    <main id="finished" class="screen">
 
+      <div class="page-title">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
+        <h2>Partidos finalizados</h2>
+      </div>
 
-      const esLocal =
-        local === equipo;
+      <div id="finishedList">
+        <div class="empty-card">
+          Cargando partidos...
+        </div>
+      </div>
 
+    </main>
 
-      const esVisitante =
-        visitante === equipo;
+    <!-- PROFILE -->
+    <main id="profile" class="screen">
 
+      <div class="profile-card">
 
-      if (
-        !esLocal &&
-        !esVisitante
-      ) {
-        return;
-      }
+        <div class="profile-avatar">👤</div>
 
+        <h2>Mi perfil</h2>
+        <p>Usuario MatchIA</p>
 
-      const propios =
-        esLocal
-          ? gl
-          : gv;
+      </div>
 
+      <div class="panel">
+        <div class="panel-title">⭐ Favoritos</div>
+        <div class="empty-card">
+          Próximamente podrás guardar equipos y partidos.
+        </div>
+      </div>
 
-      const recibidos =
-        esLocal
-          ? gv
-          : gl;
+    </main>
 
+    <!-- CONFIG -->
+    <main id="config" class="screen">
 
-      if (propios > recibidos) {
-        resultados.push('G');
-      }
-      else if (
-        propios === recibidos
-      ) {
-        resultados.push('E');
-      }
-      else {
-        resultados.push('P');
-      }
+      <div class="page-title">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
+        <h2>Configuración</h2>
+      </div>
 
-    }
-  );
+      <div class="panel settings-panel">
 
+        <div class="setting-row">
+          <div>
+            <strong>Actualización automática</strong>
+            <small>Actualizar partidos y estadísticas</small>
+          </div>
 
-  return resultados.join(' ');
-}
+          <label class="switch">
+            <input id="autoRefresh" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
 
+        <div class="setting-row">
+          <div>
+            <strong>Mostrar porcentajes</strong>
+            <small>Probabilidades de MatchIA</small>
+          </div>
 
-function cargarUltimos5(
-  homeRecent,
-  awayRecent,
-  homeName,
-  awayName
-) {
+          <label class="switch">
+            <input id="showProbabilities" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
 
-  const box =
-    document.getElementById(
-      'last5Content'
-    );
+      </div>
 
+    </main>
 
-  if (!box) return;
+    <!-- NAVIGATION -->
+    <nav class="bottom-nav">
 
+      <button class="nav-item active" data-screen="home" onclick="show('home')">
+        <span>🏠</span>
+        <small>Inicio</small>
+      </button>
 
-  box.innerHTML = `
+      <button class="nav-item" data-screen="search" onclick="show('search')">
+        <span>🔎</span>
+        <small>Buscar</small>
+      </button>
 
-    <div class="metric">
+      <button class="nav-item" data-screen="finished" onclick="show('finished')">
+        <span>📋</span>
+        <small>Finalizados</small>
+      </button>
 
-      <span>
-        ${escapeHtml(homeName)}
-      </span>
+      <button class="nav-item" data-screen="profile" onclick="show('profile')">
+        <span>👤</span>
+        <small>Perfil</small>
+      </button>
 
-      <b>
-        ${
-          escapeHtml(
-            calcularForma(
-              homeRecent,
-              homeName
-            ) || 'Sin datos'
-          )
-        }
-      </b>
+    </nav>
 
-    </div>
+  </div>
 
+  <!-- SCRIPTS -->
+  <script src="js/calibraciones.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/estadisticas.js"></script>
+  <script src="js/analisis.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/fixtures.js"></script>
+  <script src="js/live.js"></script>
 
-    <div
+</body>
+</html>
