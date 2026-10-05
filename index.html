@@ -13,8 +13,13 @@
 
   <!-- SPLASH -->
   <div id="splash" class="splash">
-    <img src="logo.png" alt="MatchIA" class="splash-logo"
-         onerror="this.style.display='none'">
+    <img
+      src="logo.png"
+      alt="MatchIA"
+      class="splash-logo"
+      onerror="this.style.display='none'"
+    >
+
     <div class="splash-name">MatchIA</div>
     <div class="splash-loading">Analizando partidos...</div>
   </div>
@@ -24,176 +29,397 @@
 
     <!-- HEADER -->
     <header class="topbar">
+
       <div class="brand">
+
         <div class="brand-logo">⚽</div>
+
         <div>
           <div class="brand-name">MatchIA</div>
           <div class="brand-sub">Análisis inteligente</div>
         </div>
+
       </div>
 
-      <button class="icon-btn" onclick="show('config')" aria-label="Configuración">
+      <button
+        class="icon-btn"
+        onclick="show('config')"
+        aria-label="Configuración"
+      >
         ⚙️
       </button>
+
     </header>
 
-    <!-- HOME -->
+
+    <!-- =====================================================
+         HOME
+         ===================================================== -->
+
     <main id="home" class="screen active">
 
-      <div class="date-row">
-        <button class="date-btn active" id="dateToday" onclick="selectDate('today')">
-          <span>HOY</span>
-          <strong id="todayDate">--/--</strong>
+
+      <!-- SELECTOR DE FECHA -->
+
+      <div class="matchia-date-selector">
+
+        <button
+          id="previousDate"
+          class="date-arrow"
+          type="button"
+          aria-label="Día anterior"
+        >
+          ‹
         </button>
 
-        <button class="date-btn" id="dateTomorrow" onclick="selectDate('tomorrow')">
-          <span>MAÑANA</span>
-          <strong id="tomorrowDate">--/--</strong>
+        <div class="selected-date-box">
+          <div class="selected-date-label">PARTIDOS DEL</div>
+          <div id="selectedDate" class="selected-date">
+            5 DE OCTUBRE
+          </div>
+        </div>
+
+        <button
+          id="nextDate"
+          class="date-arrow"
+          type="button"
+          aria-label="Día siguiente"
+        >
+          ›
         </button>
+
       </div>
 
-      <!-- PARTIDO EN VIVO -->
+
+      <!-- PARTIDOS EN VIVO -->
+
       <section class="section">
+
         <div class="section-title">
+
           <span>🔴 EN VIVO</span>
-          <button class="small-btn" onclick="loadFixtures(true)">Actualizar</button>
+
+          <button
+            class="small-btn"
+            onclick="loadFixtures(true)"
+          >
+            Actualizar
+          </button>
+
         </div>
 
         <div id="livePreview">
+
           <div class="empty-card">
+
             <div class="empty-icon">⚽</div>
+
             <div>No hay partidos en vivo</div>
-            <small>Los partidos aparecerán automáticamente</small>
+
+            <small>
+              Los partidos aparecerán automáticamente
+            </small>
+
           </div>
+
         </div>
+
       </section>
 
+
       <!-- DESTACADO -->
+
       <section class="section">
+
         <div class="section-title">
           <span>⭐ DESTACADO</span>
         </div>
 
         <div id="featuredMatch">
-          <div class="empty-card loading-card">
-            <div class="loader"></div>
-            <div>Cargando partidos...</div>
-          </div>
         </div>
+
       </section>
 
+
       <!-- PRÓXIMOS -->
+
       <section class="section">
+
         <div class="section-title">
           <span>📅 PRÓXIMOS PARTIDOS</span>
         </div>
 
         <div id="upcomingList">
+
           <div class="empty-card">
+
             <div class="loader"></div>
-            <div>Cargando...</div>
+
+            <div>
+              Cargando partidos...
+            </div>
+
           </div>
+
         </div>
+
       </section>
 
+
       <!-- FINALIZADOS -->
+
       <section class="section">
+
         <div class="section-title">
+
           <span>✅ FINALIZADOS</span>
-          <button class="small-btn" onclick="show('finished')">Ver todos</button>
+
+          <button
+            class="small-btn"
+            onclick="show('finished')"
+          >
+            Ver todos
+          </button>
+
         </div>
 
         <div id="finishedPreview"></div>
+
       </section>
 
     </main>
 
-    <!-- MATCH -->
+
+    <!-- =====================================================
+         MATCH
+         ===================================================== -->
+
     <main id="match" class="screen">
 
       <div class="back-row">
-        <button class="back-btn" onclick="show('home')">← Volver</button>
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
       </div>
+
 
       <div id="matchContent">
 
+
         <div class="match-header-card">
 
-          <div class="league-name" id="matchLeague">Liga</div>
+          <div
+            class="league-name"
+            id="matchLeague"
+          >
+            Liga
+          </div>
+
 
           <div class="teams">
 
+
             <div class="team">
-              <img id="matchHomeLogo" src="" alt="">
-              <div id="matchHome">Local</div>
+
+              <img
+                id="matchHomeLogo"
+                src=""
+                alt=""
+              >
+
+              <div id="matchHome">
+                Local
+              </div>
+
             </div>
+
 
             <div class="match-center">
-              <div id="matchTime" class="match-time">--:--</div>
-              <div id="matchStatus" class="match-status">PRÓXIMO</div>
+
+              <div
+                id="matchTime"
+                class="match-time"
+              >
+                --:--
+              </div>
+
+              <div
+                id="matchStatus"
+                class="match-status"
+              >
+                PRÓXIMO
+              </div>
+
             </div>
 
+
             <div class="team">
-              <img id="matchAwayLogo" src="" alt="">
-              <div id="matchAway">Visitante</div>
+
+              <img
+                id="matchAwayLogo"
+                src=""
+                alt=""
+              >
+
+              <div id="matchAway">
+                Visitante
+              </div>
+
             </div>
 
           </div>
 
         </div>
 
+
         <!-- TABS -->
+
         <div class="tabs">
-          <button class="tab active" onclick="tab('prediction',this)">Pronóstico</button>
-          <button class="tab" onclick="tab('stats',this)">Estadísticas</button>
-          <button class="tab" onclick="tab('h2h',this)">H2H</button>
-          <button class="tab" onclick="tab('form',this)">Forma</button>
+
+          <button
+            class="tab active"
+            onclick="tab('prediction',this)"
+          >
+            Pronóstico
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('stats',this)"
+          >
+            Estadísticas
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('h2h',this)"
+          >
+            H2H
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('form',this)"
+          >
+            Forma
+          </button>
+
         </div>
 
+
         <!-- PRONÓSTICO -->
-        <section id="prediction" class="tab-panel active">
+
+        <section
+          id="prediction"
+          class="tab-panel active"
+        >
 
           <div class="probability-card">
 
-            <div class="prob-title">PROBABILIDADES MATCHIA</div>
+            <div class="prob-title">
+              PROBABILIDADES MATCHIA
+            </div>
+
 
             <div class="prob-grid">
 
-              <div class="prob-item">
-                <div class="prob-circle home" id="probHome">--%</div>
-                <span id="probHomeName">Local</span>
-              </div>
 
               <div class="prob-item">
-                <div class="prob-circle draw" id="probDraw">--%</div>
-                <span>Empate</span>
+
+                <div
+                  class="prob-circle home"
+                  id="probHome"
+                >
+                  --%
+                </div>
+
+                <span id="probHomeName">
+                  Local
+                </span>
+
               </div>
 
+
               <div class="prob-item">
-                <div class="prob-circle away" id="probAway">--%</div>
-                <span id="probAwayName">Visitante</span>
+
+                <div
+                  class="prob-circle draw"
+                  id="probDraw"
+                >
+                  --%
+                </div>
+
+                <span>
+                  Empate
+                </span>
+
               </div>
+
+
+              <div class="prob-item">
+
+                <div
+                  class="prob-circle away"
+                  id="probAway"
+                >
+                  --%
+                </div>
+
+                <span id="probAwayName">
+                  Visitante
+                </span>
+
+              </div>
+
 
             </div>
+
 
             <div class="confidence">
-              <span>Confianza del análisis</span>
-              <strong id="confidenceValue">--%</strong>
+
+              <span>
+                Confianza del análisis
+              </span>
+
+              <strong id="confidenceValue">
+                --%
+              </strong>
+
             </div>
 
           </div>
 
+
           <div class="panel">
-            <div class="panel-title">🧠 ¿Por qué estas probabilidades?</div>
-            <div id="analysisText" class="analysis-text">
+
+            <div class="panel-title">
+              🧠 ¿Por qué estas probabilidades?
+            </div>
+
+            <div
+              id="analysisText"
+              class="analysis-text"
+            >
               Analizando los datos disponibles...
             </div>
+
           </div>
 
+
           <div class="panel">
-            <div class="panel-title">📊 Datos utilizados</div>
+
+            <div class="panel-title">
+              📊 Datos utilizados
+            </div>
+
 
             <div class="data-grid">
+
               <div>
                 <span>Posición local</span>
                 <strong id="homePosition">-</strong>
@@ -213,144 +439,298 @@
                 <span>Puntos visitante</span>
                 <strong id="awayPoints">-</strong>
               </div>
+
             </div>
+
           </div>
 
         </section>
 
+
         <!-- ESTADÍSTICAS -->
-        <section id="stats" class="tab-panel">
+
+        <section
+          id="stats"
+          class="tab-panel"
+        >
 
           <div class="panel">
-            <div class="panel-title">📊 Estadísticas</div>
+
+            <div class="panel-title">
+              📊 Estadísticas
+            </div>
 
             <div id="matchStats">
+
               <div class="empty-card">
                 Cargando estadísticas...
               </div>
+
             </div>
+
           </div>
 
         </section>
 
+
         <!-- H2H -->
-        <section id="h2h" class="tab-panel">
+
+        <section
+          id="h2h"
+          class="tab-panel"
+        >
 
           <div class="panel">
-            <div class="panel-title">⚔️ Enfrentamientos directos</div>
+
+            <div class="panel-title">
+              ⚔️ Enfrentamientos directos
+            </div>
 
             <div id="h2hList">
+
               <div class="empty-card">
                 Cargando últimos enfrentamientos...
               </div>
+
             </div>
+
           </div>
 
         </section>
 
+
         <!-- FORMA -->
-        <section id="form" class="tab-panel">
+
+        <section
+          id="form"
+          class="tab-panel"
+        >
 
           <div class="panel">
-            <div class="panel-title">📈 Últimos 5 partidos</div>
+
+            <div class="panel-title">
+              📈 Últimos 5 partidos
+            </div>
+
 
             <div class="form-columns">
 
-              <div>
-                <h4 id="formHomeTitle">Local</h4>
-                <div id="homeForm"></div>
-              </div>
 
               <div>
-                <h4 id="formAwayTitle">Visitante</h4>
-                <div id="awayForm"></div>
+
+                <h4 id="formHomeTitle">
+                  Local
+                </h4>
+
+                <div id="homeForm"></div>
+
               </div>
+
+
+              <div>
+
+                <h4 id="formAwayTitle">
+                  Visitante
+                </h4>
+
+                <div id="awayForm"></div>
+
+              </div>
+
 
             </div>
+
           </div>
 
         </section>
 
+
       </div>
 
     </main>
 
-    <!-- LIVE -->
+
+    <!-- =====================================================
+         LIVE
+         ===================================================== -->
+
     <main id="live" class="screen">
 
       <div class="back-row">
-        <button class="back-btn" onclick="show('home')">← Volver</button>
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
       </div>
+
 
       <div class="live-card">
 
-        <div class="live-league" id="liveLeague">EN VIVO</div>
+        <div
+          class="live-league"
+          id="liveLeague"
+        >
+          EN VIVO
+        </div>
+
 
         <div class="live-teams">
 
+
           <div class="live-team">
-            <img id="liveHomeLogo" src="" alt="">
-            <strong id="liveHome">Local</strong>
+
+            <img
+              id="liveHomeLogo"
+              src=""
+              alt=""
+            >
+
+            <strong id="liveHome">
+              Local
+            </strong>
+
           </div>
+
 
           <div class="live-score">
-            <div id="liveScore">0 - 0</div>
-            <span id="liveMinute">0'</span>
+
+            <div id="liveScore">
+              0 - 0
+            </div>
+
+            <span id="liveMinute">
+              0'
+            </span>
+
           </div>
 
+
           <div class="live-team">
-            <img id="liveAwayLogo" src="" alt="">
-            <strong id="liveAway">Visitante</strong>
+
+            <img
+              id="liveAwayLogo"
+              src=""
+              alt=""
+            >
+
+            <strong id="liveAway">
+              Visitante
+            </strong>
+
           </div>
+
 
         </div>
 
       </div>
+
 
       <div class="probability-card live-probability">
 
-        <div class="prob-title">PROBABILIDADES EN VIVO</div>
+        <div class="prob-title">
+          PROBABILIDADES EN VIVO
+        </div>
+
 
         <div class="prob-grid">
 
-          <div class="prob-item">
-            <div class="prob-circle home" id="liveProbHome">--%</div>
-            <span id="liveProbHomeName">Local</span>
-          </div>
 
           <div class="prob-item">
-            <div class="prob-circle draw" id="liveProbDraw">--%</div>
-            <span>Empate</span>
+
+            <div
+              class="prob-circle home"
+              id="liveProbHome"
+            >
+              --%
+            </div>
+
+            <span id="liveProbHomeName">
+              Local
+            </span>
+
           </div>
 
+
           <div class="prob-item">
-            <div class="prob-circle away" id="liveProbAway">--%</div>
-            <span id="liveProbAwayName">Visitante</span>
+
+            <div
+              class="prob-circle draw"
+              id="liveProbDraw"
+            >
+              --%
+            </div>
+
+            <span>
+              Empate
+            </span>
+
           </div>
+
+
+          <div class="prob-item">
+
+            <div
+              class="prob-circle away"
+              id="liveProbAway"
+            >
+              --%
+            </div>
+
+            <span id="liveProbAwayName">
+              Visitante
+            </span>
+
+          </div>
+
 
         </div>
 
       </div>
 
-      <div class="panel">
-        <div class="panel-title">📊 Estadísticas en vivo</div>
-        <div id="liveStats"></div>
-      </div>
 
       <div class="panel">
-        <div class="panel-title">🧠 Análisis en vivo</div>
-        <div id="liveAnalysis" class="analysis-text">
+
+        <div class="panel-title">
+          📊 Estadísticas en vivo
+        </div>
+
+        <div id="liveStats"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          🧠 Análisis en vivo
+        </div>
+
+        <div
+          id="liveAnalysis"
+          class="analysis-text"
+        >
           Esperando estadísticas...
         </div>
+
       </div>
 
     </main>
 
-    <!-- SEARCH -->
+
+    <!-- =====================================================
+         SEARCH
+         ===================================================== -->
+
     <main id="search" class="screen">
 
       <div class="search-box">
+
         <span>🔎</span>
+
         <input
           id="searchInput"
           type="search"
@@ -358,126 +738,253 @@
           autocomplete="off"
           oninput="doSearch()"
         >
+
       </div>
 
+
       <div id="searchResults">
+
         <div class="empty-card">
           Escribí el nombre de un equipo para buscar.
         </div>
+
       </div>
 
     </main>
 
-    <!-- FINISHED -->
+
+    <!-- =====================================================
+         FINISHED
+         ===================================================== -->
+
     <main id="finished" class="screen">
 
       <div class="page-title">
-        <button class="back-btn" onclick="show('home')">← Volver</button>
-        <h2>Partidos finalizados</h2>
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
+        <h2>
+          Partidos finalizados
+        </h2>
+
       </div>
 
+
       <div id="finishedList">
+
         <div class="empty-card">
           Cargando partidos...
         </div>
+
       </div>
 
     </main>
 
-    <!-- PROFILE -->
+
+    <!-- =====================================================
+         PROFILE
+         ===================================================== -->
+
     <main id="profile" class="screen">
 
       <div class="profile-card">
 
-        <div class="profile-avatar">👤</div>
+        <div class="profile-avatar">
+          👤
+        </div>
 
-        <h2>Mi perfil</h2>
-        <p>Usuario MatchIA</p>
+        <h2>
+          Mi perfil
+        </h2>
+
+        <p>
+          Usuario MatchIA
+        </p>
 
       </div>
 
+
       <div class="panel">
-        <div class="panel-title">⭐ Favoritos</div>
+
+        <div class="panel-title">
+          ⭐ Favoritos
+        </div>
+
         <div class="empty-card">
           Próximamente podrás guardar equipos y partidos.
         </div>
+
       </div>
 
     </main>
 
-    <!-- CONFIG -->
+
+    <!-- =====================================================
+         CONFIG
+         ===================================================== -->
+
     <main id="config" class="screen">
 
       <div class="page-title">
-        <button class="back-btn" onclick="show('home')">← Volver</button>
-        <h2>Configuración</h2>
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
+        <h2>
+          Configuración
+        </h2>
+
       </div>
+
 
       <div class="panel settings-panel">
 
-        <div class="setting-row">
-          <div>
-            <strong>Actualización automática</strong>
-            <small>Actualizar partidos y estadísticas</small>
-          </div>
-
-          <label class="switch">
-            <input id="autoRefresh" type="checkbox" checked>
-            <span></span>
-          </label>
-        </div>
 
         <div class="setting-row">
+
           <div>
-            <strong>Mostrar porcentajes</strong>
-            <small>Probabilidades de MatchIA</small>
+
+            <strong>
+              Actualización automática
+            </strong>
+
+            <small>
+              Actualizar partidos y estadísticas
+            </small>
+
           </div>
 
+
           <label class="switch">
-            <input id="showProbabilities" type="checkbox" checked>
+
+            <input
+              id="autoRefresh"
+              type="checkbox"
+              checked
+            >
+
             <span></span>
+
           </label>
+
         </div>
+
+
+        <div class="setting-row">
+
+          <div>
+
+            <strong>
+              Mostrar porcentajes
+            </strong>
+
+            <small>
+              Probabilidades de MatchIA
+            </small>
+
+          </div>
+
+
+          <label class="switch">
+
+            <input
+              id="showProbabilities"
+              type="checkbox"
+              checked
+            >
+
+            <span></span>
+
+          </label>
+
+        </div>
+
 
       </div>
 
     </main>
 
-    <!-- NAVIGATION -->
+
+    <!-- =====================================================
+         NAVEGACIÓN INFERIOR
+         ===================================================== -->
+
     <nav class="bottom-nav">
 
-      <button class="nav-item active" data-screen="home" onclick="show('home')">
+
+      <button
+        class="nav-item active"
+        data-screen="home"
+        onclick="show('home')"
+      >
+
         <span>🏠</span>
         <small>Inicio</small>
+
       </button>
 
-      <button class="nav-item" data-screen="search" onclick="show('search')">
+
+      <button
+        class="nav-item"
+        data-screen="search"
+        onclick="show('search')"
+      >
+
         <span>🔎</span>
         <small>Buscar</small>
+
       </button>
 
-      <button class="nav-item" data-screen="finished" onclick="show('finished')">
-        <span>📋</span>
-        <small>Finalizados</small>
+
+      <button
+        class="nav-item"
+        data-screen="finished"
+        onclick="show('finished')"
+      >
+
+        <span>⚽</span>
+        <small>Partidos</small>
+
       </button>
 
-      <button class="nav-item" data-screen="profile" onclick="show('profile')">
+
+      <button
+        class="nav-item"
+        data-screen="profile"
+        onclick="show('profile')"
+      >
+
         <span>👤</span>
         <small>Perfil</small>
+
       </button>
+
 
     </nav>
 
   </div>
 
-  <!-- SCRIPTS -->
+
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
   <script src="js/calibraciones.js"></script>
   <script src="js/app.js"></script>
   <script src="js/estadisticas.js"></script>
   <script src="js/analisis.js"></script>
-  <script src="js/ui.js"></script>
   <script src="js/fixtures.js"></script>
   <script src="js/live.js"></script>
+  <script src="js/ui.js"></script>
 
 </body>
 </html>
