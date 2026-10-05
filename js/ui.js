@@ -22,6 +22,10 @@
     }
   };
 
+  // =========================================================
+  // SPLASH
+  // =========================================================
+
   function hideSplash() {
     const splash = document.getElementById("splash");
 
@@ -36,6 +40,10 @@
       }, 280);
     }, 1000);
   }
+
+  // =========================================================
+  // NAVEGACIÓN PRINCIPAL
+  // =========================================================
 
   window.show = function (screenName) {
     const screens = document.querySelectorAll(".screen");
@@ -86,6 +94,10 @@
     }
   };
 
+  // =========================================================
+  // TABS
+  // =========================================================
+
   window.tab = function (tabName, button) {
     const panels = document.querySelectorAll(".tab-panel");
     const buttons = document.querySelectorAll(".tab");
@@ -108,6 +120,10 @@
       button.classList.add("active");
     }
   };
+
+  // =========================================================
+  // ABRIR PARTIDO
+  // =========================================================
 
   window.openMatch = function (fixtureId, live) {
     if (!fixtureId) {
@@ -137,6 +153,10 @@
       window.openPrematch(fixtureId);
     }
   };
+
+  // =========================================================
+  // ANÁLISIS PRE-PARTIDO
+  // =========================================================
 
   window.openPrematch = async function (fixtureId) {
     const id = fixtureId || selectedFixtureId;
@@ -180,6 +200,10 @@
       }
     }
   };
+
+  // =========================================================
+  // RENDER PARTIDO PRE-PARTIDO
+  // =========================================================
 
   function renderPrematch(resultado) {
     const datos = resultado.datos || resultado.data || resultado;
@@ -312,18 +336,25 @@
     );
 
     renderStats(datos.estadisticas || []);
+
     renderH2H(datos.h2h || []);
+
     renderForm(
       "homeForm",
       datos.ultimosLocal || [],
       local.nombre || "Local"
     );
+
     renderForm(
       "awayForm",
       datos.ultimosVisitante || [],
       visitante.nombre || "Visitante"
     );
   }
+
+  // =========================================================
+  // ESTADÍSTICAS
+  // =========================================================
 
   function renderStats(stats) {
     const container = document.getElementById("matchStats");
@@ -337,7 +368,6 @@
     }
 
     const rows = [];
-
     const allTypes = {};
 
     stats.forEach(function (team) {
@@ -369,7 +399,7 @@
       rows.push(`
         <div class="live-stat-row">
           <div class="live-stat-value live-stat-home">${item.home}</div>
-          <div class="live-stat-name">${tipo}</div>
+          <div class="live-stat-name">${escapeHtml(tipo)}</div>
           <div class="live-stat-value live-stat-away">${item.away}</div>
         </div>
       `);
@@ -377,6 +407,10 @@
 
     container.innerHTML = rows.join("");
   }
+
+  // =========================================================
+  // H2H
+  // =========================================================
 
   function renderH2H(h2h) {
     const container = document.getElementById("h2hList");
@@ -395,6 +429,7 @@
         return `
           <div class="h2h-row">
             <div class="h2h-date">${formatDate(match.fecha)}</div>
+
             <div class="h2h-teams">
               ${escapeHtml(match.local)}
               <br>
@@ -402,6 +437,7 @@
               <br>
               ${escapeHtml(match.visitante)}
             </div>
+
             <div class="h2h-score">
               ${match.golesLocal ?? 0} - ${match.golesVisitante ?? 0}
             </div>
@@ -410,6 +446,10 @@
       })
       .join("");
   }
+
+  // =========================================================
+  // ÚLTIMOS 5
+  // =========================================================
 
   function renderForm(containerId, partidos, equipo) {
     const container = document.getElementById(containerId);
@@ -453,135 +493,185 @@
           <div class="form-match">
             <span>${formatDate(match.fecha)}</span>
             <strong>${gf}-${gc}</strong>
-            <span class="form-result ${clase}">${resultado}</span>
+            <span class="form-result ${clase}">
+              ${resultado}
+            </span>
           </div>
         `;
       })
       .join("");
   }
 
-  function setText(id, value) {
-    const element = document.getElementById(id);
+  // =========================================================
+  // FECHA SELECCIONADA
+  // =========================================================
 
-    if (element) {
-      element.textContent = value == null ? "" : value;
+  /*
+   * NUEVO SISTEMA:
+   *
+   *       ‹   5 DE OCTUBRE   ›
+   *
+   * Rango permitido:
+   * 30/09/2026 hasta 11/10/2026
+   *
+   * La lógica real de cambio de fecha está en fixtures.js.
+   */
+
+  function updateSelectedDateUI() {
+    const selected =
+      typeof window.getSelectedMatchIADate === "function"
+        ? window.getSelectedMatchIADate()
+        : null;
+
+    if (!selected) return;
+
+    const date = new Date(selected + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) return;
+
+    const title = date
+      .toLocaleDateString("es-AR", {
+        day: "numeric",
+        month: "long"
+      })
+      .toUpperCase();
+
+    setText("selectedDate", title);
+
+    const previous = document.getElementById("previousDate");
+    const next = document.getElementById("nextDate");
+
+    const minDate = new Date("2026-09-30T00:00:00");
+    const maxDate = new Date("2026-10-11T00:00:00");
+
+    if (previous) {
+      previous.disabled = date <= minDate;
+      previous.setAttribute(
+        "aria-label",
+        "Día anterior"
+      );
+    }
+
+    if (next) {
+      next.disabled = date >= maxDate;
+      next.setAttribute(
+        "aria-label",
+        "Día siguiente"
+      );
     }
   }
 
-  function setImage(id, src) {
-    const element = document.getElementById(id);
+  // =========================================================
+  // CAMBIAR FECHA
+  // =========================================================
 
-    if (!element) return;
-
-    if (src) {
-      element.src = src;
-      element.style.display = "block";
-    } else {
-      element.removeAttribute("src");
-      element.style.display = "none";
-    }
-  }
-
-  function formatPercent(value) {
-    let number = Number(value);
-
-    if (!Number.isFinite(number)) {
-      return "--%";
-    }
-
-    if (number <= 1) {
-      number *= 100;
-    }
-
-    number = Math.round(number);
-
-    return number + "%";
-  }
-
-  function formatDate(value) {
-    if (!value) return "-";
-
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-      return "-";
-    }
-
-    return date.toLocaleDateString("es-AR", {
-      day: "2-digit",
-      month: "2-digit"
-    });
-  }
-
-  function normalizar(value) {
-    return String(value || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .trim();
-  }
-
-  function escapeHtml(value) {
-    return String(value || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  window.selectDate = function (which) {
-    const today = document.getElementById("dateToday");
-    const tomorrow = document.getElementById("dateTomorrow");
-
-    if (today) today.classList.remove("active");
-    if (tomorrow) tomorrow.classList.remove("active");
-
-    if (which === "tomorrow") {
-      if (tomorrow) tomorrow.classList.add("active");
-
-      if (typeof window.loadFixtures === "function") {
-        window.loadFixtures(false, "tomorrow");
-      }
-    } else {
-      if (today) today.classList.add("active");
-
-      if (typeof window.loadFixtures === "function") {
-        window.loadFixtures(false, "today");
-      }
+  window.changeDate = function (days) {
+    if (typeof window.changeMatchIADate === "function") {
+      window.changeMatchIADate(Number(days) || 0);
+      updateSelectedDateUI();
     }
   };
 
+  window.setDateMatchIA = function (dateString) {
+    if (!dateString) return;
+
+    if (typeof window.setMatchIADate === "function") {
+      window.setMatchIADate(dateString);
+      updateSelectedDateUI();
+    }
+  };
+
+  // Compatibilidad por si queda algún elemento antiguo.
+  // Ya no usa botones HOY/MAÑANA.
+  window.selectDate = function (which) {
+    let offset = 0;
+
+    if (which === "tomorrow") {
+      offset = 1;
+    }
+
+    if (which === "yesterday") {
+      offset = -1;
+    }
+
+    if (typeof window.getSelectedMatchIADate !== "function") {
+      return;
+    }
+
+    const actual = window.getSelectedMatchIADate();
+
+    if (!actual) return;
+
+    const date = new Date(actual + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) return;
+
+    date.setDate(date.getDate() + offset);
+
+    const nuevaFecha =
+      date.getFullYear() +
+      "-" +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(date.getDate()).padStart(2, "0");
+
+    if (typeof window.setMatchIADate === "function") {
+      window.setMatchIADate(nuevaFecha);
+    }
+
+    updateSelectedDateUI();
+  };
+
+  // =========================================================
+  // ACTUALIZAR FECHA
+  // =========================================================
+
   function updateDates() {
-    const now = new Date();
-
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    setText(
-      "todayDate",
-      now.toLocaleDateString("es-AR", {
-        day: "2-digit",
-        month: "2-digit"
-      })
-    );
-
-    setText(
-      "tomorrowDate",
-      tomorrow.toLocaleDateString("es-AR", {
-        day: "2-digit",
-        month: "2-digit"
-      })
-    );
+    updateSelectedDateUI();
   }
 
+  // =========================================================
+  // BOTONES DE FECHA
+  // =========================================================
+
+  function setupDateControls() {
+    const previous = document.getElementById("previousDate");
+    const next = document.getElementById("nextDate");
+
+    if (previous) {
+      previous.onclick = function () {
+        window.changeDate(-1);
+      };
+    }
+
+    if (next) {
+      next.onclick = function () {
+        window.changeDate(1);
+      };
+    }
+
+    updateSelectedDateUI();
+  }
+
+  // =========================================================
+  // INICIO
+  // =========================================================
+
   document.addEventListener("DOMContentLoaded", function () {
-    updateDates();
     hideSplash();
 
-    if (typeof window.loadFixtures === "function") {
-      window.loadFixtures();
-    }
+    /*
+     * Esperamos un instante para asegurarnos de que
+     * fixtures.js haya inicializado la fecha.
+     */
+    setTimeout(function () {
+      setupDateControls();
+      updateDates();
+
+      if (typeof window.loadFixtures === "function") {
+        window.loadFixtures();
+      }
+    }, 50);
   });
 
 })();
