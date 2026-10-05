@@ -1,0 +1,90 @@
+// ============================================================
+// MATCHIA — MOTOR DE CALIBRACIONES
+// IMPORTANTE: NO MODIFICAR LAS CALIBRACIONES.
+// ============================================================
+
+const TEAM_NAMES = {
+  home: "River",
+  away: "Boca"
+};
+
+const match = {
+  minute: 0,
+
+  home: {
+    goals: 0,
+    arrivals: 0,
+    shots: 0,
+    shotsOnTarget: 0,
+    corners: 0,
+    reds: 0
+  },
+
+  away: {
+    goals: 0,
+    arrivals: 0,
+    shots: 0,
+    shotsOnTarget: 0,
+    corners: 0,
+    reds: 0
+  }
+};
+
+// ------------------------------------------------------------
+// CURVA DE EMPATE — NO MODIFICAR
+// ------------------------------------------------------------
+
+const drawPoints = [
+  [0,34],
+  [10,36],
+  [20,38],
+  [30,41],
+  [40,45],
+  [50,49],
+  [60,54],
+  [65,58],
+  [70,63],
+  [75,68],
+  [80,74],
+  [81,76],
+  [82,78],
+  [83,80],
+  [84,82],
+  [85,90],
+  [86,92],
+  [87,94],
+  [88,96],
+  [89,98],
+  [90,99]
+];
+
+function getDrawCurve(minute) {
+  if (minute <= drawPoints[0][0]) {
+    return drawPoints[0][1];
+  }
+
+  if (minute >= drawPoints[drawPoints.length - 1][0]) {
+    return drawPoints[drawPoints.length - 1][1];
+  }
+
+  for (let i = 0; i < drawPoints.length - 1; i++) {
+    const [m1, d1] = drawPoints[i];
+    const [m2, d2] = drawPoints[i + 1];
+
+    if (minute >= m1 && minute <= m2) {
+      const ratio = (minute - m1) / (m2 - m1);
+      return d1 + (d2 - d1) * ratio;
+    }
+  }
+
+  return 34;
+}
+
+// ------------------------------------------------------------
+// NORMALIZACIÓN
+// ------------------------------------------------------------
+
+function normalize(home, draw, away) {
+  const total = home + draw + away;
+
+  if (total
