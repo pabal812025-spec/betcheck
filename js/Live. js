@@ -1,0 +1,567 @@
+// MatchIA - LIVE
+// Datos en vivo del partido.
+// NO modifica las calibraciones de porcentajes.
+
+(function () {
+  "use strict";
+
+  let liveTimer = null;
+  let currentLiveId = null;
+
+  function setText(id, value) {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.textContent = value == null ? "" : value;
+    }
+  }
+
+  function setImage(id, src) {
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    if (src) {
+      element.src = src;
+      element.style.display = "block";
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function numero(value) {
+    const n = Number(value);
+
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function buscarStat(stats, nombres) {
+    for (const nombre of nombres) {
+      const encontrado = stats.find(function (item) {
+        return String(item.tipo || "")
+          .toLowerCase()
+          .trim() === nombre.toLowerCase();
+      });
+
+      if (encontrado) {
+        return encontrado.valor;
+      }
+    }
+
+    return "-";
+  }
+
+  function convertirNumeroStat(value) {
+    if (value === null || value === undefined) {
+      return 0;
+    }
+
+    const texto = String(value)
+      .replace("%", "")
+      .replace(",", ".")
+      .trim();
+
+    const n = Number(texto);
+
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function obtenerEquipoStats(datos, index) {
+    return datos.estadisticas &&
+      datos.estadisticas[index]
+      ? datos.estadisticas[index].estadisticas || []
+      : [];
+  }
+
+  function renderLiveStats(datos) {
+    const container =
+      document.getElementById("liveStats");
+
+    if (!container) return;
+
+    const homeStats =
+      obtenerEquipoStats(datos, 0);
+
+    const awayStats =
+      obtenerEquipoStats(datos, 1);
+
+    const filas = [
+      {
+        nombre: "Tiros",
+        home: buscarStat(homeStats, [
+          "Total Shots"
+        ]),
+        away: buscarStat(awayStats, [
+          "Total Shots"
+        ])
+      },
+      {
+        nombre: "Tiros al arco",
+        home: buscarStat(homeStats, [
+          "Shots on Goal"
+        ]),
+        away: buscarStat(awayStats, [
+          "Shots on Goal"
+        ])
+      },
+      {
+        nombre: "Posesión",
+        home: buscarStat(homeStats, [
+          "Ball Possession"
+        ]),
+        away: buscarStat(awayStats, [
+          "Ball Possession"
+        ])
+      },
+      {
+        nombre: "Corners",
+        home: buscarStat(homeStats, [
+          "Corner Kicks"
+        ]),
+        away: buscarStat(awayStats, [
+          "Corner Kicks"
+        ])
+      },
+      {
+        nombre: "Faltas",
+        home: buscarStat(homeStats, [
+          "Fouls"
+        ]),
+        away: buscarStat(awayStats, [
+          "Fouls"
+        ])
+      },
+      {
+        nombre: "Tarjetas amarillas",
+        home: buscarStat(homeStats, [
+          "Yellow Cards"
+        ]),
+        away: buscarStat(awayStats, [
+          "Yellow Cards"
+        ])
+      },
+      {
+        nombre: "Tarjetas rojas",
+        home: buscarStat(homeStats, [
+          "Red Cards"
+        ]),
+        away: buscarStat(awayStats, [
+          "Red Cards"
+        ])
+      }
+    ];
+
+    container.innerHTML = filas
+      .map(function (fila) {
+        return `
+          <div class="live-stat-row">
+            <div class="live-stat-value live-stat-home">
+              ${escapeHtml(fila.home)}
+            </div>
+
+            <div class="live-stat-name">
+              ${escapeHtml(fila.nombre)}
+            </div>
+
+            <div class="live-stat-value live-stat-away">
+              ${escapeHtml(fila.away)}
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  function obtenerValoresParaMotor(datos) {
+    const homeStats =
+      obtenerEquipoStats(datos, 0);
+
+    const awayStats =
+      obtenerEquipoStats(datos, 1);
+
+    const cornersHome =
+      convertirNumeroStat(
+        buscarStat(homeStats, ["Corner Kicks"])
+      );
+
+    const cornersAway =
+      convertirNumeroStat(
+        buscarStat(awayStats, ["Corner Kicks"])
+      );
+
+    const shotsHome =
+      convertirNumeroStat(
+        buscarStat(homeStats, ["Total Shots"])
+      );
+
+    const shotsAway =
+      convertirNumeroStat(
+        buscarStat(awayStats, ["Total Shots"])
+      );
+
+    const shotsOnTargetHome =
+      convertirNumeroStat(
+        buscarStat(homeStats, ["Shots on Goal"])
+      );
+
+    const shotsOnTargetAway =
+      convertirNumeroStat(
+        buscarStat(awayStats, ["Shots on Goal"])
+      );
+
+    const redHome =
+      convertirNumeroStat(
+        buscarStat(homeStats, ["Red Cards"])
+      );
+
+    const redAway =
+      convertirNumeroStat(
+        buscarStat(awayStats, ["Red Cards"])
+      );
+
+    return {
+      minute: numero(datos.minuto),
+
+      goalsHome:
+        numero(datos.marcador?.local),
+
+      goalsAway:
+        numero(datos.marcador?.visitante),
+
+      cornersHome,
+      cornersAway,
+
+      shotsHome,
+      shotsAway,
+
+      shotsOnTargetHome,
+      shotsOnTargetAway,
+
+      redHome,
+      redAway
+    };
+  }
+
+  function actualizarProbabilidades(datos) {
+    /*
+     * IMPORTANTE:
+     * Usamos el motor existente de calibraciones.
+     * No se cambian sus fórmulas ni pesos.
+     */
+
+    if (
+      !window.MatchIA ||
+      typeof window.MatchIA.calculateProbabilities !==
+        "function"
+    ) {
+      return;
+    }
+
+    const valores =
+      obtenerValoresParaMotor(datos);
+
+    const match = {
+      minute: valores.minute,
+      goalsHome: valores.goalsHome,
+      goalsAway: valores.goalsAway,
+      arrivalsHome: 0,
+      arrivalsAway: 0,
+      shotsHome: valores.shotsHome,
+      shotsAway: valores.shotsAway,
+      shotsOnTargetHome:
+        valores.shotsOnTargetHome,
+      shotsOnTargetAway:
+        valores.shotsOnTargetAway,
+      cornersHome: valores.cornersHome,
+      cornersAway: valores.cornersAway,
+      redsHome: valores.redHome,
+      redsAway: valores.redAway
+    };
+
+    try {
+      const resultado =
+        window.MatchIA.calculateProbabilities(
+          match
+        );
+
+      if (!resultado) return;
+
+      const home =
+        resultado.home ??
+        resultado.local ??
+        resultado.homeWin;
+
+      const draw =
+        resultado.draw ??
+        resultado.empate;
+
+      const away =
+        resultado.away ??
+        resultado.visitante ??
+        resultado.awayWin;
+
+      if (home !== undefined) {
+        setText(
+          "liveProbHome",
+          formatPercent(home)
+        );
+      }
+
+      if (draw !== undefined) {
+        setText(
+          "liveProbDraw",
+          formatPercent(draw)
+        );
+      }
+
+      if (away !== undefined) {
+        setText(
+          "liveProbAway",
+          formatPercent(away)
+        );
+      }
+
+    } catch (error) {
+      console.warn(
+        "No se pudieron actualizar probabilidades:",
+        error
+      );
+    }
+  }
+
+  function renderLiveAnalysis(datos) {
+    const container =
+      document.getElementById("liveAnalysis");
+
+    if (!container) return;
+
+    let texto =
+      "Análisis en vivo basado en el desarrollo actual del partido.";
+
+    if (
+      window.MatchIA &&
+      typeof window.MatchIA.generateAnalysis ===
+        "function"
+    ) {
+      try {
+        const valores =
+          obtenerValoresParaMotor(datos);
+
+        const match = {
+          minute: valores.minute,
+          goalsHome: valores.goalsHome,
+          goalsAway: valores.goalsAway,
+          arrivalsHome: 0,
+          arrivalsAway: 0,
+          shotsHome: valores.shotsHome,
+          shotsAway: valores.shotsAway,
+          shotsOnTargetHome:
+            valores.shotsOnTargetHome,
+          shotsOnTargetAway:
+            valores.shotsOnTargetAway,
+          cornersHome: valores.cornersHome,
+          cornersAway: valores.cornersAway,
+          redsHome: valores.redHome,
+          redsAway: valores.redAway
+        };
+
+        const resultado =
+          window.MatchIA.generateAnalysis(match);
+
+        if (typeof resultado === "string") {
+          texto = resultado;
+        } else if (resultado?.text) {
+          texto = resultado.text;
+        } else if (resultado?.analysis) {
+          texto = resultado.analysis;
+        }
+      } catch (error) {
+        console.warn(
+          "Error generando análisis:",
+          error
+        );
+      }
+    }
+
+    container.textContent = texto;
+  }
+
+  function renderLiveMatch(datos) {
+    const local = datos.local || {};
+    const visitante = datos.visitante || {};
+
+    setText(
+      "liveHomeName",
+      local.nombre || "Local"
+    );
+
+    setText(
+      "liveAwayName",
+      visitante.nombre || "Visitante"
+    );
+
+    setImage(
+      "liveHomeLogo",
+      local.logo
+    );
+
+    setImage(
+      "liveAwayLogo",
+      visitante.logo
+    );
+
+    setText(
+      "liveHomeScore",
+      datos.marcador?.local ?? 0
+    );
+
+    setText(
+      "liveAwayScore",
+      datos.marcador?.visitante ?? 0
+    );
+
+    setText(
+      "liveMinute",
+      datos.minuto
+        ? `${datos.minuto}'`
+        : "EN VIVO"
+    );
+
+    setText(
+      "liveLeague",
+      datos.liga?.nombre || "Liga"
+    );
+
+    renderLiveStats(datos);
+
+    actualizarProbabilidades(datos);
+
+    renderLiveAnalysis(datos);
+  }
+
+  async function loadLiveMatch(fixtureId) {
+    if (!fixtureId) return;
+
+    currentLiveId = fixtureId;
+
+    if (liveTimer) {
+      clearInterval(liveTimer);
+      liveTimer = null;
+    }
+
+    await actualizarPartidoEnVivo();
+
+    /*
+     * API-Football se consulta periódicamente.
+     * Cada 30 segundos actualizamos el partido.
+     */
+    liveTimer = setInterval(
+      actualizarPartidoEnVivo,
+      30000
+    );
+  }
+
+  async function actualizarPartidoEnVivo() {
+    if (!currentLiveId) return;
+
+    try {
+      const response = await fetch(
+        `/api/match?id=${encodeURIComponent(
+          currentLiveId
+        )}`,
+        {
+          cache: "no-store"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Error API: " + response.status
+        );
+      }
+
+      const datos =
+        await response.json();
+
+      window.MatchIALiveData = datos;
+
+      renderLiveMatch(datos);
+
+      /*
+       * Si terminó el partido dejamos de consultar
+       * como partido en vivo.
+       */
+      const estado =
+        String(datos.estado || "")
+          .toUpperCase();
+
+      if (
+        ["FT", "AET", "PEN"].includes(estado)
+      ) {
+        detenerLive();
+      }
+
+    } catch (error) {
+      console.error(
+        "MatchIA - Error actualizando partido en vivo:",
+        error
+      );
+
+      const analysis =
+        document.getElementById(
+          "liveAnalysis"
+        );
+
+      if (analysis) {
+        analysis.textContent =
+          "Esperando actualización de datos...";
+      }
+    }
+  }
+
+  function detenerLive() {
+    if (liveTimer) {
+      clearInterval(liveTimer);
+      liveTimer = null;
+    }
+
+    currentLiveId = null;
+  }
+
+  window.loadLiveMatch =
+    loadLiveMatch;
+
+  window.refreshLiveMatch =
+    actualizarPartidoEnVivo;
+
+  window.stopLiveMatch =
+    detenerLive;
+
+  window.MatchIALive = {
+    load: loadLiveMatch,
+    refresh: actualizarPartidoEnVivo,
+    stop: detenerLive
+  };
+
+  function formatPercent(value) {
+    let number = Number(value);
+
+    if (!Number.isFinite(number)) {
+      return "--%";
+    }
+
+    if (number <= 1) {
+      number *= 100;
+    }
+
+    return Math.round(number) + "%";
+  }
+
+})();
