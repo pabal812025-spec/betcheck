@@ -128,8 +128,8 @@ button,input{font:inherit}
 
 <div class="match">
 <div class="team">
-<div class="crest">A</div>
-Local
+<div class="crest">R</div>
+River
 </div>
 
 <div class="score">
@@ -138,8 +138,8 @@ Local
 </div>
 
 <div class="team">
-<div class="crest">B</div>
-Visitante
+<div class="crest">E</div>
+Equipo Chico
 </div>
 </div>
 
@@ -158,8 +158,8 @@ VER ANÁLISIS EN VIVO
 
 <div class="match">
 <div class="team">
-<div class="crest">A</div>
-Equipo local
+<div class="crest">R</div>
+River
 </div>
 
 <div class="score">
@@ -168,8 +168,8 @@ VS
 </div>
 
 <div class="team">
-<div class="crest">B</div>
-Equipo visitante
+<div class="crest">E</div>
+Equipo Chico
 </div>
 </div>
 
@@ -219,7 +219,7 @@ VS
 
 <button class="back" onclick="show('home')">← Volver</button>
 
-<h1 class="title" id="matchTitle">Local vs Visitante</h1>
+<h1 class="title" id="matchTitle">River vs Equipo Chico</h1>
 
 <p class="muted" id="matchState">Análisis MatchIA</p>
 
@@ -227,7 +227,7 @@ VS
 
 <div>
 <strong id="probHome">33%</strong>
-Local
+<span id="homeLabel">River</span>
 </div>
 
 <div>
@@ -237,7 +237,7 @@ Empate
 
 <div>
 <strong id="probAway">33%</strong>
-Visitante
+<span id="awayLabel">Equipo Chico</span>
 </div>
 
 </div>
@@ -270,27 +270,7 @@ H2H
 <h3>🧠 ¿Por qué estas probabilidades?</h3>
 
 <ul class="explain" id="analysisText">
-
-<li>
-Rendimiento reciente y consistencia de resultados.
-</li>
-
-<li>
-Fortaleza como local y rendimiento del visitante.
-</li>
-
-<li>
-Goles, tiros, córners, tarjetas y producción ofensiva.
-</li>
-
-<li>
-Enfrentamientos directos y contexto del partido.
-</li>
-
-<li>
-En vivo, los porcentajes se recalculan cuando llegan nuevos datos.
-</li>
-
+<li>Calculando la probabilidad inicial...</li>
 </ul>
 
 </div>
@@ -320,27 +300,32 @@ En vivo, los porcentajes se recalculan cuando llegan nuevos datos.
 
 <div class="metric">
 <span>Posesión</span>
-<b>58% — 42%</b>
+<b id="possessionValue">58% — 42%</b>
 </div>
 
 <div class="metric">
-<span>Tiros</span>
-<b>12 — 7</b>
+<span>⚽ Goles</span>
+<b id="goalsValue">0 — 0</b>
 </div>
 
 <div class="metric">
-<span>Tiros al arco</span>
-<b>6 — 3</b>
+<span>🎯 Tiros</span>
+<b id="shotsValue">0 — 0</b>
 </div>
 
 <div class="metric">
-<span>Córners</span>
-<b>6 — 3</b>
+<span>🎯 Tiros al arco</span>
+<b id="shotsTargetValue">0 — 0</b>
 </div>
 
 <div class="metric">
-<span>Tarjetas</span>
-<b>2 — 3</b>
+<span>🚩 Córners</span>
+<b id="cornersValue">0 — 0</b>
+</div>
+
+<div class="metric">
+<span>🟥 Rojas</span>
+<b id="redsValue">0 — 0</b>
 </div>
 
 </div>
@@ -354,27 +339,27 @@ En vivo, los porcentajes se recalculan cuando llegan nuevos datos.
 <h3>🤝 Últimos enfrentamientos</h3>
 
 <div class="metric">
-<span>Local 2 - 1 Visitante</span>
+<span>River 2 - 1 Equipo Chico</span>
 <b>Victoria</b>
 </div>
 
 <div class="metric">
-<span>Visitante 0 - 0 Local</span>
+<span>Equipo Chico 0 - 0 River</span>
 <b>Empate</b>
 </div>
 
 <div class="metric">
-<span>Local 3 - 1 Visitante</span>
+<span>River 3 - 1 Equipo Chico</span>
 <b>Victoria</b>
 </div>
 
 <div class="metric">
-<span>Visitante 1 - 2 Local</span>
+<span>Equipo Chico 1 - 2 River</span>
 <b>Victoria</b>
 </div>
 
 <div class="metric">
-<span>Local 1 - 1 Visitante</span>
+<span>River 1 - 1 Equipo Chico</span>
 <b>Empate</b>
 </div>
 
@@ -389,12 +374,12 @@ En vivo, los porcentajes se recalculan cuando llegan nuevos datos.
 <h3>📋 Últimos 5 partidos</h3>
 
 <div class="metric">
-<span>Local</span>
+<span>River</span>
 <b>G G E G P</b>
 </div>
 
 <div class="metric">
-<span>Visitante</span>
+<span>Equipo Chico</span>
 <b>G P G E P</b>
 </div>
 
@@ -420,7 +405,7 @@ Actualización de estadísticas preparada para datos en tiempo real.
 
 <span class="pill">● EN VIVO 67'</span>
 
-<h3>Local 2 — 1 Visitante</h3>
+<h3>River 2 — 1 Equipo Chico</h3>
 
 <div class="metric">
 <span>⚽ Goles</span>
@@ -438,8 +423,13 @@ Actualización de estadísticas preparada para datos en tiempo real.
 </div>
 
 <div class="metric">
-<span>🟨 Tarjetas</span>
-<b>2 — 3</b>
+<span>🎯 Tiros al arco</span>
+<b>6 — 3</b>
+</div>
+
+<div class="metric">
+<span>🟥 Rojas</span>
+<b>0 — 0</b>
 </div>
 
 <button class="go" onclick="openMatch(true)">
@@ -590,10 +580,11 @@ MatchIA • Las calibraciones de probabilidades permanecen sin modificar.
 
 
 <!-- ========================================================
-     MOTOR DE CALIBRACIONES
+     MOTORES
      ======================================================== -->
 
 <script src="js/calibraciones.js"></script>
+<script src="js/app.js"></script>
 
 
 <script>
@@ -607,6 +598,11 @@ const ids=[
 'profile',
 'config'
 ];
+
+
+// ------------------------------------------------------------
+// NAVEGACIÓN
+// ------------------------------------------------------------
 
 function show(id){
 
@@ -625,34 +621,32 @@ window.scrollTo(0,0);
 }
 
 
-function updateProbabilities(){
+// ------------------------------------------------------------
+// ACTUALIZAR PANTALLA
+// ------------------------------------------------------------
 
-if(!window.MatchIA) return;
+function updateScreen(probabilities,analysis){
 
-const result=window.MatchIA.update();
-
-if(!result || !result.probabilities) return;
-
-const p=result.probabilities;
+if(!probabilities) return;
 
 const home=document.getElementById('probHome');
 const draw=document.getElementById('probDraw');
 const away=document.getElementById('probAway');
 
-if(home) home.textContent=p.home+'%';
-if(draw) draw.textContent=p.draw+'%';
-if(away) away.textContent=p.away+'%';
+if(home) home.textContent=probabilities.home+'%';
+if(draw) draw.textContent=probabilities.draw+'%';
+if(away) away.textContent=probabilities.away+'%';
 
 const analysisBox=document.getElementById('analysisText');
 
 if(
 analysisBox &&
-result.analysis &&
-Array.isArray(result.analysis.text)
+analysis &&
+Array.isArray(analysis)
 ){
 
 analysisBox.innerHTML=
-result.analysis.text
+analysis
 .map(text=>'<li>'+text+'</li>')
 .join('');
 
@@ -661,24 +655,148 @@ result.analysis.text
 }
 
 
+// ------------------------------------------------------------
+// PREPARTIDO
+// ------------------------------------------------------------
+
+function openPrematch(){
+
+const homeName='River';
+const awayName='Equipo Chico';
+
+document.getElementById('matchTitle').textContent=
+homeName+' vs '+awayName;
+
+document.getElementById('homeLabel').textContent=
+homeName;
+
+document.getElementById('awayLabel').textContent=
+awayName;
+
+document.getElementById('matchState').textContent=
+'Análisis prepartido • Probabilidad inicial';
+
+if(window.MatchIAPrematch){
+
+const result=
+window.MatchIAPrematch.getPrematchPrediction(
+homeName,
+awayName
+);
+
+updateScreen(
+result.probabilities,
+result.analysis
+);
+
+}
+
+}
+
+
+// ------------------------------------------------------------
+// DATOS DEL PARTIDO EN VIVO
+// ------------------------------------------------------------
+
+function loadLiveMatch(){
+
+if(!window.MatchIA) return;
+
+
+// Minuto
+window.MatchIA.changeMinute(67);
+
+
+// Goles
+window.MatchIA.changeGoal('home',2);
+window.MatchIA.changeGoal('away',1);
+
+
+// Estadísticas
+window.MatchIA.changeStat('home','arrivals',12);
+window.MatchIA.changeStat('away','arrivals',7);
+
+window.MatchIA.changeStat('home','shots',12);
+window.MatchIA.changeStat('away','shots',7);
+
+window.MatchIA.changeStat('home','shotsOnTarget',6);
+window.MatchIA.changeStat('away','shotsOnTarget',3);
+
+window.MatchIA.changeStat('home','corners',6);
+window.MatchIA.changeStat('away','corners',3);
+
+window.MatchIA.changeStat('home','reds',0);
+window.MatchIA.changeStat('away','reds',0);
+
+const result=
+window.MatchIA.update();
+
+updateScreen(
+result.probabilities,
+result.analysis.text
+);
+
+
+// Estadísticas visibles
+document.getElementById('goalsValue').textContent=
+'2 — 1';
+
+document.getElementById('shotsValue').textContent=
+'12 — 7';
+
+document.getElementById('shotsTargetValue').textContent=
+'6 — 3';
+
+document.getElementById('cornersValue').textContent=
+'6 — 3';
+
+document.getElementById('redsValue').textContent=
+'0 — 0';
+
+}
+
+
+// ------------------------------------------------------------
+// ABRIR PARTIDO
+// ------------------------------------------------------------
+
 function openMatch(live){
 
 show('match');
-
-document.getElementById('matchState').textContent=
-live
-?'🔴 En vivo • estadísticas actualizadas'
-:'Análisis MatchIA';
 
 tab(
 document.querySelector('.tabs button'),
 'analysis'
 );
 
-updateProbabilities();
+if(live){
+
+document.getElementById('matchTitle').textContent=
+'River 2 - 1 Equipo Chico';
+
+document.getElementById('homeLabel').textContent=
+'River';
+
+document.getElementById('awayLabel').textContent=
+'Equipo Chico';
+
+document.getElementById('matchState').textContent=
+'🔴 En vivo • minuto 67 • estadísticas actualizadas';
+
+loadLiveMatch();
+
+}else{
+
+openPrematch();
 
 }
 
+}
+
+
+// ------------------------------------------------------------
+// PESTAÑAS
+// ------------------------------------------------------------
 
 function tab(btn,id){
 
@@ -701,6 +819,10 @@ btn.classList.add('active');
 
 }
 
+
+// ------------------------------------------------------------
+// BÚSQUEDA
+// ------------------------------------------------------------
 
 function doSearch(){
 
@@ -726,18 +848,18 @@ Ver partido y análisis MatchIA
 }
 
 
-setTimeout(
-()=>{
+// ------------------------------------------------------------
+// ARRANQUE
+// ------------------------------------------------------------
+
+setTimeout(()=>{
+
 document
 .getElementById('splash')
 .classList
 .add('hide');
 
-updateProbabilities();
-
-},
-1800
-);
+},1800);
 
 </script>
 
