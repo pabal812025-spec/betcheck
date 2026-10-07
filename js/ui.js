@@ -38,7 +38,7 @@
       setTimeout(function () {
         splash.style.display = "none";
       }, 280);
-    }, 1000);
+    }, 1600);
   }
 
   // =========================================================
@@ -351,6 +351,16 @@
       visitante.nombre || "Visitante"
     );
   }
+
+  // =========================================================
+  // CANCHA 5D
+  // =========================================================
+  window.open5D = function () {
+    show("pitch5d");
+    const id = selectedFixtureId;
+    if (!id) return;
+    if (typeof window.loadLiveMatch === "function") window.loadLiveMatch(id);
+  };
 
   // =========================================================
   // ESTADÍSTICAS
