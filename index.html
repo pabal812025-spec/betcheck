@@ -281,7 +281,11 @@
 
         <!-- TABS -->
 
-        <div class="tabs">
+        <button class="pitch5d-launch" type="button" onclick="open5D()">
+        <span>◈</span> CANCHA 5D · MATCHIA LIVE
+      </button>
+
+      <div class="tabs">
 
           <button
             class="tab active"
@@ -551,6 +555,44 @@
 
     </main>
 
+
+    <!-- =====================================================
+         CANCHA 5D
+         ===================================================== -->
+    <main id="pitch5d" class="screen">
+      <div class="back-row"><button class="back-btn" onclick="show('match')">← Volver al partido</button></div>
+      <div class="pitch5d-header">
+        <div><span class="pitch-live-dot"></span> MATCHIA LIVE · 5D</div>
+        <strong id="pitch5dMinute">--'</strong>
+      </div>
+      <div class="pitch5d-score">
+        <div><span id="pitchHomeName">LOCAL</span><b id="pitchHomeScore">0</b></div>
+        <em>—</em>
+        <div><b id="pitchAwayScore">0</b><span id="pitchAwayName">VISITANTE</span></div>
+      </div>
+      <div class="pitch5d-wrap">
+        <div class="pitch5d">
+          <div class="pitch-glow"></div><div class="halfway"></div><div class="center-circle"></div><div class="center-dot"></div>
+          <div class="box top"></div><div class="box bottom"></div><div class="goal top"></div><div class="goal bottom"></div>
+          <div class="player p1"></div><div class="player p2"></div><div class="player p3"></div><div class="player p4"></div><div class="player p5"></div>
+          <div class="player away a1"></div><div class="player away a2"></div><div class="player away a3"></div><div class="player away a4"></div><div class="player away a5"></div>
+          <div class="ball5d" id="ball5d"></div><div class="ball-trail"></div>
+          <div class="pitch-status" id="pitchStatus">ESPERANDO DATOS EN VIVO</div>
+        </div>
+      </div>
+      <div class="pitch5d-probs">
+        <div><small>LOCAL</small><strong id="pitchProbHome">--%</strong></div>
+        <div class="draw"><small>EMPATE</small><strong id="pitchProbDraw">--%</strong></div>
+        <div><small>VISITANTE</small><strong id="pitchProbAway">--%</strong></div>
+      </div>
+      <div class="pitch5d-stats">
+        <div><span>POSESIÓN</span><b id="pitchPossession">-- / --</b></div>
+        <div><span>TIROS</span><b id="pitchShots">-- / --</b></div>
+        <div><span>CÓRNERS</span><b id="pitchCorners">-- / --</b></div>
+        <div><span>PRESIÓN</span><b id="pitchPressure">-- / --</b></div>
+      </div>
+      <div class="pitch5d-mode"><button class="active">DETALLES</button><button>EN VIVO</button><button>IA ANÁLISIS</button></div>
+    </main>
 
     <!-- =====================================================
          LIVE
