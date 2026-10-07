@@ -1127,3 +1127,28 @@ button{
   }
 
 }
+
+/* MATCHIA IA 5D — nueva capa visual */
+:root{--m-cyan:#42e8ff;--m-green:#b8ff00;--m-bg:#030914}
+html,body{background:#030914}
+body{background:radial-gradient(circle at 50% -8%,rgba(42,179,255,.16),transparent 30%),linear-gradient(180deg,#020711,#06111d 50%,#020812)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;background-image:linear-gradient(rgba(70,220,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(70,220,255,.025) 1px,transparent 1px);background-size:32px 32px}
+.splash{background:radial-gradient(circle at 50% 42%,rgba(184,255,0,.12),transparent 18%),radial-gradient(circle at 50% 20%,rgba(41,191,255,.18),transparent 35%),#020711;overflow:hidden}
+.splash-orbit{position:absolute;width:260px;height:260px;border:1px solid rgba(66,232,255,.16);border-radius:50%;box-shadow:0 0 60px rgba(66,232,255,.08);animation:miPulse 2s ease-in-out infinite}
+.splash-logo{position:relative;z-index:2;width:175px;height:175px;object-fit:contain;filter:drop-shadow(0 0 22px rgba(184,255,0,.32))}
+.splash-name{position:relative;z-index:2;font-size:42px;font-weight:900;letter-spacing:-1.8px}.splash-name span{color:var(--m-green)}
+.splash-tagline{position:relative;z-index:2;color:var(--m-green);font-size:9px;font-weight:900;letter-spacing:1.7px}
+.splash-progress{position:relative;z-index:2;width:190px;height:7px;border:1px solid rgba(184,255,0,.45);border-radius:99px;overflow:hidden;margin-top:9px}.splash-progress span{display:block;width:50%;height:100%;background:var(--m-green);box-shadow:0 0 12px var(--m-green);animation:miLoad 1.5s ease-in-out infinite}
+.splash-loading{position:relative;z-index:2;color:#91a9ba;font-size:10px}
+.brand-logo-wrap{width:43px;height:43px;display:grid;place-items:center;border:1px solid rgba(184,255,0,.28);border-radius:14px;background:rgba(10,30,43,.8);overflow:hidden}
+.brand-logo-image{width:39px;height:39px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(184,255,0,.22))}
+.brand-name span{color:var(--m-green)}.brand-sub{color:var(--m-cyan)!important;letter-spacing:1.5px!important}
+.matchia-date-selector{margin:8px auto 20px!important}
+.selected-date-box{padding:9px 20px;border:1px solid rgba(66,232,255,.16);border-radius:18px;background:rgba(8,27,42,.8);box-shadow:0 0 30px rgba(66,232,255,.05)}
+.selected-date-label{color:#638298!important;font-size:9px!important;letter-spacing:2.3px!important}.selected-date{font-size:23px!important;text-shadow:0 0 18px rgba(66,232,255,.18)}
+.date-arrow{background:linear-gradient(145deg,#0a2232,#06131f)!important;border:1px solid rgba(66,232,255,.27)!important;color:var(--m-cyan)!important;border-radius:15px!important}
+.section-title{letter-spacing:1.45px!important}.section-dot{width:6px;height:6px;border-radius:50%;background:var(--m-cyan);display:inline-block;box-shadow:0 0 10px var(--m-cyan)}.section-dot.live{background:#ff3e55;box-shadow:0 0 10px #ff3e55}.section-dot.hot{background:var(--m-green);box-shadow:0 0 10px var(--m-green)}.section-dot.done{background:#7e91a0;box-shadow:none}
+.match-card,.featured-card,.live-card,.probability-card,.panel,.match-header-card,.empty-card,.search-box,.profile-card{background:linear-gradient(145deg,rgba(9,29,44,.93),rgba(4,14,24,.94))!important;border-color:rgba(66,232,255,.15)!important;box-shadow:0 12px 32px rgba(0,0,0,.22),inset 0 0 30px rgba(66,232,255,.018)!important}
+.match-card,.featured-card{position:relative;overflow:hidden}.match-card:before,.featured-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--m-green),var(--m-cyan),transparent)}
+.bottom-nav{background:rgba(2,10,18,.94)!important;backdrop-filter:blur(20px);border-top-color:rgba(66,232,255,.16)!important}.nav-item.active{color:var(--m-green)!important;text-shadow:0 0 14px rgba(184,255,0,.35)}
+@keyframes miPulse{0%,100%{transform:scale(.94);opacity:.65}50%{transform:scale(1.03);opacity:1}}@keyframes miLoad{0%{transform:translateX(-120%)}100%{transform:translateX(380%)}}
