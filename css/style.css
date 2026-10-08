@@ -1165,3 +1165,35 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .pitch5d-probs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:0 0 12px}.pitch5d-probs>div{padding:11px 4px;text-align:center;border:1px solid rgba(66,232,255,.15);border-radius:12px;background:#061521}.pitch5d-probs small{display:block;color:#6d8798;font-size:8px;font-weight:800}.pitch5d-probs strong{display:block;color:#b8ff00;font-size:20px;margin-top:3px}.pitch5d-probs .draw strong{color:#42e8ff}
 .pitch5d-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.pitch5d-stats div{padding:11px;border-radius:12px;background:#06131f;border:1px solid rgba(66,232,255,.11)}.pitch5d-stats span{display:block;color:#607b8d;font-size:8px;letter-spacing:1px}.pitch5d-stats b{color:#fff;font-size:14px}.pitch5d-mode{display:flex;gap:6px;margin-top:12px}.pitch5d-mode button{flex:1;padding:10px 3px;border-radius:10px;border:1px solid rgba(66,232,255,.16);background:#06131f;color:#7590a2;font-size:8px;font-weight:900}.pitch5d-mode button.active{color:#b8ff00;border-color:rgba(184,255,0,.4)}
 @keyframes miPitchGlow{0%,100%{opacity:.55}50%{opacity:1}}@keyframes miBall{0%,100%{left:50%;top:52%}35%{left:66%;top:38%}68%{left:34%;top:59%}}@keyframes miTrail{0%,100%{opacity:.15}45%{opacity:1}75%{opacity:.1}}
+
+
+/* MATCHIA IA 5D — HOME / STATS / FAVORITES */
+.home-tools{margin:-2px 0 22px}
+.home-search{height:46px;display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid rgba(66,232,255,.18);border-radius:14px;background:linear-gradient(145deg,rgba(10,31,47,.92),rgba(4,15,25,.96));color:#718b9e;font-size:11px;box-shadow:inset 0 0 24px rgba(66,232,255,.025);cursor:pointer}
+.home-search span:first-child{font-size:22px;color:var(--m-cyan);line-height:1}
+.league-chips{display:flex;gap:7px;overflow-x:auto;padding:10px 1px 2px;scrollbar-width:none}
+.league-chips::-webkit-scrollbar{display:none}
+.league-chips button{flex:0 0 auto;padding:8px 12px;border-radius:99px;border:1px solid rgba(66,232,255,.17);background:#071725;color:#8199aa;font-size:9px;font-weight:800}
+.league-chips button:first-child{color:var(--m-green);border-color:rgba(184,255,0,.35);background:rgba(184,255,0,.06)}
+.section-title span{display:flex;align-items:center;gap:7px}
+.stats-hero-card{position:relative;overflow:hidden;margin-bottom:12px;padding:20px;border:1px solid rgba(66,232,255,.22);border-radius:18px;background:linear-gradient(145deg,#0a2634,#04121e);box-shadow:0 0 32px rgba(66,232,255,.06)}
+.stats-hero-glow{position:absolute;width:170px;height:170px;right:-70px;top:-80px;border-radius:50%;background:rgba(184,255,0,.12);filter:blur(25px)}
+.stats-hero-label{position:relative;color:var(--m-cyan);font-size:8px;font-weight:900;letter-spacing:1.8px;margin-bottom:8px}
+.stats-hero-card strong{position:relative;display:block;font-size:20px;margin-bottom:7px}
+.stats-hero-card small{position:relative;display:block;max-width:290px;color:#7890a1;font-size:10px;line-height:1.5}
+.stats-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stats-mini-grid>div{padding:15px;border:1px solid rgba(66,232,255,.12);border-radius:14px;background:#061522}
+.stats-mini-grid span{display:block;color:var(--m-green);font-size:18px;margin-bottom:7px}
+.stats-mini-grid b{display:block;font-size:11px}
+.stats-mini-grid small{display:block;color:#627d8f;font-size:9px;margin-top:3px}
+.page-title{display:block}
+.page-title h2 span{color:var(--m-green)}
+.page-title p{margin:5px 0 0;color:#718899;font-size:10px}
+.favorites-limit{display:flex;align-items:baseline;gap:7px;margin:0 0 12px;padding:13px 15px;border-radius:14px;border:1px solid rgba(184,255,0,.18);background:rgba(184,255,0,.035)}
+.favorites-limit strong{color:var(--m-green);font-size:18px}.favorites-limit span{color:#70899b;font-size:9px}
+.favorite-empty{padding:40px 18px;border-style:dashed}
+.favorite-empty .empty-icon{color:var(--m-green);font-size:34px}
+.bottom-nav{grid-template-columns:repeat(5,1fr)!important;height:74px}
+.nav-icon{font-size:20px!important;line-height:1!important}
+.nav-item small{font-size:8px!important}
+@media (max-width:350px){.league-chips button{padding:7px 10px}.nav-icon{font-size:18px!important}.nav-item small{font-size:7px!important}}
