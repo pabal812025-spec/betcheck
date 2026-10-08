@@ -1197,3 +1197,79 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .nav-icon{font-size:20px!important;line-height:1!important}
 .nav-item small{font-size:8px!important}
 @media (max-width:350px){.league-chips button{padding:7px 10px}.nav-icon{font-size:18px!important}.nav-item small{font-size:7px!important}}
+
+
+/* =========================================================
+   MATCHIA IA 5D — MATCH CARDS
+   ========================================================= */
+.match-card,.fixture-card,.match-item,.game-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(66,232,255,.16);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 88% 18%,rgba(184,255,0,.07),transparent 28%),
+    linear-gradient(145deg,rgba(10,30,43,.98),rgba(3,12,21,.98));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 8px 28px rgba(0,0,0,.22);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.match-card:active,.fixture-card:active,.match-item:active,.game-card:active{
+  transform:scale(.985);
+}
+.match-card::before,.fixture-card::before,.match-item::before,.game-card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--m-green),var(--m-cyan),transparent);
+  opacity:.8;
+}
+.match-card .teams,.fixture-card .teams,.match-item .teams,.game-card .teams{
+  position:relative;
+}
+.matchia-fixture-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 13px 7px;
+  color:#6e8798;font-size:8px;font-weight:900;letter-spacing:1px;
+  text-transform:uppercase;
+}
+.matchia-fixture-league{display:flex;align-items:center;gap:6px}
+.matchia-fixture-league::before{
+  content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--m-cyan);box-shadow:0 0 9px var(--m-cyan);
+}
+.matchia-fixture-live{
+  color:var(--m-green);
+  text-shadow:0 0 10px rgba(184,255,0,.4);
+}
+.matchia-fixture-body{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:8px;padding:10px 13px 13px;
+}
+.matchia-team5d{text-align:center;min-width:0}
+.matchia-team5d img{
+  width:38px;height:38px;object-fit:contain;display:block;margin:0 auto 7px;
+  filter:drop-shadow(0 0 8px rgba(66,232,255,.16));
+}
+.matchia-team5d strong{
+  display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  color:#eaf7ff;font-size:10px;font-weight:800;
+}
+.matchia-fixture-center{text-align:center}
+.matchia-fixture-time{
+  color:#f1fbff;font-size:17px;font-weight:900;letter-spacing:.3px;
+}
+.matchia-fixture-vs{display:block;color:#557080;font-size:8px;margin-top:2px}
+.matchia-score5d{font-size:18px;font-weight:900;color:#fff}
+.matchia-ai{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-top:7px;padding:5px 8px;border-radius:8px;
+  border:1px solid rgba(184,255,0,.25);
+  background:rgba(184,255,0,.06);color:var(--m-green);
+  font-size:8px;font-weight:900;letter-spacing:.5px;
+}
+.matchia-card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 13px;border-top:1px solid rgba(66,232,255,.08);
+  color:#526b7c;font-size:8px;
+}
+.matchia-card-arrow{color:var(--m-cyan);font-size:15px}
