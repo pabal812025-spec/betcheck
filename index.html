@@ -92,6 +92,14 @@
 
       </div>
 
+      <div class="home-tools">
+        <div class="home-search" onclick="show('search')">
+          <span>⌕</span><span>Buscar equipos, ligas, partidos</span>
+        </div>
+        <div class="league-chips" aria-label="Ligas principales">
+          <button>LaLiga</button><button>Premier</button><button>Champions</button><button>Serie A</button><button>Argentina</button>
+        </div>
+      </div>
 
       <!-- PARTIDOS EN VIVO -->
 
@@ -838,9 +846,7 @@
 
       <div class="profile-card">
 
-        <div class="profile-avatar">
-          👤
-        </div>
+        <div class="profile-avatar">◉</div>
 
         <h2>
           Mi perfil
@@ -867,6 +873,38 @@
 
     </main>
 
+
+    <!-- =====================================================
+         STATS / FAVORITOS
+         ===================================================== -->
+
+    <main id="stats" class="screen">
+      <div class="page-title">
+        <h2>Stats <span>5D</span></h2>
+        <p>Lectura avanzada del rendimiento de los partidos.</p>
+      </div>
+      <div class="stats-hero-card">
+        <div class="stats-hero-glow"></div>
+        <div class="stats-hero-label">MATCHIA INTELLIGENCE</div>
+        <strong>Estadísticas de partido</strong>
+        <small>Seleccioná un partido para ver posesión, tiros, córners, tarjetas y presión.</small>
+      </div>
+      <div class="stats-mini-grid">
+        <div><span>⚡</span><b>Presión</b><small>En vivo</small></div>
+        <div><span>◒</span><b>Posesión</b><small>Comparativa</small></div>
+        <div><span>◎</span><b>Disparos</b><small>Precisión</small></div>
+        <div><span>◇</span><b>Córners</b><small>Ritmo</small></div>
+      </div>
+    </main>
+
+    <main id="favorites" class="screen">
+      <div class="page-title">
+        <h2>Favoritos <span>♡</span></h2>
+        <p>Hasta 5 equipos y sus partidos primero.</p>
+      </div>
+      <div class="favorites-limit"><strong>0 / 5</strong><span>equipos guardados</span></div>
+      <div class="empty-card favorite-empty"><div class="empty-icon">♡</div><div>Todavía no tenés favoritos</div><small>Buscá un equipo y agregalo para verlo primero en Inicio.</small></div>
+    </main>
 
     <!-- =====================================================
          CONFIG
@@ -964,56 +1002,27 @@
 
     <nav class="bottom-nav">
 
-
-      <button
-        class="nav-item active"
-        data-screen="home"
-        onclick="show('home')"
-      >
-
-        <span>🏠</span>
-        <small>Inicio</small>
-
+      <button class="nav-item active" data-screen="home" onclick="show('home')">
+        <span class="nav-icon">⌂</span><small>Inicio</small>
       </button>
 
-
-      <button
-        class="nav-item"
-        data-screen="search"
-        onclick="show('search')"
-      >
-
-        <span>🔎</span>
-        <small>Buscar</small>
-
+      <button class="nav-item" data-screen="search" onclick="show('search')">
+        <span class="nav-icon">⌕</span><small>Buscar</small>
       </button>
 
-
-      <button
-        class="nav-item"
-        data-screen="finished"
-        onclick="show('finished')"
-      >
-
-        <span>⚽</span>
-        <small>Partidos</small>
-
+      <button class="nav-item" data-screen="stats" onclick="show('stats')">
+        <span class="nav-icon">▥</span><small>Stats</small>
       </button>
 
-
-      <button
-        class="nav-item"
-        data-screen="profile"
-        onclick="show('profile')"
-      >
-
-        <span>👤</span>
-        <small>Perfil</small>
-
+      <button class="nav-item" data-screen="favorites" onclick="show('favorites')">
+        <span class="nav-icon">♡</span><small>Favoritos</small>
       </button>
 
+      <button class="nav-item" data-screen="profile" onclick="show('profile')">
+        <span class="nav-icon">◉</span><small>Perfil</small>
+      </button>
 
-    </nav>
+    </nav>>
 
   </div>
 
