@@ -181,39 +181,49 @@
           : "match-card upcoming-card";
 
     return `
-      <div
-        class="${clase}"
+      <article
+        class="${clase} matchia-fixture-card"
         onclick="openMatch(${Number(partido.id)}, ${live})"
         data-fixture-id="${Number(partido.id)}"
+        role="button"
+        tabindex="0"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMatch(${Number(partido.id)}, ${live})}"
       >
-
-        <div class="match-card-top">
-          <span>${escapeHtml(partido.liga || "Liga")}</span>
-
-          ${
-            live
-              ? `<span class="live-label">EN VIVO</span>`
-              : ""
-          }
+        <div class="matchia-fixture-head">
+          <span class="matchia-fixture-league">${escapeHtml(partido.liga || "Liga")}</span>
+          <span class="matchia-fixture-live">${live ? "● EN VIVO" : upcoming ? "IA 5D" : "RESULTADO"}</span>
         </div>
 
-        <div class="match-teams">
-
-          <div class="team">
+        <div class="matchia-fixture-body">
+          <div class="matchia-team5d">
             ${renderTeamLogo(partido.logoLocal, partido.local)}
             <span>${escapeHtml(partido.local)}</span>
           </div>
 
-          ${centro}
+          <div class="matchia-fixture-center">
+            ${live ? `
+              <strong class="matchia-score5d">${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}</strong>
+              <small class="matchia-fixture-time">${partido.minuto || 0}'</small>
+            ` : finished ? `
+              <strong class="matchia-score5d">${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}</strong>
+              <small class="matchia-fixture-time">FINAL</small>
+            ` : `
+              <strong class="matchia-fixture-time">${formatTime(partido.fecha)}</strong>
+              <small class="matchia-fixture-vs">VS</small>
+            `}
+          </div>
 
-          <div class="team">
+          <div class="matchia-team5d">
             ${renderTeamLogo(partido.logoVisitante, partido.visitante)}
             <span>${escapeHtml(partido.visitante)}</span>
           </div>
-
         </div>
 
-      </div>
+        <div class="matchia-card-footer">
+          <span class="matchia-ai">${live ? "ANÁLISIS EN VIVO" : upcoming ? "PREDICCIÓN IA" : "ANÁLISIS DEL PARTIDO"}</span>
+          <span class="matchia-card-arrow">›</span>
+        </div>
+      </article>
     `;
   }
 
