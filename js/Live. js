@@ -444,6 +444,50 @@
     actualizarProbabilidades(datos);
 
     renderLiveAnalysis(datos);
+
+    // Sincronizar también la pantalla holográfica 5D.
+    setText("pitchHomeName", local.nombre || "LOCAL");
+    setText("pitchAwayName", visitante.nombre || "VISITANTE");
+    setText("pitchHomeScore", datos.marcador?.local ?? 0);
+    setText("pitchAwayScore", datos.marcador?.visitante ?? 0);
+    setText(
+      "pitch5dMinute",
+      datos.minuto ? `${datos.minuto}'` : (datos.estado || "PREVIA")
+    );
+
+    const homeStats = obtenerEquipoStats(datos, 0);
+    const awayStats = obtenerEquipoStats(datos, 1);
+    const possessionHome = buscarStat(homeStats, ["Ball Possession"]);
+    const possessionAway = buscarStat(awayStats, ["Ball Possession"]);
+    const shotsHome = buscarStat(homeStats, ["Total Shots"]);
+    const shotsAway = buscarStat(awayStats, ["Total Shots"]);
+    const cornersHome = buscarStat(homeStats, ["Corner Kicks"]);
+    const cornersAway = buscarStat(awayStats, ["Corner Kicks"]);
+    const sotHome = buscarStat(homeStats, ["Shots on Goal"]);
+    const sotAway = buscarStat(awayStats, ["Shots on Goal"]);
+
+    setText("pitchPossession", `${possessionHome ?? "--"} / ${possessionAway ?? "--"}`);
+    setText("pitchShots", `${shotsHome ?? "--"} / ${shotsAway ?? "--"}`);
+    setText("pitchCorners", `${cornersHome ?? "--"} / ${cornersAway ?? "--"}`);
+    setText("pitchPressure", `${sotHome ?? "--"} / ${sotAway ?? "--"}`);
+
+    const pitchStatus = document.getElementById("pitchStatus");
+    if (pitchStatus) {
+      const h = convertirNumeroStat(sotHome);
+      const a = convertirNumeroStat(sotAway);
+      pitchStatus.textContent = h > a
+        ? `PRESIÓN LOCAL · ${local.nombre || "LOCAL"}`
+        : a > h
+          ? `PRESIÓN VISITANTE · ${visitante.nombre || "VISITANTE"}`
+          : "PARTIDO EQUILIBRADO";
+    }
+
+    const homeProb = document.getElementById("liveProbHome")?.textContent || "--%";
+    const drawProb = document.getElementById("liveProbDraw")?.textContent || "--%";
+    const awayProb = document.getElementById("liveProbAway")?.textContent || "--%";
+    setText("pitchProbHome", homeProb);
+    setText("pitchProbDraw", drawProb);
+    setText("pitchProbAway", awayProb);
   }
 
   async function loadLiveMatch(fixtureId) {
