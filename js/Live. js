@@ -480,7 +480,6 @@
     }
 
     if (ball) {
-      ball.style.animation = "none";
       ball.style.left = x + "%";
       ball.style.top = y + "%";
       ball.style.background = color;
@@ -488,7 +487,6 @@
       ball.dataset.state = eventState || (dangerHome || dangerAway ? "danger" : "play");
     }
     if (trail) {
-      trail.style.animation = "none";
       trail.style.left = Math.max(4, Math.min(86, x - 8)) + "%";
       trail.style.top = (y + 2) + "%";
       trail.style.transform = eventState === "corner" ? "rotate(0deg)"
@@ -600,17 +598,6 @@
     setText("pitchShots", `${shotsHome ?? "--"} / ${shotsAway ?? "--"}`);
     setText("pitchCorners", `${cornersHome ?? "--"} / ${cornersAway ?? "--"}`);
     setText("pitchPressure", `${sotHome ?? "--"} / ${sotAway ?? "--"}`);
-
-    const pitchStatus = document.getElementById("pitchStatus");
-    if (pitchStatus) {
-      const h = convertirNumeroStat(sotHome);
-      const a = convertirNumeroStat(sotAway);
-      pitchStatus.textContent = h > a
-        ? `PRESIÓN LOCAL · ${local.nombre || "LOCAL"}`
-        : a > h
-          ? `PRESIÓN VISITANTE · ${visitante.nombre || "VISITANTE"}`
-          : "PARTIDO EQUILIBRADO";
-    }
 
     const homeProb = document.getElementById("liveProbHome")?.textContent || "--%";
     const drawProb = document.getElementById("liveProbDraw")?.textContent || "--%";
