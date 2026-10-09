@@ -216,7 +216,7 @@
               <small class="matchia-fixture-time">${partido.minuto || 0}'</small>
             ` : finished ? `
               <strong class="matchia-score5d">${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}</strong>
-              <small class="matchia-fixture-time">FINAL</small>
+              <small class="matchia-fixture-time">RESULTADO</small>
             ` : `
               <strong class="matchia-fixture-time">${formatTime(partido.fecha)}</strong>
               <small class="matchia-fixture-vs">VS</small>
@@ -479,12 +479,12 @@
 
     if (previous) {
       previous.disabled =
-        selectedDate <= MIN_DATE;
+        selectedDate <= getMinDate();
     }
 
     if (next) {
       next.disabled =
-        selectedDate >= MAX_DATE;
+        selectedDate >= getMaxDate();
     }
   }
 
@@ -515,8 +515,8 @@
     ].join("-");
 
     if (
-      nuevaFecha < MIN_DATE ||
-      nuevaFecha > MAX_DATE
+      nuevaFecha < getMinDate() ||
+      nuevaFecha > getMaxDate()
     ) {
       return;
     }
