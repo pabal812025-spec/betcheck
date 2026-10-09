@@ -393,6 +393,65 @@
     container.textContent = texto;
   }
 
+  function actualizarCancha5D(datos) {
+    const local = datos.local || {};
+    const visitante = datos.visitante || {};
+    const homeStats = obtenerEquipoStats(datos, 0);
+    const awayStats = obtenerEquipoStats(datos, 1);
+    const homeSot = convertirNumeroStat(buscarStat(homeStats, ["Shots on Goal"]));
+    const awaySot = convertirNumeroStat(buscarStat(awayStats, ["Shots on Goal"]));
+    const homeCorners = convertirNumeroStat(buscarStat(homeStats, ["Corner Kicks"]));
+    const awayCorners = convertirNumeroStat(buscarStat(awayStats, ["Corner Kicks"]));
+    const homeShots = convertirNumeroStat(buscarStat(homeStats, ["Total Shots"]));
+    const awayShots = convertirNumeroStat(buscarStat(awayStats, ["Total Shots"]));
+    const ball = document.getElementById("ball5d");
+    const trail = document.querySelector(".ball-trail");
+    const pitch = document.querySelector(".pitch5d");
+    const status = document.getElementById("pitchStatus");
+
+    // La ubicación es una representación visual de presión estadística,
+    // no una coordenada oficial de seguimiento de la pelota.
+    const homePressure = homeSot * 2 + homeCorners + homeShots * 0.25;
+    const awayPressure = awaySot * 2 + awayCorners + awayShots * 0.25;
+    const total = homePressure + awayPressure;
+    const homeShare = total > 0 ? homePressure / total : 0.5;
+    const x = Math.max(18, Math.min(82, 18 + homeShare * 64));
+    const y = homeShare >= 0.58 ? 34 : homeShare <= 0.42 ? 66 : 50;
+
+    if (ball) {
+      ball.style.animation = "none";
+      ball.style.left = x + "%";
+      ball.style.top = y + "%";
+      ball.style.background = homeShare > 0.55 ? "#b8ff00" : homeShare < 0.45 ? "#42e8ff" : "#ffffff";
+      ball.style.boxShadow = homeShare > 0.55
+        ? "0 0 12px #b8ff00,0 0 25px rgba(184,255,0,.7)"
+        : homeShare < 0.45
+          ? "0 0 12px #42e8ff,0 0 25px rgba(66,232,255,.7)"
+          : "0 0 12px #fff,0 0 25px #42e8ff";
+    }
+    if (trail) {
+      trail.style.animation = "none";
+      trail.style.left = Math.max(8, x - 8) + "%";
+      trail.style.top = (y + 2) + "%";
+      trail.style.transform = homeShare < 0.45 ? "rotate(12deg)" : "rotate(-12deg)";
+      trail.style.opacity = "0.85";
+    }
+    if (pitch) {
+      pitch.dataset.pressure = homeShare > 0.55 ? "local" : homeShare < 0.45 ? "visitante" : "equilibrada";
+    }
+    if (status) {
+      status.textContent = homeShare > 0.7
+        ? "ATAQUE PELIGROSO · " + (local.nombre || "LOCAL")
+        : homeShare > 0.55
+          ? "ATACA · " + (local.nombre || "LOCAL")
+          : homeShare < 0.3
+            ? "ATAQUE PELIGROSO · " + (visitante.nombre || "VISITANTE")
+            : homeShare < 0.45
+              ? "ATACA · " + (visitante.nombre || "VISITANTE")
+              : "POSESIÓN DISPUTADA";
+    }
+  }
+
   function renderLiveMatch(datos) {
     const local = datos.local || {};
     const visitante = datos.visitante || {};
@@ -444,6 +503,7 @@
     actualizarProbabilidades(datos);
 
     renderLiveAnalysis(datos);
+    actualizarCancha5D(datos);
 
     // Sincronizar también la pantalla holográfica 5D.
     setText("pitchHomeName", local.nombre || "LOCAL");
