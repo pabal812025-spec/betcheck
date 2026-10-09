@@ -8,8 +8,15 @@
   let fixturesCache = [];
   let selectedDate = null;
 
-  const MIN_DATE = "2026-09-30";
-  const MAX_DATE = "2026-10-11";
+  // El selector siempre ofrece cinco días hacia atrás y cinco hacia adelante.
+  // Los límites se calculan desde la fecha actual de Argentina para que no caduquen.
+  function getMinDate() {
+    return getArgentinaDate(-5);
+  }
+
+  function getMaxDate() {
+    return getArgentinaDate(5);
+  }
 
   function getArgentinaDate(offsetDays) {
     const now = new Date();
@@ -45,12 +52,15 @@
       return getToday();
     }
 
-    if (value < MIN_DATE) {
-      return MIN_DATE;
+    const minDate = getMinDate();
+    const maxDate = getMaxDate();
+
+    if (value < minDate) {
+      return minDate;
     }
 
-    if (value > MAX_DATE) {
-      return MAX_DATE;
+    if (value > maxDate) {
+      return maxDate;
     }
 
     return value;
