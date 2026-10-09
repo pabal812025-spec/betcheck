@@ -393,6 +393,8 @@
     container.textContent = texto;
   }
 
+  const pitchPreviousStats = Object.create(null);
+
   function actualizarCancha5D(datos) {
     const local = datos.local || {};
     const visitante = datos.visitante || {};
@@ -404,54 +406,122 @@
     const awayCorners = convertirNumeroStat(buscarStat(awayStats, ["Corner Kicks"]));
     const homeShots = convertirNumeroStat(buscarStat(homeStats, ["Total Shots"]));
     const awayShots = convertirNumeroStat(buscarStat(awayStats, ["Total Shots"]));
+    const homeGoalKicks = convertirNumeroStat(buscarStat(homeStats, ["Goal Kicks"]));
+    const awayGoalKicks = convertirNumeroStat(buscarStat(awayStats, ["Goal Kicks"]));
     const ball = document.getElementById("ball5d");
     const trail = document.querySelector(".ball-trail");
     const pitch = document.querySelector(".pitch5d");
     const status = document.getElementById("pitchStatus");
+    const fixtureId = String(datos.id || currentLiveId || "partido");
+    const previous = pitchPreviousStats[fixtureId];
+    let eventState = "";
+    let eventTeam = "";
+    let eventSide = "";
 
-    // La ubicación es una representación visual de presión estadística,
-    // no una coordenada oficial de seguimiento de la pelota.
+    // Los aumentos de córners/saques de arco se detectan entre actualizaciones.
+    // No se inventan eventos cuando la API no entrega esa estadística.
+    if (previous) {
+      if (homeCorners > previous.homeCorners) {
+        eventState = "corner";
+        eventTeam = local.nombre || "LOCAL";
+        eventSide = "home";
+      } else if (awayCorners > previous.awayCorners) {
+        eventState = "corner";
+        eventTeam = visitante.nombre || "VISITANTE";
+        eventSide = "away";
+      } else if (homeGoalKicks > previous.homeGoalKicks) {
+        eventState = "goal-kick";
+        eventTeam = local.nombre || "LOCAL";
+        eventSide = "home";
+      } else if (awayGoalKicks > previous.awayGoalKicks) {
+        eventState = "goal-kick";
+        eventTeam = visitante.nombre || "VISITANTE";
+        eventSide = "away";
+      }
+    }
+
+    pitchPreviousStats[fixtureId] = {
+      homeCorners, awayCorners, homeGoalKicks, awayGoalKicks
+    };
+
+    // Posición estimada por presión estadística, no seguimiento GPS de la pelota.
     const homePressure = homeSot * 2 + homeCorners + homeShots * 0.25;
     const awayPressure = awaySot * 2 + awayCorners + awayShots * 0.25;
     const total = homePressure + awayPressure;
     const homeShare = total > 0 ? homePressure / total : 0.5;
-    const x = Math.max(18, Math.min(82, 18 + homeShare * 64));
-    const y = homeShare >= 0.58 ? 34 : homeShare <= 0.42 ? 66 : 50;
+    const dangerHome = homeShare > 0.7;
+    const dangerAway = homeShare < 0.3;
+    let x = Math.max(18, Math.min(82, 18 + homeShare * 64));
+    let y = homeShare >= 0.58 ? 34 : homeShare <= 0.42 ? 66 : 50;
+    let color = dangerHome || dangerAway ? "#ff5b45"
+      : homeShare > 0.55 ? "#b8ff00"
+      : homeShare < 0.45 ? "#42e8ff" : "#ffffff";
+    let glow = dangerHome || dangerAway
+      ? "0 0 14px #ff5b45,0 0 30px rgba(255,91,69,.8)"
+      : homeShare > 0.55
+        ? "0 0 12px #b8ff00,0 0 25px rgba(184,255,0,.7)"
+        : homeShare < 0.45
+          ? "0 0 12px #42e8ff,0 0 25px rgba(66,232,255,.7)"
+          : "0 0 12px #fff,0 0 25px #42e8ff";
+
+    if (dangerHome) x = 84;
+    if (dangerAway) x = 16;
+
+    if (eventState === "corner") {
+      x = eventSide === "home" ? 91 : 9;
+      y = homeShare > 0.5 ? 8 : 92;
+      color = "#ffb000";
+      glow = "0 0 14px #ffb000,0 0 30px rgba(255,176,0,.8)";
+    } else if (eventState === "goal-kick") {
+      x = eventSide === "home" ? 8 : 92;
+      y = 50;
+      color = "#42e8ff";
+      glow = "0 0 14px #42e8ff,0 0 30px rgba(66,232,255,.8)";
+    }
 
     if (ball) {
       ball.style.animation = "none";
       ball.style.left = x + "%";
       ball.style.top = y + "%";
-      ball.style.background = homeShare > 0.55 ? "#b8ff00" : homeShare < 0.45 ? "#42e8ff" : "#ffffff";
-      ball.style.boxShadow = homeShare > 0.55
-        ? "0 0 12px #b8ff00,0 0 25px rgba(184,255,0,.7)"
-        : homeShare < 0.45
-          ? "0 0 12px #42e8ff,0 0 25px rgba(66,232,255,.7)"
-          : "0 0 12px #fff,0 0 25px #42e8ff";
+      ball.style.background = color;
+      ball.style.boxShadow = glow;
+      ball.dataset.state = eventState || (dangerHome || dangerAway ? "danger" : "play");
     }
     if (trail) {
       trail.style.animation = "none";
-      trail.style.left = Math.max(8, x - 8) + "%";
+      trail.style.left = Math.max(4, Math.min(86, x - 8)) + "%";
       trail.style.top = (y + 2) + "%";
-      trail.style.transform = homeShare < 0.45 ? "rotate(12deg)" : "rotate(-12deg)";
+      trail.style.transform = eventState === "corner" ? "rotate(0deg)"
+        : eventState === "goal-kick" ? "rotate(180deg)"
+        : homeShare < 0.45 ? "rotate(12deg)" : "rotate(-12deg)";
+      trail.style.background = "linear-gradient(90deg,transparent," + color + ")";
       trail.style.opacity = "0.85";
     }
     if (pitch) {
-      pitch.dataset.pressure = homeShare > 0.55 ? "local" : homeShare < 0.45 ? "visitante" : "equilibrada";
+      pitch.dataset.pressure = dangerHome ? "ataque-local"
+        : dangerAway ? "ataque-visitante"
+        : homeShare > 0.55 ? "local"
+        : homeShare < 0.45 ? "visitante" : "equilibrada";
+      pitch.dataset.event = eventState || "none";
     }
     if (status) {
-      status.textContent = homeShare > 0.7
-        ? "ATAQUE PELIGROSO · " + (local.nombre || "LOCAL")
-        : homeShare > 0.55
-          ? "ATACA · " + (local.nombre || "LOCAL")
-          : homeShare < 0.3
-            ? "ATAQUE PELIGROSO · " + (visitante.nombre || "VISITANTE")
-            : homeShare < 0.45
-              ? "ATACA · " + (visitante.nombre || "VISITANTE")
-              : "POSESIÓN DISPUTADA";
+      if (eventState === "corner") {
+        status.textContent = "⚑ TIRO DE ESQUINA · " + eventTeam;
+      } else if (eventState === "goal-kick") {
+        status.textContent = "🥅 SAQUE DE ARCO · " + eventTeam;
+      } else if (dangerHome) {
+        status.textContent = "ATAQUE PELIGROSO · " + (local.nombre || "LOCAL");
+      } else if (dangerAway) {
+        status.textContent = "ATAQUE PELIGROSO · " + (visitante.nombre || "VISITANTE");
+      } else if (homeShare > 0.55) {
+        status.textContent = "ATACA · " + (local.nombre || "LOCAL");
+      } else if (homeShare < 0.45) {
+        status.textContent = "ATACA · " + (visitante.nombre || "VISITANTE");
+      } else {
+        status.textContent = "POSESIÓN DISPUTADA";
+      }
     }
   }
-
   function renderLiveMatch(datos) {
     const local = datos.local || {};
     const visitante = datos.visitante || {};
