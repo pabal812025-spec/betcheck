@@ -1273,3 +1273,32 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
   color:#526b7c;font-size:8px;
 }
 .matchia-card-arrow{color:var(--m-cyan);font-size:15px}
+
+
+/* Estados visuales de la cancha 5D: ataque peligroso, córner y saque de arco. */
+.pitch5d[data-pressure="ataque-local"],
+.pitch5d[data-pressure="ataque-visitante"]{
+  border-color:rgba(255,91,69,.9);
+  box-shadow:0 0 28px rgba(255,91,69,.3),inset 0 0 60px rgba(255,91,69,.09);
+}
+.pitch5d[data-event="corner"]{
+  border-color:rgba(255,176,0,.95);
+  box-shadow:0 0 30px rgba(255,176,0,.35),inset 0 0 60px rgba(255,176,0,.1);
+}
+.pitch5d[data-event="goal-kick"]{
+  border-color:rgba(66,232,255,.95);
+  box-shadow:0 0 30px rgba(66,232,255,.3),inset 0 0 60px rgba(66,232,255,.1);
+}
+.pitch5d[data-event="corner"] .pitch-status{
+  color:#ffb000;border-color:rgba(255,176,0,.7);
+}
+.pitch5d[data-event="goal-kick"] .pitch-status{
+  color:#42e8ff;border-color:rgba(66,232,255,.7);
+}
+.pitch5d[data-pressure="ataque-local"] .pitch-status,
+.pitch5d[data-pressure="ataque-visitante"] .pitch-status{
+  color:#ff7666;border-color:rgba(255,91,69,.7);
+}
+.ball5d[data-state="corner"]{animation:miCornerPulse .65s ease-in-out 3}
+.ball5d[data-state="goal-kick"]{animation:miCornerPulse .65s ease-in-out 3}
+@keyframes miCornerPulse{50%{transform:scale(1.8)}}
