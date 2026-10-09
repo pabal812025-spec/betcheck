@@ -159,7 +159,7 @@
           <span><i class="section-dot"></i> PARTIDOS DEL DÍA</span>
         </div>
 
-        <div id="upcomingList">
+        <div id="upcomingMatches">
 
           <div class="empty-card">
 
@@ -599,7 +599,7 @@
         <div><span>CÓRNERS</span><b id="pitchCorners">-- / --</b></div>
         <div><span>PRESIÓN</span><b id="pitchPressure">-- / --</b></div>
       </div>
-      <div class="pitch5d-mode"><button class="active">DETALLES</button><button>EN VIVO</button><button>IA ANÁLISIS</button></div>
+      <div class="pitch5d-mode"><button class="active" type="button" onclick="openPitchMode('details',this)">DETALLES</button><button type="button" onclick="openPitchMode('live',this)">EN VIVO</button><button type="button" onclick="openPitchMode('analysis',this)">IA ANÁLISIS</button></div>
     </main>
 
     <!-- =====================================================
@@ -827,7 +827,7 @@
       </div>
 
 
-      <div id="finishedList">
+      <div id="finishedMatches">
 
         <div class="empty-card">
           Cargando partidos...
