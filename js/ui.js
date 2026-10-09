@@ -6,6 +6,7 @@
   "use strict";
 
   let selectedFixtureId = null;
+  let selectedFixtureIsLive = false;
   let currentScreen = "home";
 
   window.MatchIAUI = {
@@ -132,6 +133,7 @@
     }
 
     selectedFixtureId = fixtureId;
+    selectedFixtureIsLive = !!live;
 
     if (window.MatchIAUI) {
       window.MatchIAUI.setSelectedFixtureId(fixtureId);
@@ -358,8 +360,44 @@
   window.open5D = function () {
     show("pitch5d");
     const id = selectedFixtureId;
-    if (!id) return;
-    if (typeof window.loadLiveMatch === "function") window.loadLiveMatch(id);
+    const status = document.getElementById("pitchStatus");
+    if (!id) {
+      if (status) status.textContent = "SELECCIONÁ UN PARTIDO";
+      return;
+    }
+    if (selectedFixtureIsLive && typeof window.loadLiveMatch === "function") {
+      window.loadLiveMatch(id);
+    } else if (status) {
+      status.textContent = "PREPARTIDO · ANÁLISIS IA";
+    }
+  };
+
+  // Los tres accesos de la cancha 5D ahora llevan a una pantalla funcional.
+  window.openPitchMode = function (mode, button) {
+    document.querySelectorAll(".pitch5d-mode button").forEach(function (item) {
+      item.classList.toggle("active", item === button);
+    });
+
+    if (mode === "details") {
+      show("match");
+      return;
+    }
+
+    if (mode === "live") {
+      show("live");
+      if (selectedFixtureId && typeof window.loadLiveMatch === "function") {
+        window.loadLiveMatch(selectedFixtureId);
+      }
+      return;
+    }
+
+    if (mode === "analysis") {
+      show("match");
+      const predictionTab = document.querySelector('.tab[onclick*="prediction"]');
+      if (predictionTab && typeof window.tab === "function") {
+        window.tab("prediction", predictionTab);
+      }
+    }
   };
 
   // =========================================================
