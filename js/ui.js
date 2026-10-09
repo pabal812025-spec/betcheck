@@ -84,6 +84,12 @@
       }
     }
 
+    if (screenName === "favorites") {
+      if (typeof window.renderFavoriteTeams === "function") {
+        window.renderFavoriteTeams();
+      }
+    }
+
     if (screenName === "search") {
       const input = document.getElementById("searchInput");
 
