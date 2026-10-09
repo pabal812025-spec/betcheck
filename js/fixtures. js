@@ -191,6 +191,8 @@
     if (typeof window.renderFavoriteTeams === "function") {
       window.renderFavoriteTeams();
     }
+    // Reordena Inicio al instante con los partidos favoritos, sin llamar a la API.
+    renderHomeForSelectedDate(fixturesCache);
     // Actualiza los corazones de las tarjetas visibles sin volver a pedir la API.
     document.querySelectorAll(".matchia-favorite-btn").forEach(function (item) {
       const isFavorite = getFavoriteTeams().some(function (name) {
