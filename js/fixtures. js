@@ -147,6 +147,77 @@
     return `<div class="team-logo-placeholder">⚽</div>`;
   }
 
+  const FAVORITES_KEY = "matchia_favorite_teams";
+
+  function getFavoriteTeams() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+      return Array.isArray(saved) ? saved.slice(0, 5) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function favoriteButton(team) {
+    const favorites = getFavoriteTeams();
+    const active = favorites.some(function (name) {
+      return name.toLowerCase() === String(team || "").toLowerCase();
+    });
+    return `<button type="button" class="matchia-favorite-btn${active ? " is-favorite" : ""}" data-team="${escapeHtml(team)}" aria-label="${active ? "Quitar de favoritos" : "Agregar a favoritos"}" title="${active ? "Quitar de favoritos" : "Agregar a favoritos"}" onclick="toggleFavoriteTeam(event)">${active ? "♥" : "♡"}</button>`;
+  }
+
+  window.toggleFavoriteTeam = function (event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const button = event && event.currentTarget;
+    const team = button && button.dataset.team;
+    if (!team) return;
+    const favorites = getFavoriteTeams();
+    const existing = favorites.findIndex(function (name) {
+      return name.toLowerCase() === team.toLowerCase();
+    });
+    if (existing >= 0) {
+      favorites.splice(existing, 1);
+    } else {
+      if (favorites.length >= 5) {
+        alert("Podés guardar hasta 5 equipos favoritos. Quitá uno para agregar otro.");
+        return;
+      }
+      favorites.push(team);
+    }
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    if (typeof window.renderFavoriteTeams === "function") {
+      window.renderFavoriteTeams();
+    }
+    // Actualiza los corazones de las tarjetas visibles sin volver a pedir la API.
+    document.querySelectorAll(".matchia-favorite-btn").forEach(function (item) {
+      const isFavorite = getFavoriteTeams().some(function (name) {
+        return name.toLowerCase() === String(item.dataset.team || "").toLowerCase();
+      });
+      item.classList.toggle("is-favorite", isFavorite);
+      item.textContent = isFavorite ? "♥" : "♡";
+      item.title = isFavorite ? "Quitar de favoritos" : "Agregar a favoritos";
+      item.setAttribute("aria-label", item.title);
+    });
+  };
+
+  window.renderFavoriteTeams = function () {
+    const container = document.getElementById("favoriteTeamsList");
+    const count = document.getElementById("favoriteTeamsCount");
+    if (!container) return;
+    const favorites = getFavoriteTeams();
+    if (count) count.textContent = favorites.length + " / 5";
+    if (!favorites.length) {
+      container.innerHTML = '<div class="empty-card favorite-empty"><div class="empty-icon">♡</div><div>Todavía no tenés favoritos</div><small>Usá el corazón en una tarjeta para guardar hasta cinco equipos.</small></div>';
+      return;
+    }
+    container.innerHTML = favorites.map(function (team) {
+      return '<div class="favorite-team-row"><span class="favorite-team-heart">♥</span><strong>' + escapeHtml(team) + '</strong><button type="button" data-team="' + escapeHtml(team) + '" onclick="toggleFavoriteTeam(event)">Quitar</button></div>';
+    }).join("");
+  };
+
   function renderMatchCard(partido) {
     const live = isLive(partido);
     const finished = isFinished(partido);
@@ -208,6 +279,7 @@
           <div class="matchia-team5d">
             ${renderTeamLogo(partido.logoLocal, partido.local)}
             <span>${escapeHtml(partido.local)}</span>
+            ${favoriteButton(partido.local)}
           </div>
 
           <div class="matchia-fixture-center">
@@ -226,6 +298,7 @@
           <div class="matchia-team5d">
             ${renderTeamLogo(partido.logoVisitante, partido.visitante)}
             <span>${escapeHtml(partido.visitante)}</span>
+            ${favoriteButton(partido.visitante)}
           </div>
         </div>
 
