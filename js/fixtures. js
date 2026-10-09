@@ -375,9 +375,33 @@
     const isPast = selectedDate < today;
     const isFuture = selectedDate > today;
 
-    const live = partidos.filter(isLive);
-    const finished = partidos.filter(isFinished);
-    const upcoming = partidos.filter(isUpcoming);
+    const favorites = getFavoriteTeams();
+    const isFavoriteMatch = function (partido) {
+      return favorites.some(function (team) {
+        const target = team.toLowerCase();
+        return String(partido.local || "").toLowerCase() === target ||
+          String(partido.visitante || "").toLowerCase() === target;
+      });
+    };
+
+    const favoriteMatches = partidos.filter(isFavoriteMatch);
+    const remainingMatches = partidos.filter(function (partido) {
+      return !isFavoriteMatch(partido);
+    });
+    const live = remainingMatches.filter(isLive);
+    const finished = remainingMatches.filter(isFinished);
+    const upcoming = remainingMatches.filter(isUpcoming);
+
+    const favoriteSection = document.getElementById("favoriteMatchesSection");
+    const favoriteContainer = document.getElementById("favoriteMatchesPreview");
+    if (favoriteSection && favoriteContainer) {
+      favoriteSection.hidden = favoriteMatches.length === 0;
+      if (favoriteMatches.length) {
+        renderLeagueGroups(favoriteMatches, favoriteContainer);
+      } else {
+        favoriteContainer.innerHTML = "";
+      }
+    }
 
     const liveContainer =
       document.getElementById("livePreview");
