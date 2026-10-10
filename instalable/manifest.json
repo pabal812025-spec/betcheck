@@ -1,0 +1,20 @@
+{
+  "name": "MatchIA IA 5D",
+  "short_name": "MatchIA",
+  "description": "Análisis inteligente de fútbol",
+  "lang": "es-AR",
+  "start_url": "/instalable/",
+  "scope": "/instalable/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#06101c",
+  "theme_color": "#06101c",
+  "icons": [
+    {
+      "src": "/instalable/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
