@@ -25,12 +25,12 @@ jobs:
           java-version: "17"
 
       - name: Preparar Android SDK
-        run: |
-          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}" >> "$GITHUB_ENV"
-          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
-          export PATH="$ANDROID_HOME/cmdline-tools/16.0/bin:$ANDROID_HOME/platform-tools:$PATH"
-          yes | "$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager" --licenses
-          "$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Instalar plataformas y herramientas Android
+        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
 
       - name: Preparar Gradle
         uses: gradle/actions/setup-gradle@v4
