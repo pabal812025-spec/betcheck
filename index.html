@@ -850,37 +850,48 @@
          PROFILE
          ===================================================== -->
 
-    <main id="profile" class="screen">
-
-      <div class="profile-card">
-
-        <div class="profile-avatar">◉</div>
-
-        <h2>
-          Mi perfil
-        </h2>
-
-        <p>
-          Usuario MatchIA
-        </p>
-
+    <main id="profile" class="screen profile-screen">
+      <div class="page-title profile-heading">
+        <h2>PERFIL <span>5D</span></h2>
+        <p>Tu centro personal MatchIA</p>
       </div>
 
-
-      <div class="panel">
-
-        <div class="panel-title">
-          ⭐ Favoritos
+      <section class="profile-hero-neural">
+        <div class="profile-orbit" aria-hidden="true"><div class="profile-avatar">◉</div></div>
+        <div class="profile-user-copy">
+          <span class="profile-status"><i></i> USUARIO ACTIVO</span>
+          <h3 id="profileDisplayName">Usuario MatchIA</h3>
+          <p>Analista de fútbol · Nivel inicial</p>
         </div>
+        <button type="button" class="profile-edit-btn" onclick="editMatchIAProfile()">Editar</button>
+      </section>
 
-        <div class="empty-card">
-          Próximamente podrás guardar equipos y partidos.
-        </div>
+      <section class="profile-metrics-grid" aria-label="Resumen personal">
+        <div class="profile-metric"><span>♡</span><strong id="profileFavoriteMetric">0/5</strong><small>Favoritos</small></div>
+        <div class="profile-metric"><span>◎</span><strong>5D</strong><small>Modo de análisis</small></div>
+        <div class="profile-metric"><span>✧</span><strong>IA</strong><small>Predicciones</small></div>
+      </section>
 
-      </div>
-
+      <section class="panel profile-options-panel">
+        <div class="panel-title">PREFERENCIAS PERSONALES</div>
+        <button class="profile-option-row" type="button" onclick="show('favorites'); if(window.renderFavoriteTeams) window.renderFavoriteTeams();">
+          <span class="profile-option-icon">♡</span>
+          <span><strong>Mis equipos favoritos</strong><small>Administrá tus equipos guardados</small></span>
+          <b>›</b>
+        </button>
+        <button class="profile-option-row" type="button" onclick="show('config')">
+          <span class="profile-option-icon">⚙</span>
+          <span><strong>Configuración</strong><small>Idioma y opciones de la aplicación</small></span>
+          <b>›</b>
+        </button>
+        <button class="profile-option-row" type="button" onclick="show('stats')">
+          <span class="profile-option-icon">▥</span>
+          <span><strong>Estadísticas MatchIA</strong><small>Explorá los datos de los partidos</small></span>
+          <b>›</b>
+        </button>
+      </section>
+      <p class="profile-local-note">Tu nombre y preferencias se guardan en este dispositivo.</p>
     </main>
-
 
     <!-- =====================================================
          STATS / FAVORITOS
