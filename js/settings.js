@@ -36,13 +36,13 @@
       try { language.value = localStorage.getItem("matchia_language") || "es"; } catch (_) {}
       language.addEventListener("change", function () {
         try { localStorage.setItem("matchia_language", language.value); } catch (_) {}
-        document.documentElement.lang = language.value;
+        if (window.MatchIAI18N) window.MatchIAI18N.setLanguage(language.value);
         const status = document.getElementById("settingsSaveStatus");
         if (status) status.textContent = language.value === "pt"
-          ? "Idioma salvo. A tradução completa das telas será ativada na próxima etapa."
+          ? "Idioma salvo neste dispositivo."
           : language.value === "en"
-            ? "Language saved. Full screen translation will be enabled in the next step."
-            : "Idioma guardado. La traducción completa de las pantallas se activará en la próxima etapa.";
+            ? "Language saved on this device."
+            : "Idioma guardado en este dispositivo.";
       });
     }
     const probs = document.getElementById("showProbabilities");
