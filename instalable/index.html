@@ -11,6 +11,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="MatchIA">
   <meta name="mobile-web-app-capable" content="yes">
+  <style>
+    .league-chips button.is-selected { background: #00d7ff !important; color: #06101c !important; border-color: #00d7ff !important; box-shadow: 0 0 14px #00d7ff55; }
+  </style>
 </head>
 
 <body>
@@ -18,7 +21,7 @@
   <!-- SPLASH -->
   <div id="splash" class="splash">
     <img
-      src="/matchia-icon.svg"
+      src="./icon.svg"
       alt="MatchIA"
       class="splash-logo"
       onerror="this.style.display='none'"
@@ -101,8 +104,13 @@
           <span>⌕</span><span>Buscar equipos, ligas, partidos</span>
         </div>
         <div class="league-chips" aria-label="Ligas principales">
-          <button>LaLiga</button><button>Premier</button><button>Champions</button><button>Serie A</button><button>Argentina</button>
+          <button type="button" data-league="laliga" aria-pressed="false">LaLiga</button>
+          <button type="button" data-league="premier" aria-pressed="false">Premier</button>
+          <button type="button" data-league="champions" aria-pressed="false">Champions</button>
+          <button type="button" data-league="seriea" aria-pressed="false">Serie A</button>
+          <button type="button" data-league="argentina" aria-pressed="false">Argentina</button>
         </div>
+        <div id="leagueFilterStatus" class="empty-card" role="status" hidden></div>
       </div>
 
       <!-- FAVORITOS: primero aparecen los partidos de tus equipos guardados -->
@@ -1074,6 +1082,78 @@
   <script src="../js/settings.js"></script>
   <script src="../js/profile.js"></script>
   <script src="../js/i18n.js"></script>
+
+
+  <script>
+    (function () {
+      const aliases = {
+        laliga: ["laliga", "la liga", "primera division", "primera división", "spanish la liga"],
+        premier: ["premier league", "premier", "english premier", "inglaterra"],
+        champions: ["champions league", "uefa champions", "champions"],
+        seriea: ["serie a", "italy serie a", "italia"],
+        argentina: ["argentina", "liga profesional", "primera nacional", "copa de la liga"]
+      };
+      let selectedLeague = "";
+      function normalize(text) {
+        return String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+      }
+      function applyLeagueFilter(key) {
+        selectedLeague = key || "";
+        const buttons = document.querySelectorAll(".league-chips [data-league]");
+        buttons.forEach(button => {
+          const active = button.dataset.league === selectedLeague;
+          button.classList.toggle("is-selected", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        const status = document.getElementById("leagueFilterStatus");
+        const cards = Array.from(document.querySelectorAll(".matchia-fixture-card"));
+        let shown = 0;
+        cards.forEach(card => {
+          const label = normalize(card.querySelector(".matchia-fixture-league")?.textContent);
+          const match = !selectedLeague || (aliases[selectedLeague] || []).some(alias => label.includes(normalize(alias)));
+          card.hidden = !match;
+          if (match) shown++;
+        });
+        document.querySelectorAll(".league-group").forEach(group => {
+          group.hidden = !!selectedLeague && !Array.from(group.querySelectorAll(".matchia-fixture-card")).some(card => !card.hidden);
+        });
+        if (status) {
+          if (!selectedLeague) {
+            status.hidden = true;
+            status.textContent = "";
+          } else if (!cards.length) {
+            status.hidden = false;
+            status.textContent = "No se pueden mostrar partidos hasta que la API cargue los encuentros. Probá Actualizar.";
+          } else if (!shown) {
+            status.hidden = false;
+            const label = buttons.find ? "" : "";
+            const selected = document.querySelector('.league-chips [data-league="' + selectedLeague + '"]')?.textContent || "esta liga";
+            status.textContent = "No hay partidos de " + selected + " para la fecha seleccionada.";
+          } else {
+            status.hidden = true;
+            status.textContent = "";
+          }
+        }
+        document.querySelectorAll("#featuredMatch, #upcomingMatches, #livePreview, #finishedPreview, #favoriteMatchesPreview").forEach(container => {
+          if (!container) return;
+          container.querySelectorAll(".matchia-fixture-card").forEach(card => {
+            const label = normalize(card.querySelector(".matchia-fixture-league")?.textContent);
+            card.hidden = !!selectedLeague && !(aliases[selectedLeague] || []).some(alias => label.includes(normalize(alias)));
+          });
+        });
+      }
+      document.querySelectorAll(".league-chips [data-league]").forEach(button => {
+        button.addEventListener("click", () => applyLeagueFilter(selectedLeague === button.dataset.league ? "" : button.dataset.league));
+      });
+      const observer = new MutationObserver(() => {
+        if (selectedLeague) applyLeagueFilter(selectedLeague);
+      });
+      window.addEventListener("DOMContentLoaded", () => {
+        const home = document.getElementById("home");
+        if (home) observer.observe(home, { childList: true, subtree: true });
+      });
+    })();
+  </script>
 
   <script>
     if ("serviceWorker" in navigator) {
