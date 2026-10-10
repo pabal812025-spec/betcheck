@@ -18,6 +18,9 @@
     #app button, #app input, #app select, #app [onclick], #app [data-league] { pointer-events: auto !important; touch-action: manipulation; }
     .league-chips button.is-selected { background: #00d7ff !important; color: #06101c !important; border-color: #00d7ff !important; box-shadow: 0 0 14px #00d7ff55; }
     .splash-progress span { width: 0; animation: none !important; transition: width 180ms linear; background: linear-gradient(90deg,#b8ff00,#00d7ff) !important; }
+    .splash-name { color: #f1f8ff; letter-spacing: 2px; }
+    .splash-name-5d { margin-top: -9px; margin-bottom: 7px; font-size: 32px; color: #b8ff00; }
+    .splash-name-5d span { color: #00d7ff; }
     .splash-loading { margin-top: 10px; letter-spacing: 2px; font-weight: 800; color: #e7faff !important; }
   </style>
 </head>
@@ -26,15 +29,16 @@
 
   <!-- SPLASH -->
   <div id="splash" class="splash">
+    <div class="splash-name">MATCH</div>
+    <div class="splash-name splash-name-5d">IA <span>5D</span></div>
+
     <img
       src="./icon.svg"
-      alt="MatchIA"
+      alt="Pelota futurista MatchIA"
       class="splash-logo"
       onerror="this.style.display='none'"
     >
 
-    <div class="splash-name">Match<span>IA</span></div>
-    <div class="splash-tagline">IA 5D · ANÁLISIS INTELIGENTE</div>
     <div class="splash-progress"><span></span></div>
     <div class="splash-loading" id="splashLoadingText">CARGANDO…</div>
     <div class="splash-tagline" style="margin-top:8px;letter-spacing:1px;color:#91a9ba">TU FÚTBOL EN TIEMPO REAL</div>
