@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#06101c">
+  <title>MatchIA IA 5D</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/matchia-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/matchia-icon.svg">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MatchIA">
+  <meta name="mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash" class="splash">
+    <img
+      src="/matchia-icon.svg"
+      alt="MatchIA"
+      class="splash-logo"
+      onerror="this.style.display='none'"
+    >
+
+    <div class="splash-name">Match<span>IA</span></div>
+    <div class="splash-tagline">IA 5D · ANÁLISIS INTELIGENTE</div>
+    <div class="splash-progress"><span></span></div>
+    <div class="splash-loading">Tu fútbol en tiempo real</div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+      <div class="brand">
+
+        <div class="brand-logo-wrap"><img src="/matchia-icon.svg" alt="MatchIA" class="brand-logo-image"></div>
+
+        <div>
+          <div class="brand-name">Match<span>IA</span></div>
+          <div class="brand-sub">IA 5D · ANÁLISIS AVANZADO</div>
+        </div>
+
+      </div>
+
+      <button
+        class="icon-btn"
+        onclick="show('config')"
+        aria-label="Configuración"
+      >
+        ⚙️
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         HOME
+         ===================================================== -->
+
+    <main id="home" class="screen active">
+
+
+      <!-- SELECTOR DE FECHA -->
+
+      <div class="matchia-date-selector">
+
+        <button
+          id="previousDate"
+          class="date-arrow"
+          type="button"
+          aria-label="Día anterior"
+        >
+          ‹
+        </button>
+
+        <div class="selected-date-box">
+          <div class="selected-date-label">PARTIDOS DEL</div>
+          <div id="selectedDate" class="selected-date">
+            5 DE OCTUBRE
+          </div>
+        </div>
+
+        <button
+          id="nextDate"
+          class="date-arrow"
+          type="button"
+          aria-label="Día siguiente"
+        >
+          ›
+        </button>
+
+      </div>
+
+      <div class="home-tools">
+        <div class="home-search" onclick="show('search')">
+          <span>⌕</span><span>Buscar equipos, ligas, partidos</span>
+        </div>
+        <div class="league-chips" aria-label="Ligas principales">
+          <button>LaLiga</button><button>Premier</button><button>Champions</button><button>Serie A</button><button>Argentina</button>
+        </div>
+      </div>
+
+      <!-- FAVORITOS: primero aparecen los partidos de tus equipos guardados -->
+      <section id="favoriteMatchesSection" class="section" hidden>
+        <div class="section-title">
+          <span><i class="section-dot hot"></i> FAVORITOS</span>
+        </div>
+        <div id="favoriteMatchesPreview"></div>
+      </section>
+
+      <!-- PARTIDOS EN VIVO -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <span><i class="section-dot live"></i> EN VIVO</span>
+
+          <button
+            class="small-btn"
+            onclick="loadFixtures(true)"
+          >
+            Actualizar
+          </button>
+
+        </div>
+
+        <div id="livePreview">
+
+          <div class="empty-card">
+
+            <div class="empty-icon">⚽</div>
+
+            <div>No hay partidos en vivo</div>
+
+            <small>
+              Los partidos aparecerán automáticamente
+            </small>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- DESTACADO -->
+
+      <section class="section">
+
+        <div class="section-title">
+          <span><i class="section-dot hot"></i> PARTIDOS MÁS IMPORTANTES</span>
+        </div>
+
+        <div id="featuredMatch">
+        </div>
+
+      </section>
+
+
+      <!-- PRÓXIMOS -->
+
+      <section class="section">
+
+        <div class="section-title">
+          <span><i class="section-dot"></i> PARTIDOS DEL DÍA</span>
+        </div>
+
+        <div id="upcomingMatches">
+
+          <div class="empty-card">
+
+            <div class="loader"></div>
+
+            <div>
+              Cargando partidos...
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- FINALIZADOS -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <span><i class="section-dot done"></i> FINALIZADOS</span>
+
+          <button
+            class="small-btn"
+            onclick="show('finished')"
+          >
+            Ver todos
+          </button>
+
+        </div>
+
+        <div id="finishedPreview"></div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         MATCH
+         ===================================================== -->
+
+    <main id="match" class="screen">
+
+      <div class="back-row">
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
+      </div>
+
+
+      <div id="matchContent">
+
+
+        <div class="match-header-card">
+
+          <div
+            class="league-name"
+            id="matchLeague"
+          >
+            Liga
+          </div>
+
+
+          <div class="teams">
+
+
+            <div class="team">
+
+              <img
+                id="matchHomeLogo"
+                src=""
+                alt=""
+              >
+
+              <div id="matchHome">
+                Local
+              </div>
+
+            </div>
+
+
+            <div class="match-center">
+
+              <div
+                id="matchTime"
+                class="match-time"
+              >
+                --:--
+              </div>
+
+              <div
+                id="matchStatus"
+                class="match-status"
+              >
+                PRÓXIMO
+              </div>
+
+            </div>
+
+
+            <div class="team">
+
+              <img
+                id="matchAwayLogo"
+                src=""
+                alt=""
+              >
+
+              <div id="matchAway">
+                Visitante
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- TABS -->
+
+        <button class="pitch5d-launch" type="button" onclick="open5D()">
+        <span>◈</span> CANCHA 5D · MATCHIA LIVE
+      </button>
+
+      <div class="tabs">
+
+          <button
+            class="tab active"
+            onclick="tab('prediction',this)"
+          >
+            Pronóstico
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('matchStatsTab',this)"
+          >
+            Estadísticas
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('h2h',this)"
+          >
+            H2H
+          </button>
+
+          <button
+            class="tab"
+            onclick="tab('form',this)"
+          >
+            Forma
+          </button>
+
+        </div>
+
+
+        <!-- PRONÓSTICO -->
+
+        <section
+          id="prediction"
+          class="tab-panel active"
+        >
+
+          <div class="probability-card">
+
+            <div class="prob-title">
+              PROBABILIDADES MATCHIA
+            </div>
+
+
+            <div class="prob-grid">
+
+
+              <div class="prob-item">
+
+                <div
+                  class="prob-circle home"
+                  id="probHome"
+                >
+                  --%
+                </div>
+
+                <span id="probHomeName">
+                  Local
+                </span>
+
+              </div>
+
+
+              <div class="prob-item">
+
+                <div
+                  class="prob-circle draw"
+                  id="probDraw"
+                >
+                  --%
+                </div>
+
+                <span>
+                  Empate
+                </span>
+
+              </div>
+
+
+              <div class="prob-item">
+
+                <div
+                  class="prob-circle away"
+                  id="probAway"
+                >
+                  --%
+                </div>
+
+                <span id="probAwayName">
+                  Visitante
+                </span>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="confidence">
+
+              <span>
+                Confianza del análisis
+              </span>
+
+              <strong id="confidenceValue">
+                --%
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="panel">
+
+            <div class="panel-title">
+              🧠 ¿Por qué estas probabilidades?
+            </div>
+
+            <div
+              id="analysisText"
+              class="analysis-text"
+            >
+              Analizando los datos disponibles...
+            </div>
+
+          </div>
+
+
+          <div class="panel">
+
+            <div class="panel-title">
+              📊 Datos utilizados
+            </div>
+
+
+            <div class="data-grid">
+
+              <div>
+                <span>Posición local</span>
+                <strong id="homePosition">-</strong>
+              </div>
+
+              <div>
+                <span>Posición visitante</span>
+                <strong id="awayPosition">-</strong>
+              </div>
+
+              <div>
+                <span>Puntos local</span>
+                <strong id="homePoints">-</strong>
+              </div>
+
+              <div>
+                <span>Puntos visitante</span>
+                <strong id="awayPoints">-</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section
+          id="matchStatsTab"
+          class="tab-panel"
+        >
+
+          <div class="panel">
+
+            <div class="panel-title">
+              📊 Estadísticas
+            </div>
+
+            <div id="matchStats">
+
+              <div class="empty-card">
+                Cargando estadísticas...
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- H2H -->
+
+        <section
+          id="h2h"
+          class="tab-panel"
+        >
+
+          <div class="panel">
+
+            <div class="panel-title">
+              ⚔️ Enfrentamientos directos
+            </div>
+
+            <div id="h2hList">
+
+              <div class="empty-card">
+                Cargando últimos enfrentamientos...
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- FORMA -->
+
+        <section
+          id="form"
+          class="tab-panel"
+        >
+
+          <div class="panel">
+
+            <div class="panel-title">
+              📈 Últimos 5 partidos
+            </div>
+
+
+            <div class="form-columns">
+
+
+              <div>
+
+                <h4 id="formHomeTitle">
+                  Local
+                </h4>
+
+                <div id="homeForm"></div>
+
+              </div>
+
+
+              <div>
+
+                <h4 id="formAwayTitle">
+                  Visitante
+                </h4>
+
+                <div id="awayForm"></div>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+      </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         CANCHA 5D
+         ===================================================== -->
+    <main id="pitch5d" class="screen">
+      <div class="back-row"><button class="back-btn" onclick="show('match')">← Volver al partido</button></div>
+      <div class="pitch5d-header">
+        <div><span class="pitch-live-dot"></span> MATCHIA LIVE · 5D</div>
+        <strong id="pitch5dMinute">--'</strong>
+      </div>
+      <div class="pitch5d-score">
+        <div><span id="pitchHomeName">LOCAL</span><b id="pitchHomeScore">0</b></div>
+        <em>—</em>
+        <div><b id="pitchAwayScore">0</b><span id="pitchAwayName">VISITANTE</span></div>
+      </div>
+      <div class="pitch5d-wrap">
+        <div class="pitch5d">
+          <div class="pitch-glow"></div><div class="halfway"></div><div class="center-circle"></div><div class="center-dot"></div>
+          <div class="box top"></div><div class="box bottom"></div><div class="goal top"></div><div class="goal bottom"></div>
+          <div class="player p1"></div><div class="player p2"></div><div class="player p3"></div><div class="player p4"></div><div class="player p5"></div>
+          <div class="player away a1"></div><div class="player away a2"></div><div class="player away a3"></div><div class="player away a4"></div><div class="player away a5"></div>
+          <div class="ball5d" id="ball5d"></div><div class="ball-trail"></div>
+          <div class="pitch-status" id="pitchStatus">ESPERANDO DATOS EN VIVO</div>
+        </div>
+      </div>
+      <div class="pitch5d-probs">
+        <div><small>LOCAL</small><strong id="pitchProbHome">--%</strong></div>
+        <div class="draw"><small>EMPATE</small><strong id="pitchProbDraw">--%</strong></div>
+        <div><small>VISITANTE</small><strong id="pitchProbAway">--%</strong></div>
+      </div>
+      <div class="pitch5d-stats">
+        <div><span>POSESIÓN</span><b id="pitchPossession">-- / --</b></div>
+        <div><span>TIROS</span><b id="pitchShots">-- / --</b></div>
+        <div><span>CÓRNERS</span><b id="pitchCorners">-- / --</b></div>
+        <div><span>PRESIÓN</span><b id="pitchPressure">-- / --</b></div>
+      </div>
+      <div class="pitch5d-mode"><button class="active" type="button" onclick="openPitchMode('details',this)">DETALLES</button><button type="button" onclick="openPitchMode('live',this)">EN VIVO</button><button type="button" onclick="openPitchMode('analysis',this)">IA ANÁLISIS</button></div>
+    </main>
+
+    <!-- =====================================================
+         LIVE
+         ===================================================== -->
+
+    <main id="live" class="screen">
+
+      <div class="back-row">
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
+      </div>
+
+
+      <div class="live-card">
+
+        <div
+          class="live-league"
+          id="liveLeague"
+        >
+          EN VIVO
+        </div>
+
+
+        <div class="live-teams">
+
+
+          <div class="live-team">
+
+            <img
+              id="liveHomeLogo"
+              src=""
+              alt=""
+            >
+
+            <strong id="liveHome">
+              Local
+            </strong>
+
+          </div>
+
+
+          <div class="live-score">
+
+            <div id="liveScore">
+              0 - 0
+            </div>
+
+            <span id="liveMinute">
+              0'
+            </span>
+
+          </div>
+
+
+          <div class="live-team">
+
+            <img
+              id="liveAwayLogo"
+              src=""
+              alt=""
+            >
+
+            <strong id="liveAway">
+              Visitante
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <div class="probability-card live-probability">
+
+        <div class="prob-title">
+          PROBABILIDADES EN VIVO
+        </div>
+
+
+        <div class="prob-grid">
+
+
+          <div class="prob-item">
+
+            <div
+              class="prob-circle home"
+              id="liveProbHome"
+            >
+              --%
+            </div>
+
+            <span id="liveProbHomeName">
+              Local
+            </span>
+
+          </div>
+
+
+          <div class="prob-item">
+
+            <div
+              class="prob-circle draw"
+              id="liveProbDraw"
+            >
+              --%
+            </div>
+
+            <span>
+              Empate
+            </span>
+
+          </div>
+
+
+          <div class="prob-item">
+
+            <div
+              class="prob-circle away"
+              id="liveProbAway"
+            >
+              --%
+            </div>
+
+            <span id="liveProbAwayName">
+              Visitante
+            </span>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          📊 Estadísticas en vivo
+        </div>
+
+        <div id="liveStats"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          🧠 Análisis en vivo
+        </div>
+
+        <div
+          id="liveAnalysis"
+          class="analysis-text"
+        >
+          Esperando estadísticas...
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         SEARCH
+         ===================================================== -->
+
+    <main id="search" class="screen">
+
+      <div class="search-box">
+
+        <span>🔎</span>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Buscar equipo o partido..."
+          autocomplete="off"
+          oninput="doSearch()"
+        >
+
+      </div>
+
+
+      <div id="searchResults">
+
+        <div class="empty-card">
+          Escribí el nombre de un equipo para buscar.
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FINISHED
+         ===================================================== -->
+
+    <main id="finished" class="screen">
+
+      <div class="page-title">
+
+        <button
+          class="back-btn"
+          onclick="show('home')"
+        >
+          ← Volver
+        </button>
+
+        <h2>
+          Partidos finalizados
+        </h2>
+
+      </div>
+
+
+      <div id="finishedMatches">
+
+        <div class="empty-card">
+          Cargando partidos...
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         PROFILE
+         ===================================================== -->
+
+    <main id="profile" class="screen profile-screen">
+      <div class="page-title profile-heading">
+        <h2>PERFIL <span>5D</span></h2>
+        <p>Tu centro personal MatchIA</p>
+      </div>
+
+      <section class="profile-hero-neural">
+        <div class="profile-orbit" aria-hidden="true"><div class="profile-avatar">◉</div></div>
+        <div class="profile-user-copy">
+          <span class="profile-status"><i></i> USUARIO ACTIVO</span>
+          <h3 id="profileDisplayName">Usuario MatchIA</h3>
+          <p>Analista de fútbol · Nivel inicial</p>
+        </div>
+        <button type="button" class="profile-edit-btn" onclick="editMatchIAProfile()">Editar</button>
+      </section>
+
+      <section class="profile-metrics-grid" aria-label="Resumen personal">
+        <div class="profile-metric"><span>♡</span><strong id="profileFavoriteMetric">0/5</strong><small>Favoritos</small></div>
+        <div class="profile-metric"><span>◎</span><strong>5D</strong><small>Modo de análisis</small></div>
+        <div class="profile-metric"><span>✧</span><strong>IA</strong><small>Predicciones</small></div>
+      </section>
+
+      <section class="panel profile-options-panel">
+        <div class="panel-title">PREFERENCIAS PERSONALES</div>
+        <button class="profile-option-row" type="button" onclick="show('favorites'); if(window.renderFavoriteTeams) window.renderFavoriteTeams();">
+          <span class="profile-option-icon">♡</span>
+          <span><strong>Mis equipos favoritos</strong><small>Administrá tus equipos guardados</small></span>
+          <b>›</b>
+        </button>
+        <button class="profile-option-row" type="button" onclick="show('config')">
+          <span class="profile-option-icon">⚙</span>
+          <span><strong>Configuración</strong><small>Idioma y opciones de la aplicación</small></span>
+          <b>›</b>
+        </button>
+        <button class="profile-option-row" type="button" onclick="show('stats')">
+          <span class="profile-option-icon">▥</span>
+          <span><strong>Estadísticas MatchIA</strong><small>Explorá los datos de los partidos</small></span>
+          <b>›</b>
+        </button>
+      </section>
+      <p class="profile-local-note">Tu nombre y preferencias se guardan en este dispositivo.</p>
+    </main>
+
+    <!-- =====================================================
+         STATS / FAVORITOS
+         ===================================================== -->
+
+    <main id="stats" class="screen">
+      <div class="page-title">
+        <h2>Stats <span>5D</span></h2>
+        <p>Lectura avanzada del rendimiento de los partidos.</p>
+      </div>
+      <div class="stats-hero-card">
+        <div class="stats-hero-glow"></div>
+        <div class="stats-hero-label">MATCHIA INTELLIGENCE</div>
+        <strong>Estadísticas de partido</strong>
+        <small>Seleccioná un partido para ver posesión, tiros, córners, tarjetas y presión.</small>
+      </div>
+      <div class="stats-mini-grid">
+        <div><span>⚡</span><b>Presión</b><small>En vivo</small></div>
+        <div><span>◒</span><b>Posesión</b><small>Comparativa</small></div>
+        <div><span>◎</span><b>Disparos</b><small>Precisión</small></div>
+        <div><span>◇</span><b>Córners</b><small>Ritmo</small></div>
+      </div>
+    </main>
+
+    <main id="favorites" class="screen">
+      <div class="page-title">
+        <h2>Favoritos <span>♡</span></h2>
+        <p>Hasta 5 equipos y sus partidos primero.</p>
+      </div>
+      <div class="favorites-limit"><strong id="favoriteTeamsCount">0 / 5</strong><span>equipos guardados</span></div>
+      <div id="favoriteTeamsList">
+        <div class="empty-card favorite-empty"><div class="empty-icon">♡</div><div>Todavía no tenés favoritos</div><small>Usá el corazón en una tarjeta para guardar hasta cinco equipos.</small></div>
+      </div>
+    </main>
+
+    <!-- =====================================================
+         CONFIG
+         ===================================================== -->
+
+    <main id="config" class="screen settings-screen">
+      <div class="page-title settings-page-title">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
+        <h2>⚙ AJUSTES DEL SISTEMA</h2>
+        <p>Personalizá tu experiencia MatchIA IA 5D.</p>
+      </div>
+
+      <div class="panel settings-panel settings-neural-panel">
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon neural-icon" aria-hidden="true">♧</span>
+          <div class="setting-copy">
+            <strong>Modo Neural</strong>
+            <small>Activar análisis neuronal en tiempo real</small>
+          </div>
+          <label class="switch" aria-label="Activar modo neural">
+            <input id="neuralMode" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon notification-icon" aria-hidden="true">♧</span>
+          <div class="setting-copy">
+            <strong>Notificaciones IA</strong>
+            <small>Alertas predictivas y recomendaciones</small>
+          </div>
+          <label class="switch" aria-label="Activar notificaciones IA">
+            <input id="aiNotifications" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon haptic-icon" aria-hidden="true">◉</span>
+          <div class="setting-copy">
+            <strong>Vibración háptica</strong>
+            <small>Respuesta táctil en interacciones</small>
+          </div>
+          <label class="switch" aria-label="Activar vibración háptica">
+            <input id="hapticFeedback" type="checkbox">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon sound-icon" aria-hidden="true">♫</span>
+          <div class="setting-copy">
+            <strong>Sonido neural</strong>
+            <small>Efectos de sonido futuristas</small>
+          </div>
+          <label class="switch" aria-label="Activar sonido neural">
+            <input id="neuralSound" type="checkbox">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row setting-language-row">
+          <span class="setting-icon language-icon" aria-hidden="true">◎</span>
+          <div class="setting-copy">
+            <strong>Idioma</strong>
+            <small>Elegí el idioma de la aplicación</small>
+          </div>
+          <select id="matchiaLanguage" class="settings-language-select" aria-label="Idioma de la aplicación">
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <div class="setting-row setting-neural-row">
+          <div class="setting-copy">
+            <strong>Actualización automática</strong>
+            <small>Actualizar partidos y estadísticas</small>
+          </div>
+          <label class="switch" aria-label="Actualizar partidos automáticamente">
+            <input id="autoRefresh" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row setting-last-row">
+          <div class="setting-copy">
+            <strong>Mostrar porcentajes</strong>
+            <small>Probabilidades de MatchIA</small>
+          </div>
+          <label class="switch" aria-label="Mostrar porcentajes">
+            <input id="showProbabilities" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+        <p class="settings-note" id="settingsSaveStatus" aria-live="polite">Tus preferencias se guardan en este dispositivo.</p>
+      </div>
+    </main>
+
+    <!-- =====================================================
+         NAVEGACIÓN INFERIOR
+         ===================================================== -->
+
+    <nav class="bottom-nav">
+
+      <button class="nav-item active" data-screen="home" onclick="show('home')">
+        <span class="nav-icon">⌂</span><small>Inicio</small>
+      </button>
+
+      <button class="nav-item" data-screen="search" onclick="show('search')">
+        <span class="nav-icon">⌕</span><small>Buscar</small>
+      </button>
+
+      <button class="nav-item" data-screen="stats" onclick="show('stats')">
+        <span class="nav-icon">▥</span><small>Stats</small>
+      </button>
+
+      <button class="nav-item" data-screen="favorites" onclick="show('favorites')">
+        <span class="nav-icon">♡</span><small>Favoritos</small>
+      </button>
+
+      <button class="nav-item" data-screen="profile" onclick="show('profile')">
+        <span class="nav-icon">◉</span><small>Perfil</small>
+      </button>
+
+    </nav>
+
+  </div>
+
+
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
+  <script src="../js/calibraciones. js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/estadisticas.js"></script>
+  <script src="../js/analisis.js"></script>
+  <script src="../js/fixtures. js"></script>
+  <script src="../js/Live. js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/settings.js"></script>
+  <script src="../js/profile.js"></script>
+  <script src="../js/i18n.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    }
+  </script>
+<script>
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {})); }
+</script>
+</body>
+</html>
