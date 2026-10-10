@@ -17,6 +17,8 @@
     #app { position: relative; z-index: 1; pointer-events: auto !important; }
     #app button, #app input, #app select, #app [onclick], #app [data-league] { pointer-events: auto !important; touch-action: manipulation; }
     .league-chips button.is-selected { background: #00d7ff !important; color: #06101c !important; border-color: #00d7ff !important; box-shadow: 0 0 14px #00d7ff55; }
+    .splash-progress span { width: 0; animation: none !important; transition: width 180ms linear; background: linear-gradient(90deg,#b8ff00,#00d7ff) !important; }
+    .splash-loading { margin-top: 10px; letter-spacing: 2px; font-weight: 800; color: #e7faff !important; }
   </style>
 </head>
 
@@ -34,7 +36,8 @@
     <div class="splash-name">Match<span>IA</span></div>
     <div class="splash-tagline">IA 5D · ANÁLISIS INTELIGENTE</div>
     <div class="splash-progress"><span></span></div>
-    <div class="splash-loading">Tu fútbol en tiempo real</div>
+    <div class="splash-loading" id="splashLoadingText">CARGANDO…</div>
+    <div class="splash-tagline" style="margin-top:8px;letter-spacing:1px;color:#91a9ba">TU FÚTBOL EN TIEMPO REAL</div>
   </div>
 
   <!-- APP -->
@@ -1087,15 +1090,39 @@
   </script>
 
   <script>
-    // Respaldo independiente: si ui.js no logra ocultar el splash, lo quitamos igual.
-    window.setTimeout(function () {
+    // La barra avanza durante el arranque y llega al 100 % antes de mostrar Inicio.
+    (function () {
       var splash = document.getElementById("splash");
-      if (splash) {
-        splash.style.opacity = "0";
-        splash.style.display = "none";
-        splash.setAttribute("aria-hidden", "true");
+      var bar = splash && splash.querySelector(".splash-progress span");
+      var label = document.getElementById("splashLoadingText");
+      var progress = 0;
+      var startedAt = Date.now();
+      var ready = document.readyState === "complete";
+      function paint(value) {
+        progress = Math.max(progress, Math.min(100, value));
+        if (bar) bar.style.width = progress + "%";
       }
-    }, 2200);
+      var timer = window.setInterval(function () {
+        // No fingir que la red terminó: durante la espera se queda en 90 %.
+        if (progress < 90) paint(Math.min(90, progress + (progress < 45 ? 5 : 2)));
+        if (ready && Date.now() - startedAt >= 1800) {
+          paint(100);
+          if (label) label.textContent = "¡LISTO!";
+          window.clearInterval(timer);
+          window.setTimeout(function () {
+            if (splash) {
+              splash.style.transition = "opacity 350ms ease";
+              splash.style.opacity = "0";
+              window.setTimeout(function () {
+                splash.style.display = "none";
+                splash.setAttribute("aria-hidden", "true");
+              }, 380);
+            }
+          }, 250);
+        }
+      }, 100);
+      window.addEventListener("load", function () { ready = true; });
+    })();
   </script>
 
   <!-- =====================================================
