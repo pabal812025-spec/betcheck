@@ -1094,10 +1094,14 @@
         argentina: ["argentina", "liga profesional", "primera nacional", "copa de la liga"]
       };
       let selectedLeague = "";
+      let observer = null;
       function normalize(text) {
         return String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
       }
       function applyLeagueFilter(key) {
+        // Pausar el observador mientras aplicamos el filtro para evitar
+        // que sus propios cambios provoquen un ciclo infinito.
+        if (observer) observer.disconnect();
         selectedLeague = key || "";
         const buttons = document.querySelectorAll(".league-chips [data-league]");
         buttons.forEach(button => {
@@ -1141,11 +1145,14 @@
             card.hidden = !!selectedLeague && !(aliases[selectedLeague] || []).some(alias => label.includes(normalize(alias)));
           });
         });
+        // Volver a observar después de terminar las modificaciones.
+        const home = document.getElementById("home");
+        if (observer && home) observer.observe(home, { childList: true, subtree: true });
       }
       document.querySelectorAll(".league-chips [data-league]").forEach(button => {
         button.addEventListener("click", () => applyLeagueFilter(selectedLeague === button.dataset.league ? "" : button.dataset.league));
       });
-      const observer = new MutationObserver(() => {
+      observer = new MutationObserver(() => {
         if (selectedLeague) applyLeagueFilter(selectedLeague);
       });
       window.addEventListener("DOMContentLoaded", () => {
