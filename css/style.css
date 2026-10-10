@@ -1394,3 +1394,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 /* MatchIA: agrandar solo el texto de mes y fecha; conservar intactos los cuadros. */
 .selected-date{font-size:clamp(17px,5.5vw,25px)!important;white-space:nowrap!important;overflow-wrap:normal!important;line-height:1.15;letter-spacing:0!important;}
 @media(max-width:380px){.selected-date{font-size:clamp(16px,5.2vw,20px)!important;}.selected-date-label{font-size:9px!important;}}
+
+
+/* MatchIA: segundo ajuste, fecha y mes bastante más grandes; cajas intactas. */
+.selected-date{font-size:clamp(21px,6.5vw,30px)!important;white-space:nowrap!important;overflow:visible!important;overflow-wrap:normal!important;line-height:1.15;letter-spacing:0!important;}
+@media(max-width:380px){.selected-date{font-size:clamp(19px,6vw,24px)!important;}.selected-date-label{font-size:10px!important;letter-spacing:1px!important;}}
