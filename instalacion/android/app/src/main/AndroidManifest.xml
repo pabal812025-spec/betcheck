@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="false"
-        android:label="MatchIA IA 5D"
+        android:label="MatchIA IA 5D nueva"
         android:icon="@drawable/ic_matchia"
         android:roundIcon="@drawable/ic_matchia"
         android:usesCleartextTraffic="false"
