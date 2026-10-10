@@ -1313,3 +1313,31 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .favorite-team-row strong{flex:1;min-width:0;color:#eaf7ff;font-size:13px}
 .favorite-team-heart{color:#b8ff00;font-size:19px}
 .favorite-team-row button{padding:7px 10px;border:1px solid rgba(255,91,69,.3);border-radius:9px;background:rgba(255,91,69,.07);color:#ff9287;font-size:10px;font-weight:800}
+
+
+/* =========================
+   MATCHIA NEURAL SETTINGS
+========================= */
+.settings-screen{padding-top:18px;background:radial-gradient(ellipse at 50% 0%,rgba(28,75,119,.17),transparent 60%)}
+.settings-page-title h2{font-size:15px;letter-spacing:.8px;color:#dcecff;margin:5px 0 7px}
+.settings-page-title p{margin:0 0 17px;color:#8199b4;font-size:12px}
+.settings-neural-panel{padding:8px 17px;border:1px solid rgba(176,204,233,.45);border-radius:20px;background:linear-gradient(145deg,rgba(28,44,67,.96),rgba(12,24,42,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 34px rgba(0,0,0,.18)}
+.setting-row.setting-neural-row{display:flex;align-items:center;gap:13px;min-height:82px;padding:12px 0;border-bottom:1px solid rgba(142,169,198,.2)}
+.setting-neural-row .setting-copy{flex:1;min-width:0}
+.setting-neural-row .setting-copy strong{display:block;color:#f4f8ff;font-size:15px;font-weight:750;margin-bottom:5px}
+.setting-neural-row .setting-copy small{display:block;color:#c0ccda;font-size:11px;line-height:1.4}
+.setting-icon{width:48px;height:48px;flex:0 0 48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:25px;background:rgba(11,30,48,.75);border:1px solid #5481a4;color:#8bd9ff;box-shadow:inset 0 0 14px rgba(72,174,225,.09)}
+.neural-icon,.haptic-icon{border-color:#8fc96d;color:#b7ff70;box-shadow:inset 0 0 14px rgba(157,255,92,.1)}
+.notification-icon,.language-icon{border-color:#6aa5cb;color:#8bdcff}
+.sound-icon{color:#7edaff}
+.setting-neural-row .switch{flex:0 0 54px;width:54px;height:30px;position:relative}
+.setting-neural-row .switch input{position:absolute;opacity:0;width:1px;height:1px}
+.setting-neural-row .switch span{position:absolute;inset:0;border-radius:30px;background:#59616e;border:1px solid rgba(255,255,255,.1);transition:background .2s,box-shadow .2s}
+.setting-neural-row .switch span:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:#c8ced7;box-shadow:0 1px 4px #0006;transition:transform .2s,background .2s}
+.setting-neural-row .switch input:checked+span{background:#59c83d;box-shadow:0 0 15px rgba(105,255,68,.34)}
+.setting-neural-row .switch input:checked+span:before{transform:translateX(24px);background:#d9ff9c}
+.setting-neural-row .switch input:focus-visible+span{outline:2px solid #7bdcff;outline-offset:3px}
+.settings-language-select{max-width:122px;min-width:110px;padding:10px 8px;border-radius:10px;color:#e9f6ff;background:#112a41;border:1px solid #3c6c8e;font-size:12px}
+.setting-neural-row.setting-last-row{border-bottom:0}
+.settings-note{margin:4px 0 8px;padding-top:10px;color:#718ba6;font-size:10px;line-height:1.4}
+@media(max-width:380px){.settings-neural-panel{padding-left:12px;padding-right:12px}.setting-row.setting-neural-row{gap:9px}.setting-icon{width:42px;height:42px;flex-basis:42px}.setting-neural-row .setting-copy strong{font-size:13px}.setting-neural-row .setting-copy small{font-size:10px}.settings-language-select{min-width:92px;max-width:100px}}
