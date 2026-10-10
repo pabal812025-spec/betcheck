@@ -1375,3 +1375,17 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .favorite-empty small{color:#8fa9c0!important}
 .favorite-team-row{border:1px solid #315571!important;border-radius:14px!important;background:linear-gradient(140deg,#183148,#101e30)!important;margin-bottom:9px}
 @media(max-width:380px){.profile-hero-neural{gap:9px;padding:15px 10px}.profile-orbit{width:54px;height:54px;flex-basis:54px}.profile-user-copy h3{font-size:14px}.profile-edit-btn{right:8px;bottom:8px}.profile-metric{padding:11px 3px}}
+
+
+/* Ajuste móvil: el nombre del mes no debe salirse del selector de fecha. */
+.matchia-date-selector{gap:clamp(6px,2vw,14px);}
+.selected-date-box{flex:1 1 0;width:100%;min-width:0;overflow:hidden;}
+.selected-date{font-size:clamp(14px,5.2vw,25px);letter-spacing:clamp(0px,.15vw,.8px);white-space:normal;overflow-wrap:anywhere;line-height:1.15;}
+.selected-date-label{letter-spacing:clamp(.5px,.45vw,2px);}
+.date-arrow{flex:0 0 clamp(40px,13vw,58px);width:clamp(40px,13vw,58px);}
+@media(max-width:380px){
+  .matchia-date-selector{gap:7px;}
+  .date-arrow{flex-basis:42px;width:42px;height:48px;border-radius:13px;font-size:36px;}
+  .selected-date{font-size:clamp(13px,4.8vw,18px);letter-spacing:0;}
+  .selected-date-label{font-size:8px;letter-spacing:1px;}
+}
