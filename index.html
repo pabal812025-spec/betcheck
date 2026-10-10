@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#06101c">
-  <title>MatchIA</title>
+  <title>MatchIA IA 5D</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/matchia-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/matchia-icon.svg">
 
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,7 +17,7 @@
   <!-- SPLASH -->
   <div id="splash" class="splash">
     <img
-      src="logo.png"
+      src="/matchia-icon.svg"
       alt="MatchIA"
       class="splash-logo"
       onerror="this.style.display='none'"
@@ -34,7 +37,7 @@
 
       <div class="brand">
 
-        <div class="brand-logo-wrap"><img src="logo.png" alt="MatchIA" class="brand-logo-image"></div>
+        <div class="brand-logo-wrap"><img src="/matchia-icon.svg" alt="MatchIA" class="brand-logo-image"></div>
 
         <div>
           <div class="brand-name">Match<span>IA</span></div>
@@ -1071,5 +1074,10 @@
   <script src="js/profile.js"></script>
   <script src="js/i18n.js"></script>
 
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    }
+  </script>
 </body>
 </html>
