@@ -12,8 +12,8 @@
   <meta name="apple-mobile-web-app-title" content="MatchIA">
   <meta name="mobile-web-app-capable" content="yes">
   <style>
-    /* En la copia de prueba, eliminar cualquier capa que pueda interceptar toques. */
-    #splash { display: none !important; visibility: hidden !important; pointer-events: none !important; }
+    /* Mantener visible la pantalla de inicio; permitir interacción con la app. */
+    #splash { pointer-events: none; }
     #app { position: relative; z-index: 1; pointer-events: auto !important; }
     #app button, #app input, #app select, #app [onclick], #app [data-league] { pointer-events: auto !important; touch-action: manipulation; }
     .league-chips button.is-selected { background: #00d7ff !important; color: #06101c !important; border-color: #00d7ff !important; box-shadow: 0 0 14px #00d7ff55; }
