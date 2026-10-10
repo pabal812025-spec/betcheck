@@ -1399,3 +1399,9 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 /* MatchIA: segundo ajuste, fecha y mes bastante más grandes; cajas intactas. */
 .selected-date{font-size:clamp(21px,6.5vw,30px)!important;white-space:nowrap!important;overflow:visible!important;overflow-wrap:normal!important;line-height:1.15;letter-spacing:0!important;}
 @media(max-width:380px){.selected-date{font-size:clamp(19px,6vw,24px)!important;}.selected-date-label{font-size:10px!important;letter-spacing:1px!important;}}
+
+
+/* MatchIA: aumento fuerte y directo del texto de fecha en celular; sin cambiar cajas ni flechas. */
+.selected-date-box .selected-date,
+#selectedDate.selected-date{font-size:clamp(28px,8vw,36px)!important;font-weight:800!important;white-space:nowrap!important;overflow:visible!important;overflow-wrap:normal!important;line-height:1.1!important;letter-spacing:0!important;}
+@media(max-width:380px){.selected-date-box .selected-date,#selectedDate.selected-date{font-size:clamp(25px,7.5vw,31px)!important;}}
