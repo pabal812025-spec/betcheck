@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#06101c">
   <title>MatchIA IA 5D</title>
-  <link rel="stylesheet" href="../css/style.css?v=20261010b">
+  <link rel="stylesheet" href="../css/style.css?v=20261010c">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.svg?v=2" type="image/svg+xml">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,15 +23,15 @@
     .splash-name-5d span { color: #00d7ff; }
     .splash-loading { margin-top: 10px; letter-spacing: 2px; font-weight: 800; color: #e7faff !important; }
   
-    /* Fecha adaptable: evitar que el día y el mes sobresalgan del cuadro en móvil. */
-    .matchia-date-selector { box-sizing:border-box !important; width:100% !important; gap:6px !important; }
-    .matchia-date-selector .selected-date-box { box-sizing:border-box !important; flex:1 1 0 !important; width:0 !important; min-width:0 !important; max-width:none !important; overflow:hidden !important; }
-    .matchia-date-selector .selected-date { box-sizing:border-box !important; display:block !important; max-width:100% !important; font-size:clamp(12px,4.2vw,19px) !important; line-height:1.15 !important; letter-spacing:0 !important; white-space:normal !important; overflow-wrap:anywhere !important; word-break:normal !important; }
-    .matchia-date-selector .selected-date-label { font-size:clamp(8px,2.5vw,10px) !important; letter-spacing:1px !important; }
-    .matchia-date-selector .date-arrow { box-sizing:border-box !important; flex:0 0 42px !important; width:42px !important; height:48px !important; }
+    /* Fecha legible y centrada: letras grandes sin salirse del selector. */
+    .matchia-date-selector { box-sizing:border-box !important; width:100% !important; gap:4px !important; }
+    .matchia-date-selector .selected-date-box { box-sizing:border-box !important; flex:1 1 auto !important; width:auto !important; min-width:0 !important; max-width:none !important; overflow:visible !important; }
+    .matchia-date-selector .selected-date { box-sizing:border-box !important; display:block !important; max-width:100% !important; font-size:clamp(18px,5.2vw,23px) !important; line-height:1.15 !important; letter-spacing:0 !important; white-space:nowrap !important; overflow-wrap:normal !important; word-break:normal !important; }
+    .matchia-date-selector .selected-date-label { font-size:10px !important; letter-spacing:1px !important; }
+    .matchia-date-selector .date-arrow { box-sizing:border-box !important; flex:0 0 44px !important; width:44px !important; height:48px !important; }
     @media(min-width:500px) {
       .matchia-date-selector .date-arrow { flex-basis:58px !important; width:58px !important; height:58px !important; }
-      .matchia-date-selector .selected-date { font-size:clamp(16px,3.8vw,25px) !important; }
+      .matchia-date-selector .selected-date { font-size:clamp(20px,3.8vw,25px) !important; }
     }
   </style>
 </head>
