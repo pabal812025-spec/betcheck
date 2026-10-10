@@ -920,91 +920,99 @@
          CONFIG
          ===================================================== -->
 
-    <main id="config" class="screen">
-
-      <div class="page-title">
-
-        <button
-          class="back-btn"
-          onclick="show('home')"
-        >
-          ← Volver
-        </button>
-
-        <h2>
-          Configuración
-        </h2>
-
+    <main id="config" class="screen settings-screen">
+      <div class="page-title settings-page-title">
+        <button class="back-btn" onclick="show('home')">← Volver</button>
+        <h2>⚙ AJUSTES DEL SISTEMA</h2>
+        <p>Personalizá tu experiencia MatchIA IA 5D.</p>
       </div>
 
-
-      <div class="panel settings-panel">
-
-
-        <div class="setting-row">
-
-          <div>
-
-            <strong>
-              Actualización automática
-            </strong>
-
-            <small>
-              Actualizar partidos y estadísticas
-            </small>
-
+      <div class="panel settings-panel settings-neural-panel">
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon neural-icon" aria-hidden="true">♧</span>
+          <div class="setting-copy">
+            <strong>Modo Neural</strong>
+            <small>Activar análisis neuronal en tiempo real</small>
           </div>
-
-
-          <label class="switch">
-
-            <input
-              id="autoRefresh"
-              type="checkbox"
-              checked
-            >
-
+          <label class="switch" aria-label="Activar modo neural">
+            <input id="neuralMode" type="checkbox" checked>
             <span></span>
-
           </label>
-
         </div>
 
-
-        <div class="setting-row">
-
-          <div>
-
-            <strong>
-              Mostrar porcentajes
-            </strong>
-
-            <small>
-              Probabilidades de MatchIA
-            </small>
-
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon notification-icon" aria-hidden="true">♧</span>
+          <div class="setting-copy">
+            <strong>Notificaciones IA</strong>
+            <small>Alertas predictivas y recomendaciones</small>
           </div>
-
-
-          <label class="switch">
-
-            <input
-              id="showProbabilities"
-              type="checkbox"
-              checked
-            >
-
+          <label class="switch" aria-label="Activar notificaciones IA">
+            <input id="aiNotifications" type="checkbox" checked>
             <span></span>
-
           </label>
-
         </div>
 
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon haptic-icon" aria-hidden="true">◉</span>
+          <div class="setting-copy">
+            <strong>Vibración háptica</strong>
+            <small>Respuesta táctil en interacciones</small>
+          </div>
+          <label class="switch" aria-label="Activar vibración háptica">
+            <input id="hapticFeedback" type="checkbox">
+            <span></span>
+          </label>
+        </div>
 
+        <div class="setting-row setting-neural-row">
+          <span class="setting-icon sound-icon" aria-hidden="true">♫</span>
+          <div class="setting-copy">
+            <strong>Sonido neural</strong>
+            <small>Efectos de sonido futuristas</small>
+          </div>
+          <label class="switch" aria-label="Activar sonido neural">
+            <input id="neuralSound" type="checkbox">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row setting-language-row">
+          <span class="setting-icon language-icon" aria-hidden="true">◎</span>
+          <div class="setting-copy">
+            <strong>Idioma</strong>
+            <small>Elegí el idioma de la aplicación</small>
+          </div>
+          <select id="matchiaLanguage" class="settings-language-select" aria-label="Idioma de la aplicación">
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <div class="setting-row setting-neural-row">
+          <div class="setting-copy">
+            <strong>Actualización automática</strong>
+            <small>Actualizar partidos y estadísticas</small>
+          </div>
+          <label class="switch" aria-label="Actualizar partidos automáticamente">
+            <input id="autoRefresh" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="setting-row setting-neural-row setting-last-row">
+          <div class="setting-copy">
+            <strong>Mostrar porcentajes</strong>
+            <small>Probabilidades de MatchIA</small>
+          </div>
+          <label class="switch" aria-label="Mostrar porcentajes">
+            <input id="showProbabilities" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+        <p class="settings-note" id="settingsSaveStatus" aria-live="polite">Tus preferencias se guardan en este dispositivo.</p>
       </div>
-
     </main>
-
 
     <!-- =====================================================
          NAVEGACIÓN INFERIOR
@@ -1048,6 +1056,7 @@
   <script src="js/fixtures. js"></script>
   <script src="js/Live. js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/settings.js"></script>
 
 </body>
 </html>
