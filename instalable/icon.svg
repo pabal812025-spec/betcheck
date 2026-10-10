@@ -1,1 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06101c"/><stop offset="1" stop-color="#112c46"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="url(#g)"/><circle cx="256" cy="256" r="171" fill="none" stroke="#28e0c1" stroke-width="7" opacity=".8"/><path d="M256 85v342M85 256h342M85 170h342M85 342h342" stroke="#28e0c1" stroke-width="4" opacity=".28"/><circle cx="256" cy="256" r="64" fill="none" stroke="#28e0c1" stroke-width="6"/><path d="M256 214l40 29-15 47h-50l-15-47z" fill="#f7fbff" stroke="#28e0c1" stroke-width="4"/><text x="256" y="407" text-anchor="middle" font-family="Arial,sans-serif" font-size="55" font-weight="800" fill="#f7fbff">MATCH<tspan fill="#28e0c1">IA</tspan></text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#030812"/>
+      <stop offset=".55" stop-color="#071b2b"/>
+      <stop offset="1" stop-color="#02070d"/>
+    </linearGradient>
+    <radialGradient id="ball" cx=".34" cy=".25" r=".8">
+      <stop offset="0" stop-color="#243c50"/>
+      <stop offset=".58" stop-color="#0b1927"/>
+      <stop offset="1" stop-color="#02060b"/>
+    </radialGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e2ffff"/>
+      <stop offset=".35" stop-color="#00eaff"/>
+      <stop offset="1" stop-color="#0078ff"/>
+    </linearGradient>
+    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#efff8a"/>
+      <stop offset=".45" stop-color="#b8ff00"/>
+      <stop offset="1" stop-color="#53d900"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="clip"><circle cx="256" cy="236" r="157"/></clipPath>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="236" r="184" fill="none" stroke="#00dfff" stroke-width="3" opacity=".16"/>
+  <circle cx="256" cy="236" r="171" fill="none" stroke="#b8ff00" stroke-width="2" opacity=".28"/>
+  <circle cx="256" cy="236" r="157" fill="url(#ball)" stroke="url(#cyan)" stroke-width="8" filter="url(#glow)"/>
+  <g clip-path="url(#clip)" stroke-linejoin="round">
+    <path d="M256 177l47 34-18 55h-58l-18-55z" fill="#06101a" stroke="url(#cyan)" stroke-width="7"/>
+    <path d="M256 177l-31-49-53 8-18 50 55 25" fill="#102838" stroke="#00dfff" stroke-width="6"/>
+    <path d="M303 211l56-25-18-50-53-8-32 49" fill="#102838" stroke="#b8ff00" stroke-width="6"/>
+    <path d="M227 266l-39 43 18 53 54 17 25-53" fill="#102838" stroke="#b8ff00" stroke-width="6"/>
+    <path d="M285 266l39 43-18 53-46 17-25-53" fill="#102838" stroke="#00dfff" stroke-width="6"/>
+    <path d="M154 186l-48 19-16 51 35 42 63 11 39-43-18-55z" fill="#0a2030" stroke="#00bfff" stroke-width="6"/>
+    <path d="M359 186l48 19 16 51-35 42-63 11-39-43 18-55z" fill="#0a2030" stroke="#b8ff00" stroke-width="6"/>
+    <path d="M203 362l-28 42 24 36 57 10 57-10 24-36-28-42" fill="#0a2030" stroke="#00dfff" stroke-width="6"/>
+    <path d="M256 177l-31-49M303 211l56-25M285 266l39 43M227 266l-39 43M256 354l0 96" fill="none" stroke="#e8ffff" stroke-width="3" opacity=".75"/>
+  </g>
+  <path d="M138 132a165 165 0 0 1 235-3" fill="none" stroke="url(#lime)" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M116 300a165 165 0 0 0 280 20" fill="none" stroke="url(#cyan)" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="114" cy="303" r="6" fill="#00eaff" filter="url(#glow)"/>
+  <circle cx="374" cy="129" r="6" fill="#b8ff00" filter="url(#glow)"/>
+  <text x="256" y="452" text-anchor="middle" font-family="Arial,sans-serif" font-size="37" font-weight="900" letter-spacing="2" fill="#f3fbff">MATCH<tspan fill="#b8ff00">IA</tspan></text>
+  <text x="256" y="482" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="7" fill="#00dfff">5D</text>
+</svg>
