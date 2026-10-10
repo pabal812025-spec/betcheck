@@ -37,6 +37,12 @@ jobs:
         with:
           gradle-version: "8.7"
 
+      - name: Recuperar firma de prueba para mantener actualizaciones compatibles
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: matchia-debug-keystore-v1
+
       - name: Compilar APK de prueba
         working-directory: instalacion/android
         run: gradle --no-daemon assembleDebug
