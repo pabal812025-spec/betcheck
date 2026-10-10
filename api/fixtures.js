@@ -29,10 +29,13 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    if (!response.ok || data.errors?.access) {
-      return res.status(response.status || 503).json({
+    const tieneErrores =
+      data.errors && Object.keys(data.errors).length > 0;
+
+    if (!response.ok || tieneErrores) {
+      return res.status(!response.ok ? response.status : 502).json({
         error: "API-Football no disponible",
-        detalle: data.errors || null
+        detalle: data.errors
       });
     }
 
