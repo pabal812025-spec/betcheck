@@ -43,6 +43,12 @@ jobs:
           path: ~/.android/debug.keystore
           key: matchia-debug-keystore-v1
 
+      - name: Poner logo original de MatchIA
+        working-directory: instalacion/android
+        run: |
+          rm -f app/src/main/res/drawable/ic_matchia.xml
+          base64 -d app/src/main/icon_matchia.b64 > app/src/main/res/drawable/ic_matchia.jpg
+
       - name: Compilar APK de prueba
         working-directory: instalacion/android
         run: gradle --no-daemon assembleDebug
