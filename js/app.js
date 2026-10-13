@@ -1094,6 +1094,43 @@ async function getPrematchPredictionById(fixtureId) {
     );
 
 
+  let analysisIA = "";
+
+  if (
+    window.MatchIAAnalisis &&
+    typeof window.MatchIAAnalisis.obtenerAnalisisIA === "function"
+  ) {
+    try {
+      analysisIA =
+        await window.MatchIAAnalisis.obtenerAnalisisIA({
+          partido: {
+            local: datos.local,
+            visitante: datos.visitante,
+            liga: datos.liga,
+            fecha: datos.fecha,
+            estado: datos.estado
+          },
+          tablaLocal: datos.tablaLocal,
+          tablaVisitante: datos.tablaVisitante,
+          h2h: datos.h2h,
+          ultimosLocal: datos.ultimosLocal,
+          ultimosVisitante: datos.ultimosVisitante,
+          estadisticas: datos.estadisticas,
+          motorMatchIA: {
+            probabilidades: {
+              home: resultado.home,
+              draw: resultado.draw,
+              away: resultado.away
+            },
+            confianza: resultado.confianza
+          }
+        });
+    } catch (error) {
+      console.warn("MatchIA IA: análisis remoto no disponible:", error);
+    }
+  }
+
+
   return {
 
     fixture: datos,
@@ -1111,6 +1148,8 @@ async function getPrematchPredictionById(fixtureId) {
     },
 
     analysis,
+
+    analysisIA,
 
     details:
       resultado.datos
