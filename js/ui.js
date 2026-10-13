@@ -222,7 +222,13 @@
       resultado.probabilidades ||
       {};
 
+    const analisisIA =
+      resultado.analisisIA ||
+      resultado.analysisIA ||
+      "";
+
     const analisis =
+      analisisIA ||
       resultado.analisis ||
       resultado.analysis ||
       "";
