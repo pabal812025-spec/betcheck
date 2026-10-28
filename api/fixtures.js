@@ -20,12 +20,12 @@ export default async function handler(req, res) {
     const include = "participants;league.country;scores;state";
     const base = "https://api.sportmonks.com/v3/football";
 
-    // SportMonks Free Plan: usamos All Fixtures, que ya fue
-    // comprobado correctamente en el Playground con este token.
-    const allUrl =
-      `${base}/fixtures?api_token=${encodeURIComponent(apiToken)}&include=${include}&per_page=50`;
+    // No usamos All Fixtures porque puede devolver registros históricos.
+    // MatchIA necesita los partidos de la fecha solicitada.
+    const dateUrl =
+      `${base}/fixtures/date/${encodeURIComponent(fecha)}?api_token=${encodeURIComponent(apiToken)}&include=${include}`;
 
-    let response = await fetch(allUrl, { cache: "no-store" });
+    let response = await fetch(dateUrl, { cache: "no-store" });
     let data = await response.json();
 
     if (!response.ok || data.message) {
