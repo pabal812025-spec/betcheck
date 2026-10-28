@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
     // Partido completo. Usamos el fixture ID que ya entrega /fixtures.
     const fixtureData = await consultar(
-      `/fixtures/${encodeURIComponent(id)}?include=participants;league.country;scores;state;venue`
+      `/fixtures/${encodeURIComponent(id)}?include=participants;league.country;scores;state;venue;statistics.type`
     );
 
     const fixture = fixtureData?.data;
@@ -55,21 +55,26 @@ export default async function handler(req, res) {
     const golesVisitante =
       currentScores.find(s => Number(s.participant_id) === Number(visitante.id))?.score?.goals ?? 0;
 
-    // Estadísticas del partido: si el plan las expone, las normalizamos.
-    const statsData = await consultar(
-      `/fixtures/${encodeURIComponent(id)}/statistics`
-    );
-
-    const estadisticas = (statsData?.data || []).map(equipo => ({
+    // SportMonks entrega las estadísticas del partido como un include
+    // dentro del fixture. No se debe consultar /fixtures/{id}/statistics
+    // como endpoint separado.
+    const estadisticas = (fixture.statistics || []).map(stat => ({
       equipo: {
-        id: equipo.participant_id ?? equipo.team_id ?? null,
-        nombre: equipo.participant?.name ?? equipo.team?.name ?? null,
-        logo: equipo.participant?.image_path ?? equipo.team?.image_path ?? null
+        id: stat.participant_id ?? null,
+        nombre: stat.participant?.name ?? null,
+        logo: stat.participant?.image_path ?? null
       },
-      estadisticas: (equipo.statistics || equipo.stats || []).map(stat => ({
-        tipo: stat.type?.name ?? stat.type?.developer_name ?? stat.type ?? null,
-        valor: stat.data?.value ?? stat.value ?? null
-      }))
+      estadisticas: [{
+        tipo:
+          stat.type?.name ??
+          stat.type?.developer_name ??
+          stat.type_id ??
+          null,
+        valor:
+          stat.data?.value ??
+          stat.value ??
+          null
+      }]
     }));
 
     // La tabla y forma histórica pueden no estar disponibles en el Free Plan.
