@@ -164,7 +164,17 @@
   function formatTime(value, country) {
     if (!value) return "--:--";
 
-    const date = new Date(value);
+    // SportMonks puede devolver starting_at sin sufijo de zona
+    // (por ejemplo: "2026-10-28 19:45:00"). En ese caso el valor
+    // representa UTC; si lo dejamos a cargo de new Date(), el navegador
+    // lo interpreta como hora local argentina y desplaza la hora.
+    let normalized = String(value).trim();
+
+    if (/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?$/.test(normalized)) {
+      normalized = normalized.replace(" ", "T") + "Z";
+    }
+
+    const date = new Date(normalized);
 
     if (Number.isNaN(date.getTime())) {
       return "--:--";
