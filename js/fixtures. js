@@ -92,7 +92,76 @@
       .replace(/'/g, "&#039;");
   }
 
-  function formatTime(value) {
+  // Zona horaria de la competición. SportMonks entrega starting_at
+  // con zona horaria/UTC; MatchIA lo convierte a la hora local del país.
+  const COUNTRY_TIMEZONES = {
+    Argentina: "America/Argentina/Buenos_Aires",
+    Brasil: "America/Sao_Paulo",
+    Brazil: "America/Sao_Paulo",
+    Uruguay: "America/Montevideo",
+    Chile: "America/Santiago",
+    Paraguay: "America/Asuncion",
+    Bolivia: "America/La_Paz",
+    Peru: "America/Lima",
+    Colombia: "America/Bogota",
+    Ecuador: "America/Guayaquil",
+    Venezuela: "America/Caracas",
+    Mexico: "America/Mexico_City",
+    "United States": "America/New_York",
+    Canada: "America/Toronto",
+    England: "Europe/London",
+    Scotland: "Europe/London",
+    Wales: "Europe/London",
+    "Northern Ireland": "Europe/London",
+    "United Kingdom": "Europe/London",
+    Spain: "Europe/Madrid",
+    Portugal: "Europe/Lisbon",
+    France: "Europe/Paris",
+    Germany: "Europe/Berlin",
+    Italy: "Europe/Rome",
+    Netherlands: "Europe/Amsterdam",
+    Belgium: "Europe/Brussels",
+    Denmark: "Europe/Copenhagen",
+    Sweden: "Europe/Stockholm",
+    Norway: "Europe/Oslo",
+    Finland: "Europe/Helsinki",
+    Iceland: "Atlantic/Reykjavik",
+    Ireland: "Europe/Dublin",
+    Austria: "Europe/Vienna",
+    Switzerland: "Europe/Zurich",
+    Greece: "Europe/Athens",
+    Turkey: "Europe/Istanbul",
+    Poland: "Europe/Warsaw",
+    Czechia: "Europe/Prague",
+    "Czech Republic": "Europe/Prague",
+    Croatia: "Europe/Zagreb",
+    Serbia: "Europe/Belgrade",
+    Romania: "Europe/Bucharest",
+    Hungary: "Europe/Budapest",
+    Ukraine: "Europe/Kyiv",
+    Russia: "Europe/Moscow",
+    Japan: "Asia/Tokyo",
+    "South Korea": "Asia/Seoul",
+    China: "Asia/Shanghai",
+    Australia: "Australia/Sydney",
+    "New Zealand": "Pacific/Auckland",
+    "South Africa": "Africa/Johannesburg",
+    Egypt: "Africa/Cairo",
+    Morocco: "Africa/Casablanca",
+    "Saudi Arabia": "Asia/Riyadh",
+    Qatar: "Asia/Qatar",
+    "United Arab Emirates": "Asia/Dubai",
+    India: "Asia/Kolkata",
+    Thailand: "Asia/Bangkok",
+    Indonesia: "Asia/Jakarta"
+  };
+
+  function getFixtureTimezone(country) {
+    const name = String(country || "").trim();
+    return COUNTRY_TIMEZONES[name] || "UTC";
+  }
+
+  function formatTime(value, country) {
     if (!value) return "--:--";
 
     const date = new Date(value);
@@ -102,6 +171,7 @@
     }
 
     return date.toLocaleTimeString("es-AR", {
+      timeZone: getFixtureTimezone(country),
       hour: "2-digit",
       minute: "2-digit",
       hour12: false
@@ -250,7 +320,7 @@
     } else {
       centro = `
         <div class="match-score">
-          <strong>${formatTime(partido.fecha)}</strong>
+          <strong>${formatTime(partido.fecha, partido.pais)}</strong>
           <small>VS</small>
         </div>
       `;
@@ -292,7 +362,7 @@
               <strong class="matchia-score5d">${partido.golesLocal ?? 0} - ${partido.golesVisitante ?? 0}</strong>
               <small class="matchia-fixture-time">RESULTADO</small>
             ` : `
-              <strong class="matchia-fixture-time">${formatTime(partido.fecha)}</strong>
+              <strong class="matchia-fixture-time">${formatTime(partido.fecha, partido.pais)}</strong>
               <small class="matchia-fixture-vs">VS</small>
             `}
           </div>
