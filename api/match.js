@@ -1,356 +1,155 @@
 export default async function handler(req, res) {
   try {
-    const apiKey = process.env.API_FOOTBALL_KEY;
-
-    if (!apiKey) {
-      return res.status(500).json({
-        error: "API key no configurada"
-      });
-    }
-
+    const apiToken = process.env.SPORTMONKS_API_TOKEN;
     const id = req.query.id;
 
-    if (!id) {
-      return res.status(400).json({
-        error: "Falta el ID del partido"
-      });
+    if (!apiToken) {
+      return res.status(500).json({ error: "Token de SportMonks no configurado" });
     }
 
-    const headers = {
-      "x-apisports-key": apiKey
-    };
+    if (!id) {
+      return res.status(400).json({ error: "Falta el ID del partido" });
+    }
 
-    async function consultar(url) {
+    const base = "https://api.sportmonks.com/v3/football";
+    const token = encodeURIComponent(apiToken);
+
+    async function consultar(path) {
       try {
-        const response = await fetch(url, {
-          headers,
-          cache: "no-store"
-        });
-
-        if (!response.ok) return null;
-
+        const response = await fetch(
+          `${base}${path}${path.includes("?") ? "&" : "?"}api_token=${token}`,
+          { cache: "no-store" }
+        );
         const data = await response.json();
-
-        if (data.errors?.access) return null;
-
-        return data.response || [];
+        if (!response.ok || data.message) return null;
+        return data;
       } catch {
         return null;
       }
     }
 
-    // ============================================================
-    // PARTIDO
-    // ============================================================
-
+    // Partido completo. Usamos el fixture ID que ya entrega /fixtures.
     const fixtureData = await consultar(
-      `https://v3.football.api-sports.io/fixtures?id=${encodeURIComponent(id)}`
+      `/fixtures/${encodeURIComponent(id)}?include=participants;league.country;scores;state;venue`
     );
 
-    if (!fixtureData?.length) {
+    const fixture = fixtureData?.data;
+
+    if (!fixture) {
       return res.status(503).json({
-        error: "Partido no disponible en API-Football"
+        error: "Partido no disponible en SportMonks"
       });
     }
 
-    const fixture = fixtureData[0];
+    const participantes = fixture.participants || [];
+    const local = participantes.find(t => t.meta?.location === "home") || participantes[0] || {};
+    const visitante = participantes.find(t => t.meta?.location === "away") || participantes[1] || {};
 
-    const local = fixture.teams?.home;
-    const visitante = fixture.teams?.away;
-
-    const localId = local?.id;
-    const visitanteId = visitante?.id;
-
-    const ligaId = fixture.league?.id;
-    const temporada = fixture.league?.season;
-
-    // ============================================================
-    // ESTADÍSTICAS DEL PARTIDO
-    // ============================================================
-
-    const statsData = await consultar(
-      `https://v3.football.api-sports.io/fixtures/statistics?fixture=${encodeURIComponent(id)}`
+    const currentScores = (fixture.scores || []).filter(
+      score => score.description === "CURRENT"
     );
 
-    const estadisticas = (statsData || []).map(equipo => ({
-      equipo: {
-        id: equipo.team?.id ?? null,
-        nombre: equipo.team?.name ?? null,
-        logo: equipo.team?.logo ?? null
-      },
+    const golesLocal =
+      currentScores.find(s => Number(s.participant_id) === Number(local.id))?.score?.goals ?? 0;
 
-      estadisticas: (equipo.statistics || []).map(stat => ({
-        tipo: stat.type ?? null,
-        valor: stat.value ?? null
+    const golesVisitante =
+      currentScores.find(s => Number(s.participant_id) === Number(visitante.id))?.score?.goals ?? 0;
+
+    // Estadísticas del partido: si el plan las expone, las normalizamos.
+    const statsData = await consultar(
+      `/fixtures/${encodeURIComponent(id)}/statistics`
+    );
+
+    const estadisticas = (statsData?.data || []).map(equipo => ({
+      equipo: {
+        id: equipo.participant_id ?? equipo.team_id ?? null,
+        nombre: equipo.participant?.name ?? equipo.team?.name ?? null,
+        logo: equipo.participant?.image_path ?? equipo.team?.image_path ?? null
+      },
+      estadisticas: (equipo.statistics || equipo.stats || []).map(stat => ({
+        tipo: stat.type?.name ?? stat.type?.developer_name ?? stat.type ?? null,
+        valor: stat.data?.value ?? stat.value ?? null
       }))
     }));
 
-    // ============================================================
-    // TABLA DE POSICIONES
-    // ============================================================
-
+    // La tabla y forma histórica pueden no estar disponibles en el Free Plan.
+    // Dejamos arrays válidos para que MatchIA no se rompa.
     let tabla = [];
-
-    if (ligaId && temporada) {
-      const standingsData = await consultar(
-        `https://v3.football.api-sports.io/standings?league=${ligaId}&season=${temporada}`
-      );
-
-      const grupos = standingsData?.[0]?.league?.standings || [];
-
-      const posiciones = grupos.flat();
-
-      tabla = posiciones.map(item => ({
-        posicion: item.rank ?? null,
-
-        equipo: {
-          id: item.team?.id ?? null,
-          nombre: item.team?.name ?? null,
-          logo: item.team?.logo ?? null
-        },
-
-        puntos: item.points ?? 0,
-
-        partidosJugados: item.all?.played ?? 0,
-
-        victorias: item.all?.win ?? 0,
-
-        empates: item.all?.draw ?? 0,
-
-        derrotas: item.all?.lose ?? 0,
-
-        golesFavor: item.all?.goals?.for ?? 0,
-
-        golesContra: item.all?.goals?.against ?? 0,
-
-        diferenciaGoles: item.goalsDiff ?? 0,
-
-        forma: item.form ?? "",
-
-        local: {
-          partidos: item.home?.played ?? 0,
-          victorias: item.home?.win ?? 0,
-          empates: item.home?.draw ?? 0,
-          derrotas: item.home?.lose ?? 0,
-          golesFavor: item.home?.goals?.for ?? 0,
-          golesContra: item.home?.goals?.against ?? 0
-        },
-
-        visitante: {
-          partidos: item.away?.played ?? 0,
-          victorias: item.away?.win ?? 0,
-          empates: item.away?.draw ?? 0,
-          derrotas: item.away?.lose ?? 0,
-          golesFavor: item.away?.goals?.for ?? 0,
-          golesContra: item.away?.goals?.against ?? 0
-        }
-      }));
-    }
-
-    // ============================================================
-    // DATOS DE TABLA DE CADA EQUIPO
-    // ============================================================
-
-    const tablaLocal =
-      tabla.find(item =>
-        Number(item.equipo.id) === Number(localId)
-      ) || null;
-
-    const tablaVisitante =
-      tabla.find(item =>
-        Number(item.equipo.id) === Number(visitanteId)
-      ) || null;
-
-    // ============================================================
-    // H2H ÚLTIMOS 5
-    // ============================================================
-
+    let tablaLocal = null;
+    let tablaVisitante = null;
     let h2h = [];
-
-    if (localId && visitanteId) {
-
-      const h2hData = await consultar(
-        `https://v3.football.api-sports.io/fixtures/headtohead?h2h=${localId}-${visitanteId}&last=5`
-      );
-
-      h2h = (h2hData || []).map(item => ({
-        fecha: item.fixture?.date ?? null,
-
-        local: item.teams?.home?.name ?? "",
-
-        visitante: item.teams?.away?.name ?? "",
-
-        golesLocal: item.goals?.home ?? 0,
-
-        golesVisitante: item.goals?.away ?? 0
-      }));
-    }
-
-    // ============================================================
-    // ÚLTIMOS 5 DEL LOCAL
-    // ============================================================
-
     let ultimosLocal = [];
-
-    if (localId) {
-
-      const data = await consultar(
-        `https://v3.football.api-sports.io/fixtures?team=${localId}&last=5`
-      );
-
-      ultimosLocal = (data || []).map(item => ({
-        id: item.fixture?.id ?? null,
-
-        fecha: item.fixture?.date ?? null,
-
-        local: item.teams?.home?.name ?? "",
-
-        visitante: item.teams?.away?.name ?? "",
-
-        golesLocal: item.goals?.home ?? 0,
-
-        golesVisitante: item.goals?.away ?? 0,
-
-        estado: item.fixture?.status?.short ?? null
-      }));
-    }
-
-    // ============================================================
-    // ÚLTIMOS 5 DEL VISITANTE
-    // ============================================================
-
     let ultimosVisitante = [];
+    let lesiones = [];
 
-    if (visitanteId) {
-
-      const data = await consultar(
-        `https://v3.football.api-sports.io/fixtures?team=${visitanteId}&last=5`
+    // Intentamos obtener standings de la liga sin romper el partido si el plan no los permite.
+    if (fixture.league_id) {
+      const standingsData = await consultar(
+        `/standings/seasons/${encodeURIComponent(fixture.season_id || "")}`
       );
 
-      ultimosVisitante = (data || []).map(item => ({
-        id: item.fixture?.id ?? null,
+      if (Array.isArray(standingsData?.data)) {
+        tabla = standingsData.data.map(item => ({
+          posicion: item.position ?? item.rank ?? null,
+          equipo: {
+            id: item.participant_id ?? item.team_id ?? null,
+            nombre: item.participant?.name ?? item.team?.name ?? null,
+            logo: item.participant?.image_path ?? item.team?.image_path ?? null
+          },
+          puntos: item.points ?? 0,
+          partidosJugados: item.details?.find?.(d => d.type?.developer_name === "MATCHES_PLAYED")?.value ?? 0,
+          victorias: 0,
+          empates: 0,
+          derrotas: 0,
+          golesFavor: 0,
+          golesContra: 0,
+          diferenciaGoles: 0,
+          forma: ""
+        }));
 
-        fecha: item.fixture?.date ?? null,
-
-        local: item.teams?.home?.name ?? "",
-
-        visitante: item.teams?.away?.name ?? "",
-
-        golesLocal: item.goals?.home ?? 0,
-
-        golesVisitante: item.goals?.away ?? 0,
-
-        estado: item.fixture?.status?.short ?? null
-      }));
+        tablaLocal = tabla.find(x => Number(x.equipo.id) === Number(local.id)) || null;
+        tablaVisitante = tabla.find(x => Number(x.equipo.id) === Number(visitante.id)) || null;
+      }
     }
-
-    // ============================================================
-    // LESIONES
-    // ============================================================
-
-    const lesionesData = await consultar(
-      `https://v3.football.api-sports.io/injuries?fixture=${encodeURIComponent(id)}`
-    );
-
-    const lesiones = (lesionesData || []).map(item => ({
-      equipo: item.team?.name ?? "",
-
-      jugador: item.player?.name ?? "",
-
-      tipo: item.player?.type ?? "",
-
-      razon: item.player?.reason ?? ""
-    }));
-
-    // ============================================================
-    // RESPUESTA FINAL
-    // ============================================================
 
     return res.status(200).json({
-
-      id: fixture.fixture?.id ?? id,
-
-      fecha: fixture.fixture?.date ?? null,
-
-      estado: fixture.fixture?.status?.short ?? null,
-
-      minuto: fixture.fixture?.status?.elapsed ?? 0,
-
-      estadio:
-        fixture.fixture?.venue?.name ?? null,
-
-      arbitro:
-        fixture.fixture?.referee ?? null,
-
+      id: fixture.id ?? id,
+      fecha: fixture.starting_at ?? null,
+      estado: fixture.state?.short_name ?? fixture.state?.name ?? null,
+      minuto: fixture.minute ?? 0,
+      estadio: fixture.venue?.name ?? null,
+      arbitro: fixture.referee?.name ?? null,
       liga: {
-        id: ligaId ?? null,
-
-        nombre:
-          fixture.league?.name ?? null,
-
-        pais:
-          fixture.league?.country ?? null,
-
-        temporada:
-          temporada ?? null
+        id: fixture.league_id ?? fixture.league?.id ?? null,
+        nombre: fixture.league?.name ?? null,
+        pais: fixture.league?.country?.name ?? null,
+        temporada: fixture.season_id ?? null
       },
-
       local: {
-        id: localId ?? null,
-
-        nombre:
-          local?.name ?? null,
-
-        logo:
-          local?.logo ?? null
+        id: local.id ?? null,
+        nombre: local.name ?? null,
+        logo: local.image_path ?? null
       },
-
       visitante: {
-        id: visitanteId ?? null,
-
-        nombre:
-          visitante?.name ?? null,
-
-        logo:
-          visitante?.logo ?? null
+        id: visitante.id ?? null,
+        nombre: visitante.name ?? null,
+        logo: visitante.image_path ?? null
       },
-
       marcador: {
-        local:
-          fixture.goals?.home ?? 0,
-
-        visitante:
-          fixture.goals?.away ?? 0
+        local: golesLocal,
+        visitante: golesVisitante
       },
-
-      // Estadísticas actuales del partido
       estadisticas,
-
-      // Tabla completa de la competición
       tabla,
-
-      // Datos específicos de cada equipo en la tabla
       tablaLocal,
-
       tablaVisitante,
-
-      // Historial entre ambos
       h2h,
-
-      // Forma reciente
       ultimosLocal,
-
       ultimosVisitante,
-
-      // Lesiones
       lesiones
-
     });
-
   } catch (error) {
-
-    console.error("Error en match.js:", error);
-
+    console.error("Error en match.js SportMonks:", error);
     return res.status(500).json({
       error: "No se pudieron obtener los datos del partido"
     });
