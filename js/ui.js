@@ -214,23 +214,31 @@
   // =========================================================
 
   function renderPrematch(resultado) {
-    const datos = resultado.datos || resultado.data || resultado;
+    // El motor devuelve el partido dentro de `fixture` y las
+    // probabilidades dentro de `probabilities`. Mantenemos
+    // compatibilidad con los nombres anteriores en español.
+    const datos =
+      resultado.fixture ||
+      resultado.datos ||
+      resultado.data ||
+      resultado;
 
     const prediccion =
+      resultado.probabilities ||
+      resultado.probabilidades ||
       resultado.prediccion ||
       resultado.prediction ||
-      resultado.probabilidades ||
       {};
 
     const analisisIA =
-      resultado.analisisIA ||
       resultado.analysisIA ||
+      resultado.analisisIA ||
       "";
 
     const analisis =
       analisisIA ||
-      resultado.analisis ||
       resultado.analysis ||
+      resultado.analisis ||
       "";
 
     const local =
@@ -350,7 +358,6 @@
     );
 
     renderStats(datos.estadisticas || []);
-
     renderH2H(datos.h2h || []);
 
     renderForm(
