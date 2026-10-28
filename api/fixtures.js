@@ -17,14 +17,39 @@ export default async function handler(req, res) {
         day: "2-digit"
       }).format(new Date());
 
-    const url =
-      `https://api.sportmonks.com/v3/football/fixtures/date/${encodeURIComponent(fecha)}?api_token=${encodeURIComponent(apiToken)}&include=participants;league;scores;state`;
+    const include = "participants;league.country;scores;state";
+    const base = "https://api.sportmonks.com/v3/football";
 
-    const response = await fetch(url, {
-      cache: "no-store"
-    });
+    // Primero intentamos la consulta directa por fecha.
+    const directUrl =
+      `${base}/fixtures/date/${encodeURIComponent(fecha)}?api_token=${encodeURIComponent(apiToken)}&include=${include}`;
 
-    const data = await response.json();
+    let response = await fetch(directUrl, { cache: "no-store" });
+    let data = await response.json();
+
+    // Algunos planes/fechas pueden devolver "no result(s)" aunque el token sea válido.
+    // En ese caso usamos All Fixtures y filtramos localmente por la fecha solicitada.
+    if (
+      response.ok &&
+      !data.message &&
+      Array.isArray(data.data) &&
+      data.data.length === 0
+    ) {
+      const allUrl =
+        `${base}/fixtures?api_token=${encodeURIComponent(apiToken)}&include=${include}&per_page=50`;
+
+      response = await fetch(allUrl, { cache: "no-store" });
+      data = await response.json();
+
+      if (response.ok && !data.message && Array.isArray(data.data)) {
+        const fixturesForDate = data.data.filter(item =>
+          typeof item.starting_at === "string" &&
+          item.starting_at.slice(0, 10) === fecha
+        );
+
+        data = { ...data, data: fixturesForDate };
+      }
+    }
 
     if (!response.ok || data.message) {
       return res.status(!response.ok ? response.status : 502).json({
@@ -35,32 +60,32 @@ export default async function handler(req, res) {
 
     const partidos = (data.data || []).map(item => {
       const participantes = item.participants || [];
+
       const localTeam =
         participantes.find(team => team.meta?.location === "home") ||
         participantes[0] ||
         null;
+
       const awayTeam =
         participantes.find(team => team.meta?.location === "away") ||
         participantes[1] ||
         null;
 
-      const fullScores = item.scores || [];
-      const currentScores = fullScores.filter(score =>
+      const currentScores = (item.scores || []).filter(score =>
         score.description === "CURRENT"
       );
 
       const homeScore =
-        currentScores.find(score => score.participant_id === localTeam?.id)?.score?.goals ??
-        0;
+        currentScores.find(score => score.participant_id === localTeam?.id)?.score?.goals ?? 0;
+
       const awayScore =
-        currentScores.find(score => score.participant_id === awayTeam?.id)?.score?.goals ??
-        0;
+        currentScores.find(score => score.participant_id === awayTeam?.id)?.score?.goals ?? 0;
 
       return {
         id: item.id ?? null,
         fecha: item.starting_at ?? null,
         estado: item.state?.short_name ?? item.state?.name ?? null,
-        minuto: item.periods?.[0]?.minutes ?? 0,
+        minuto: 0,
         local: localTeam?.name ?? "Local",
         visitante: awayTeam?.name ?? "Visitante",
         logoLocal: localTeam?.image_path ?? null,
