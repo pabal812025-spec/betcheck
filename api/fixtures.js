@@ -20,36 +20,13 @@ export default async function handler(req, res) {
     const include = "participants;league.country;scores;state";
     const base = "https://api.sportmonks.com/v3/football";
 
-    // Primero intentamos la consulta directa por fecha.
-    const directUrl =
-      `${base}/fixtures/date/${encodeURIComponent(fecha)}?api_token=${encodeURIComponent(apiToken)}&include=${include}`;
+    // SportMonks Free Plan: usamos All Fixtures, que ya fue
+    // comprobado correctamente en el Playground con este token.
+    const allUrl =
+      `${base}/fixtures?api_token=${encodeURIComponent(apiToken)}&include=${include}&per_page=50`;
 
-    let response = await fetch(directUrl, { cache: "no-store" });
+    let response = await fetch(allUrl, { cache: "no-store" });
     let data = await response.json();
-
-    // Algunos planes/fechas pueden devolver "no result(s)" aunque el token sea válido.
-    // En ese caso usamos All Fixtures y filtramos localmente por la fecha solicitada.
-    if (
-      response.ok &&
-      !data.message &&
-      Array.isArray(data.data) &&
-      data.data.length === 0
-    ) {
-      const allUrl =
-        `${base}/fixtures?api_token=${encodeURIComponent(apiToken)}&include=${include}&per_page=50`;
-
-      response = await fetch(allUrl, { cache: "no-store" });
-      data = await response.json();
-
-      if (response.ok && !data.message && Array.isArray(data.data)) {
-        const fixturesForDate = data.data.filter(item =>
-          typeof item.starting_at === "string" &&
-          item.starting_at.slice(0, 10) === fecha
-        );
-
-        data = { ...data, data: fixturesForDate };
-      }
-    }
 
     if (!response.ok || data.message) {
       return res.status(!response.ok ? response.status : 502).json({
