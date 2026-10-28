@@ -929,6 +929,11 @@
 
       updateDateSelector();
 
+      // Carga inicial: al abrir MatchIA debe pedir inmediatamente
+      // los partidos del día actual. Antes solo se cargaban al cambiar
+      // manualmente de fecha.
+      loadFixtures(true, selectedDate);
+
       const searchInput =
         document.getElementById(
           "searchInput"
