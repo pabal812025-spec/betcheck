@@ -189,15 +189,22 @@
   }
 
   function isLive(partido) {
+    // SportMonks usa estados como "1st" y "2nd" para los tiempos en juego.
+    // Conservamos también los códigos habituales de otros proveedores.
     return [
       "1H",
-      "HT",
+      "1ST",
       "2H",
+      "2ND",
+      "3RD",
+      "4TH",
+      "HT",
       "ET",
       "BT",
       "P",
-      "LIVE"
-    ].includes(partido.estado);
+      "LIVE",
+      "INPLAY"
+    ].includes(String(partido.estado || "").trim().toUpperCase());
   }
 
   function isFinished(partido) {
