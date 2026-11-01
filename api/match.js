@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     if (!apiKey) {
       return res.status(500).json({ error: "API_FOOTBALL_KEY no está configurada" });
     }
-    if (!id || !/^\\d+$/.test(String(id))) {
+    if (!id || !/^\d+$/.test(String(id))) {
       return res.status(400).json({ error: "Falta un ID válido del partido" });
     }
 
