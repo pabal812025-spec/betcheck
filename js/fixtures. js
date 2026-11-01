@@ -960,21 +960,16 @@
 
       setInterval(
         function () {
-
+          // El plan gratuito de API-Football tiene un cupo diario limitado.
+          // Actualizamos solo la fecha de hoy y cada 60 minutos para no agotarlo.
           if (
-            document.visibilityState ===
-            "visible"
+            document.visibilityState === "visible" &&
+            selectedDate === getToday()
           ) {
-
-            loadFixtures(
-              true,
-              selectedDate
-            );
-
+            loadFixtures(true, selectedDate);
           }
-
         },
-        60000
+        60 * 60 * 1000
       );
 
     }
