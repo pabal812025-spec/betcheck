@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         // Debe coincidir con el paquete de la app instalada en el teléfono.
-        applicationId 'com.matchia.ia5d.preview2'
+        applicationId 'com.matchia.ia5d.preview3'
         minSdk 23
         targetSdk 35
         versionCode 1
-        versionName '0.3.4-prueba'
+        versionName '0.3.5-prueba'
     }
 }
