@@ -7,11 +7,11 @@ android {
     compileSdk 35
 
     defaultConfig {
-        // Package distinto para que esta prueba no choque con las dos apps ya instaladas.
-        applicationId 'com.matchia.ia5d.preview'
+        // Identificador original para actualizar MatchIA IA 5D instalada.
+        applicationId 'com.matchia.ia5d'
         minSdk 23
         targetSdk 35
-        versionCode 5
-        versionName '0.3.2'
+        versionCode 6
+        versionName '0.3.3'
     }
 }
