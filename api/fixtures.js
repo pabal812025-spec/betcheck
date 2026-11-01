@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       day: "2-digit"
     }).format(new Date());
 
-    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(fecha)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
       return res.status(400).json({ error: "Fecha inválida. Usá YYYY-MM-DD." });
     }
 
