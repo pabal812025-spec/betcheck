@@ -92,8 +92,8 @@
       .replace(/'/g, "&#039;");
   }
 
-  // Zona horaria de la competición. SportMonks entrega starting_at
-  // con zona horaria/UTC; MatchIA lo convierte a la hora local del país.
+  // Zona horaria de la competición. API-Football entrega fechas ISO con zona horaria;
+  // MatchIA muestra la hora local del país de la liga.
   const COUNTRY_TIMEZONES = {
     Argentina: "America/Argentina/Buenos_Aires",
     Brasil: "America/Sao_Paulo",
@@ -164,10 +164,7 @@
   function formatTime(value, country) {
     if (!value) return "--:--";
 
-    // SportMonks puede devolver starting_at sin sufijo de zona
-    // (por ejemplo: "2026-10-28 19:45:00"). En ese caso el valor
-    // representa UTC; si lo dejamos a cargo de new Date(), el navegador
-    // lo interpreta como hora local argentina y desplaza la hora.
+    // Compatibilidad defensiva con fechas sin sufijo de zona: se interpretan como UTC.
     let normalized = String(value).trim();
 
     if (/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?$/.test(normalized)) {
@@ -960,21 +957,16 @@
 
       setInterval(
         function () {
-
+          // El plan gratuito de API-Football tiene un cupo diario limitado.
+          // Actualizamos solo la fecha de hoy y cada 60 minutos para no agotarlo.
           if (
-            document.visibilityState ===
-            "visible"
+            document.visibilityState === "visible" &&
+            selectedDate === getToday()
           ) {
-
-            loadFixtures(
-              true,
-              selectedDate
-            );
-
+            loadFixtures(true, selectedDate);
           }
-
         },
-        60000
+        60 * 60 * 1000
       );
 
     }

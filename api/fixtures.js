@@ -1,91 +1,62 @@
 export default async function handler(req, res) {
   try {
-    const apiToken = process.env.SPORTMONKS_API_TOKEN;
+    const apiKey = process.env.API_FOOTBALL_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: "API_FOOTBALL_KEY no está configurada" });
+    }
 
-    if (!apiToken) {
-      return res.status(500).json({
-        error: "Token de SportMonks no configurado"
+    const fecha = req.query.date || new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Argentina/Buenos_Aires",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date());
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+      return res.status(400).json({ error: "Fecha inválida. Usá YYYY-MM-DD." });
+    }
+
+    const response = await fetch(
+      `https://v3.football.api-sports.io/fixtures?date=${encodeURIComponent(fecha)}&timezone=America%2FArgentina%2FBuenos_Aires`,
+      {
+        headers: { "x-apisports-key": apiKey },
+        cache: "no-store"
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok || (data.errors && Object.keys(data.errors).length)) {
+      console.error("API-Football fixtures error:", data.errors || response.status);
+      return res.status(response.status || 502).json({
+        error: "API-Football no pudo devolver los partidos",
+        detalle: data.errors || null
       });
     }
 
-    const fecha =
-      req.query.date ||
-      new Intl.DateTimeFormat("en-CA", {
-        timeZone: "America/Argentina/Buenos_Aires",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).format(new Date());
-
-    const include = "participants;league.country;scores;state";
-    const base = "https://api.sportmonks.com/v3/football";
-
-    // No usamos All Fixtures porque puede devolver registros históricos.
-    // MatchIA necesita los partidos de la fecha solicitada.
-    const dateUrl =
-      `${base}/fixtures/date/${encodeURIComponent(fecha)}?api_token=${encodeURIComponent(apiToken)}&include=${include}`;
-
-    let response = await fetch(dateUrl, { cache: "no-store" });
-    let data = await response.json();
-
-    if (!response.ok || data.message) {
-      return res.status(!response.ok ? response.status : 502).json({
-        error: "SportMonks no disponible",
-        detalle: data.message || data.errors || null
-      });
-    }
-
-    const partidos = (data.data || []).map(item => {
-      const participantes = item.participants || [];
-
-      const localTeam =
-        participantes.find(team => team.meta?.location === "home") ||
-        participantes[0] ||
-        null;
-
-      const awayTeam =
-        participantes.find(team => team.meta?.location === "away") ||
-        participantes[1] ||
-        null;
-
-      const currentScores = (item.scores || []).filter(score =>
-        score.description === "CURRENT"
-      );
-
-      const homeScore =
-        currentScores.find(score => score.participant_id === localTeam?.id)?.score?.goals ?? 0;
-
-      const awayScore =
-        currentScores.find(score => score.participant_id === awayTeam?.id)?.score?.goals ?? 0;
-
-      return {
-        id: item.id ?? null,
-        fecha: item.starting_at ?? null,
-        estado: item.state?.short_name ?? item.state?.name ?? null,
-        minuto: 0,
-        local: localTeam?.name ?? "Local",
-        visitante: awayTeam?.name ?? "Visitante",
-        logoLocal: localTeam?.image_path ?? null,
-        logoVisitante: awayTeam?.image_path ?? null,
-        liga: item.league?.name ?? "Liga",
-        pais: item.league?.country?.name ?? "",
-        logoLiga: item.league?.image_path ?? null,
-        golesLocal: homeScore,
-        golesVisitante: awayScore
-      };
-    });
+    const partidos = (data.response || []).map(item => ({
+      id: item.fixture?.id ?? null,
+      fecha: item.fixture?.date ?? null,
+      estado: item.fixture?.status?.short ?? "NS",
+      minuto: item.fixture?.status?.elapsed ?? 0,
+      local: item.teams?.home?.name ?? "Local",
+      visitante: item.teams?.away?.name ?? "Visitante",
+      logoLocal: item.teams?.home?.logo ?? null,
+      logoVisitante: item.teams?.away?.logo ?? null,
+      liga: item.league?.name ?? "Liga",
+      pais: item.league?.country ?? "",
+      logoLiga: item.league?.logo ?? null,
+      golesLocal: item.goals?.home ?? 0,
+      golesVisitante: item.goals?.away ?? 0
+    }));
 
     return res.status(200).json({
       fecha,
       total: partidos.length,
-      partidos
+      partidos,
+      proveedor: "API-Football"
     });
-
   } catch (error) {
-    console.error("Error en fixtures SportMonks:", error);
-
-    return res.status(500).json({
-      error: "No se pudieron obtener los partidos"
-    });
+    console.error("Error en fixtures API-Football:", error);
+    return res.status(500).json({ error: "No se pudieron obtener los partidos" });
   }
 }

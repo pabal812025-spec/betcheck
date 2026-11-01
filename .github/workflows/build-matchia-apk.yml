@@ -8,7 +8,7 @@ on:
       - ".github/workflows/build-matchia-apk.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-apk:
@@ -37,11 +37,20 @@ jobs:
         with:
           gradle-version: "8.7"
 
+      - name: Preparar carpeta de firma
+        run: mkdir -p ~/.android
+
       - name: Recuperar firma de prueba para mantener actualizaciones compatibles
         uses: actions/cache@v4
         with:
           path: ~/.android/debug.keystore
-          key: matchia-debug-keystore-v1
+          key: matchia-debug-keystore-v2
+
+      - name: Crear firma estable si todavía no existe
+        run: |
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
 
       - name: Poner logo original de MatchIA
         working-directory: instalacion/android
@@ -60,6 +69,19 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -v 4 "$APK"
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK"
           unzip -t "$APK"
+
+      - name: Publicar APK con enlace directo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p descargas
+          cp instalacion/android/app/build/outputs/apk/debug/app-debug.apk descargas/MatchIA.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add descargas/MatchIA.apk
+          git commit -m "Publicar APK actualizado de MatchIA" || echo "Sin cambios en el APK"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push
 
       - name: Publicar APK como artefacto descargable
         uses: actions/upload-artifact@v4

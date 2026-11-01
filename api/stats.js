@@ -40,14 +40,8 @@ export default async function handler(req, res) {
       return data.response || [];
     }
 
-    // Primer intento
-    let equipos = await obtenerEstadisticas();
-
-    // Si la API respondió sin estadísticas, hacemos un segundo intento
-    if (!equipos.length) {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      equipos = await obtenerEstadisticas();
-    }
+    // Una sola consulta por apertura para cuidar el cupo diario de API-Football.
+    const equipos = await obtenerEstadisticas();
 
     const resultado = equipos.map(equipo => ({
       equipo: {
