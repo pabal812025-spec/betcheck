@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient());
 
         setContentView(webView);
-        webView.loadUrl("https://betcheck-gilt.vercel.app/instalable/index.html");
+        webView.loadUrl("https://betcheck-d212mhai1-betcheck.vercel.app/instalable/index.html");
     }
 
     @Override
