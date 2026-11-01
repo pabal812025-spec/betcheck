@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     }
 
     const response = await fetch(
-      `https://v3.football.api-sports.io/fixtures?date=${encodeURIComponent(fecha)}`,
+      `https://v3.football.api-sports.io/fixtures?date=${encodeURIComponent(fecha)}&timezone=America%2FArgentina%2FBuenos_Aires`,
       {
         headers: { "x-apisports-key": apiKey },
         cache: "no-store"
