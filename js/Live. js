@@ -569,12 +569,12 @@
       datos.marcador?.visitante ?? 0
     );
 
-    setText(
-      "liveMinute",
-      datos.minuto
-        ? `${datos.minuto}'`
-        : "EN VIVO"
-    );
+    const estadoPartido = String(datos.estado || "").toUpperCase();
+    const textoReloj = estadoPartido === "HT" ? "ENTRETIEMPO"
+      : ["FT", "AET", "PEN"].includes(estadoPartido) ? "FINAL"
+      : datos.minuto != null ? String(datos.minuto) + "'"
+      : (estadoPartido || "EN VIVO");
+    setText("liveMinute", textoReloj);
 
     setText(
       "liveLeague",
@@ -595,7 +595,7 @@
     setText("pitchAwayScore", datos.marcador?.visitante ?? 0);
     setText(
       "pitch5dMinute",
-      datos.minuto ? `${datos.minuto}'` : (datos.estado || "PREVIA")
+      textoReloj
     );
 
     const homeStats = obtenerEquipoStats(datos, 0);
@@ -677,11 +677,11 @@
 
     await actualizarPartidoEnVivo();
 
-    // Seguimiento en vivo: actualizar una vez por minuto.
+    // Seguimiento en vivo: actualizar cada 30 segundos para reducir el retraso.
     // Las alineaciones se consultan aparte y no se repiten en cada refresco.
     liveTimer = setInterval(
       actualizarPartidoEnVivo,
-      60 * 1000
+      30 * 1000
     );
   }
 
