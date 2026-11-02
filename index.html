@@ -579,7 +579,7 @@
          CANCHA 5D
          ===================================================== -->
     <main id="pitch5d" class="screen">
-      <div class="back-row"><button class="back-btn" onclick="show('match')">← Volver al partido</button></div>
+      <div class="back-row"><button class="back-btn" onclick="backFromPitch()">← Volver al partido</button></div>
       <div class="pitch5d-header">
         <div><span class="pitch-live-dot"></span> MATCHIA LIVE · 5D</div>
         <strong id="pitch5dMinute">--'</strong>
@@ -765,6 +765,19 @@
         </div>
 
         <div id="liveStats"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          👥 Titulares y suplentes
+        </div>
+
+        <div id="liveLineups" class="live-lineups">
+          <div class="live-lineups-empty">Las alineaciones se cargarán al abrir el partido.</div>
+        </div>
 
       </div>
 

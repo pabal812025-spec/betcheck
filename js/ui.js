@@ -376,6 +376,10 @@
   // =========================================================
   // CANCHA 5D
   // =========================================================
+  window.backFromPitch = function () {
+    show(selectedFixtureIsLive ? "live" : "match");
+  };
+
   window.open5D = function () {
     show("pitch5d");
     const id = selectedFixtureId;

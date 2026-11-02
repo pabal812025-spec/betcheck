@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   // Caché compartida para proteger el límite gratuito de consultas.
-  res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
+  res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=15");
 
   const headers = { "x-apisports-key": apiKey };
 
