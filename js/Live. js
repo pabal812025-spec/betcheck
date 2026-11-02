@@ -7,6 +7,7 @@
 
   let liveTimer = null;
   let currentLiveId = null;
+  let currentLineupId = null;
 
   function setText(id, value) {
     const element = document.getElementById(id);
@@ -607,10 +608,53 @@
     setText("pitchProbAway", awayProb);
   }
 
+  async function loadLiveLineups(fixtureId) {
+    const container = document.getElementById("liveLineups");
+    if (!container || !fixtureId) return;
+    currentLineupId = fixtureId;
+    container.innerHTML = '<div class="live-lineups-empty">Consultando titulares y suplentes...</div>';
+
+    try {
+      const response = await fetch("/api/lineups?id=" + encodeURIComponent(fixtureId), { cache: "no-store" });
+      const data = await response.json();
+      if (String(currentLineupId) !== String(fixtureId)) return;
+      if (!response.ok || !Array.isArray(data.lineups) || !data.lineups.length) {
+        container.innerHTML = '<div class="live-lineups-empty">Las alineaciones todavía no están disponibles para este partido.</div>';
+        return;
+      }
+
+      container.innerHTML = data.lineups.map(function(team) {
+        const starters = Array.isArray(team.startXI) ? team.startXI : [];
+        const substitutes = Array.isArray(team.substitutes) ? team.substitutes : [];
+        const playerRows = function(players) {
+          if (!players.length) return '<li class="live-lineup-empty">Sin datos publicados</li>';
+          return players.map(function(player) {
+            const number = player.number == null ? "—" : player.number;
+            return '<li><span class="live-player-number">' + escapeHtml(number) + '</span><span>' + escapeHtml(player.name) + '</span><small>' + escapeHtml(player.pos || "") + '</small></li>';
+          }).join("");
+        };
+        return '<section class="live-lineup-team">' +
+          '<header><strong>' + escapeHtml(team.team?.name || "Equipo") + '</strong><span>' + escapeHtml(team.formation || "Formación no informada") + '</span></header>' +
+          (team.coach ? '<p class="live-lineup-coach">DT: ' + escapeHtml(team.coach) + '</p>' : '') +
+          '<h4>TITULARES · ' + starters.length + '</h4><ol>' + playerRows(starters) + '</ol>' +
+          '<h4>SUPLENTES · ' + substitutes.length + '</h4><ol>' + playerRows(substitutes) + '</ol>' +
+          '</section>';
+      }).join("");
+    } catch (error) {
+      console.warn("MatchIA: no se pudieron cargar alineaciones", error);
+      if (String(currentLineupId) === String(fixtureId)) {
+        container.innerHTML = '<div class="live-lineups-empty">No se pudieron cargar las alineaciones. Volvé a intentarlo más tarde.</div>';
+      }
+    }
+  }
+
   async function loadLiveMatch(fixtureId) {
     if (!fixtureId) return;
 
     currentLiveId = fixtureId;
+    if (String(currentLineupId) !== String(fixtureId)) {
+      loadLiveLineups(fixtureId);
+    }
 
     if (liveTimer) {
       clearInterval(liveTimer);
@@ -619,13 +663,11 @@
 
     await actualizarPartidoEnVivo();
 
-    /*
-     * Plan Free: limitar consultas para cuidar el cupo diario.
-     * La pantalla se actualiza al entrar y luego cada 60 minutos.
-     */
+    // Seguimiento en vivo: actualizar una vez por minuto.
+    // Las alineaciones se consultan aparte y no se repiten en cada refresco.
     liveTimer = setInterval(
       actualizarPartidoEnVivo,
-      60 * 60 * 1000
+      60 * 1000
     );
   }
 
