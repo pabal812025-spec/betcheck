@@ -620,12 +620,12 @@
     await actualizarPartidoEnVivo();
 
     /*
-     * API-Football se consulta periódicamente.
-     * Cada 30 segundos actualizamos el partido.
+     * Plan Free: limitar consultas para cuidar el cupo diario.
+     * La pantalla se actualiza al entrar y luego cada 60 minutos.
      */
     liveTimer = setInterval(
       actualizarPartidoEnVivo,
-      30000
+      60 * 60 * 1000
     );
   }
 
