@@ -87,6 +87,20 @@
 
     if (!container) return;
 
+    const hayDatos = Array.isArray(datos.estadisticas) &&
+      datos.estadisticas.some(function (equipo) {
+        return Array.isArray(equipo.estadisticas) && equipo.estadisticas.length > 0;
+      });
+
+    if (!hayDatos) {
+      const mensaje = datos.estadisticasMensaje ||
+        "API-Football todavía no entregó estadísticas para este partido.";
+      container.innerHTML = '<div class="live-lineups-empty">' +
+        escapeHtml(mensaje) +
+        '</div>';
+      return;
+    }
+
     const homeStats =
       obtenerEquipoStats(datos, 0);
 
