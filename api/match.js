@@ -9,44 +9,49 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "API_FOOTBALL_KEY no está configurada" });
   }
 
-  // Caché compartida para proteger el límite gratuito de consultas.
   res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=15");
-
   const headers = { "x-apisports-key": apiKey };
 
   try {
     const url = new URL("https://v3.football.api-sports.io/fixtures");
     url.searchParams.set("id", id);
     url.searchParams.set("timezone", "America/Argentina/Buenos_Aires");
-
     const response = await fetch(url.toString(), { headers });
     const data = await response.json();
 
     if (!response.ok || (data.errors && Object.keys(data.errors).length > 0)) {
       console.error("API-Football match error:", response.status, data.errors);
-      return res.status(502).json({
-        error: "API-Football no pudo entregar el partido",
-        detalle: data.errors || response.status
-      });
+      return res.status(502).json({ error: "API-Football no pudo entregar el partido" });
     }
 
     const item = (data.response || [])[0];
     if (!item) return res.status(404).json({ error: "Partido no encontrado" });
 
     const estado = item.fixture?.status?.short || "NS";
-    const estadosEnJuego = ["1H", "HT", "2H", "ET", "BT", "P", "LIVE"];
+    const estadosConEstadisticas = ["1H", "HT", "2H", "ET", "BT", "P", "LIVE", "FT", "AET", "PEN"];
     let estadisticas = [];
+    let estadisticasEstado = "pendientes";
+    let estadisticasMensaje = "Las estadísticas todavía no están disponibles para este partido.";
+    let estadisticasCodigo = null;
 
-    // Las estadísticas se consultan solo durante el partido.
-    // Si fallan o todavía no están publicadas, el marcador sigue funcionando.
-    if (estadosEnJuego.includes(estado)) {
+    if (!estadosConEstadisticas.includes(estado)) {
+      estadisticasEstado = "no_iniciado";
+      estadisticasMensaje = "Las estadísticas aparecerán cuando comience el partido.";
+    } else {
       try {
         const statsUrl = new URL("https://v3.football.api-sports.io/fixtures/statistics");
         statsUrl.searchParams.set("fixture", id);
         const statsResponse = await fetch(statsUrl.toString(), { headers });
-        if (statsResponse.ok) {
-          const statsData = await statsResponse.json();
-          estadisticas = (statsData.response || []).map(equipo => ({
+        const statsData = await statsResponse.json();
+
+        if (!statsResponse.ok || (statsData.errors && Object.keys(statsData.errors).length > 0)) {
+          estadisticasEstado = "error_api";
+          estadisticasCodigo = statsResponse.status;
+          estadisticasMensaje = "API-Football respondió con un error al consultar las estadísticas.";
+          console.error("API-Football statistics error:", statsResponse.status, statsData.errors);
+        } else {
+          const raw = Array.isArray(statsData.response) ? statsData.response : [];
+          estadisticas = raw.map(equipo => ({
             equipo: {
               id: equipo.team?.id ?? null,
               nombre: equipo.team?.name ?? null,
@@ -57,9 +62,29 @@ export default async function handler(req, res) {
               valor: stat.value ?? null
             }))
           }));
+
+          if (estadisticas.length) {
+            estadisticasEstado = "disponibles";
+            estadisticasMensaje = "";
+            // Ordenar explícitamente por equipo local y visitante para la pantalla.
+            const homeId = item.teams?.home?.id;
+            const awayId = item.teams?.away?.id;
+            estadisticas.sort((a, b) => {
+              if (a.equipo.id === homeId) return -1;
+              if (b.equipo.id === homeId) return 1;
+              if (a.equipo.id === awayId) return 1;
+              if (b.equipo.id === awayId) return -1;
+              return 0;
+            });
+          } else {
+            estadisticasEstado = "sin_publicar";
+            estadisticasMensaje = "API-Football todavía no publicó estadísticas para este partido o liga.";
+          }
         }
       } catch (statsError) {
-        console.warn("MatchIA: estadísticas temporalmente no disponibles", statsError);
+        estadisticasEstado = "error_conexion";
+        estadisticasMensaje = "No se pudo conectar con API-Football para consultar las estadísticas.";
+        console.warn("MatchIA: estadísticas no disponibles", statsError);
       }
     }
 
@@ -87,6 +112,9 @@ export default async function handler(req, res) {
         visitante: item.goals?.away ?? 0
       },
       estadisticas,
+      estadisticasEstado,
+      estadisticasMensaje,
+      estadisticasCodigo,
       fecha: item.fixture?.date || null
     });
   } catch (error) {
