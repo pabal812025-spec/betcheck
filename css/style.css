@@ -1405,3 +1405,18 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .selected-date-box .selected-date,
 #selectedDate.selected-date{font-size:clamp(28px,8vw,36px)!important;font-weight:800!important;white-space:nowrap!important;overflow:visible!important;overflow-wrap:normal!important;line-height:1.1!important;letter-spacing:0!important;}
 @media(max-width:380px){.selected-date-box .selected-date,#selectedDate.selected-date{font-size:clamp(25px,7.5vw,31px)!important;}}
+
+
+/* Alineaciones reales del partido en vivo */
+.live-lineups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.live-lineup-team{min-width:0;padding:14px;border:1px solid rgba(66,232,255,.18);border-radius:14px;background:rgba(8,24,39,.72)}
+.live-lineup-team header{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#eaf6ff}
+.live-lineup-team header span{color:#42e8ff;font-size:12px}
+.live-lineup-coach{margin:7px 0 12px;color:#8fa9c0;font-size:12px}
+.live-lineup-team h4{margin:12px 0 7px;color:#42e8ff;font-size:11px;letter-spacing:1px}
+.live-lineup-team ol{list-style:none;padding:0;margin:0;display:grid;gap:5px}
+.live-lineup-team li{display:flex;align-items:center;gap:8px;padding:5px 7px;border-radius:8px;background:rgba(255,255,255,.035);color:#eaf6ff;font-size:12px}
+.live-lineup-team li small{margin-left:auto;color:#8fa9c0}
+.live-player-number{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:7px;background:rgba(66,232,255,.12);color:#42e8ff;font-weight:800}
+.live-lineups-empty{padding:14px;border:1px dashed rgba(66,232,255,.25);border-radius:12px;color:#91a8ba;font-size:13px}
+.live-lineup-empty{color:#91a8ba!important}
