@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.android/debug.keystore
-          key: matchia-debug-keystore-v2
+          key: matchia-debug-keystore-v3
 
       - name: Crear firma estable si todavía no existe
         run: |
@@ -52,6 +52,9 @@ jobs:
             keytool -genkeypair -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
           fi
 
+      - name: Comprobar clave de firma que usará el APK
+        run: |
+          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey | grep -E "SHA256:|SHA-256:"
       - name: Poner logo original de MatchIA
         working-directory: instalacion/android
         run: |
