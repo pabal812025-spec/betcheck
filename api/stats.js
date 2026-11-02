@@ -1,52 +1,38 @@
 export default async function handler(req, res) {
+  const apiKey = process.env.API_FOOTBALL_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: "API_FOOTBALL_KEY no está configurada" });
+  }
+
+  const id = String(req.query.id || "");
+  if (!/^\d+$/.test(id)) {
+    return res.status(400).json({ error: "ID de partido inválido" });
+  }
+
+  res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=15");
+
   try {
-    const apiKey = process.env.API_FOOTBALL_KEY;
+    const response = await fetch(
+      "https://v3.football.api-sports.io/fixtures/statistics?fixture=" + encodeURIComponent(id),
+      { headers: { "x-apisports-key": apiKey } }
+    );
+    const data = await response.json();
 
-    if (!apiKey) {
-      return res.status(500).json({
-        error: "API key no configurada"
+    if (!response.ok || (data.errors && Object.keys(data.errors).length > 0)) {
+      console.error("API-Football stats error:", response.status, data.errors);
+      return res.status(502).json({
+        error: "API-Football no pudo entregar las estadísticas",
+        codigo: response.status
       });
     }
 
-    const id = req.query.id;
-
-    if (!id) {
-      return res.status(400).json({
-        error: "Falta el ID del partido"
-      });
-    }
-
-    const headers = {
-      "x-apisports-key": apiKey
-    };
-
-    async function obtenerEstadisticas() {
-      const response = await fetch(
-        `https://v3.football.api-sports.io/fixtures/statistics?fixture=${encodeURIComponent(id)}`,
-        {
-          headers,
-          cache: "no-store"
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `API-Football respondió ${response.status}`
-        );
-      }
-
-      const data = await response.json();
-
-      return data.response || [];
-    }
-
-    // Primer intento
-    let equipos = await obtenerEstadisticas();
-
-    // Si la API respondió sin estadísticas, hacemos un segundo intento
+    const equipos = Array.isArray(data.response) ? data.response : [];
     if (!equipos.length) {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      equipos = await obtenerEstadisticas();
+      return res.status(200).json({
+        estadisticas: [],
+        estado: "sin_publicar",
+        mensaje: "API-Football todavía no publicó estadísticas para este partido o liga."
+      });
     }
 
     const resultado = equipos.map(equipo => ({
@@ -55,20 +41,21 @@ export default async function handler(req, res) {
         nombre: equipo.team?.name ?? null,
         logo: equipo.team?.logo ?? null
       },
-
       estadisticas: (equipo.statistics || []).map(stat => ({
         tipo: stat.type ?? null,
         valor: stat.value ?? null
       }))
     }));
 
-    return res.status(200).json(resultado);
-
+    return res.status(200).json({
+      estadisticas: resultado,
+      estado: "disponibles",
+      mensaje: ""
+    });
   } catch (error) {
     console.error("Error en stats.js:", error);
-
-    return res.status(500).json({
-      error: "No se pudieron obtener las estadísticas"
+    return res.status(502).json({
+      error: "No se pudo conectar con API-Football para consultar las estadísticas"
     });
   }
-      }
+}
