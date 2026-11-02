@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "API_FOOTBALL_KEY no está configurada" });
   }
 
-  res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=15");
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
   const headers = { "x-apisports-key": apiKey };
 
   try {
