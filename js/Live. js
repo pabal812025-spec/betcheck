@@ -540,12 +540,12 @@
     const visitante = datos.visitante || {};
 
     setText(
-      "liveHomeName",
+      "liveHome",
       local.nombre || "Local"
     );
 
     setText(
-      "liveAwayName",
+      "liveAway",
       visitante.nombre || "Visitante"
     );
 
@@ -560,13 +560,8 @@
     );
 
     setText(
-      "liveHomeScore",
-      datos.marcador?.local ?? 0
-    );
-
-    setText(
-      "liveAwayScore",
-      datos.marcador?.visitante ?? 0
+      "liveScore",
+      `${datos.marcador?.local ?? 0} - ${datos.marcador?.visitante ?? 0}`
     );
 
     const estadoPartido = String(datos.estado || "").toUpperCase();
