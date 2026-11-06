@@ -1159,3 +1159,71 @@ async function getPrematchPredictionById(fixtureId) {
 
 // ============================================================
 // COMP
+
+// ============================================================
+// EXPORTAR MOTORES PARA LAS PANTALLAS
+// ============================================================
+
+// Probabilidades EN VIVO: estimación matemática del resultado final
+// a partir del marcador, minuto y actividad estadística disponible.
+// No representa una predicción oficial de API-Football.
+function calculateLiveProbabilities(match) {
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const minute = clamp(Number(match.minute) || 0, 0, 90);
+  const remaining = Math.max(0, (90 - minute) / 90);
+  const goalsHome = Math.max(0, Number(match.goalsHome) || 0);
+  const goalsAway = Math.max(0, Number(match.goalsAway) || 0);
+
+  const shotsHome = Math.max(0, Number(match.shotsHome) || 0);
+  const shotsAway = Math.max(0, Number(match.shotsAway) || 0);
+  const targetHome = Math.max(0, Number(match.shotsOnTargetHome) || 0);
+  const targetAway = Math.max(0, Number(match.shotsOnTargetAway) || 0);
+  const cornersHome = Math.max(0, Number(match.cornersHome) || 0);
+  const cornersAway = Math.max(0, Number(match.cornersAway) || 0);
+  const redsHome = Math.max(0, Number(match.redsHome) || 0);
+  const redsAway = Math.max(0, Number(match.redsAway) || 0);
+
+  const activityHome = clamp(1 + targetHome * 0.10 + shotsHome * 0.018 + cornersHome * 0.025, 0.75, 1.8);
+  const activityAway = clamp(1 + targetAway * 0.10 + shotsAway * 0.018 + cornersAway * 0.025, 0.75, 1.8);
+
+  let lambdaHome = remaining * 1.25 * activityHome * (redsAway ? 1 + 0.22 * redsAway : 1);
+  let lambdaAway = remaining * 1.10 * activityAway * (redsHome ? 1 + 0.22 * redsHome : 1);
+  lambdaHome = clamp(lambdaHome, 0, 3.5);
+  lambdaAway = clamp(lambdaAway, 0, 3.5);
+
+  function poisson(lambda, maxGoals) {
+    const values = [Math.exp(-lambda)];
+    for (let i = 1; i <= maxGoals; i++) values[i] = values[i - 1] * lambda / i;
+    const total = values.reduce((sum, value) => sum + value, 0);
+    return values.map(value => value / total);
+  }
+
+  const homeDist = poisson(lambdaHome, 8);
+  const awayDist = poisson(lambdaAway, 8);
+  let home = 0, draw = 0, away = 0;
+
+  for (let h = 0; h < homeDist.length; h++) {
+    for (let a = 0; a < awayDist.length; a++) {
+      const probability = homeDist[h] * awayDist[a];
+      const finalHome = goalsHome + h;
+      const finalAway = goalsAway + a;
+      if (finalHome > finalAway) home += probability;
+      else if (finalHome < finalAway) away += probability;
+      else draw += probability;
+    }
+  }
+
+  const total = home + draw + away || 1;
+  return {
+    home: Math.round(home / total * 100),
+    draw: Math.round(draw / total * 100),
+    away: Math.round(away / total * 100),
+    source: "estimacion_matchia"
+  };
+}
+
+window.MatchIA = window.MatchIA || {};
+window.MatchIA.calculateProbabilities = calculateLiveProbabilities;
+
+window.MatchIAPrematch = window.MatchIAPrematch || {};
+window.MatchIAPrematch.getPrematchPredictionById = getPrematchPredictionById;
