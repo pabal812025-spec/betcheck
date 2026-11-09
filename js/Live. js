@@ -75,10 +75,23 @@
   }
 
   function obtenerEquipoStats(datos, index) {
-    return datos.estadisticas &&
-      datos.estadisticas[index]
-      ? datos.estadisticas[index].estadisticas || []
+    const lista = Array.isArray(datos.estadisticas)
+      ? datos.estadisticas
       : [];
+    const equipoId = index === 0
+      ? datos.local?.id
+      : datos.visitante?.id;
+
+    // Asociar estadísticas por ID del equipo, no por posición del array.
+    // API-Football no garantiza que el orden de respuesta sea local/visitante.
+    const equipo = equipoId != null
+      ? lista.find(function (item) {
+          return String(item.equipo?.id) === String(equipoId);
+        })
+      : null;
+    const fallback = lista[index];
+
+    return (equipo || fallback)?.estadisticas || [];
   }
 
   function renderLiveStats(datos) {
@@ -242,7 +255,10 @@
       );
 
     return {
-      minute: numero(datos.minuto),
+      minute: datos.minuto == null
+        ? (String(datos.estado || "").toUpperCase() === "HT" ? 45
+          : ["FT", "AET", "PEN"].includes(String(datos.estado || "").toUpperCase()) ? 90 : 0)
+        : numero(datos.minuto),
 
       goalsHome:
         numero(datos.marcador?.local),
@@ -539,15 +555,11 @@
     const local = datos.local || {};
     const visitante = datos.visitante || {};
 
-    setText(
-      "liveHomeName",
-      local.nombre || "Local"
-    );
-
-    setText(
-      "liveAwayName",
-      visitante.nombre || "Visitante"
-    );
+    // Los IDs reales del HTML son liveHome y liveAway.
+    setText("liveHome", local.nombre || "Local");
+    setText("liveAway", visitante.nombre || "Visitante");
+    setText("liveProbHomeName", local.nombre || "Local");
+    setText("liveProbAwayName", visitante.nombre || "Visitante");
 
     setImage(
       "liveHomeLogo",
@@ -559,15 +571,10 @@
       visitante.logo
     );
 
-    setText(
-      "liveHomeScore",
-      datos.marcador?.local ?? 0
-    );
-
-    setText(
-      "liveAwayScore",
-      datos.marcador?.visitante ?? 0
-    );
+    // La pantalla usa un único nodo liveScore para ambos goles.
+    const golesLocal = datos.marcador?.local ?? 0;
+    const golesVisitante = datos.marcador?.visitante ?? 0;
+    setText("liveScore", golesLocal + " - " + golesVisitante);
 
     const estadoPartido = String(datos.estado || "").toUpperCase();
     const textoReloj = estadoPartido === "HT" ? "ENTRETIEMPO"
