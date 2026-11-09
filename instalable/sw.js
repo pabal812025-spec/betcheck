@@ -1,4 +1,4 @@
-const CACHE_NAME = "matchia-installable-v2";
+const CACHE_NAME = "matchia-installable-v3";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icon.svg", "../css/style.css"];
 
 self.addEventListener("install", event => {
