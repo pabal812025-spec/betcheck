@@ -13,7 +13,8 @@ from datetime import datetime, timezone
 from typing import Iterable
 
 
-BINANCE_KLINES_URL = "https://api.binance.com/api/v3/klines"
+# Binance documents this host specifically for unauthenticated public market data.
+BINANCE_KLINES_URL = "https://data-api.binance.vision/api/v3/klines"
 
 
 @dataclass
