@@ -24,3 +24,6 @@ jobs:
           python-version: "3.12"
       - name: Run unit tests
         run: python -m unittest -v
+      - name: Check live public Binance BTCUSDT data
+        run: |
+          python -c "from bot import fetch_candles; candles = fetch_candles('BTCUSDT', '1h', 50); print(f'Binance OK: {len(candles)} candles; latest BTCUSDT close: {candles[-1].close:.2f} USDT')"
